@@ -1,7 +1,10 @@
 Utente [Nome,Eta,Telefono]
 
 ProdottoVendibile (abstract)[Nome,Prezzo,Qta]
+	
 	-> Cibo [ValoriNutrizionali]
+	
+	
 	-> EntrataFilm	[Utente]
 		
 		-> Biglietto [Film, Posto, Ridotto(bool)] (prezzo determinato in base a Film)
