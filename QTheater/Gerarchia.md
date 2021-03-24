@@ -12,7 +12,7 @@ ProdottoVendibile (abstract)[Nome,Prezzo,Qta]
 		-> Abbonamento [Numero, EntrateRimanenti, Scadenza] (quando viene scalata un'entrata verrà creato Biglietto con prezzo=0)
 
 
-ShopManager -> container di ProdottoVendibile(magazzino), container per prodotti acquistati(scontrino), container per Utenti(utenti)
+ShopManager -> container di ProdottoVendibile (magazzino), container per prodotti acquistati (scontrino), container per Utenti (utenti)
 
 Film -> [Titolo, AumentoPrezzo, Scadenza, Durata, Genere, LimiteEta, Sala]
 
