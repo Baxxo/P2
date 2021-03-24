@@ -1,0 +1,85 @@
+finestre: 
+-principale->
+	-cassa->
+		-nuov(o)i bigliett(o)i
+		-nuovo abbonamento
+		-entrata abbonamento
+		-vendi cibo
+			
+	-admin->
+		-admin_cibo (duale di vendi cibo)
+		-admin_film
+
+classi:
+
+Controller (..)
+
+Admin () ->interfaccie grafiche
+	//Prima apertura -> imposta tutti i prezzi e qta nome bevanda e nome cibo (es. patatine, coca cola, pop corn)
+
+Cassa () ->interfaccie gafiche 
+
+Utente[Nome, Eta, Telefono]
+
+ProdottoVendibile (abstract) [Nome, Prezzo, Quantità] -> 
+				Cibo [(Nome, Prezzo, Quantità), ValoriNutrizionali]
+					GetCibo(Nome, Prezzo, Quantità)
+					SetCibo(Nome, Prezzo, Quantità)
+					UpdateQuantità(Nome, Quantià)
+					UpdateRiepilogo(Nome, Prezzo, Quantità)
+					
+					 -> EntrataFilm [Utente]  
+						SetPosto(Posto)
+						SetMultiplier(Film) 
+						
+								-> Biglietto [Film, PrezzoEntrata, Ridotto(bool), Posto] (prezzo determinato in base a Film) 
+									SetRiduzione(Ridotto)
+									CreateBiglietto(Prezzo, Ridotto)
+									GetBiglietto(Prezzo, Ridotto) 
+									
+									-> Abbonamento [Numero, EntrateRimanenti, Scadenza]
+										CreateAbbonamento(Titolare, Prezzo, Numero, EntrateRimanenti, Scadenza)
+										CheckAbbonamento(Numero)
+										GetAbbonamento(Titolare, Prezzo, Numero, EntrateRimanenti, Scadenza)
+										AggiornaAbbonamento(Numero, EntrateRimanenti)
+
+ShopManager (magazzino, scontrino utente) -> container di ProdottoVendibile-> punto agli oggetti
+
+Film -> [Titolo, Multiplier, Scadenza, Durata, Genere, LimiteEta, NomeSala]
+	CreateNewFilm(Titolo, Multiplier, Scadenza, Durata, Genere, LimiteEta)
+	UpdateFilms(Titolo, Multiplier, Scadenza, Durata, Genere, LimiteEta)
+
+Sala -> [NomeSala, TotPosti, PostiOccupati]
+	AggiornaSala(NomeSala, TotPosti, PostiOccupati)
+	CreateSala(NomeSala, TotPosti, Posti(arraygestito come matrice) )
+	
+
+
+//quando prendo biglietto con abb, creo Biglietto vuoto + decremento contatore abb esistente
+	
+//Prodotto vendibile gerarchia;
+
+//JSON precaricato con delle info (Film, Cibo, Utenti, Sala, Prezzi) (2 oggetti cibo e una bevanda, 3 utenti, Sala tutto)
+
+//IN schermata admin film, quando seleziono 1 film (checkbox) compaiono "elimina" + "modifica"; quando seleziono 2 film, scompare "Modifica"
+
+//in schermata Cibo in Riepilogo, c'è -1 affianco ad ogni scritta. (difficile da fare; se non si riesce amen)
+
+//C'è una pswrd per entrare in admin
+
+
+
+
+
+
+Domande Tutor
+
+--Metodo migliore per rimuovere dalla lista del riepilogo (schermata Cibo, AdminCibo);
+
+--Gestione Output codice del'abbonamento creato
+
+--Ha senso fare il form per la ricerca dell'abbomanemtno in base al CF dell'utenta
+
+--Se possiamo non fare il sistema del tracciamento (noi teniamo solo traccia del posto e tutti i dati etc ma il capire chi era vicino a chi e contattare etc lo fa qualcun altro)
+
+ 
