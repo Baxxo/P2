@@ -12,14 +12,14 @@ class EntrataFilm{
 	
 	Data data;
 	
-	float prezzo;
+	double prezzo;
 		
 	
 	public:
 	
-	EntrataFilm(/*Utente*/ float=7.5);
+	EntrataFilm(/*Utente*/ double=7.5);
 	
-	float GetPrezzo() const;
+	double GetPrezzo() const;
 	
 	Data GetData() const;
 		
