@@ -1,13 +1,13 @@
 #include <iostream>
 #include "EntrataFilm.h"
 
-EntrataFilm::EntrataFilm(float p){
+EntrataFilm::EntrataFilm(double p){
 	
 	prezzo=p;
 	
 }
 
-float EntrataFilm::GetPrezzo() const{
+double EntrataFilm::GetPrezzo() const{
 	return prezzo;
 }
 
