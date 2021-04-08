@@ -1,4 +1,4 @@
-#include "myvector.h"
+#include "MyVector.h"
 
 template<class T>
 MyVector::MyVector(T *p, unsigned int sz) : size(sz),v(new T[size]), capacity(sz)
