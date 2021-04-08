@@ -25,9 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
+        myvector.cpp \
+        famiglia.cpp \
         mainwindow.cpp
 
 HEADERS += \
+        myvector.h \
+        famiglia.h \
         mainwindow.h
 
 FORMS +=
