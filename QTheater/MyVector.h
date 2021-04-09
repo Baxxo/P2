@@ -12,7 +12,7 @@ private:
     {
         friend class MyVector;
     public:
-        T* ptr;
+        T* ptr;//DeepPtr<T>* ptr;
         bool pastTheEnd;
         Iterator(T* p, bool pte=false);
         Iterator();
