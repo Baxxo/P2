@@ -19,4 +19,6 @@ double Biglietto::GetPrezzo() const{
 	}
 	
 	else return prezzo;
+	
+	// return prezzo - (prezzo * GetRiduzione() * 0.15);
 }
