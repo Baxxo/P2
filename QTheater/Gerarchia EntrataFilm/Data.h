@@ -1,7 +1,11 @@
 #include <iostream>
+#ifndef DATA
+#define DATA 1
 
 using std::ostream;
 using std::cout;
+using std::string;
+
 
 
 class Data{
@@ -19,17 +23,9 @@ class Data{
 		int getMese() const;
 
 		int getAnno() const;
-
-		//int setGiorno(int);
-
-		//int setMese(int);
-
-		//int setAnno(int);
-				
-		friend ostream& operator<<(ostream &os, const Data &d);
-
-};
-
+	
+		string ToString() const;
 		
 
-
+};
+#endif

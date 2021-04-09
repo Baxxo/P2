@@ -1,17 +1,17 @@
-# Project: Gerarchia EntrataFilm
+# Project: EntrataFIlm
 # Makefile created by Dev-C++ 5.11
 
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = MainQTheatre.o EntrataFilm.o Data.o
-LINKOBJ  = MainQTheatre.o EntrataFilm.o Data.o
+OBJ      = main.o EntrataFilm.o Data.o Biglietto.o Abbonamento.o Singolo.o Famiglia.o Sala.o
+LINKOBJ  = main.o EntrataFilm.o Data.o Biglietto.o Abbonamento.o Singolo.o Famiglia.o Sala.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
-BIN      = "Gerarchia EntrataFilm.exe"
-CXXFLAGS = $(CXXINCS) 
-CFLAGS   = $(INCS) 
+BIN      = EntrataFIlm.exe
+CXXFLAGS = $(CXXINCS) -std=c++11
+CFLAGS   = $(INCS) -std=c++11
 RM       = rm.exe -f
 
 .PHONY: all all-before all-after clean clean-custom
@@ -24,11 +24,26 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
 
-MainQTheatre.o: MainQTheatre.cpp
-	$(CPP) -c MainQTheatre.cpp -o MainQTheatre.o $(CXXFLAGS)
+main.o: main.cpp
+	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
 
 EntrataFilm.o: EntrataFilm.cpp
 	$(CPP) -c EntrataFilm.cpp -o EntrataFilm.o $(CXXFLAGS)
 
 Data.o: Data.cpp
 	$(CPP) -c Data.cpp -o Data.o $(CXXFLAGS)
+
+Biglietto.o: Biglietto.cpp
+	$(CPP) -c Biglietto.cpp -o Biglietto.o $(CXXFLAGS)
+
+Abbonamento.o: Abbonamento.cpp
+	$(CPP) -c Abbonamento.cpp -o Abbonamento.o $(CXXFLAGS)
+
+Singolo.o: Singolo.cpp
+	$(CPP) -c Singolo.cpp -o Singolo.o $(CXXFLAGS)
+
+Famiglia.o: Famiglia.cpp
+	$(CPP) -c Famiglia.cpp -o Famiglia.o $(CXXFLAGS)
+
+Sala.o: Sala.cpp
+	$(CPP) -c Sala.cpp -o Sala.o $(CXXFLAGS)
