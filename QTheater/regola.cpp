@@ -15,11 +15,6 @@ Regola::Regola(unsigned int dP, bool m, bool c):distanzaPosti(dP), mustMascherin
 
 }
 
-void Regola::getRegole(unsigned int &distP, bool &m)
-{
-
-}
-
 bool Regola::getMustMascherina() const
 {
     return mustMascherina;
