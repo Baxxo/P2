@@ -1,6 +1,7 @@
-#include "Data.h"
 #ifndef ENTRATAFILM
 #define ENTRATAFILM 1
+#include "Data.h"
+
 
 class EntrataFilm{
 	
