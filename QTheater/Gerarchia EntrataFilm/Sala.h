@@ -15,7 +15,7 @@ class Sala{
 	
 	public:
 		
-		Sala(int=0, int=0, string="null");
+		Sala(int=0, int=0, string="");
 		int GetRighe() const;
 		int GetColonne() const;
 		
