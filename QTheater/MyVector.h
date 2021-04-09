@@ -6,8 +6,8 @@ class MyVector
 {
 private:
     T* v;
-    unsigned int size;
-    unsigned int capacity;
+    unsigned int size; //numero celle popolatr
+    unsigned int capacity; //dimensione totale
     class Iterator
     {
         friend class MyVector;
