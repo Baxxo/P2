@@ -5,18 +5,17 @@ Singolo::Singolo(double p, Data d, string c, int e, int f)
 	{}
 	
 double Singolo::GetFasciaOraria() const{
+	unsigned int i = 1;
 	if(fascia_oraria==1){
-		return 0.5;
+		i=  0.5;
+	} else if(fascia_oraria==2){
+		i=  0.7;
+	} else if(fascia_oraria==3){
+		i=  0.8;
+	} else if(fascia_oraria==4){
+		i=  0.9;
 	}
-	if(fascia_oraria==2){
-		return 0.7;
-	}
-	if(fascia_oraria==3){
-		return 0.8;
-	}
-	if(fascia_oraria==4){
-		return 0.9;
-	}
+	return i;
 }
 	
 double Singolo::GetPrezzo() const{
