@@ -1,7 +1,4 @@
-#include <iostream>
 #include "Data.h"
-
-using std::string;
 
 Data::Data(int gg, int mm, int aa)
 
