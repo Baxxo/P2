@@ -6,7 +6,7 @@ class RegolaBianca : public Regola
 {
 public:
     RegolaBianca(unsigned int dP=0, bool m=false, bool c= true);
-    void getRegole(unsigned int& distP, bool& m);
+    void getRegole(unsigned int& distP, bool& m, bool &c);
 };
 
 #endif // REGOLABIANCA_H
