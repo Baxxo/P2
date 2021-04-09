@@ -1,13 +1,15 @@
+#include <string>
+
 using std::string;
 
 class Utente{
 private:
-	string name;
+    string name;
 	unsigned int age;
 	string codiceFiscale;
 	string phoneNumber;
 public:
-	Utente(string n='', unsigned int a=0, string cf='', string num='');
+    Utente(string n="", unsigned int a=0, string cf="", string num="");
 	
 	string getName() const;
 

@@ -7,5 +7,5 @@ private:
     Utente* membri;
 public:
     Famiglia(Utente* m=nullptr);
-    Utente* getMembri() const;
+    Utente *getMembri() const;
 };

@@ -1,45 +1,44 @@
 #include "MyVector.h"
 
+
 template<class T>
-MyVector::MyVector(T *p, unsigned int sz) : size(sz),v(new T[size]), capacity(sz)
+MyVector<T>::MyVector(T *p, unsigned int sz)
 {
-    for(unsigned int i=0;i<size;++i){
-        v[i] = new T(p);
-    }
+
 }
 
 template<class T>
-MyVector::~MyVector()
+MyVector<T>::~MyVector()
 {
     delete[] v;
 }
 
 template<class T>
-unsigned int MyVector::getSize() const
+unsigned int MyVector<T>::getSize() const
 {
     return size;
 }
 
 template<class T>
-T &MyVector::operator[](unsigned int i) const
+T &MyVector<T>::operator[](unsigned int i) const
 {
     return v[i];
 }
 
 template<class T>
-MyVector::Iterator MyVector::begin()
+typename MyVector<T>::Iterator MyVector<T>::begin()
 {
     return v;
 }
 
 template<class T>
-MyVector::Iterator MyVector::end()
+typename MyVector<T>::Iterator MyVector<T>::end()
 {
     return v[size-1];
 }
 
 template<class T>
-bool MyVector::add(const T &o)
+bool MyVector<T>::add(const T &o)
 {
     if(capacity <= size){
         T* temp = new T[size*2];

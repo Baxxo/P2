@@ -1,12 +1,24 @@
 #include "Utente.h"
 
-Utente(string n='', unsigned int a=0, string cf='', string num='') 
+Utente::Utente(std::string n, unsigned int a, std::string cf, std::string num)
     : name(n), age(a), codiceFiscale(cf), phoneNumber(num) {}
 
-string getName() const{ return name;}
+std::string Utente::getName() const
+{
+    return name;
+}
 
-unsigned int getAge() const {return age;}
+unsigned int Utente::getAge() const
+{
+    return age;
+}
 
-string getCodFisc() const { return codiceFiscale;}
+std::string Utente::getCodFisc() const
+{
+    return codiceFiscale;
+}
 
-string getPhoneNum() const { return phoneNumber;}
+std::string Utente::getPhoneNumber() const
+{
+    return phoneNumber;
+}
