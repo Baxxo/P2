@@ -1,5 +1,10 @@
 #include "regola.h"
 
+Regola::Regola(unsigned int dP, bool m, bool c):distanzaPosti(dP), mustMascherina(m), congiuntiVicini(c)
+{
+
+}
+
 unsigned int Regola::getDistanzaPosti() const
 {
     return distanzaPosti;
@@ -8,11 +13,6 @@ unsigned int Regola::getDistanzaPosti() const
 void Regola::setDistanzaPosti(unsigned int value)
 {
     distanzaPosti = value;
-}
-
-Regola::Regola(unsigned int dP, bool m, bool c):distanzaPosti(dP), mustMascherina(m), congiuntiVicini(c)
-{
-
 }
 
 bool Regola::getMustMascherina() const
