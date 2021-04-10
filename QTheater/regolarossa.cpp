@@ -9,4 +9,5 @@ void RegolaRossa::getRegole(unsigned int &distP, bool &m)
 {
     distP = getDistanzaPosti();
     m = getMustMascherina();
+    c = getCongiuntiVicini();
 }
