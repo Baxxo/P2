@@ -9,7 +9,7 @@ private:
     bool congiuntiVicini;
 public:
     Regola(unsigned int dP=0, bool m=false, bool c=false);
-    virtual void getRegole(unsigned int& distP, bool& m, bool c= false) = 0;
+    virtual void getRegole(unsigned int& distP, bool& m, bool c= true) = 0;
     virtual bool getMustMascherina() const;
     virtual void setMustMascherina(bool value);
     virtual unsigned int getDistanzaPosti() const;
