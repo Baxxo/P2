@@ -1,6 +1,6 @@
 #include "regolagialla.h"
 
-RegolaGialla::RegolaGialla(unsigned int dP, bool m): Regola(dP,m)
+RegolaGialla::RegolaGialla(unsigned int dP, bool m, bool c): Regola(dP,m,c)
 {
 
 }
