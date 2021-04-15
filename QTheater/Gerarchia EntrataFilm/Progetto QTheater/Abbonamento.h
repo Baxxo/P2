@@ -4,14 +4,14 @@
 
 class Abbonamento: public EntrataFilm{
 	
-	protected:
+	private:
 		string codice;
 		int entrate;
 		
 	
 	public:
 		
-		Abbonamento(double=7.5, Data=Data(0,0,0), string="00000", int=0);
+		Abbonamento(Data*, Utente*, double=7.5, string="00000", int=0);
 		
 		int GetEntrate() const;
 		

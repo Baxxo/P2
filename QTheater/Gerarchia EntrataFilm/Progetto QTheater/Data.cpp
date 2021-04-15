@@ -1,5 +1,7 @@
 #include "Data.h"
 
+using std::string;
+
 Data::Data(int gg, int mm, int aa)
 
 	:giorno(gg), mese(mm), anno(aa)
@@ -19,5 +21,5 @@ int Data::getAnno() const{
 }
 
 string Data::ToString() const {
-	return giorno + "/" + mese + "/" + anno;
+    return std::to_string(giorno) + "/" + std::to_string(mese) + "/" + std::to_string(anno);
 }

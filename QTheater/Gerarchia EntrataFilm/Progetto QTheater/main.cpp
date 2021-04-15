@@ -1,11 +1,10 @@
 #include <iostream>
 #include "Biglietto.h"
 #include "Singolo.h"
-#include "Famiglia.h"
+#include "AbbonamentoFamigliare.h"
 
 
 
 main(){
-
-int a=0;
+int a;
 }

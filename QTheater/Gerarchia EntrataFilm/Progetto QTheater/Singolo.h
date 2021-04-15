@@ -9,7 +9,7 @@ class Singolo: public Abbonamento{
 		
 	public:
 		
-		Singolo(double p, Data d, string c, int e, int f);
+		Singolo(Data*, Utente*, double=7.5, string="00000", int=0, int=0);
 		
 		double GetFasciaOraria() const;
 		

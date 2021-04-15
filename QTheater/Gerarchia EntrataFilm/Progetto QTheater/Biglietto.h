@@ -7,13 +7,11 @@ class Biglietto: public EntrataFilm{
 	private:
 		bool riduzione;
 		string film;
-		Data data_ora_acquisto; //ridefinizione di data di EntrafaFilm(?)
-		//posto
 		
 		
 	public:
 		
-		Biglietto(double=7.5, bool=false, string="null", Data=Data(0,0,0));
+		Biglietto(Data*, Utente*, double=7.5, bool=false, string="null");
 		
 		bool GetRiduzione() const;
 		string GetFilm() const;

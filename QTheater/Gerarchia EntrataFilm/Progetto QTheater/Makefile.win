@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o EntrataFilm.o Data.o Biglietto.o Abbonamento.o Singolo.o Famiglia.o Sala.o
-LINKOBJ  = main.o EntrataFilm.o Data.o Biglietto.o Abbonamento.o Singolo.o Famiglia.o Sala.o
+OBJ      = main.o EntrataFilm.o Data.o Biglietto.o Abbonamento.o Singolo.o AbbonamentoFamigliare.o Sala.o Famiglia.o Utente.o
+LINKOBJ  = main.o EntrataFilm.o Data.o Biglietto.o Abbonamento.o Singolo.o AbbonamentoFamigliare.o Sala.o Famiglia.o Utente.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
@@ -42,8 +42,14 @@ Abbonamento.o: Abbonamento.cpp
 Singolo.o: Singolo.cpp
 	$(CPP) -c Singolo.cpp -o Singolo.o $(CXXFLAGS)
 
-Famiglia.o: Famiglia.cpp
-	$(CPP) -c Famiglia.cpp -o Famiglia.o $(CXXFLAGS)
+AbbonamentoFamigliare.o: AbbonamentoFamigliare.cpp
+	$(CPP) -c AbbonamentoFamigliare.cpp -o AbbonamentoFamigliare.o $(CXXFLAGS)
 
 Sala.o: Sala.cpp
 	$(CPP) -c Sala.cpp -o Sala.o $(CXXFLAGS)
+
+Famiglia.o: Famiglia.cpp
+	$(CPP) -c Famiglia.cpp -o Famiglia.o $(CXXFLAGS)
+
+Utente.o: Utente.cpp
+	$(CPP) -c Utente.cpp -o Utente.o $(CXXFLAGS)

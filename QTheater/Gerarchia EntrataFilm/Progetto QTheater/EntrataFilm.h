@@ -1,27 +1,28 @@
+#include "Data.h"
+#include "Utente.h"
 #ifndef ENTRATAFILM
 #define ENTRATAFILM 1
-#include "Data.h"
-
 
 class EntrataFilm{
 	
-	protected:
+	private:
 	
-	//Utente utente;
+	Utente* utente;
 	
-	Data data;
+	Data* data;
 	
 	double prezzo;
 		
 	
 	
 	public:
+		
 	
-	EntrataFilm(Data=Data(0,0,0), double=7.5);
+	EntrataFilm(Data*, Utente*, double=7.5);
 	
 	virtual double GetPrezzo() const;
 	
-	Data GetData() const;
+	string GetData() const;
 		
 };
 #endif
