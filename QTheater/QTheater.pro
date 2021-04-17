@@ -36,4 +36,5 @@ HEADERS += \
     MyVector.h \
     mainwindow.h
 
-FORMS +=
+FORMS += \
+        mainwindow.ui
