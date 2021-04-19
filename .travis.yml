@@ -1,12 +1,2 @@
-addons:
-  sonarcloud:
-    organization: "baxxo"
-    token:
-      secure: "**************************" # encrypted value of your token
-
-script:
-  # Wraps the compilation with the Build Wrapper to generate configuration (used
-  # later by the SonarScanner) into the "bw-output" folder
-  # And finally run the SonarCloud analysis - read the "sonar-project.properties"
-  # file to see the specific configuration
-  - sonar-scanner -Dsonar.cfamily.build-wrapper-output=bw-output
+install: make get-deps
+compiler: gcc
