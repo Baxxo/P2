@@ -7,9 +7,9 @@ class EntrataFilm{
 	
 	private:
 	
-	Utente* utente;
+	Utente* utente= new Utente;
 	
-	Data* data;
+	Data* data= new  Data;
 	
 	double prezzo;
 		
@@ -17,6 +17,7 @@ class EntrataFilm{
 	
 	public:
 		
+	~EntrataFilm();
 	
 	EntrataFilm(Data*, Utente*, double=7.5);
 	

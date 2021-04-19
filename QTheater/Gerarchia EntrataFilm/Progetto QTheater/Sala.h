@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Utente.h"
 #ifndef SALA
 #define SALA 1
 
@@ -10,7 +11,7 @@ class Sala{
 		int righe;
 		int colonne;
 		string nome_sala;
-		string *matrix;
+		Utente *matrix;
 		
 	
 	public:
@@ -21,4 +22,5 @@ class Sala{
 		int GetColonne() const;
 		
 };
+
 #endif
