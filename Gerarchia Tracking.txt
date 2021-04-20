@@ -13,9 +13,9 @@ EntrataFilm [utente, data, prezzo]
 
 	Biglietto[Riduzione, Film, data->dataOraAcquisto, posto]
 
-	Abbonamento[Codice, Entrate, FasciaOraria]->
+	Abbonamento[Codice, Entrate]->
 
-		Singolo[]-> metodo polimorfo Prezzo(..)
+		Singolo[FasciaOraria]-> metodo polimorfo Prezzo(..)
 			GetPrezzo()=>return Prezzo*MoltiplicatoreFasceOrarie	
 
 		Famiglia[NumeroMembri]-> metodo polimorfo Prezzo(..)
