@@ -1,3 +1,5 @@
+[![Qt CI](https://github.com/Baxxo/P2/actions/workflows/c-cpp.yml/badge.svg?branch=develop)](https://github.com/Baxxo/P2/actions/workflows/c-cpp.yml)
+
 I vincoli obbligatori per il progetto sono i seguenti:
 1. Definizione ed utilizzo di una gerarchia G di tipi che soddisfi i seguenti requisiti:
 (a) G include almeno 3 diversi tipi istanziabili
