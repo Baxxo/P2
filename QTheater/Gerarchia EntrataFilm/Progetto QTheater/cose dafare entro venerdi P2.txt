@@ -1,9 +1,0 @@
--mettere private ed usare i setter -> SERVONO I SETTER?
-
--abbonamentofamiglire e poi usa come campo dati fmiglia di matte
-
--in matrix usare tipo utente e non string -> nn ho cpt cosa vuoi fare bruh
-
--VA FATTO DISTRUTTORE IN MATRIX -> va fattop anche in tutti gli altri posti in cui ho dichiarato distruttori? yes
-
-______________________________________________
