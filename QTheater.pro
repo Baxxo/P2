@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2021-04-09T15:04:04
+# Project created by QtCreator 2021-04-22T22:25:49
 #
 #-------------------------------------------------
 
@@ -24,17 +24,48 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
+    Abbonamento.cpp \
+    AbbonamentoFamigliare.cpp \
+    Biglietto.cpp \
+    Data.cpp \
+    EntrataFilm.cpp \
     Famiglia.cpp \
+    main.cpp \
+    mainwindow.cpp \
     MyVector.cpp \
-    Utente.cpp \
-    mainwindow.cpp
+    regola.cpp \
+    regolaarancione.cpp \
+    regolabianca.cpp \
+    regolagialla.cpp \
+    regolarossa.cpp \
+    Sala.cpp \
+    Singolo.cpp \
+    Utente.cpp
 
 HEADERS += \
-    Utente.h \
+        mainwindow.h \
+    Abbonamento.h \
+    AbbonamentoFamigliare.h \
+    Biglietto.h \
+    Data.h \
+    EntrataFilm.h \
     Famiglia.h \
     MyVector.h \
-    mainwindow.h
+    regola.h \
+    regolaarancione.h \
+    regolabianca.h \
+    regolagialla.h \
+    Sala.h \
+    Singolo.h \
+    Utente.h
 
-FORMS += \
-        mainwindow.ui
+FORMS +=
+
+SUBDIRS += \
+    QTheater.pro
+
+DISTFILES += \
+    style.css
+
+RESOURCES += \
+    styleresources.qrc
