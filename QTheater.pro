@@ -31,7 +31,6 @@ SOURCES += \
     EntrataFilm.cpp \
     Famiglia.cpp \
     main.cpp \
-    mainwindow.cpp \
     MyVector.cpp \
     regola.cpp \
     regolaarancione.cpp \
@@ -40,10 +39,13 @@ SOURCES += \
     regolarossa.cpp \
     Sala.cpp \
     Singolo.cpp \
-    Utente.cpp
+    Utente.cpp \
+    Mainwindow.cpp \
+    controller.cpp \
+    admin.cpp \
+    client.cpp
 
 HEADERS += \
-        mainwindow.h \
     Abbonamento.h \
     AbbonamentoFamigliare.h \
     Biglietto.h \
@@ -57,15 +59,18 @@ HEADERS += \
     regolagialla.h \
     Sala.h \
     Singolo.h \
-    Utente.h
+    Utente.h \
+    Mainwindow.h \
+    controller.h \
+    admin.h \
+    client.h
 
 FORMS +=
 
 SUBDIRS += \
     QTheater.pro
 
-DISTFILES += \
-    style.css
+DISTFILES +=
 
 RESOURCES += \
     styleresources.qrc
