@@ -64,6 +64,8 @@ FORMS +=
 SUBDIRS += \
     QTheater.pro
 
-DISTFILES +=
+DISTFILES += \
+    style.css
 
-RESOURCES +=
+RESOURCES += \
+    styleresources.qrc

@@ -1,0 +1,9 @@
+*{
+    background-color: #00A2E8;
+    color: white;
+}
+
+QLabel{
+    font-size:30px;
+    font-weight: bold;
+}

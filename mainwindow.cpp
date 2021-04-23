@@ -1,17 +1,14 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
-  , ui(new Ui::MainWindow)
 {
-  ui->setupUi(this);
 
   mainLayout = new QGridLayout();
   v_layout = new QVBoxLayout();
 
   title = new QLabel();
-  title->setText("Ciaone");
+  title->setText("QTheater");
   title->move(width()/2,height()/2);
 
   v_layout->addWidget(title,Qt::AlignCenter);
@@ -34,12 +31,11 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-  delete ui;
 }
 
 void MainWindow::setStyle()
 {
-  QFile file(":/resources/style.css");
+  QFile file(":/qss/style.css");
   file.open(QFile::ReadOnly);
   QString styleSheet = QLatin1String(file.readAll());
 

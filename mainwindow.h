@@ -7,6 +7,7 @@
 #include <QDesktopWidget>
 #include <QWidget>
 #include <QFile>
+#include <QApplication>
 
 #include <QMainWindow>
 
@@ -23,7 +24,6 @@ public:
   ~MainWindow();
 
 private:
-  Ui::MainWindow *ui;
 
   QDesktopWidget* desktop;
 
