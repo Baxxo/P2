@@ -13,7 +13,6 @@
 #include "client.h"
 #include "admin.h"
 
-
 #include <QMainWindow>
 
 class MainWindow : public QMainWindow

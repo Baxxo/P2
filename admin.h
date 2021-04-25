@@ -5,7 +5,8 @@
 #include <QMainWindow>
 #include <QDesktopWidget>
 #include <QApplication>
-
+#include <QGridLayout>
+#include <QHBoxLayout>
 
 class Admin : public QMainWindow
 {
@@ -16,6 +17,8 @@ public:
 
 private:  
   QDesktopWidget* desktop;
+  QGridLayout* baseLayout;
+  QHBoxLayout* mainLayout;
 
   QLabel* label;
 };

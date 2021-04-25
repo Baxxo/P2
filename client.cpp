@@ -2,12 +2,11 @@
 
 Client::Client(QWidget *parent) : QMainWindow(parent)
 {
-  label = new QLabel("Ciao da Client");
+  label = new QLabel("Ciao da Cliente");
+
   setCentralWidget(label);
 
   desktop = QApplication::desktop();
 
   resize(300,300);
-  move((desktop->width()-300)/2,(desktop->height()-300)/2);
-
 }

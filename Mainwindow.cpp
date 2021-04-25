@@ -1,8 +1,10 @@
 #include "Mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
-  : QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent, bool isOpAd, bool isOpCl)
+  : QMainWindow(parent), isOpenAdmin(isOpAd), isOpenClient(isOpCl)
 {
+  admin = nullptr;
+  client = nullptr;
 
   title = new QLabel("QTheater");
 
@@ -47,14 +49,26 @@ void MainWindow::setStyle()
 
 void MainWindow::openAdmin()
 {
-  admin = new Admin(this);
-  admin->show();
-  hide();
+  adminBtn->setEnabled(false);
+  adminBtn->repaint();
+  if (!admin) {
+      admin = new Admin();
+      admin->show();
+    }else{
+      admin->show();
+    }
+  adminBtn->setEnabled(true);
 }
 
 void MainWindow::openClient()
 {
-  client = new Client(this);
-  client->show();
-  hide();
+  clientBtn->setEnabled(false);
+  clientBtn->repaint();
+  if (!client) {
+      client = new Client();
+      client->show();
+    }else{
+      client->show();
+    }
+  clientBtn->setEnabled(true);
 }
