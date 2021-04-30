@@ -43,13 +43,9 @@ SOURCES += \
     Mainwindow.cpp \
     controller.cpp \
     admin.cpp \
-    client.cpp
+    client.cpp \
 
 HEADERS += \
-    Abbonamento.h \
-    AbbonamentoFamigliare.h \
-    Biglietto.h \
-    Data.h \
     EntrataFilm.h \
     Famiglia.h \
     MyVector.h \
@@ -63,7 +59,11 @@ HEADERS += \
     Mainwindow.h \
     controller.h \
     admin.h \
-    client.h
+    client.h \
+    Abbonamento.h \
+    AbbonamentoFamigliare.h \
+    Biglietto.h \
+    Data.h \
 
 FORMS +=
 
