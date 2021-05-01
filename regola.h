@@ -14,6 +14,8 @@ public:
     virtual void setMustMascherina(bool value);
     virtual unsigned int getDistanzaPosti() const;
     virtual void setDistanzaPosti(unsigned int value);
+    bool getCongiuntiVicini() const;
+    void setCongiuntiVicini(bool value);
 };
 
 #endif // REGOLA_H

@@ -1,11 +1,12 @@
-#include "mainwindow.h"
+#include "Mainwindow.h"
+#include "Utente_View.h"
+
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-
+    Utente_View u;
+    u.show();
     return a.exec();
 }
