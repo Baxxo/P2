@@ -30,6 +30,9 @@ SOURCES += \
     Data.cpp \
     EntrataFilm.cpp \
     Famiglia.cpp \
+    Utente_View.cpp \
+    controller.cpp \
+    famiglia_view.cpp \
     main.cpp \
     MyVector.cpp \
     regola.cpp \
@@ -41,18 +44,16 @@ SOURCES += \
     Singolo.cpp \
     Utente.cpp \
     Mainwindow.cpp \
-    controller.cpp \
     admin.cpp \
-    client.cpp
+    client.cpp \
 
 HEADERS += \
-    Abbonamento.h \
-    AbbonamentoFamigliare.h \
-    Biglietto.h \
-    Data.h \
     EntrataFilm.h \
     Famiglia.h \
     MyVector.h \
+    Utente_View.h \
+    controller.h \
+    famiglia_view.h \
     regola.h \
     regolaarancione.h \
     regolabianca.h \
@@ -61,9 +62,12 @@ HEADERS += \
     Singolo.h \
     Utente.h \
     Mainwindow.h \
-    controller.h \
     admin.h \
-    client.h
+    client.h \
+    Abbonamento.h \
+    AbbonamentoFamigliare.h \
+    Biglietto.h \
+    Data.h \
 
 FORMS +=
 

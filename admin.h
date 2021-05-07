@@ -6,7 +6,24 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include <QGridLayout>
-#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QPushButton>
+#include <QWidget>
+
+#include <QJsonObject>
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QTextStream>
+
+
+#include <iostream>
+#include <QDebug>
+#include <QDir>
+
+
+using std::cout;
+using std::endl;
 
 class Admin : public QMainWindow
 {
@@ -15,12 +32,24 @@ public:
   Admin(QWidget *parent = nullptr);
   ~Admin() = default;
 
+private slots:
+  void read();
+  void write();
+
+
 private:  
   QDesktopWidget* desktop;
   QGridLayout* baseLayout;
-  QHBoxLayout* mainLayout;
+  QVBoxLayout* mainLayout;
 
   QLabel* label;
+  QWidget* widget;
+
+  QPushButton* readBtn;
+  QPushButton* writeBtn;
+
+  int i;
+
 };
 
 #endif // ADMIN_H

@@ -13,6 +13,10 @@
 #include "client.h"
 #include "admin.h"
 
+#include <iostream>
+
+using std::cout;
+
 #include <QMainWindow>
 
 class MainWindow : public QMainWindow
@@ -20,7 +24,7 @@ class MainWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  MainWindow(QWidget *parent = nullptr);
+  MainWindow(QWidget *parent = nullptr, bool isOpAd = false, bool isOpCl = false);
   ~MainWindow() = default;
 private slots:
 
@@ -44,5 +48,8 @@ private:
   Client* client;
 
   void setStyle();
+
+  bool isOpenAdmin;
+  bool isOpenClient;
 };
 #endif // MAINWINDOW_H
