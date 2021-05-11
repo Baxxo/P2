@@ -20,5 +20,17 @@ std::string Utente::getCodFisc() const
 
 std::string Utente::getPhoneNumber() const
 {
-    return phoneNumber;
+  return phoneNumber;
+}
+
+Utente &Utente::operator=(const Utente &o)
+{
+  if(this != &o){
+      name = o.getName();
+      age = o.getAge();
+      codiceFiscale = o.getCodFisc();
+      phoneNumber = o.getPhoneNumber();
+    }
+
+  return *this;
 }

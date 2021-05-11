@@ -1,23 +1,21 @@
 #include "Data.h"
 
-using std::string;
+Data::Data(unsigned int  a, unsigned int  m, unsigned int  g)
 
-Data::Data(int gg, int mm, int aa)
+    :giorno(a), mese(m), anno(g)
 
-	:giorno(gg), mese(mm), anno(aa)
-	
-	{}
+    {}
 
-int Data::getGiorno() const{
-	return giorno;
+unsigned int  Data::getGiorno() const{
+    return giorno;
 }
 
-int Data::getMese() const{
-	return mese;
+unsigned int  Data::getMese() const{
+    return mese;
 }
 
-int Data::getAnno() const{
-	return anno;
+unsigned int  Data::getAnno() const{
+    return anno;
 }
 
 string Data::ToString() const {

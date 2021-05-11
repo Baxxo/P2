@@ -1,14 +1,22 @@
 #include "EntrataFilm.h"
 
-
 EntrataFilm::EntrataFilm(Data* d, Utente* u, double p)
-	: data(d), utente(u), prezzo(p)
-	{}
+    : utente(u),data(d), prezzo(p)
+    {}
 
-double EntrataFilm::GetPrezzo() const{
-	return prezzo;
+EntrataFilm::~EntrataFilm(){
+    delete data;
+    delete utente;
+}
+double EntrataFilm::getPrezzo() const{
+    return prezzo;
 }
 
-string EntrataFilm::GetData() const{
-	return data->ToString();
+string EntrataFilm::getData() const{
+  return data->ToString();
+}
+
+Utente *EntrataFilm::getUtente() const
+{
+  return utente;
 }

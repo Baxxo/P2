@@ -1,5 +1,15 @@
 #include "regola.h"
 
+bool Regola::getCongiuntiVicini() const
+{
+  return congiuntiVicini;
+}
+
+void Regola::setCongiuntiVicini(bool value)
+{
+  congiuntiVicini = value;
+}
+
 Regola::Regola(unsigned int dP, bool m, bool c):distanzaPosti(dP), mustMascherina(m), congiuntiVicini(c)
 {
 

@@ -3,29 +3,26 @@
 #define DATA 1
 
 using std::ostream;
-using std::cout;
 using std::string;
 
-
-
 class Data{
-	private:
-		int giorno;
-		int mese;
-		int anno;
-	
-	public:
-		
-		Data(int=0, int=0, int=0);
-		
-		int getGiorno() const;
+    private:
+        unsigned int  giorno;
+        unsigned int  mese;
+        unsigned int  anno;
 
-		int getMese() const;
+    public:
 
-		int getAnno() const;
-	
-		string ToString() const;
-		
+        Data(unsigned int a= 1990, unsigned int  m = 1, unsigned int  g =1);
+
+        unsigned int  getGiorno() const;
+
+        unsigned int  getMese() const;
+
+        unsigned int  getAnno() const;
+
+        string ToString() const;
+
 
 };
 #endif
