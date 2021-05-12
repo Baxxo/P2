@@ -15,15 +15,17 @@ class EntrataFilm{
 
     public:
 
-    ~EntrataFilm();
+    ~EntrataFilm() = default;
 
     EntrataFilm(Data* d = nullptr, Utente* u = nullptr, double p=7.5);
 
     virtual double getPrezzo() const;
 
-    string getData() const;
+    Data* getData() const;
 
     virtual Utente *getUtente() const;
+
+    virtual bool operator ==(const EntrataFilm &o) const;
 
 };
 #endif

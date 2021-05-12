@@ -25,3 +25,8 @@ Abbonamento &Abbonamento::operator =(const Abbonamento &o)
     }
   return *this;
 }
+
+bool Abbonamento::operator ==(const Abbonamento &o) const
+{
+  return o.getCodice() == codice;
+}

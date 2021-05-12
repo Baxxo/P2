@@ -140,9 +140,15 @@ public:
     return false;
   }
 
-  T& remove(T& o){
+  void remove(T& o){
       for (unsigned int i = 0; i < size; ++i) {
-
+          if(v[i] == o ){
+              for(unsigned int j=i;j<size-1;j++){
+                  v[j] = v[j+1];
+                }
+              size--;
+              return;
+            }
         }
   }
 };

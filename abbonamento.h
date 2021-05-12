@@ -24,6 +24,6 @@ class Abbonamento: public EntrataFilm{
 
         Abbonamento &operator = (const Abbonamento& o);
 
-
+        bool operator ==(const Abbonamento& o) const;
 };
 #endif
