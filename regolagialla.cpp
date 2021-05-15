@@ -5,7 +5,7 @@ RegolaGialla::RegolaGialla(unsigned int dP, bool m, bool c): Regola(dP,m,c)
 
 }
 
-void RegolaGialla::getRegole(unsigned int &distP, bool &m, bool c= true);
+void RegolaGialla::getRegole(unsigned int &distP, bool &m, bool &c)
 {
     distP = getDistanzaPosti();
     m = getMustMascherina();

@@ -4,20 +4,20 @@ using std::string;
 
 Data::Data(int gg, int mm, int aa)
 
-	:giorno(gg), mese(mm), anno(aa)
-	
-	{}
+    :giorno(gg), mese(mm), anno(aa)
+
+    {}
 
 int Data::getGiorno() const{
-	return giorno;
+    return giorno;
 }
 
 int Data::getMese() const{
-	return mese;
+    return mese;
 }
 
 int Data::getAnno() const{
-	return anno;
+    return anno;
 }
 
 string Data::ToString() const {
