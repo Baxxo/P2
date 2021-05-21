@@ -5,20 +5,7 @@ using std::string;
 Controller::Controller(QObject *parent) :
      QObject(parent), isAdmin(false), isClient(false), isUtente(false)
 {
-    QFile file(QDir::homePath() + "/Desktop/P2-feature-MainWindow/json/test.json");
-    QString settings;
-
-    if (!file.open(QIODevice::ReadOnly)) {
-      qDebug() << "File open error";
-    } else {
-
-        settings = file.readAll();
-        QJsonDocument doc(QJsonDocument::fromJson(settings.toUtf8()));
-
-        qDebug()<< "sta succedendo";
-        arrayUtenti= new QJsonArray;
-        *arrayUtenti= doc.array();
-    }
+    readUtenti();
 }
 
 void Controller::openAdmin()
@@ -71,8 +58,13 @@ void Controller::salvaUtente()
       qDebug() << "File open error";
     } else {
 
-
-        arrayUtenti->append("test");
+        QJsonObject nuovoUtente;
+        nuovoUtente.value("test");
+        QJsonObject utenteNome;
+        nuovoUtente.insert("name", "Gianni");
+        nuovoUtente.insert("age", "34");
+        utenteNome.insert("test", nuovoUtente);
+        arrayUtenti->append(nuovoUtente);
         QJsonDocument writeDoc;
         writeDoc.setArray(*arrayUtenti);
 
@@ -85,5 +77,23 @@ void Controller::salvaUtente()
 void Controller::setView(MainWindow *v)
 {
     view=v;
+}
+
+void Controller::readUtenti()
+{
+    QFile file(QDir::homePath() + "/Desktop/P2-feature-MainWindow/json/test.json");
+    QString settings;
+
+    if (!file.open(QIODevice::ReadOnly)) {
+      qDebug() << "File open error";
+    } else {
+
+        settings = file.readAll();
+        QJsonDocument doc(QJsonDocument::fromJson(settings.toUtf8()));
+
+        qDebug()<< "sta succedendo";
+        arrayUtenti= new QJsonArray;
+        *arrayUtenti= doc.array();
+    }
 }
 

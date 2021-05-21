@@ -27,6 +27,7 @@ public:
 
     explicit Controller(QObject *parent = nullptr);
     void setView(MainWindow* v);
+    void readUtenti();
 
 
 private slots:
