@@ -16,6 +16,9 @@
 #include <QJsonArray>
 #include <QTextStream>
 
+#include <QListView>
+#include <QListWidget>
+
 
 #include <iostream>
 #include <QDebug>
@@ -32,17 +35,31 @@ public:
   Admin(QWidget *parent = nullptr);
   ~Admin() = default;
 
+  void setAbbonamenti();
+  void setUtenti();
+  void setFamiglie();
+
 private slots:
   void read();
   void write();
-
+  void getClickAbb();
+  void getClickUt();
+  void getClickFam();
 
 private:  
   QDesktopWidget* desktop;
   QGridLayout* baseLayout;
   QVBoxLayout* mainLayout;
 
-  QLabel* label;
+  QLabel* admin;
+
+  QListWidget* listAbb;
+  QListWidget* listUt;
+  QListWidget* listFam;
+
+  QLabel* labelAbb;
+  QLabel* labelUt;
+  QLabel* labelFam;
   QWidget* widget;
 
   QPushButton* readBtn;
