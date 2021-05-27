@@ -1,18 +1,19 @@
 #include "client.h"
 #include "controller.h"
 
-Client::Client(QWidget *parent) : QMainWindow(parent)
+Client::Client(Controller *c, QWidget *parent) : controller(c), QMainWindow(parent)
 {
   nuovoUtente= new QPushButton("Crea Nuovo Utente");
+  nuovaFamiglia= new QPushButton("Crea nuova Famiglia");
   mainLayout=new QGridLayout;
   widget=new QWidget(this);
   btnLayout=new QHBoxLayout;
 
   setCentralWidget(widget);
   btnLayout->addWidget(nuovoUtente, Qt::AlignCenter);
+  btnLayout->addWidget(nuovaFamiglia, Qt::AlignCenter);
   mainLayout->addLayout(btnLayout, 0, 1, Qt::AlignCenter);
   widget->setLayout(mainLayout);
-  controller= new Controller;
   desktop = QApplication::desktop();
 
 
@@ -22,6 +23,7 @@ Client::Client(QWidget *parent) : QMainWindow(parent)
 
 
   connect(nuovoUtente, SIGNAL(clicked()), controller, SLOT(openUtente()));
+  connect(nuovaFamiglia, SIGNAL(clicked()), controller, SLOT(openFamiglia()));
 
 
 }

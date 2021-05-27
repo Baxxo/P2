@@ -1,8 +1,8 @@
 #include "Mainwindow.h"
-#include <controller.h>
+#include "controller.h"
 
 MainWindow::MainWindow(QWidget *parent)
-  : QMainWindow(parent)
+  : QMainWindow(parent), controller(nullptr)
 {
 
   title = new QLabel("QTheater");
@@ -30,7 +30,6 @@ MainWindow::MainWindow(QWidget *parent)
 
   resize(300,300);
   move((desktop->width()-300)/2,(desktop->height()-300)/2);
-  //controller->ilGrandeRead();
 
   setStyle();
 }
@@ -53,10 +52,10 @@ void MainWindow::setStyle()
   setStyleSheet(styleSheet);
 }
 
-Controller* MainWindow::getController()
+/*Controller* MainWindow::getController()
 {
     return controller;
-}
+}*/
 
 MainWindow *MainWindow::getMainwindow()
 {

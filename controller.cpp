@@ -1,9 +1,8 @@
 #include "controller.h"
-#include <iostream>
 
 using std::string;
 Controller::Controller(QObject *parent) :
-     QObject(parent), isAdmin(false), isClient(false), isUtente(false)
+     QObject(parent), isAdmin(false), isClient(false), isUtente(false), isFamiglia(false)
 {
     readUtenti();
 }
@@ -14,7 +13,7 @@ void Controller::openAdmin()
         admin->show();
     }
     else{
-    admin = new Admin();
+    admin = new Admin(this);
     admin->show();
     isAdmin=true;
     }
@@ -27,7 +26,7 @@ void Controller::openClient()
         client->show();
     }
     else{
-        client = new Client();
+        client = new Client(this);
         client->show();
         isClient=true;
     }
@@ -40,33 +39,65 @@ void Controller::openUtente()
         utente->show();
     }
     else{
-        utente= new Utente_View;
+        utente= new Utente_View(this);
         utente->show();
+        isUtente=true;
     }
+}
+
+void Controller::openFamiglia()
+{
+    if(isFamiglia){
+        famiglia->show();
+    }
+    else{
+        famiglia= new Famiglia_View(this);
+        famiglia->show();
+        isFamiglia= false;
+    }
+}
+
+void Controller::listaUtenti()
+{
+    QComboBox* menu= new QComboBox;
+    QJsonObject::iterator a= objUtenti->begin();
+    for(int i=0; i<objUtenti->size();i++){
+        menu->addItem(a.key());
+        a++;
+    }
+
+    famiglia->setMenu(menu);
+    famiglia->showMenu();
+    //QString arrayUtenti
+
 }
 
 void Controller::annullaUtente()
 {
-    std::cout<<"test";
+
+    qDebug() << "test";
 }
+
+
+
 
 void Controller::salvaUtente()
 {
     QFile file(QDir::homePath() + "/Desktop/P2-feature-MainWindow/json/test.json");
 
-    if (!file.open(QIODevice::ReadWrite)) {
-      qDebug() << "File open error";
+
+    if (!file.open(QIODevice::WriteOnly)) {
+      qDebug() << "File open error" << file.errorString();
     } else {
 
-        QJsonObject nuovoUtente;
-        nuovoUtente.value("test");
-        QJsonObject utenteNome;
-        nuovoUtente.insert("name", "Gianni");
-        nuovoUtente.insert("age", "34");
-        utenteNome.insert("test", nuovoUtente);
-        arrayUtenti->append(nuovoUtente);
+        QJsonObject newUser;
+        newUser.insert("name", utente->getName());
+        newUser.insert("CF", utente->getCF());
+        newUser.insert("age", utente->getAge());
+        newUser.insert("tel.Num", utente->getNumTel());
+        objUtenti->insert(utente->getCF(), newUser);
         QJsonDocument writeDoc;
-        writeDoc.setArray(*arrayUtenti);
+        writeDoc.setObject(*objUtenti);
 
         file.write(writeDoc.toJson());
 
@@ -81,6 +112,7 @@ void Controller::setView(MainWindow *v)
 
 void Controller::readUtenti()
 {
+
     QFile file(QDir::homePath() + "/Desktop/P2-feature-MainWindow/json/test.json");
     QString settings;
 
@@ -92,8 +124,9 @@ void Controller::readUtenti()
         QJsonDocument doc(QJsonDocument::fromJson(settings.toUtf8()));
 
         qDebug()<< "sta succedendo";
-        arrayUtenti= new QJsonArray;
-        *arrayUtenti= doc.array();
+        objUtenti= new QJsonObject;
+        *objUtenti=doc.object();
+
     }
 }
 

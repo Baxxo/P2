@@ -25,7 +25,7 @@ class MainWindow : public QMainWindow
 public:
   MainWindow(QWidget *parent = nullptr);
   void setController(Controller*c);
-  Controller* getController();
+  //Controller* getController();
   MainWindow* getMainwindow();
   ~MainWindow() = default;
 private slots:

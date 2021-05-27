@@ -12,12 +12,22 @@ class Famiglia_View:public QWidget
     Q_OBJECT
 private:
     QComboBox* menu;
-    QVBoxLayout* mainlayout;
+    QComboBox* listaFamily;
+    QVBoxLayout* menuLayout;
+    QVBoxLayout* btnLayout;
+    Controller* controller;
+    QPushButton* aggiorna;
+    QGridLayout* mainlayout;
+    QWidget* widget;
 
 private slots:
-    QString read();
+    void signaltest();
 public:
-    Famiglia_View(QWidget *parent=nullptr);
+    Famiglia_View(Controller* c, QWidget *parent=nullptr);
+    void setMenu(QComboBox* m);
+    void showMenu();
+    void setStyle();
+
 };
 
 #endif // FAMIGLIA_VIEW_H

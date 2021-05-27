@@ -20,6 +20,7 @@
 #include <iostream>
 #include <QDebug>
 #include <QDir>
+#include "Mainwindow.h"
 
 
 using std::cout;
@@ -29,7 +30,7 @@ class Admin : public QMainWindow
 {
   Q_OBJECT
 public:
-  Admin(QWidget *parent = nullptr);
+  Admin(Controller* c, QWidget *parent = nullptr);
   ~Admin() = default;
 
 private slots:
@@ -47,6 +48,7 @@ private:
 
   QPushButton* readBtn;
   QPushButton* writeBtn;
+  Controller* controller;
 
   int i;
 

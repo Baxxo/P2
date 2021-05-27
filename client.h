@@ -12,13 +12,11 @@
 #include <QFile>
 #include "Mainwindow.h"
 
-class Controller;
-
 class Client : public QMainWindow
 {
   Q_OBJECT
 public:
-  Client(QWidget *parent = nullptr);
+  Client(Controller* c, QWidget *parent = nullptr);
   ~Client() = default;
   void setStyle();
 
@@ -26,6 +24,7 @@ private:
   QDesktopWidget* desktop;
   QGridLayout* mainLayout;
   QPushButton* nuovoUtente;
+  QPushButton* nuovaFamiglia;
   QHBoxLayout* btnLayout;
   QWidget* widget;
   Controller* controller;

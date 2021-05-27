@@ -23,7 +23,7 @@ Famiglia_View::Famiglia_View(Controller* c, QWidget *parent) : controller(c), QW
     setStyle();
 
     connect(aggiorna, SIGNAL(clicked()), controller, SLOT(listaUtenti()));
-    connect(menu, SIGNAL(currentIndexChanged()), this, SLOT(signaltest()));
+    connect(menu, SIGNAL(), this, SLOT(signaltest()));
 }
 
 void Famiglia_View::setMenu(QComboBox *m)

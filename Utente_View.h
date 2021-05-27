@@ -17,11 +17,9 @@
 #include <QTextStream>
 #include <QDebug>
 #include <QDir>
-#include <iostream>
 #include "Mainwindow.h"
 
 using std::cout;
-class Controller;
 
 class Utente_View:public QWidget
 {
@@ -40,12 +38,9 @@ private:
     QLineEdit* numtel;
     QDesktopWidget* desktop;
     Controller* controller;
-    MainWindow* mainwindow;
-
-    int i;
 
 public:
-    Utente_View(QWidget *parent=nullptr);
+    Utente_View(Controller *c, QWidget *parent=nullptr);
     void setStyle();
     QString getName();
     QString getCF();

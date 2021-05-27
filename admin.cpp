@@ -1,6 +1,6 @@
 #include "admin.h"
 
-Admin::Admin(QWidget * parent): QMainWindow(parent), i(0) {
+Admin::Admin(Controller* c, QWidget * parent): controller(c), QMainWindow(parent), i(0) {
   label = new QLabel("Ciao da Admin");
 
   mainLayout = new QVBoxLayout();

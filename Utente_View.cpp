@@ -1,7 +1,7 @@
 #include "Utente_View.h"
 #include "controller.h"
 
-Utente_View::Utente_View(QWidget *parent) : QWidget(parent)
+Utente_View::Utente_View(Controller *c, QWidget *parent) : controller(c), QWidget(parent)
 {
     //dichiarazione dei parametri
     mainlayout= new QGridLayout;
@@ -14,10 +14,6 @@ Utente_View::Utente_View(QWidget *parent) : QWidget(parent)
     CF= new QLineEdit();
     age= new QLineEdit();
     numtel= new QLineEdit();
-    controller= new Controller;
-    mainwindow= new MainWindow;
-
-    mainwindow->setController(controller);
 
     //layout bottoni
     btnLayout->addWidget(confermaBtn, Qt::AlignCenter);
