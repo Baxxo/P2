@@ -8,6 +8,10 @@ Famiglia::Famiglia(unsigned int sz): membri(new Utente*[sz]),capacity(sz)
   size = 0;
 }
 
+Famiglia::Famiglia(const Famiglia &o) : membri(o.membri), capacity(o.capacity), size(o.size)
+{
+}
+
 Famiglia::~Famiglia()
 {
   delete[] membri;
@@ -42,4 +46,19 @@ Utente *&Famiglia::operator [](unsigned int i) const{
       }
 
     return membri[i];
+}
+
+bool Famiglia::operator ==(const Famiglia &f) const
+{
+  return f.capacity == capacity && f.size == size && f.membri == membri;
+}
+
+Famiglia &Famiglia::operator =(const Famiglia &o)
+{
+  if(this != &o){
+      capacity = o.capacity;
+      size = o.size;
+      membri = o.membri;
+    }
+  return *this;
 }
