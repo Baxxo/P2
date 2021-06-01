@@ -6,16 +6,15 @@
 class AbbonamentoFamigliare: public Abbonamento{
 
 private:
-  Famiglia* famiglia= new Famiglia();
+  Famiglia* famiglia;
 
 public:
-
-  ~AbbonamentoFamigliare();
 
   AbbonamentoFamigliare(Data* d, Utente* u, Famiglia* f, double p=7.5, string c ="00000", int e=0);
 
   double getPrezzo() const;
 
+  virtual ~AbbonamentoFamigliare();
 
 };
 

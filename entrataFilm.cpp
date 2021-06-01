@@ -23,3 +23,8 @@ bool EntrataFilm::operator ==(const EntrataFilm &o) const
         o.getPrezzo() == prezzo &&
         o.getUtente() == utente;
 }
+
+EntrataFilm *EntrataFilm::clone() const
+{
+  return new EntrataFilm(*this);
+}

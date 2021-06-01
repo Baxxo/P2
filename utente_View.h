@@ -19,7 +19,6 @@
 #include <QDir>
 #include "mainwindow.h"
 
-using std::cout;
 
 class Utente_View:public QWidget
 {

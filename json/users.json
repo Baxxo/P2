@@ -1,0 +1,25 @@
+{
+    "Utenti" : [
+        {
+            "CF": "bssmtt98p06asd3",
+            "name": "matteo",
+            "surname": "basso",
+            "age": "22",
+            "tel.Num": "3423125262"
+        },
+        {
+            "CF": "grnjoe12l07qwe2",
+            "name": "joe",
+            "surname": "grant",
+            "age": "22",
+            "tel.Num": "3453455671"
+        },
+        {
+            "CF": "rssrci21b01zxc1",
+            "name": "rico",
+            "surname": "rossi",
+            "age": "25",
+            "tel.Num": "1237894560"
+        }
+    ]
+}

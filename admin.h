@@ -9,20 +9,17 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QWidget>
-
 #include <QJsonObject>
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QTextStream>
-
 #include <QListView>
 #include <QListWidget>
-
-
 #include <iostream>
 #include <QDebug>
 #include <QDir>
+
 #include "mainwindow.h"
 
 
@@ -37,12 +34,10 @@ public:
   ~Admin() = default;
 
   void setAbbonamenti();
-  void setUtenti();
+  void addUtente(QString s);
   void setFamiglie();
 
 private slots:
-  /*void read();
-  void write();*/
   void getClickAbb();
   void getClickUt();
   void getClickFam();

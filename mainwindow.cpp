@@ -5,17 +5,22 @@ MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent), controller(nullptr)
 {
 
-  title = new QLabel("QTheater");
+  title = new QLabel("Setup");
 
   adminBtn = new QPushButton("Admin");
   clientBtn = new QPushButton("Cliente");
+
+  chooseUtenti = new QPushButton("Scegli file json per utenti");
+  chooseFamiglie = new QPushButton("Scegli file json per famiglie");
+  chooseEntrata = new QPushButton("Scegli file json per entrata film");
 
   v_layout = new QVBoxLayout();
   v_layout->addWidget(title,Qt::AlignTop);
 
   buttonLayout = new QVBoxLayout();
-  buttonLayout->addWidget(adminBtn,Qt::AlignCenter);
-  buttonLayout->addWidget(clientBtn,Qt::AlignCenter);
+  buttonLayout->addWidget(chooseUtenti,Qt::AlignCenter);
+  buttonLayout->addWidget(chooseFamiglie,Qt::AlignCenter);
+  buttonLayout->addWidget(chooseEntrata,Qt::AlignCenter);
 
   mainLayout = new QGridLayout();
   mainLayout->addLayout(v_layout,0,0,Qt::AlignCenter);
@@ -40,6 +45,20 @@ void MainWindow::setController(Controller *c)
 
     connect(adminBtn, SIGNAL(clicked()), controller, SLOT(openAdmin()));
     connect(clientBtn, SIGNAL(clicked()), controller, SLOT(openClient()));
+    connect(chooseUtenti, SIGNAL(clicked()), controller, SLOT(readUtenti()));
+}
+
+void MainWindow::changeMenu()
+{
+  buttonLayout->removeWidget(chooseUtenti);
+  delete chooseUtenti;
+  buttonLayout->removeWidget(chooseFamiglie);
+  delete chooseFamiglie;
+  buttonLayout->removeWidget(chooseEntrata);
+  delete chooseEntrata;
+
+  buttonLayout->addWidget(adminBtn,Qt::AlignCenter);
+  buttonLayout->addWidget(clientBtn,Qt::AlignCenter);
 }
 
 
@@ -51,11 +70,6 @@ void MainWindow::setStyle()
 
   setStyleSheet(styleSheet);
 }
-
-/*Controller* MainWindow::getController()
-{
-    return controller;
-}*/
 
 MainWindow *MainWindow::getMainwindow()
 {

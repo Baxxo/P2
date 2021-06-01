@@ -33,14 +33,13 @@ Admin::Admin(Controller* c, QWidget * parent): controller(c), QMainWindow(parent
   labelUt->setFont(font);
   listUt = new QListWidget();
 
+
   for (unsigned int j = 0; j < 50; ++j) {
       QString s = "testo " + QString::number(j+1);
       QListWidgetItem* item = new QListWidgetItem(s);
       listAbb->addItem(item);
        item = new QListWidgetItem(s);
       listFam->addItem(item);
-       item = new QListWidgetItem(s);
-      listUt->addItem(item);
     }
 
   connect(listAbb,SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(getClickAbb()));
@@ -52,12 +51,18 @@ Admin::Admin(Controller* c, QWidget * parent): controller(c), QMainWindow(parent
   baseLayout->addWidget(labelFam,0,2,Qt::AlignCenter);
 
   baseLayout->addWidget(listAbb,1,0);
-  baseLayout->addWidget(listFam,1,1);
-  baseLayout->addWidget(listUt,1,2);
+  baseLayout->addWidget(listUt,1,1);
+  baseLayout->addWidget(listFam,1,2);
 
   resize(1000, 400);
 
   setCentralWidget(widget);
+}
+
+void Admin::addUtente(QString s)
+{
+  QListWidgetItem* item = new QListWidgetItem(s);
+  listUt->addItem(item);
 }
 
 void Admin::getClickAbb()

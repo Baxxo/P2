@@ -2,41 +2,37 @@
 #define CONTROLLER_H
 
 #include <QObject>
-#include <mainwindow.h>
-#include <admin.h>
-#include <client.h>
-#include <utente_View.h>
 #include <QFile>
 #include <QJsonArray>
-#include <famiglia_view.h>
 #include <QComboBox>
+#include <QString>
 
-
+#include "mainwindow.h"
+#include "admin.h"
+#include "client.h"
+#include "utente_View.h"
+#include "famiglia_view.h"
+#include "model.h"
 
 class Controller : public QObject
 {
     Q_OBJECT
 private:
+    Model* model;
     MainWindow* view;
     Admin* admin;
     Client* client;
-    Utente_View* utente;
-    Famiglia_View* famiglia;
+
     bool isAdmin;
     bool isClient;
     bool isUtente;
     bool isFamiglia;
+
+    Utente_View* utente;
+    Famiglia_View* famiglia;
+
+    QString pathJsonUsers;
     QJsonObject* objUtenti;
-    QString pathJson;
-
-public:
-
-    explicit Controller(QObject *parent = nullptr);
-    void setView(MainWindow* v);
-    void readUtenti();
-
-
-    QString getPathJson() const;
 
 private slots:
 
@@ -47,9 +43,20 @@ private slots:
     void openFamiglia();
     void listaUtenti();
 
+    void readUtenti();
+    void readFimiglie();
+    void readEntrata();
+
     //slot per Utente_View
     void annullaUtente();
     void salvaUtente();
+
+public:
+
+    explicit Controller(QObject *parent = nullptr, Model* m = nullptr);
+    void setView(MainWindow* v);
+
+    QString getPathJson() const;
 
 signals:
 
