@@ -9,14 +9,14 @@
 #include <QFile>
 #include <QApplication>
 #include <QPushButton>
+#include <QMainWindow>
 
-#include <iostream>
+//#include <iostream>
 
 class Controller;
 
-using std::cout;
+//using std::cout;
 
-#include <QMainWindow>
 
 class MainWindow : public QMainWindow
 {
@@ -24,10 +24,13 @@ class MainWindow : public QMainWindow
 
 public:
   MainWindow(QWidget *parent = nullptr);
-  void setController(Controller*c);
-  //Controller* getController();
-  MainWindow* getMainwindow();
   ~MainWindow() = default;
+
+  MainWindow* getMainwindow();
+
+  void setController(Controller*c);
+  void changeMenu();
+
 private slots:
 
 
@@ -42,6 +45,9 @@ private:
   QVBoxLayout* buttonLayout;
 
   QLabel* title;
+  QPushButton *chooseUtenti;
+  QPushButton* chooseFamiglie;
+  QPushButton* chooseEntrata;
   QPushButton* adminBtn;
   QPushButton* clientBtn;
 

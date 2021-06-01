@@ -5,7 +5,7 @@
 
 class EntrataFilm{
 
-    private:
+private:
 
     Utente* utente;
 
@@ -13,9 +13,9 @@ class EntrataFilm{
 
     double prezzo;
 
-    public:
+public:
 
-    ~EntrataFilm() = default;
+    virtual ~EntrataFilm() = default;
 
     EntrataFilm(Data* d = nullptr, Utente* u = nullptr, double p=7.5);
 
@@ -26,6 +26,8 @@ class EntrataFilm{
     virtual Utente *getUtente() const;
 
     virtual bool operator ==(const EntrataFilm &o) const;
+
+    virtual EntrataFilm* clone() const;
 
 };
 #endif

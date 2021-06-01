@@ -15,7 +15,7 @@ private:
 public:
     Famiglia(unsigned int sz=1);
     Famiglia(const Famiglia &o);
-    ~Famiglia();
+    virtual ~Famiglia();
     void addMembro(Utente* ut);
     bool hasMembro(Utente* u);
     unsigned int getSize() const;
@@ -23,4 +23,6 @@ public:
     Utente *&operator [](unsigned int i) const;
     bool operator ==(const Famiglia& f) const;
     Famiglia& operator =(const Famiglia &o);
+
+    virtual Famiglia *clone() const;
 };

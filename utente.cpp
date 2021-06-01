@@ -1,10 +1,17 @@
 #include "utente.h"
 
+/*
 #include <iostream>
 using namespace std;
+*/
 
-Utente::Utente(std::string n, unsigned int a, std::string cf, std::string num)
-  : name(n), age(a), codiceFiscale(cf), phoneNumber(num) {}
+string Utente::getSurname() const
+{
+  return surname;
+}
+
+Utente::Utente(std::string n, std::string s, unsigned int a, std::string cf, std::string num)
+  : name(n), surname(s), age(a), codiceFiscale(cf), phoneNumber(num) {}
 
 Utente::Utente(const Utente &o): name(o.name), age(o.age), codiceFiscale(o.codiceFiscale), phoneNumber(o.phoneNumber) {}
 

@@ -1,17 +1,17 @@
 #include "controller.h"
+#include <QFileDialog>
+using std::string;
+
 
 //QFile file(QDir::homePath() + "/Desktop/P2-feature-MainWindow/json/test.json");
 
-using std::string;
+Controller::Controller(QObject *parent, Model *m) :
+  QObject(parent), model(m), isAdmin(false), isClient(false), isUtente(false), isFamiglia(false), pathJsonUsers(QDir::currentPath()+ "/users.json" )
+{}
+
 QString Controller::getPathJson() const
 {
-  return pathJson;
-}
-
-Controller::Controller(QObject *parent) :
-  QObject(parent), isAdmin(false), isClient(false), isUtente(false), isFamiglia(false), pathJson(QDir::currentPath()+ "/test.json" )
-{
-    readUtenti();
+  return pathJsonUsers;
 }
 
 void Controller::openAdmin()
@@ -20,9 +20,12 @@ void Controller::openAdmin()
         admin->show();
     }
     else{
-    admin = new Admin(this);
-    admin->show();
-    isAdmin=true;
+        admin = new Admin(this);
+        for (auto it = model->getListUtenti().cbegin(); it != model->getListUtenti().cend(); ++it) {
+            admin->addUtente(QString::fromUtf8(((*it)->getSurname() + " " + (*it)->getName()).c_str()));
+        }
+        admin->show();
+        isAdmin=true;
     }
 
 }
@@ -84,12 +87,11 @@ void Controller::annullaUtente()
     qDebug() << "test";
 }
 
-
-
-
 void Controller::salvaUtente()
 {
-    QFile file(pathJson);
+
+    QString fileName = QFileDialog::getOpenFileName(nullptr, "Seleziona json per salavre utenti", "", "json(*.json)");
+    QFile file(fileName);
 
     if (!file.open(QIODevice::WriteOnly)) {
       qDebug() << "File open error" << file.errorString();
@@ -112,13 +114,14 @@ void Controller::salvaUtente()
 
 void Controller::setView(MainWindow *v)
 {
-    view=v;
+  view = v;
 }
 
 void Controller::readUtenti()
 {
-
-    QFile file(pathJson);
+    QString fileName = QFileDialog::getOpenFileName(nullptr, "Carica json Utenti", "", "json(*.json)");
+    pathJsonUsers = fileName;
+    QFile file(fileName);
     QString settings;
 
     if (!file.open(QIODevice::ReadOnly)) {
@@ -126,12 +129,41 @@ void Controller::readUtenti()
     } else {
 
         settings = file.readAll();
+
         QJsonDocument doc(QJsonDocument::fromJson(settings.toUtf8()));
+        QJsonObject jObj = doc.object();
 
-        //qDebug()<< "sta succedendo";
-        objUtenti= new QJsonObject;
-        *objUtenti=doc.object();
+        QVariantMap mainMap = jObj.toVariantMap();
+        QVariantList localList = mainMap["Utenti"].toList();
 
-    }
+        Utente *u;
+        for(int i=0;i<localList.length();++i){
+            QVariantMap map = localList[i].toMap();
+            u = new Utente(map["name"].toString().toUtf8().constData(),
+                map["surname"].toString().toUtf8().constData(),
+                map["age"].toInt(),
+                map["CF"].toString().toUtf8().constData(),
+                map["tel.Num"].toString().toUtf8().constData());
+            model->addUtente(*u);
+          }
+
+        /*Utente* ut = model->getUtente("bssmtt98p06asd3");
+        string n = ut->getName();
+        QString str = QString::fromUtf8(n.c_str());
+        qDebug() <<"nome " << str;*/
+
+        view->changeMenu();
+
+      }
+}
+
+void Controller::readFimiglie()
+{
+
+}
+
+void Controller::readEntrata()
+{
+
 }
 

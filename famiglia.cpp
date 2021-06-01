@@ -62,3 +62,8 @@ Famiglia &Famiglia::operator =(const Famiglia &o)
     }
   return *this;
 }
+
+Famiglia *Famiglia::clone() const
+{
+  return new Famiglia(*this);
+}

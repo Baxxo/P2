@@ -1,32 +1,21 @@
-/*#include "mainwindow.h"
+#include "mainwindow.h"
 #include "controller.h"
-*/
-
-
 #include "model.h"
-
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
-    /*QApplication a(argc, argv);
-    /*MainWindow m;
-    Controller c;
-    c.setView(&m);
-    m.setController(&c);
-    m.show();*/
+    QApplication a(argc, argv);
 
-    Model m;
-    Utente* u1 = new Utente("Utente1",1,"asdasdasd","123");
-    Utente* u2 = new Utente("Utente2",1,"qweqweqwe","456");
-    Utente* u3 = new Utente("Utente3",1,"zxczxc","789");
+    MainWindow v;
 
+    Model *m = new Model();
+    Controller *c = new Controller(nullptr, m);
 
-    m.addUtente(u1);
-    m.addUtente(u2);
-    m.addUtente(u3);
+    c->setView(&v);
+    v.setController(c);
+    v.show();
 
-    m.getUtente("");
-    /*return a.exec();*/
+    return a.exec();
 }
