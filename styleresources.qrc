@@ -2,8 +2,7 @@
     <qresource prefix="/:/stylesheet"/>
     <qresource prefix="/">
         <file>qss/style.css</file>
-    </qresource>
-    <qresource prefix="/">
         <file>json/users.json</file>
+        <file>images/reverse.png</file>
     </qresource>
 </RCC>

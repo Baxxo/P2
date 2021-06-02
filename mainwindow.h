@@ -29,11 +29,10 @@ public:
   MainWindow* getMainwindow();
 
   void setController(Controller*c);
-  void changeMenu();
 
 private slots:
 
-
+  void changeMenuSlot();
 
 private:
   QDesktopWidget* desktop;
@@ -45,15 +44,29 @@ private:
   QVBoxLayout* buttonLayout;
 
   QLabel* title;
+
+  QPushButton* changeBtn;
+
   QPushButton *chooseUtenti;
   QPushButton* chooseFamiglie;
   QPushButton* chooseEntrata;
+
   QPushButton* adminBtn;
   QPushButton* clientBtn;
 
   Controller* controller;
 
   void setStyle();
+  void changeMenu();
+  void setSlot();
+
+  bool isVisReadBtn;
+
+  void createLayoutAdCl(bool createNew);
+  void destroyLayoutAdCl();
+  void createLayoutSetup(bool createNew);
+  void destroyLayoutSetup();
+
 
 };
 #endif // MAINWINDOW_H

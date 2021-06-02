@@ -1,7 +1,7 @@
 #include "utente_View.h"
 #include "controller.h"
 
-Utente_View::Utente_View(Controller *c, QWidget *parent) : controller(c), QWidget(parent)
+Utente_View::Utente_View(Controller *c, QWidget *parent) : QWidget(parent), controller(c)
 {
     //dichiarazione dei parametri
     mainlayout= new QGridLayout;

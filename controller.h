@@ -6,6 +6,7 @@
 #include <QJsonArray>
 #include <QComboBox>
 #include <QString>
+#include <QWidget>
 
 #include "mainwindow.h"
 #include "admin.h"
@@ -34,6 +35,8 @@ private:
     QString pathJsonUsers;
     QJsonObject* objUtenti;
 
+    void loadUsers() const;
+
 private slots:
 
     //apertura finestre
@@ -57,6 +60,9 @@ public:
     void setView(MainWindow* v);
 
     QString getPathJson() const;
+
+    bool getIsAdmin() const;
+    void setIsAdmin(bool value);
 
 signals:
 

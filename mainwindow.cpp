@@ -2,29 +2,23 @@
 #include "controller.h"
 
 MainWindow::MainWindow(QWidget *parent)
-  : QMainWindow(parent), controller(nullptr)
+  : QMainWindow(parent), controller(nullptr), isVisReadBtn(true)
 {
 
+  changeBtn = new QPushButton(QIcon(":/images/reverse.png"),"");
+  changeBtn->setFixedWidth(50);
+
   title = new QLabel("Setup");
-
-  adminBtn = new QPushButton("Admin");
-  clientBtn = new QPushButton("Cliente");
-
-  chooseUtenti = new QPushButton("Scegli file json per utenti");
-  chooseFamiglie = new QPushButton("Scegli file json per famiglie");
-  chooseEntrata = new QPushButton("Scegli file json per entrata film");
 
   v_layout = new QVBoxLayout();
   v_layout->addWidget(title,Qt::AlignTop);
 
   buttonLayout = new QVBoxLayout();
-  buttonLayout->addWidget(chooseUtenti,Qt::AlignCenter);
-  buttonLayout->addWidget(chooseFamiglie,Qt::AlignCenter);
-  buttonLayout->addWidget(chooseEntrata,Qt::AlignCenter);
 
   mainLayout = new QGridLayout();
-  mainLayout->addLayout(v_layout,0,0,Qt::AlignCenter);
-  mainLayout->addLayout(buttonLayout,1,0,Qt::AlignCenter);
+  mainLayout->addWidget(changeBtn,0,0,Qt::AlignRight);
+  mainLayout->addLayout(v_layout,1,0,Qt::AlignCenter);
+  mainLayout->addLayout(buttonLayout,2,0,Qt::AlignCenter);
 
   widget = new QWidget(this);
   widget->setLayout(mainLayout);
@@ -37,28 +31,97 @@ MainWindow::MainWindow(QWidget *parent)
   move((desktop->width()-300)/2,(desktop->height()-300)/2);
 
   setStyle();
+
 }
 
 void MainWindow::setController(Controller *c)
 {
     controller=c;
+    connect(changeBtn, SIGNAL(clicked()), this,SLOT(changeMenuSlot()));
 
-    connect(adminBtn, SIGNAL(clicked()), controller, SLOT(openAdmin()));
-    connect(clientBtn, SIGNAL(clicked()), controller, SLOT(openClient()));
-    connect(chooseUtenti, SIGNAL(clicked()), controller, SLOT(readUtenti()));
+    createLayoutSetup(true);
+}
+
+void MainWindow::changeMenuSlot()
+{
+  changeMenu();
 }
 
 void MainWindow::changeMenu()
 {
-  buttonLayout->removeWidget(chooseUtenti);
-  delete chooseUtenti;
-  buttonLayout->removeWidget(chooseFamiglie);
-  delete chooseFamiglie;
-  buttonLayout->removeWidget(chooseEntrata);
-  delete chooseEntrata;
+  if(isVisReadBtn){
+
+      destroyLayoutSetup();
+      createLayoutAdCl(true);
+      title->setText("QTheater");
+
+      isVisReadBtn = false;
+
+    }else{
+
+      destroyLayoutAdCl();
+      createLayoutSetup(true);
+      title->setText("Setup");
+
+      isVisReadBtn = true;
+    }
+}
+
+void MainWindow::createLayoutAdCl(bool createNew)
+{
+  /*if(createNew){
+      adminBtn = new QPushButton("Admin");
+      clientBtn = new QPushButton("Cliente");
+    }*/
+
+  adminBtn = new QPushButton("Admin");
+  clientBtn = new QPushButton("Cliente");
 
   buttonLayout->addWidget(adminBtn,Qt::AlignCenter);
   buttonLayout->addWidget(clientBtn,Qt::AlignCenter);
+
+  connect(adminBtn, SIGNAL(clicked()), controller, SLOT(openAdmin()));
+  connect(clientBtn, SIGNAL(clicked()), controller, SLOT(openClient()));
+
+
+}
+
+void MainWindow::destroyLayoutAdCl()
+{
+  buttonLayout->removeWidget(adminBtn);
+  buttonLayout->removeWidget(clientBtn);
+  delete adminBtn;
+  delete clientBtn;
+}
+
+void MainWindow::createLayoutSetup(bool createNew)
+{
+  /*if(createNew){
+      chooseUtenti = new QPushButton("Scegli file json per utenti");
+      chooseFamiglie = new QPushButton("Scegli file json per famiglie");
+      chooseEntrata = new QPushButton("Scegli file json per entrata film");
+    }*/
+  chooseUtenti = new QPushButton("Scegli file json per utenti");
+  chooseFamiglie = new QPushButton("Scegli file json per famiglie");
+  chooseEntrata = new QPushButton("Scegli file json per entrata film");
+
+  buttonLayout->addWidget(chooseUtenti,Qt::AlignCenter);
+  buttonLayout->addWidget(chooseFamiglie,Qt::AlignCenter);
+  buttonLayout->addWidget(chooseEntrata,Qt::AlignCenter);
+
+  connect(chooseUtenti, SIGNAL(clicked()), controller, SLOT(readUtenti()));
+
+
+}
+
+void MainWindow::destroyLayoutSetup()
+{
+  buttonLayout->removeWidget(chooseUtenti);
+  buttonLayout->removeWidget(chooseFamiglie);
+  buttonLayout->removeWidget(chooseEntrata);
+  delete chooseUtenti;
+  delete chooseFamiglie;
+  delete chooseEntrata;
 }
 
 

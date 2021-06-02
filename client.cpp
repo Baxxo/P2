@@ -1,7 +1,7 @@
 #include "client.h"
 #include "controller.h"
 
-Client::Client(Controller *c, QWidget *parent) : controller(c), QMainWindow(parent)
+Client::Client(Controller *c, QWidget *parent) : QMainWindow(parent), controller(c)
 {
   nuovoUtente= new QPushButton("Crea Nuovo Utente");
   nuovaFamiglia= new QPushButton("Crea nuova Famiglia");

@@ -14,16 +14,32 @@ QString Controller::getPathJson() const
   return pathJsonUsers;
 }
 
+bool Controller::getIsAdmin() const
+{
+  return isAdmin;
+}
+
+void Controller::setIsAdmin(bool value)
+{
+  isAdmin = value;
+}
+
+void Controller::loadUsers() const
+{
+  for (auto it = model->getListUtenti().cbegin(); it != model->getListUtenti().cend(); ++it) {
+      admin->addUtente(QString::fromUtf8(((*it)->getSurname() + " " + (*it)->getName()).c_str()));
+  }
+}
+
 void Controller::openAdmin()
 {
     if(isAdmin){
+        loadUsers();
         admin->show();
     }
     else{
         admin = new Admin(this);
-        for (auto it = model->getListUtenti().cbegin(); it != model->getListUtenti().cend(); ++it) {
-            admin->addUtente(QString::fromUtf8(((*it)->getSurname() + " " + (*it)->getName()).c_str()));
-        }
+        loadUsers();
         admin->show();
         isAdmin=true;
     }
@@ -90,7 +106,7 @@ void Controller::annullaUtente()
 void Controller::salvaUtente()
 {
 
-    QString fileName = QFileDialog::getOpenFileName(nullptr, "Seleziona json per salavre utenti", "", "json(*.json)");
+    QString fileName = QFileDialog::getOpenFileName(view, tr("Carica json Utenti"), "/home", tr("json(*.json)"),nullptr,QFileDialog::DontUseNativeDialog);
     QFile file(fileName);
 
     if (!file.open(QIODevice::WriteOnly)) {
@@ -119,7 +135,7 @@ void Controller::setView(MainWindow *v)
 
 void Controller::readUtenti()
 {
-    QString fileName = QFileDialog::getOpenFileName(nullptr, "Carica json Utenti", "", "json(*.json)");
+    QString fileName = QFileDialog::getOpenFileName(view, tr("Carica json Utenti"), "/home", tr("json(*.json)"),nullptr,QFileDialog::DontUseNativeDialog);
     pathJsonUsers = fileName;
     QFile file(fileName);
     QString settings;
@@ -146,13 +162,6 @@ void Controller::readUtenti()
                 map["tel.Num"].toString().toUtf8().constData());
             model->addUtente(*u);
           }
-
-        /*Utente* ut = model->getUtente("bssmtt98p06asd3");
-        string n = ut->getName();
-        QString str = QString::fromUtf8(n.c_str());
-        qDebug() <<"nome " << str;*/
-
-        view->changeMenu();
 
       }
 }

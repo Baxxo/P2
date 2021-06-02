@@ -37,6 +37,7 @@ Utente* Model::getUtente(string cf) {
           return new Utente(**it);
         }
   }
+  return nullptr;
 }
 
 const MyVector<DeepPtr<EntrataFilm> > &Model::getListEntrate() const
