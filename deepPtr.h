@@ -2,8 +2,7 @@
 #define DEEPPTR_H
 
 /*
-#include <iostream>
-using namespace std;
+#include <QDebug>
 */
 
 template < class T >

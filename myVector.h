@@ -94,6 +94,8 @@ public:
     bool remove(const T& o);
 
     bool isEmpty() const;
+
+    void clear();
 };
 
 // --- INIZIO ITERATOR
@@ -317,6 +319,7 @@ typename MyVector<T>::Const_iterator MyVector<T>::csearch(const T &o) const
   Const_iterator it = cbegin();
   for (; it != cend() && *it != o; ++it) {
       if (it == cend())
+        //QString arrayUtenti
           return Const_iterator(0); // soprattutto questo
   }
   return it;
@@ -369,7 +372,16 @@ bool MyVector<T>::remove(const T& o)
 template <class T>
 bool MyVector<T>::isEmpty() const
 {
-    return size==0;
+  return size==0;
+}
+
+template<class T>
+void MyVector<T>::clear()
+{
+  delete[] v;
+  size = 0;
+  capacity = 1;
+  v = new T[capacity];
 }
 
 #endif // MYVECTOR_H

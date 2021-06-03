@@ -19,13 +19,29 @@ bool Controller::getIsAdmin() const
 void Controller::setIsAdmin(bool value)
 {
   isAdmin = value;
+  if(isAdmin){
+      view->changeTitleAdmin(QString("Aggiorna admin"));
+    }else{
+      view->changeTitleAdmin(QString("Admin"));
+    }
 }
 
 void Controller::loadUsersinView() const
 {
+  admin->clearListUtenti();
   for (auto it = model->getListUtenti().cbegin(); it != model->getListUtenti().cend(); ++it) {
       admin->addUtente(QString::fromUtf8(((*it)->getSurname() + " " + (*it)->getName()).c_str()));
     }
+}
+
+void Controller::openError(QString message)
+{
+  if(err){
+      err->setMessage(message);
+    }else{
+      err = new ErrorDisplay(nullptr,message);
+    }
+  err->show();
 }
 
 void Controller::openAdmin()
@@ -35,8 +51,9 @@ void Controller::openAdmin()
         admin->show();
     }
     else{
-        admin = new Admin(this);
+        admin = new Admin(this,view);
         loadUsersinView();
+        view->changeTitleAdmin(QString("Aggiorna admin"));
         admin->show();
         isAdmin=true;
     }
@@ -91,7 +108,6 @@ void Controller::listaUtenti()
 
     famiglia->setMenu(menu);
     famiglia->showMenu();
-    //QString arrayUtenti
 
 }
 
@@ -100,22 +116,24 @@ void Controller::annullaUtente()
     qDebug() << "test";
 }
 
+void Controller::setView(MainWindow *v)
+{
+  view = v;
+}
+
 void Controller::salvaUtente()
 {
   if(pathJsonUsers == ""){
       pathJsonUsers = QFileDialog::getOpenFileName(view, tr("Carica json Utenti"), "/home/student/QTheater/json", tr("json(*.json)"),nullptr,QFileDialog::DontUseNativeDialog);
     }
-  QFile file(pathJsonUsers); // json file
-      if( !file.open( QIODevice::ReadOnly ) ) //read json content
+  QFile file(pathJsonUsers);
+      if( !file.open( QIODevice::ReadOnly ) )
       {
-          qDebug() << "File open error" << file.errorString();
+          openError(QString("File open error: Read"));
       }
 
       QJsonDocument jsonOrg = QJsonDocument::fromJson( file.readAll() );
       file.close();
-
-
-      /*QJsonArray array = jsonOrg.array();*/
 
       QJsonValue v = jsonOrg.object().value(QString("Utenti"));
 
@@ -123,6 +141,7 @@ void Controller::salvaUtente()
 
       QJsonObject newUser;
       newUser.insert("name", utente->getName());
+      newUser.insert("surname", utente->getSurname());
       newUser.insert("CF", utente->getCF());
       newUser.insert("age", utente->getAge());
       newUser.insert("tel.Num", utente->getNumTel());
@@ -132,85 +151,33 @@ void Controller::salvaUtente()
       QJsonObject obj;
       obj.insert("Utenti",array);
 
-      //QJsonDocument doc(array);
       QJsonDocument doc(obj);
 
-      if( !file.open( QIODevice::WriteOnly ) ) //write json content to file.
-          {
-          qDebug() << "File open error 2" << file.errorString();
-          }
+      if( !file.open( QIODevice::WriteOnly ) )
+      {
+          openError(QString("File open error: Write"));
+      }
 
-          file.write(doc.toJson());
-          file.close();
-
-
-  /*
-
-  QFile file(pathJsonUsers);
-
-  if (!file.open(QIODevice::WriteOnly)) {
-    qDebug() << "File open error" << file.errorString();
-  } else {
-
-      QJsonObject newUser;
-      newUser.insert("name", utente->getName());
-      newUser.insert("CF", utente->getCF());
-      newUser.insert("age", utente->getAge());
-      newUser.insert("tel.Num", utente->getNumTel());
-      objUtenti->insert(utente->getCF(), newUser);
-      QJsonDocument writeDoc;
-      writeDoc.setObject(*objUtenti);
-
-      file.write(writeDoc.toJson());
-
-  }
-  file.close();
-
-    QFile file(pathJsonUsers);
-
-    if (!file.open(QIODevice::ReadWrite)) {
-      qDebug() << "File open error" << file.errorString();
-    } else {
-
-        QJsonObject newUser;
-        newUser.insert("name", utente->getName());
-        newUser.insert("surname", utente->getSurname());
-        newUser.insert("CF", utente->getCF());
-        newUser.insert("age", utente->getAge());
-        newUser.insert("tel.Num", utente->getNumTel());
-
-        QString settings = file.readAll();
-        QJsonDocument doc(QJsonDocument::fromJson(settings.toUtf8()));
-        QJsonObject jObj = doc.object();
-
-
-        QJsonDocument writeDoc;
-        writeDoc.setObject(newUser);
-
-        file.write(writeDoc.toJson());
-
-    }*/
-}
-
-void Controller::setView(MainWindow *v)
-{
-  view = v;
+      file.write(doc.toJson());
+      file.close();
 }
 
 void Controller::readUtenti()
 {
-  if(pathJsonUsers == ""){
-      pathJsonUsers = QFileDialog::getOpenFileName(view, tr("Carica json Utenti"), "/home", tr("json(*.json)"),nullptr,QFileDialog::DontUseNativeDialog);
-    }
+
+  pathJsonUsers = QFileDialog::getOpenFileName(view, tr("Carica json Utenti"), "/home/student/QTheater/json", tr("json(*.json)"),nullptr,QFileDialog::DontUseNativeDialog);
   QFile file(pathJsonUsers);
 
   if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << "File open error";
-      } else {
+        openError(QString("File open error: Read"));
+  } else {
 
-          QString json = file.readAll();
+    model->clearVectorUtenti();
 
-          QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
+      QString json = file.readAll();
+
+      QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
+      if(!doc.isEmpty()){
           QJsonObject jObj = doc.object();
 
           QVariantMap mainMap = jObj.toVariantMap();
@@ -227,7 +194,13 @@ void Controller::readUtenti()
               model->addUtente(*u);
             }
 
+          view->changeTitleChooseUtenti("Cambia file json per utenti");
+        }else{
+          openError(QString("Empty file"));
         }
+
+    }
+
 
 }
 

@@ -32,6 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
 
   setStyle();
 
+  prevAdmin = "Admin";
+
 }
 
 void MainWindow::setController(Controller *c)
@@ -40,6 +42,21 @@ void MainWindow::setController(Controller *c)
     connect(changeBtn, SIGNAL(clicked()), this,SLOT(changeMenuSlot()));
 
     createLayoutSetup();
+}
+
+void MainWindow::changeTitleAdmin(QString s)
+{
+  adminBtn->setText(s);
+}
+
+void MainWindow::setIsAdmin(bool b)
+{
+  controller->setIsAdmin(b);
+}
+
+void MainWindow::changeTitleChooseUtenti(QString s)
+{
+  chooseUtenti->setText(s);
 }
 
 void MainWindow::changeMenuSlot()
@@ -69,7 +86,7 @@ void MainWindow::changeMenu()
 
 void MainWindow::createLayoutAdCl()
 {
-  adminBtn = new QPushButton("Admin");
+  adminBtn = new QPushButton(prevAdmin);
   clientBtn = new QPushButton("Cliente");
 
   buttonLayout->addWidget(adminBtn,Qt::AlignCenter);
@@ -83,6 +100,7 @@ void MainWindow::createLayoutAdCl()
 
 void MainWindow::destroyLayoutAdCl()
 {
+  prevAdmin = adminBtn->text();
   buttonLayout->removeWidget(adminBtn);
   buttonLayout->removeWidget(clientBtn);
   delete adminBtn;

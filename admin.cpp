@@ -1,6 +1,6 @@
 #include "admin.h"
 
-Admin::Admin(Controller* c, QWidget * parent): QMainWindow(parent), controller(c), i(0) {
+Admin::Admin(Controller* c, MainWindow *parent): p(parent), controller(c), i(0) {
 
   baseLayout = new QGridLayout();
   mainLayout = new QVBoxLayout();
@@ -33,15 +33,6 @@ Admin::Admin(Controller* c, QWidget * parent): QMainWindow(parent), controller(c
   labelUt->setFont(font);
   listUt = new QListWidget();
 
-  /*
-  for (unsigned int j = 0; j < 50; ++j) {
-      QString s = "testo " + QString::number(j+1);
-      QListWidgetItem* item = new QListWidgetItem(s);
-      listAbb->addItem(item);
-       item = new QListWidgetItem(s);
-      listFam->addItem(item);
-    }*/
-
   connect(listAbb,SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(getClickAbb()));
   connect(listFam,SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(getClickFam()));
   connect(listUt,SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(getClickUt()));
@@ -65,6 +56,11 @@ void Admin::addUtente(QString s)
   listUt->addItem(item);
 }
 
+void Admin::clearListUtenti()
+{
+  listUt->clear();
+}
+
 void Admin::getClickAbb()
 {
   qDebug() << "Abbonamento "<<listAbb->currentItem()->text();
@@ -73,6 +69,12 @@ void Admin::getClickAbb()
 void Admin::getClickFam()
 {
   qDebug() << "Famiglia "<<listFam->currentItem()->text();
+}
+
+void Admin::closeEvent(QCloseEvent *event)
+{
+  p->setIsAdmin(false);
+  event->accept();
 }
 
 void Admin::getClickUt()

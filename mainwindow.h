@@ -30,6 +30,10 @@ public:
 
   void setController(Controller*c);
 
+  void changeTitleChooseUtenti(QString s);
+  void changeTitleAdmin(QString s);
+  void setIsAdmin(bool b);
+
 private slots:
 
   void changeMenuSlot();
@@ -67,6 +71,7 @@ private:
   void createLayoutSetup();
   void destroyLayoutSetup();
 
+  QString prevAdmin;
 
 };
 #endif // MAINWINDOW_H

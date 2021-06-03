@@ -16,6 +16,8 @@ class Model {
     bool removeUtente(const Utente & u);
     bool removeFamiglia(const Famiglia & f);
 
+    void clearVectorUtenti();
+
     Utente *getUtente(string cf);
     Famiglia & getFamiglia(string cf);
     EntrataFilm & getEntrataFilm();

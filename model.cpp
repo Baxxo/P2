@@ -27,6 +27,11 @@ bool Model::removeFamiglia(const Famiglia &f) {
   return listFamiglie.remove(f);
 }
 
+void Model::clearVectorUtenti()
+{
+  listUtenti.clear();
+}
+
 Utente* Model::getUtente(string cf) {
 
   for (auto it = listUtenti.begin(); it != listUtenti.end(); ++it) {

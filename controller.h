@@ -14,6 +14,7 @@
 #include "utente_View.h"
 #include "famiglia_view.h"
 #include "model.h"
+#include "errordisplay.h"
 
 class Controller : public QObject
 {
@@ -39,6 +40,8 @@ private:
 
     QString readFile(const QString &filename);
 
+    void openError(QString message);
+
 private slots:
 
     //apertura finestre
@@ -62,6 +65,8 @@ public:
     void setView(MainWindow* v);
 
     QString getPathJson() const;
+
+    ErrorDisplay* err;
 
     bool getIsAdmin() const;
     void setIsAdmin(bool value);
