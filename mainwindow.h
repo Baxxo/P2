@@ -62,9 +62,9 @@ private:
 
   bool isVisReadBtn;
 
-  void createLayoutAdCl(bool createNew);
+  void createLayoutAdCl();
   void destroyLayoutAdCl();
-  void createLayoutSetup(bool createNew);
+  void createLayoutSetup();
   void destroyLayoutSetup();
 
 

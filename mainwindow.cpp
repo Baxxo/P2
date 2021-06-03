@@ -39,7 +39,7 @@ void MainWindow::setController(Controller *c)
     controller=c;
     connect(changeBtn, SIGNAL(clicked()), this,SLOT(changeMenuSlot()));
 
-    createLayoutSetup(true);
+    createLayoutSetup();
 }
 
 void MainWindow::changeMenuSlot()
@@ -52,7 +52,7 @@ void MainWindow::changeMenu()
   if(isVisReadBtn){
 
       destroyLayoutSetup();
-      createLayoutAdCl(true);
+      createLayoutAdCl();
       title->setText("QTheater");
 
       isVisReadBtn = false;
@@ -60,20 +60,15 @@ void MainWindow::changeMenu()
     }else{
 
       destroyLayoutAdCl();
-      createLayoutSetup(true);
+      createLayoutSetup();
       title->setText("Setup");
 
       isVisReadBtn = true;
     }
 }
 
-void MainWindow::createLayoutAdCl(bool createNew)
+void MainWindow::createLayoutAdCl()
 {
-  /*if(createNew){
-      adminBtn = new QPushButton("Admin");
-      clientBtn = new QPushButton("Cliente");
-    }*/
-
   adminBtn = new QPushButton("Admin");
   clientBtn = new QPushButton("Cliente");
 
@@ -94,13 +89,8 @@ void MainWindow::destroyLayoutAdCl()
   delete clientBtn;
 }
 
-void MainWindow::createLayoutSetup(bool createNew)
+void MainWindow::createLayoutSetup()
 {
-  /*if(createNew){
-      chooseUtenti = new QPushButton("Scegli file json per utenti");
-      chooseFamiglie = new QPushButton("Scegli file json per famiglie");
-      chooseEntrata = new QPushButton("Scegli file json per entrata film");
-    }*/
   chooseUtenti = new QPushButton("Scegli file json per utenti");
   chooseFamiglie = new QPushButton("Scegli file json per famiglie");
   chooseEntrata = new QPushButton("Scegli file json per entrata film");
@@ -110,7 +100,6 @@ void MainWindow::createLayoutSetup(bool createNew)
   buttonLayout->addWidget(chooseEntrata,Qt::AlignCenter);
 
   connect(chooseUtenti, SIGNAL(clicked()), controller, SLOT(readUtenti()));
-
 
 }
 

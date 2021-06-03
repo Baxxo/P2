@@ -35,7 +35,9 @@ private:
     QString pathJsonUsers;
     QJsonObject* objUtenti;
 
-    void loadUsers() const;
+    void loadUsersinView() const;
+
+    QString readFile(const QString &filename);
 
 private slots:
 

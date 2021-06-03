@@ -11,6 +11,7 @@ Utente_View::Utente_View(Controller *c, QWidget *parent) : QWidget(parent), cont
     confermaBtn= new QPushButton("Conferma");
     annullaBtn= new QPushButton("Annulla");
     name= new QLineEdit();
+    surname= new QLineEdit();
     CF= new QLineEdit();
     age= new QLineEdit();
     numtel= new QLineEdit();
@@ -23,6 +24,7 @@ Utente_View::Utente_View(Controller *c, QWidget *parent) : QWidget(parent), cont
 
     //layout linee di testo
     lineLayout->addWidget(name, Qt::AlignCenter);
+    lineLayout->addWidget(surname, Qt::AlignCenter);
     lineLayout->addWidget(CF, Qt::AlignCenter);
     lineLayout->addWidget(age, Qt::AlignCenter);
     lineLayout->addWidget(numtel, Qt::AlignCenter);
@@ -36,6 +38,7 @@ Utente_View::Utente_View(Controller *c, QWidget *parent) : QWidget(parent), cont
 
     //inizializzazione default delle linee di testo
     name->setText("Name");
+    surname->setText("Surname");
     CF->setText("Codice Fiscale");
     age->setText("Età");
     numtel->setText("Numero di telefono");
@@ -45,62 +48,41 @@ Utente_View::Utente_View(Controller *c, QWidget *parent) : QWidget(parent), cont
     //connessioni al controller
     connect(confermaBtn, SIGNAL(clicked()), controller, SLOT(salvaUtente()));
     connect(annullaBtn, SIGNAL(clicked()), controller, SLOT(annullaUtente()));
-
-
-
-
 }
+
 void Utente_View::setStyle()
 {
-  QFile style(":/qss/style.css");
-  style.open(QFile::ReadOnly);
-  QString styleSheet = QLatin1String(style.readAll());
+  QFile file(":/qss/style.css");
+  file.open(QFile::ReadOnly);
+  QString styleSheet = QLatin1String(file.readAll());
 
   setStyleSheet(styleSheet);
 }
 
-QString Utente_View::getName()
+QString Utente_View::getName() const
 {
-    return name->text();
+  return name->text();
 }
 
-QString Utente_View::getCF()
+QString Utente_View::getSurname() const
+{
+  return surname->text();
+}
+
+QString Utente_View::getCF() const
 {
     return CF->text();
 }
 
-QString Utente_View::getAge()
+QString Utente_View::getAge() const
 {
     return age->text();
 }
 
-QString Utente_View::getNumTel()
+QString Utente_View::getNumTel() const
 {
     return numtel->text();
 }
-
-
-
-/*void Utente_View::read() {
-  QString settings;
-  QFile file(QDir::homePath() + "/Desktop/P2-feature-MainWindow/json/test.json");
-
-  if (!file.open(QIODevice::ReadOnly)) {
-    qDebug() << "File open error";
-  } else {
-
-    settings = file.readAll();
-
-    QJsonDocument doc(QJsonDocument::fromJson(settings.toUtf8()));
-    QJsonObject jObj = doc.object();
-
-    QString txt = jObj["name"].toString() + " " + QString::number(jObj["age"].toInt()) + ";";
-    qDebug() << "Age: " << jObj["age"].toInt();
-
-  }
-  file.close();
-
-}*/
 
 
 
