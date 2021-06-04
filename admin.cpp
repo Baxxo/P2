@@ -5,6 +5,8 @@ Admin::Admin(Controller* c, MainWindow *parent): p(parent), controller(c), i(0) 
   baseLayout = new QGridLayout();
   mainLayout = new QVBoxLayout();
 
+  setWindowTitle(QString("Admin"));
+
   QFont font;
   font.setPointSize(50);
   font.setBold(true);

@@ -13,12 +13,25 @@ MainWindow::MainWindow(QWidget *parent)
   v_layout = new QVBoxLayout();
   v_layout->addWidget(title,Qt::AlignTop);
 
-  buttonLayout = new QVBoxLayout();
+  buttonLayout = new QGridLayout();
 
   mainLayout = new QGridLayout();
   mainLayout->addWidget(changeBtn,0,0,Qt::AlignRight);
   mainLayout->addLayout(v_layout,1,0,Qt::AlignCenter);
   mainLayout->addLayout(buttonLayout,2,0,Qt::AlignCenter);
+
+  pathUser = new QLabel("name json utenti");
+  pathUser->setProperty("class", "path");
+
+  pathFamilies = new QLabel("name json famiglie");
+  pathFamilies->setProperty("class", "path");
+
+  pathEntrata = new QLabel("name json archivio entrate/abbonamenti");
+  pathEntrata->setProperty("class", "path");
+
+  buttonLayout->addWidget(pathUser,0,1,Qt::AlignCenter);
+  buttonLayout->addWidget(pathFamilies,1,1,Qt::AlignCenter);
+  buttonLayout->addWidget(pathEntrata,2,1,Qt::AlignCenter);
 
   widget = new QWidget(this);
   widget->setLayout(mainLayout);
@@ -33,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
   setStyle();
 
   prevAdmin = "Admin";
+  prevChooseUtenti = "Scegli file json per utenti";
 
 }
 
@@ -40,6 +54,10 @@ void MainWindow::setController(Controller *c)
 {
     controller=c;
     connect(changeBtn, SIGNAL(clicked()), this,SLOT(changeMenuSlot()));
+
+    pathUser->setText(controller->getPathJsonUsers());
+    pathFamilies->setText(controller->getPathJsonFamiglie());
+    pathEntrata->setText(controller->getPathJsonEntrata());
 
     createLayoutSetup();
 }
@@ -51,12 +69,37 @@ void MainWindow::changeTitleAdmin(QString s)
 
 void MainWindow::setIsAdmin(bool b)
 {
-  controller->setIsAdmin(b);
+    controller->setIsAdmin(b);
+}
+
+void MainWindow::setLabelPathUser(QString s)
+{
+    pathUser->setText(s);
+}
+
+void MainWindow::setLabelPathFamiglie(QString s)
+{
+    pathFamilies->setText(s);
+}
+
+void MainWindow::setLabelPathEntrata(QString s)
+{
+    pathEntrata->setText(s);
 }
 
 void MainWindow::changeTitleChooseUtenti(QString s)
 {
-  chooseUtenti->setText(s);
+    prevChooseUtenti = s;
+}
+
+void MainWindow::changeTitleChooseFamiglie(QString s)
+{
+    prevChooseFamiglie = s;
+}
+
+void MainWindow::changeTitleChooseEntrata(QString s)
+{
+    prevChooseEntrata = s;
 }
 
 void MainWindow::changeMenuSlot()
@@ -89,8 +132,8 @@ void MainWindow::createLayoutAdCl()
   adminBtn = new QPushButton(prevAdmin);
   clientBtn = new QPushButton("Cliente");
 
-  buttonLayout->addWidget(adminBtn,Qt::AlignCenter);
-  buttonLayout->addWidget(clientBtn,Qt::AlignCenter);
+  buttonLayout->addWidget(adminBtn,0,0,Qt::AlignCenter);
+  buttonLayout->addWidget(clientBtn,1,0,Qt::AlignCenter);
 
   connect(adminBtn, SIGNAL(clicked()), controller, SLOT(openAdmin()));
   connect(clientBtn, SIGNAL(clicked()), controller, SLOT(openClient()));
@@ -109,20 +152,21 @@ void MainWindow::destroyLayoutAdCl()
 
 void MainWindow::createLayoutSetup()
 {
-  chooseUtenti = new QPushButton("Scegli file json per utenti");
+  chooseUtenti = new QPushButton(prevChooseUtenti);
   chooseFamiglie = new QPushButton("Scegli file json per famiglie");
   chooseEntrata = new QPushButton("Scegli file json per entrata film");
 
-  buttonLayout->addWidget(chooseUtenti,Qt::AlignCenter);
-  buttonLayout->addWidget(chooseFamiglie,Qt::AlignCenter);
-  buttonLayout->addWidget(chooseEntrata,Qt::AlignCenter);
+  buttonLayout->addWidget(chooseUtenti,0,0,Qt::AlignCenter);
+  buttonLayout->addWidget(chooseFamiglie,1,0,Qt::AlignCenter);
+  buttonLayout->addWidget(chooseEntrata,2,0,Qt::AlignCenter);
 
-  connect(chooseUtenti, SIGNAL(clicked()), controller, SLOT(readUtenti()));
+  connect(chooseUtenti, SIGNAL(clicked()), controller, SLOT(loadUsersinView()));
 
 }
 
 void MainWindow::destroyLayoutSetup()
 {
+    prevChooseUtenti = chooseUtenti->text();
   buttonLayout->removeWidget(chooseUtenti);
   buttonLayout->removeWidget(chooseFamiglie);
   buttonLayout->removeWidget(chooseEntrata);

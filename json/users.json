@@ -17,6 +17,13 @@
             "age": "12",
             "name": "Belli",
             "tel.Num": "Numero di telefono"
+        },
+        {
+            "CF": "Codice Fiscale",
+            "age": "56",
+            "name": "Paolo",
+            "surname": "Bonolis",
+            "tel.Num": "Numero di telefono"
         }
     ]
 }

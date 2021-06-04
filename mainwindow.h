@@ -31,8 +31,14 @@ public:
   void setController(Controller*c);
 
   void changeTitleChooseUtenti(QString s);
+  void changeTitleChooseFamiglie(QString s);
+  void changeTitleChooseEntrata(QString s);
   void changeTitleAdmin(QString s);
   void setIsAdmin(bool b);
+
+  void setLabelPathUser(QString s);
+  void setLabelPathFamiglie(QString s);
+  void setLabelPathEntrata(QString s);
 
 private slots:
 
@@ -45,7 +51,7 @@ private:
 
   QGridLayout* mainLayout;
   QVBoxLayout* v_layout;
-  QVBoxLayout* buttonLayout;
+  QGridLayout* buttonLayout;
 
   QLabel* title;
 
@@ -57,6 +63,10 @@ private:
 
   QPushButton* adminBtn;
   QPushButton* clientBtn;
+
+  QLabel *pathUser;
+  QLabel *pathFamilies;
+  QLabel *pathEntrata;
 
   Controller* controller;
 
@@ -72,6 +82,9 @@ private:
   void destroyLayoutSetup();
 
   QString prevAdmin;
+  QString prevChooseUtenti;
+  QString prevChooseFamiglie;
+  QString prevChooseEntrata;
 
 };
 #endif // MAINWINDOW_H

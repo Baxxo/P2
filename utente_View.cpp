@@ -16,6 +16,8 @@ Utente_View::Utente_View(Controller *c, QWidget *parent) : QWidget(parent), cont
     age= new QLineEdit();
     numtel= new QLineEdit();
 
+    setWindowTitle(QString("Creazione Utente"));
+
     //layout bottoni
     btnLayout->addWidget(confermaBtn, Qt::AlignCenter);
     btnLayout->addWidget(annullaBtn, Qt::AlignCenter);
