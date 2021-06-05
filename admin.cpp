@@ -26,15 +26,21 @@ Admin::Admin(Controller* c, MainWindow *parent): p(parent), controller(c), i(0) 
 
   labelAbb = new QLabel("Abbonamenti");
   labelAbb->setFont(font);
+  labelAbb->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
   listAbb = new QListWidget();
+  listAbb->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
   labelFam = new QLabel("Famiglie");
   labelFam->setFont(font);
+  labelFam->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
   listFam = new QListWidget();
+  listFam->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
   labelUt = new QLabel("Utenti");
   labelUt->setFont(font);
+  labelUt->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
   listUt = new QListWidget();
+  listUt->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
   connect(listAbb,SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(getClickAbb()));
   connect(listFam,SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(getClickFam()));

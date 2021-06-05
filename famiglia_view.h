@@ -30,8 +30,7 @@ private:
     QWidget* widget;
 
     QVBoxLayout* layoutListUsers;
-
-    QString read();
+    QLabel* labelListaUtenti;
 
 private slots:
     void signaltest();
@@ -40,7 +39,7 @@ private slots:
     void cleanTextFamily();
     void cleanTextSearch();
 
-    void clickTest(QListWidgetItem *item);
+    void addUtenteToFamiglia(QListWidgetItem *item);
 
 public:
     Famiglia_View(Controller* c, QWidget *parent=nullptr);

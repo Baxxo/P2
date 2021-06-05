@@ -6,7 +6,11 @@ Client::Client(Controller *c, QWidget *parent) : QMainWindow(parent), controller
   label = new QLabel("Cliente");
   label->setProperty("class", "title");
   nuovoUtente= new QPushButton("Crea Nuovo Utente");
+  nuovoUtente->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
   nuovaFamiglia= new QPushButton("Crea nuova Famiglia");
+  nuovaFamiglia->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
   mainLayout=new QGridLayout;
   widget=new QWidget(this);
 

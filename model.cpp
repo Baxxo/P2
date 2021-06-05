@@ -1,5 +1,8 @@
 #include "model.h"
 
+#include <iostream>
+using namespace std;
+
 
 Model::Model(){}
 
@@ -34,6 +37,7 @@ void Model::clearVectorUtenti()
 
 Utente* Model::getUtente(string cf) {
 
+  //cout << "---inizio model---" << endl;
   for (auto it = listUtenti.begin(); it != listUtenti.end(); ++it) {
       //cout << (*it)->getName() << endl;
       //cout << (*it)->getCodFisc() << " = "<< cf << endl;
@@ -42,6 +46,7 @@ Utente* Model::getUtente(string cf) {
           return new Utente(**it);
         }
   }
+  //cout << "---fine model---" << endl;
   return nullptr;
 }
 
@@ -58,4 +63,9 @@ const MyVector<DeepPtr<Utente>> &Model::getListUtenti() const
 const MyVector<DeepPtr<Famiglia>> &Model::getListFamiglie() const
 {
   return listFamiglie;
+}
+
+void Model::addUserToFamily(Famiglia &f, Utente *u)
+{
+  f.addMembro(u);
 }

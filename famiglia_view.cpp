@@ -6,14 +6,21 @@
 Famiglia_View::Famiglia_View(Controller* c, QWidget *parent) : QWidget(parent), controller(c)
 {
     widget= new QWidget(this);
+    widget->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Expanding);
     menuLayout= new QVBoxLayout;
     btnLayout= new QVBoxLayout;
     mainlayout=new QGridLayout;
     search= new QLineEditClickable;
     familyName= new QLineEditClickable;
     listaUtenti= new QListWidget;
+    labelListaUtenti = new QLabel("Utenti prenseti nel sistema");
+    labelListaUtenti->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
     saveFamily= new QPushButton("Salva Famiglia");
+    saveFamily->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
     aggiorna= new QPushButton("Search");
+    aggiorna->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
     layoutListUsers = new QVBoxLayout;
 
@@ -22,6 +29,7 @@ Famiglia_View::Famiglia_View(Controller* c, QWidget *parent) : QWidget(parent), 
     familyName->setText("Type in a family name");
     search->setText("Type in a CF and press search");
     menuLayout->addWidget(familyName, Qt::AlignCenter);
+    menuLayout->addWidget(labelListaUtenti, Qt::AlignCenter);
     menuLayout->addWidget(listaUtenti, Qt::AlignCenter);
     menuLayout->addWidget(search, Qt::AlignCenter);
     btnLayout->addWidget(aggiorna, Qt::AlignCenter);
@@ -30,7 +38,7 @@ Famiglia_View::Famiglia_View(Controller* c, QWidget *parent) : QWidget(parent), 
     mainlayout->addLayout(btnLayout, 1, 0, Qt::AlignCenter);
     widget->setLayout(mainlayout);
 
-    setMinimumSize(320,370);
+    setMinimumSize(320,400);
 
     QTimer::singleShot(0,this,SLOT(resizeMe()));
 
@@ -40,7 +48,7 @@ Famiglia_View::Famiglia_View(Controller* c, QWidget *parent) : QWidget(parent), 
     connect(saveFamily, SIGNAL(clicked()), controller, SLOT(salvaFamiglia()));
     connect(familyName,SIGNAL(clicked()), this, SLOT(cleanTextFamily()));
     connect(search,SIGNAL(clicked()), this, SLOT(cleanTextSearch()));
-    connect(listaUtenti, SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(clickTest(QListWidgetItem*)));
+    connect(listaUtenti, SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(addUtenteToFamiglia(QListWidgetItem*)));
 }
 
 void Famiglia_View::addUtenteToLista(const QString& text, const QString& cf)
@@ -107,32 +115,21 @@ void Famiglia_View::cleanTextSearch()
   if(search->text() == "Type in a CF and press search") search->setText("");
 }
 
-void Famiglia_View::clickTest(QListWidgetItem* item)
+void Famiglia_View::addUtenteToFamiglia(QListWidgetItem* item)
 {
   QLabelCF* lbl = dynamic_cast<QLabelCF*>(listaUtenti->itemWidget(item));
-    qDebug() << lbl->getCf();
+  lbl->setStyleSheet("QLabel { background-color : LightGreen; color : black; }");
 
-}
+  //qDebug() << lbl->getCf();
+  listaUtenti->setItemWidget(item,lbl);
+  controller->addUserToFamily(lbl->getCf());/*
+  Famiglia& fam = *(controller->getFam());
+  fam.addMembro(new Utente("test","tests",10,lbl->getCf().toStdString(),"1231231231"));
 
-QString Famiglia_View::read() {
-  QString settings;
-  QFile file(controller->getPathJsonUsers());
+  for(unsigned int i=0;i<fam.getSize();i++){
+      qDebug() << QString::fromUtf8(fam[i].getCodFisc().c_str());
+    }
+  qDebug() << "______________";*/
 
-  if (!file.open(QIODevice::ReadOnly)) {
-    controller->openError("Error reading file");
-    return QString("error");
-  } else {
-
-    settings = file.readAll();
-
-    QJsonDocument doc(QJsonDocument::fromJson(settings.toUtf8()));
-    QJsonObject jObj = doc.object();
-
-    QString txt = jObj["name"].toString(); //QString::number(jObj["age"].toInt()) + ";";
-
-    qDebug() << "Name: " << jObj["name"].toString();
-    return txt;
-  }
-  file.close();
-  return "";
+  //manca da cercare utente nel vector
 }

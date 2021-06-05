@@ -40,7 +40,8 @@ private:
 
     QString readFile(const QString &filename);
     void popolaVectorUtenti(const QVariantList &list);
-    QVariantList *readUtenti(QFile &file);
+    QVariantList *readUtenti(QFile &file, bool update = false);
+    Famiglia* fam;
 
 public slots:
 
@@ -76,6 +77,11 @@ public:
 
     void openError(QString message);
 
+    void createFamiglia(Famiglia& f, Utente* u);
+
+    Famiglia *getFam() const;
+
+    bool addUserToFamily(const QString &cf);
 };
 
 #endif // CONTROLLER_H

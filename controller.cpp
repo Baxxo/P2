@@ -5,7 +5,13 @@
 using std::string;
 
 Controller::Controller(QObject * parent, Model * m):
-  QObject(parent), model(m), isAdminOpen(false), isClientOpen(false), isUtenteOpen(false), isFamigliaOpen(false), pathJsonUsers("") {}
+  QObject(parent), model(m),
+  isAdminOpen(false),
+  isClientOpen(false),
+  isUtenteOpen(false),
+  isFamigliaOpen(false),
+  pathJsonUsers(""),
+  fam(nullptr){}
 
 bool Controller::getIsAdmin() const {
   return isAdminOpen;
@@ -41,6 +47,26 @@ void Controller::openError(QString message) {
   err -> show();
 }
 
+void Controller::createFamiglia(Famiglia &f, Utente *u)
+{
+  model->addUserToFamily(f,u);
+}
+
+Famiglia *Controller::getFam() const
+{
+  return fam;
+}
+
+bool Controller::addUserToFamily(const QString& cf)
+{
+  Utente * u = model->getUtente(cf.toUtf8().constData());
+  if(fam!= nullptr && u != nullptr && !fam->hasMembro(u)){
+      fam->addMembro(u);
+      return true;
+    }
+  return false;
+}
+
 void Controller::openAdmin() {
   if (!isAdminOpen || !admin) {
     admin = new Admin(this, view);
@@ -71,13 +97,14 @@ void Controller::openUtente() {
 
 void Controller::openFamiglia() {
   if (!isFamigliaOpen || !famigliaView) {
+      fam = new Famiglia();
       famigliaView = new Famiglia_View(this);
   }
-
 
   if(model->getListUtenti().isEmpty()){
       QFile file;
       QVariantList* list = readUtenti(file);
+      view -> changeTitleChooseUtenti("Cambia file json per utenti");
       if(list != nullptr){
           popolaVectorUtenti(*list);
       }
@@ -92,6 +119,7 @@ void Controller::openFamiglia() {
 
   isFamigliaOpen = true;
   famigliaView -> show();
+
 }
 
 void Controller::listaUtenti() {
@@ -202,7 +230,7 @@ void Controller::salvaFamiglia() {
 void Controller::loadUsersinView() {
 
     QFile file;
-    QVariantList* list = readUtenti(file);
+    QVariantList* list = readUtenti(file,true);
     if(list != nullptr){
 
         popolaVectorUtenti(*list);
@@ -222,9 +250,9 @@ void Controller::loadUsersinView() {
     }
 }
 
-QVariantList* Controller::readUtenti(QFile &file) {
+QVariantList* Controller::readUtenti(QFile &file, bool update) {
 
-  if (pathJsonUsers == "") {
+  if (pathJsonUsers == "" || update) {
     pathJsonUsers = QFileDialog::getOpenFileName(view, tr("Carica json Utenti"), "/home/student/QTheater/json", tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
   }
   file.setFileName(pathJsonUsers);

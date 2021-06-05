@@ -26,6 +26,9 @@ class Model {
     const MyVector<DeepPtr<Utente>> &getListUtenti() const;
     const MyVector<DeepPtr<Famiglia>> &getListFamiglie() const;
 
+    void addUserToFamily(Famiglia& f, Utente *u);
+
+
 private:
     MyVector<DeepPtr<EntrataFilm>> listEntrate;
     MyVector<DeepPtr<Utente>> listUtenti;

@@ -23,16 +23,19 @@ MainWindow::MainWindow(QWidget *parent)
 
   pathUser = new QLabel("name json utenti");
   pathUser->setProperty("class", "path");
+  pathUser->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
   pathFamilies = new QLabel("name json famiglie");
   pathFamilies->setProperty("class", "path");
+  pathFamilies->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
   pathEntrata = new QLabel("name json archivio entrate/abbonamenti");
   pathEntrata->setProperty("class", "path");
+  pathEntrata->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
-  buttonLayout->addWidget(pathUser,0,1,Qt::AlignCenter);
-  buttonLayout->addWidget(pathFamilies,1,1,Qt::AlignCenter);
-  buttonLayout->addWidget(pathEntrata,2,1,Qt::AlignCenter);
+  buttonLayout->addWidget(pathUser,0,1,Qt::AlignRight);
+  buttonLayout->addWidget(pathFamilies,1,1,Qt::AlignRight);
+  buttonLayout->addWidget(pathEntrata,2,1,Qt::AlignRight);
 
   widget = new QWidget(this);
   widget->setLayout(mainLayout);
@@ -63,7 +66,7 @@ void MainWindow::setController(Controller *c)
     createLayoutSetup();
 }
 
-void MainWindow::changeTitleAdmin(QString s)
+void MainWindow::changeTitleAdmin(const QString &s)
 {
   adminBtn->setText(s);
 }
@@ -73,34 +76,37 @@ void MainWindow::setIsAdmin(bool b)
     controller->setIsAdmin(b);
 }
 
-void MainWindow::setLabelPathUser(QString s)
+void MainWindow::setLabelPathUser(const QString &s)
 {
     pathUser->setText(s);
 }
 
-void MainWindow::setLabelPathFamiglie(QString s)
+void MainWindow::setLabelPathFamiglie(const QString &s)
 {
     pathFamilies->setText(s);
 }
 
-void MainWindow::setLabelPathEntrata(QString s)
+void MainWindow::setLabelPathEntrata(const QString &s)
 {
     pathEntrata->setText(s);
 }
 
-void MainWindow::changeTitleChooseUtenti(QString s)
+void MainWindow::changeTitleChooseUtenti(const QString& s)
 {
     prevChooseUtenti = s;
+    if(chooseUtenti != nullptr) chooseUtenti->setText(s);
 }
 
-void MainWindow::changeTitleChooseFamiglie(QString s)
+void MainWindow::changeTitleChooseFamiglie(const QString& s)
 {
     prevChooseFamiglie = s;
+    if(chooseFamiglie != nullptr) chooseFamiglie->setText(s);
 }
 
-void MainWindow::changeTitleChooseEntrata(QString s)
+void MainWindow::changeTitleChooseEntrata(const QString& s)
 {
     prevChooseEntrata = s;
+    if(chooseEntrata != nullptr) chooseEntrata->setText(s);
 }
 
 void MainWindow::changeMenuSlot()
@@ -131,7 +137,10 @@ void MainWindow::changeMenu()
 void MainWindow::createLayoutAdCl()
 {
   adminBtn = new QPushButton(prevAdmin);
+  adminBtn->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
   clientBtn = new QPushButton("Cliente");
+  clientBtn->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
   buttonLayout->addWidget(adminBtn,0,0,Qt::AlignCenter);
   buttonLayout->addWidget(clientBtn,1,0,Qt::AlignCenter);
@@ -147,15 +156,24 @@ void MainWindow::destroyLayoutAdCl()
   prevAdmin = adminBtn->text();
   buttonLayout->removeWidget(adminBtn);
   buttonLayout->removeWidget(clientBtn);
-  delete adminBtn;
+
+  delete adminBtn;  
+  adminBtn = nullptr;
+
   delete clientBtn;
+  clientBtn = nullptr;
 }
 
 void MainWindow::createLayoutSetup()
 {
   chooseUtenti = new QPushButton(prevChooseUtenti);
+  chooseUtenti->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
   chooseFamiglie = new QPushButton("Scegli file json per famiglie");
+  chooseFamiglie->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
   chooseEntrata = new QPushButton("Scegli file json per entrata film");
+  chooseEntrata->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
   buttonLayout->addWidget(chooseUtenti,0,0,Qt::AlignCenter);
   buttonLayout->addWidget(chooseFamiglie,1,0,Qt::AlignCenter);
@@ -172,8 +190,13 @@ void MainWindow::destroyLayoutSetup()
   buttonLayout->removeWidget(chooseFamiglie);
   buttonLayout->removeWidget(chooseEntrata);
   delete chooseUtenti;
+  chooseUtenti = nullptr;
+
   delete chooseFamiglie;
+  chooseFamiglie = nullptr;
+
   delete chooseEntrata;
+  chooseEntrata = nullptr;
 }
 
 

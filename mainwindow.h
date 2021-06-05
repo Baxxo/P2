@@ -28,17 +28,17 @@ public:
 
   MainWindow* getMainwindow();
 
-  void setController(Controller*c);
+  void setController(Controller *c);
 
-  void changeTitleChooseUtenti(QString s);
-  void changeTitleChooseFamiglie(QString s);
-  void changeTitleChooseEntrata(QString s);
-  void changeTitleAdmin(QString s);
+  void changeTitleChooseUtenti(const QString &s);
+  void changeTitleChooseFamiglie(const QString &s);
+  void changeTitleChooseEntrata(const QString &s);
+  void changeTitleAdmin(const QString &s);
   void setIsAdmin(bool b);
 
-  void setLabelPathUser(QString s);
-  void setLabelPathFamiglie(QString s);
-  void setLabelPathEntrata(QString s);
+  void setLabelPathUser(const QString &s);
+  void setLabelPathFamiglie(const QString &s);
+  void setLabelPathEntrata(const QString &s);
 
 private slots:
 

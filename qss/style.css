@@ -18,3 +18,8 @@ QPushButton{
     font-size:20px;
     font-weight: normal;
 }
+
+QListWidget::item:selected{
+    background-color: green;
+    color: white;
+}
