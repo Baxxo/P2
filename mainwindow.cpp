@@ -8,7 +8,8 @@ MainWindow::MainWindow(QWidget *parent)
   changeBtn = new QPushButton(QIcon(":/images/reverse.png"),"");
   changeBtn->setFixedWidth(50);
 
-  title = new QLabel("Setup");
+  title = new QLabel("Setup");  
+  title->setProperty("class", "title");
 
   v_layout = new QVBoxLayout();
   v_layout->addWidget(title,Qt::AlignTop);

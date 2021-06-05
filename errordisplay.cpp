@@ -1,7 +1,7 @@
 #include "errordisplay.h"
 #include <QFile>
 
-ErrorDisplay::ErrorDisplay(QWidget *parent, QString errorMessage)
+ErrorDisplay::ErrorDisplay(QWidget *parent, QString errorMessage): QWidget(parent), mess(new QLabel(errorMessage))
 {
   QFile file(":/qss/error.css");
   file.open(QFile::ReadOnly);
@@ -9,18 +9,15 @@ ErrorDisplay::ErrorDisplay(QWidget *parent, QString errorMessage)
 
   setStyleSheet(styleSheet);
 
-  mess = new QLabel(errorMessage);
   layout = new QVBoxLayout();
 
   layout->addWidget(mess,0,Qt::AlignCenter);
   setLayout(layout);
 
   resize(300,100);
-
-
 }
 
-void ErrorDisplay::setMessage(QString &message)
+void ErrorDisplay::setMessage(const QString &message)
 {
   mess->setText(message);
 }

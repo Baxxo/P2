@@ -29,6 +29,8 @@ private:
     QGridLayout* mainlayout;
     QWidget* widget;
 
+    QVBoxLayout* layoutListUsers;
+
     QString read();
 
 private slots:
@@ -37,6 +39,8 @@ private slots:
 
     void cleanTextFamily();
     void cleanTextSearch();
+
+    void clickTest(QListWidgetItem *item);
 
 public:
     Famiglia_View(Controller* c, QWidget *parent=nullptr);

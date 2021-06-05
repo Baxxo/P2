@@ -1,11 +1,15 @@
 #include "qlabelcf.h"
 
-QLabelCF::QLabelCF(QWidget *parent, const QString &_cf): QLabel(parent), cf(_cf)
-{
+#include <QVBoxLayout>
 
+#include <QDebug>
+
+QLabelCF::QLabelCF(QLabel *parent, const QString &_cf,QFlag flag) : QLabel(parent->text()), cf(_cf)
+{
+  setAlignment(flag);
 }
 
 QString QLabelCF::getCf() const
 {
-    return cf;
+  return cf;
 }

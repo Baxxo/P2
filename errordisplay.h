@@ -8,9 +8,9 @@
 class ErrorDisplay: public QWidget
 {
 public:
-  ErrorDisplay(QWidget *parent = nullptr, QString errorMessage = "");
+  ErrorDisplay(QWidget *parent = Q_NULLPTR, QString errorMessage = "");
 
-  void setMessage(QString &message);
+  void setMessage(const QString &message);
 
 private:
   QLabel *mess;

@@ -4,3 +4,8 @@
     font-size:15;
     font-weight: bold;
 }
+
+QLabel{
+    font-size:30px;
+    font-weight: bold;
+}

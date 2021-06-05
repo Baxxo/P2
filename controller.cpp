@@ -85,8 +85,9 @@ void Controller::openFamiglia() {
 
   famigliaView->clearList();
   for (auto it = model -> getListUtenti().cbegin(); it != model -> getListUtenti().cend(); ++it) {
-      famigliaView->addUtenteToLista(QString::fromUtf8(((*it) -> getSurname() + " " + (*it) -> getName()+ " ( " + (*it) -> getCodFisc() + " )").c_str()),
-                                     QString::fromUtf8(((*it)->getCodFisc()).c_str()));
+      QString text = QString::fromUtf8(((*it) -> getSurname() + " " + (*it) -> getName()+ " ( " + (*it) -> getCodFisc() + " )").c_str());
+      QString cf = QString::fromUtf8(((*it)->getCodFisc()).c_str());
+      famigliaView->addUtenteToLista(text,cf);
   }
 
   isFamigliaOpen = true;

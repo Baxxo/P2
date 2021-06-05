@@ -4,6 +4,7 @@
 Client::Client(Controller *c, QWidget *parent) : QMainWindow(parent), controller(c)
 {
   label = new QLabel("Cliente");
+  label->setProperty("class", "title");
   nuovoUtente= new QPushButton("Crea Nuovo Utente");
   nuovaFamiglia= new QPushButton("Crea nuova Famiglia");
   mainLayout=new QGridLayout;

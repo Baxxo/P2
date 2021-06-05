@@ -13,6 +13,7 @@ Admin::Admin(Controller* c, MainWindow *parent): p(parent), controller(c), i(0) 
 
   admin = new QLabel("Admin");
   admin->setFont(font);
+  admin->setProperty("class", "title");
 
   mainLayout->addWidget(admin,0,Qt::AlignCenter);
   mainLayout->addLayout(baseLayout);

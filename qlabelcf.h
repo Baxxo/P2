@@ -2,19 +2,22 @@
 #define QLABELCF_H
 
 #include <QLabel>
-#include <QString>
+#include <QFlag>
 
-class QLabelCF: public QLabel
+class QLabelCF : public QLabel
 {
-    Q_OBJECT
 public:
-    explicit QLabelCF(QWidget* parent = Q_NULLPTR, const QString &_cf = "");
-    virtual ~QLabelCF() = default;
+  explicit QLabelCF(QLabel *parent = nullptr, const QString& _cf = "", QFlag flag = Qt::AlignLeft);
+  ~QLabelCF() = default;
 
-    QString getCf() const;
+  QString getCf() const;
 
 private:
-    QString cf;
+  QString cf;
+
+signals:
+
+public slots:
 };
 
 #endif // QLABELCF_H

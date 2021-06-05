@@ -15,6 +15,8 @@ Famiglia_View::Famiglia_View(Controller* c, QWidget *parent) : QWidget(parent), 
     saveFamily= new QPushButton("Salva Famiglia");
     aggiorna= new QPushButton("Search");
 
+    layoutListUsers = new QVBoxLayout;
+
     setWindowTitle(QString("Creazione famiglia"));
 
     familyName->setText("Type in a family name");
@@ -38,11 +40,17 @@ Famiglia_View::Famiglia_View(Controller* c, QWidget *parent) : QWidget(parent), 
     connect(saveFamily, SIGNAL(clicked()), controller, SLOT(salvaFamiglia()));
     connect(familyName,SIGNAL(clicked()), this, SLOT(cleanTextFamily()));
     connect(search,SIGNAL(clicked()), this, SLOT(cleanTextSearch()));
+    connect(listaUtenti, SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(clickTest(QListWidgetItem*)));
 }
 
 void Famiglia_View::addUtenteToLista(const QString& text, const QString& cf)
 {
-    listaUtenti->addItem(new QLabelCF(new QLabel(text),cf));
+  QListWidgetItem* itemN = new QListWidgetItem();
+  QLabelCF* widgetText = new QLabelCF(new QLabel(text),cf);
+
+  listaUtenti->addItem(itemN);
+  listaUtenti->setItemWidget(itemN,widgetText);
+
 }
 
 void Famiglia_View::setStyle()
@@ -96,7 +104,14 @@ void Famiglia_View::cleanTextFamily()
 
 void Famiglia_View::cleanTextSearch()
 {
-    if(search->text() == "Type in a CF and press search") search->setText("");
+  if(search->text() == "Type in a CF and press search") search->setText("");
+}
+
+void Famiglia_View::clickTest(QListWidgetItem* item)
+{
+  QLabelCF* lbl = dynamic_cast<QLabelCF*>(listaUtenti->itemWidget(item));
+    qDebug() << lbl->getCf();
+
 }
 
 QString Famiglia_View::read() {
