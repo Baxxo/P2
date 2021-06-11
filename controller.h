@@ -6,6 +6,7 @@
 #include <QJsonArray>
 #include <QComboBox>
 #include <QString>
+#include <QWidget>
 
 #include "mainwindow.h"
 #include "admin.h"
@@ -13,6 +14,7 @@
 #include "utente_View.h"
 #include "famiglia_view.h"
 #include "model.h"
+#include "errordisplay.h"
 
 class Controller : public QObject
 {
@@ -23,43 +25,69 @@ private:
     Admin* admin;
     Client* client;
 
-    bool isAdmin;
-    bool isClient;
-    bool isUtente;
-    bool isFamiglia;
+    bool isAdminOpen;
+    bool isClientOpen;
+    bool isUtenteOpen;
+    bool isFamigliaOpen;
 
     Utente_View* utente;
-    Famiglia_View* famiglia;
+    Famiglia_View* famigliaView;
 
     QString pathJsonUsers;
+    QString pathJsonFamiglie;
+    QString pathJsonEntrata;
     QJsonObject* objUtenti;
 
-private slots:
+    QString readFile(const QString &filename);
+
+    void popolaVectorUtenti(const QVariantList &list);
+    void popolaVectorFamiglie(const QVariantList &list);
+
+    QVariantList *readUtenti(QFile &file, bool update = false);
+    QVariantList *readFimiglie(QFile &file, bool update = false);
+    QVariantList *readEntrata(QFile &file, bool update = false);
+    Famiglia* fam;
+
+public slots:
 
     //apertura finestre
     void openAdmin();
     void openClient();
     void openUtente();
     void openFamiglia();
-    void listaUtenti();
+    void searchCF();
 
-    void readUtenti();
-    void readFimiglie();
-    void readEntrata();
+    void loadUsersinView();
+    void loadFamiliesinView();
+    void loadEntrateinView();
 
     //slot per Utente_View
     void annullaUtente();
     void salvaUtente();
+    void salvaFamiglia();
 
 public:
 
     explicit Controller(QObject *parent = nullptr, Model* m = nullptr);
     void setView(MainWindow* v);
 
-    QString getPathJson() const;
+    ErrorDisplay* err;
 
-signals:
+    bool getIsAdmin() const;
+    void setIsAdmin(bool value);
 
+    QString getPathJsonUsers() const;
+    QString getPathJsonFamiglie() const;
+    QString getPathJsonEntrata() const;
+
+    void openError(QString message);
+
+    void createFamiglia(Famiglia& f, Utente* u);
+
+    Famiglia *getFam() const;
+
+    bool addUserToFamily(const QString &cf);
+    bool removeUserFromFamily(const QString &cf);
 };
 
 #endif // CONTROLLER_H

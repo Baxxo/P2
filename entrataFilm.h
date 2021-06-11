@@ -29,5 +29,7 @@ public:
 
     virtual EntrataFilm* clone() const;
 
+    string toString() const;
+
 };
 #endif

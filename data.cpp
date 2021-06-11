@@ -19,5 +19,11 @@ unsigned int  Data::getAnno() const{
 }
 
 string Data::ToString() const {
-    return std::to_string(giorno) + "/" + std::to_string(mese) + "/" + std::to_string(anno);
+  return std::to_string(giorno) + "/" + std::to_string(mese) + "/" + std::to_string(anno);
 }
+
+/*
+std::ostream &Data::operator<<(std::ostream &os, const Data &dt)
+{
+  return os << dt.ToString();
+}*/

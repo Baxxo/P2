@@ -16,37 +16,46 @@
 #include <QTextStream>
 #include <QListView>
 #include <QListWidget>
-#include <iostream>
 #include <QDebug>
 #include <QDir>
+#include <QCloseEvent>
 
 #include "mainwindow.h"
 
 
-using std::cout;
-using std::endl;
+//using std::cout;
+//using std::endl;
+//#include <iostream>
 
 class Admin : public QMainWindow
 {
   Q_OBJECT
 public:
-  Admin(Controller* c, QWidget *parent = nullptr);
+  Admin(Controller* c, MainWindow *parent = nullptr);
   ~Admin() = default;
 
   void setAbbonamenti();
   void addUtente(QString s);
+  void addFamiglia(QString s);
   void setFamiglie();
+
+  void clearListUtenti();
+  void clearListFamiglie();
+  void clearListEntrate();
+
+  void setIsAdmin(bool b);
 
 private slots:
   void getClickAbb();
   void getClickUt();
   void getClickFam();
 
-
 private:
   QDesktopWidget* desktop;
   QGridLayout* baseLayout;
   QVBoxLayout* mainLayout;
+
+  MainWindow* p;
 
   QLabel* admin;
 
@@ -66,6 +75,7 @@ private:
 
   int i;
 
+  void closeEvent(QCloseEvent *event);
 };
 
 #endif // ADMIN_H

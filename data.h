@@ -23,6 +23,8 @@ class Data{
 
         string ToString() const;
 
+        //friend ostream& operator<<(ostream &os, const Data& dt);
+
 
 };
 #endif

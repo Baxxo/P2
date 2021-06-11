@@ -32,6 +32,7 @@ private:
     QPushButton* confermaBtn;
     QPushButton* annullaBtn;
     QLineEdit* name;
+    QLineEdit* surname;
     QLineEdit* CF;
     QLineEdit* age;
     QLineEdit* numtel;
@@ -41,10 +42,11 @@ private:
 public:
     Utente_View(Controller *c, QWidget *parent=nullptr);
     void setStyle();
-    QString getName();
-    QString getCF();
-    QString getAge();
-    QString getNumTel();
+    QString getName() const;
+    QString getSurname() const;
+    QString getCF() const;
+    QString getAge() const;
+    QString getNumTel() const;
 
 
 

@@ -2,8 +2,7 @@
 #define DEEPPTR_H
 
 /*
-#include <iostream>
-using namespace std;
+#include <QDebug>
 */
 
 template < class T >
@@ -51,23 +50,23 @@ template < class T >
     return *this;
   }
 
-template < class T >
-  bool DeepPtr < T > ::operator == (const DeepPtr & o) const {
+template <class T>
+  bool DeepPtr<T> ::operator == (const DeepPtr & o) const {
     return ptr == o.ptr;
   }
 
-template < class T >
-  bool DeepPtr < T > ::operator != (const DeepPtr & o) const {
-    return ptr != o.ptr;
+template <class T>
+  bool DeepPtr <T> ::operator != (const DeepPtr & o) const {
+    return *(ptr) != *(o.ptr);
   }
 
 template < class T >
-  T & DeepPtr < T > ::operator * () const {
+  T & DeepPtr <T> ::operator * () const {
     return *ptr;
   }
 
 template < class T >
-  T * DeepPtr < T > ::operator -> () const {
+  T * DeepPtr <T> ::operator -> () const {
     return ptr;
   }
 

@@ -45,7 +45,10 @@ SOURCES += \
     singolo.cpp \
     utente.cpp \
     utente_View.cpp \
-    model.cpp
+    model.cpp \
+    errordisplay.cpp \
+    qlineeditclickable.cpp \
+    qlabelcf.cpp
 
 HEADERS += \
     controller.h \
@@ -69,7 +72,10 @@ HEADERS += \
     utente.h \
     utente_View.h \
     model.h \
-    deepPtr.h
+    deepPtr.h \
+    errordisplay.h \
+    qlineeditclickable.h \
+    qlabelcf.h
 
 FORMS +=
 

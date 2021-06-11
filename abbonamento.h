@@ -2,9 +2,9 @@
 #ifndef ABBONAMENTO
 #define ABBONAMENTO 1
 
-#include <iostream>
+//#include <iostream>
 
-using std::cout;
+//using std::cout;
 
 class Abbonamento: public EntrataFilm{
 

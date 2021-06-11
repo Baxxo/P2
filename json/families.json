@@ -1,0 +1,15 @@
+{
+    "Famiglie": [
+        {
+            "Name": "test",
+            "Utente1": "Codice Fiscale1",
+            "Utente2": "Codice Fiscale5"
+        },
+        {
+            "Name": "testF",
+            "Utente1": "test",
+            "Utente2": "test1",
+            "Utente3": "test2"
+        }
+    ]
+}

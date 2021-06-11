@@ -3,6 +3,7 @@
 #define UTENTE 1
 
 using std::string;
+using std::ostream;
 
 class Utente{
 private:
@@ -12,7 +13,7 @@ private:
     string codiceFiscale;
     string phoneNumber;
 public:
-    Utente(string n="", string s="", unsigned int a=0, string cf="", string num="");
+    Utente(string cf="", string n="", string s="", unsigned int a=0, string num="");
     Utente(const Utente &o);
     virtual ~Utente() = default;
 
@@ -27,5 +28,7 @@ public:
     bool operator !=(const Utente &o) const;
 
     virtual Utente *clone() const;
+
+    string toString() const;
 };
 #endif

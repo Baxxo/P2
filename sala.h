@@ -1,8 +1,9 @@
-#include <iostream>
-#include "utente.h"
 #ifndef SALA
 #define SALA 1
 
+#include "utente.h"
+
+//#include <iostream>
 using std::string;
 
 class Sala{
