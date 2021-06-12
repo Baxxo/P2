@@ -44,11 +44,17 @@ private:
     QJsonObject* objUtenti;
 
     QString readFile(const QString &filename);
+
     void popolaVectorUtenti(const QVariantList &list);
     void popolaVectorPosti(const QVariantList &list);
-    QVariantList *readUtenti(QFile &file);
+    void popolaVectorFamiglie(const QVariantList &list);
+
+    QVariantList *readUtenti(QFile &file, bool update = false);
+    QVariantList *readFamiglie(QFile &file, bool update = false);
+    QVariantList *readEntrata(QFile &file, bool update = false);
     QVariantList *readPosti(QFile &file);
     QVariantList *readFilm(QFile &file);
+    Famiglia* fam;
 
 public slots:
 
@@ -59,10 +65,11 @@ public slots:
     void openFamiglia();
     void listaUtenti();
     void openBiglietto();
+    void searchCF();
 
-    void readFimiglie();
-    void readEntrata();
     void loadUsersinView();
+    void loadFamiliesinView();
+    void loadEntrateinView();
     void loadPostiOccupati();
     void loadFilm();
 
@@ -96,6 +103,13 @@ public:
     QString getPathJsonFilm() const;
 
     void openError(QString message);
+
+    void createFamiglia(Famiglia& f, Utente* u);
+
+    Famiglia *getFam() const;
+
+    bool addUserToFamily(const QString &cf);
+    bool removeUserFromFamily(const QString &cf);
 
 };
 

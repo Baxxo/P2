@@ -23,18 +23,23 @@ MainWindow::MainWindow(QWidget *parent)
 
   pathUser = new QLabel("name json utenti");
   pathUser->setProperty("class", "path");
+  pathUser->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
   pathFamilies = new QLabel("name json famiglie");
   pathFamilies->setProperty("class", "path");
+  pathFamilies->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
   pathPosti= new QLabel("name json postiOccupati");
   pathPosti->setProperty("class", "path");
+  pathPosti->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
   pathFilm= new QLabel("name json film");
   pathFilm->setProperty("class", "path");
+  pathFilm->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
   pathEntrata = new QLabel("name json archivio entrate/abbonamenti");
   pathEntrata->setProperty("class", "path");
+  pathEntrata->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
   buttonLayout->addWidget(pathUser,0,1,Qt::AlignCenter);
   buttonLayout->addWidget(pathFamilies,1,1,Qt::AlignCenter);
@@ -111,16 +116,19 @@ void MainWindow::setLabelPathFilm(QString s)
 void MainWindow::changeTitleChooseUtenti(QString s)
 {
     prevChooseUtenti = s;
+    if(chooseUtenti != nullptr) chooseUtenti->setText(s);
 }
 
 void MainWindow::changeTitleChooseFamiglie(QString s)
 {
     prevChooseFamiglie = s;
+    if(chooseFamiglie != nullptr) chooseFamiglie->setText(s);
 }
 
 void MainWindow::changeTitleChooseEntrata(QString s)
 {
     prevChooseEntrata = s;
+    if(chooseEntrata != nullptr) chooseEntrata->setText(s);
 }
 
 void MainWindow::changeMenuSlot()
@@ -151,7 +159,10 @@ void MainWindow::changeMenu()
 void MainWindow::createLayoutAdCl()
 {
   adminBtn = new QPushButton(prevAdmin);
+  adminBtn->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
   clientBtn = new QPushButton("Cliente");
+  clientBtn->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
   buttonLayout->addWidget(adminBtn,0,0,Qt::AlignCenter);
   buttonLayout->addWidget(clientBtn,1,0,Qt::AlignCenter);
@@ -167,17 +178,30 @@ void MainWindow::destroyLayoutAdCl()
   prevAdmin = adminBtn->text();
   buttonLayout->removeWidget(adminBtn);
   buttonLayout->removeWidget(clientBtn);
+
   delete adminBtn;
+  adminBtn = nullptr;
+
   delete clientBtn;
+  clientBtn = nullptr;
 }
 
 void MainWindow::createLayoutSetup()
 {
   chooseUtenti = new QPushButton(prevChooseUtenti);
+  chooseUtenti->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
   chooseFamiglie = new QPushButton("Scegli file json per famiglie");
+  chooseFamiglie->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
   chooseEntrata = new QPushButton("Scegli file json per entrata film");
+  chooseEntrata->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
   choosePosti= new QPushButton("Scegli file json per posti occupati");
+  choosePosti->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
   chooseFilm=new QPushButton("Scegli json per film");
+  chooseFilm->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
   buttonLayout->addWidget(chooseUtenti,0,0,Qt::AlignCenter);
   buttonLayout->addWidget(chooseFamiglie,1,0,Qt::AlignCenter);
@@ -186,6 +210,7 @@ void MainWindow::createLayoutSetup()
   buttonLayout->addWidget(chooseFilm, 4, 0, Qt::AlignCenter);
 
   connect(chooseUtenti, SIGNAL(clicked()), controller, SLOT(loadUsersinView()));
+  connect(chooseFamiglie, SIGNAL(clicked()), controller, SLOT(loadFamiliesinView()));
   connect(choosePosti, SIGNAL(clicked()), controller, SLOT(loadPostiOccupati()));
   connect(chooseFilm, SIGNAL(clicked()), controller, SLOT(loadFilm()));
 
@@ -199,11 +224,21 @@ void MainWindow::destroyLayoutSetup()
   buttonLayout->removeWidget(chooseEntrata);
   buttonLayout->removeWidget(choosePosti);
   buttonLayout->removeWidget(chooseFilm);
+
   delete chooseUtenti;
+  chooseUtenti = nullptr;
+
   delete chooseFamiglie;
+  chooseFamiglie = nullptr;
+
   delete chooseEntrata;
+  chooseEntrata = nullptr;
+
   delete choosePosti;
+  choosePosti = nullptr;
+
   delete chooseFilm;
+  chooseFilm = nullptr;
 }
 
 

@@ -26,5 +26,10 @@ bool EntrataFilm::operator ==(const EntrataFilm &o) const
 
 EntrataFilm *EntrataFilm::clone() const
 {
-  return new EntrataFilm(*this);
+    return new EntrataFilm(*this);
+}
+
+std::string EntrataFilm::toString() const
+{
+    return utente->getCodFisc() + " " + data->ToString();
 }

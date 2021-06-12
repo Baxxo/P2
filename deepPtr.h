@@ -10,21 +10,21 @@ template < class T >
     private:
       T * ptr;
     public:
-      DeepPtr(T * p = nullptr);
-    DeepPtr(const T & o);
-    DeepPtr(const DeepPtr < T > & o);
+        DeepPtr(T * p = nullptr);
+        DeepPtr(const T & o);
+        DeepPtr(const DeepPtr < T > & o);
 
-    ~DeepPtr();
-    DeepPtr < T > & operator = (const DeepPtr & o);
+        ~DeepPtr();
+        DeepPtr < T > & operator = (const DeepPtr & o);
 
-    bool operator == (const DeepPtr & o) const;
-    bool operator != (const DeepPtr & o) const;
+        bool operator == (const DeepPtr & o) const;
+        bool operator != (const DeepPtr & o) const;
 
-    T & operator * () const;
-    T * operator -> () const;
+        T & operator * () const;
+        T * operator -> () const;
 
-    DeepPtr < T > & operator++();
-    DeepPtr < T > & operator--();
+        DeepPtr < T > & operator++();
+        DeepPtr < T > & operator--();
   };
 
 template < class T >

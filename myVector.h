@@ -1,10 +1,10 @@
 #ifndef MYVECTOR_H
 #define MYVECTOR_H
 
-/*
-#include <iostream>
-using namespace std;
-*/
+
+//#include <iostream>
+//using namespace std;
+
 
 template <class T>
 class MyVector {
@@ -70,7 +70,6 @@ public:
 
     MyVector(const T &p, unsigned int sz = 0);
     MyVector(unsigned int s=0, unsigned int c=1);
-    //MyVector(unsigned int s = 0; unsigned int c = 1);
     ~MyVector();
 
     MyVector(const MyVector& o);
@@ -88,8 +87,8 @@ public:
 
     T& operator[](unsigned int i) const;
 
-    bool push_back(const T &o); //deve andare void
-    bool pop_back(); //deve andare void
+    void push_back(const T &o);
+    void pop_back(); //deve andare void
 
     bool remove(const T& o);
 
@@ -255,8 +254,12 @@ MyVector<T>::MyVector(unsigned int s, unsigned int c): v(new T[c]), size(s), cap
 template <class T>
 MyVector<T>::~MyVector()
 {
-    if (v) delete[] v;
+  if (v) delete[] v;
 }
+
+ //da fare---------------------------------
+template<class T>
+MyVector<T>::MyVector(const MyVector &o){}
 
 template<class T>
 T *MyVector<T>::copy(unsigned int s, unsigned int c)
@@ -306,10 +309,9 @@ template <class T>
 typename MyVector<T>::Iterator MyVector<T>::search(const T &o)
 { //da controllare
     Iterator it = begin();
-    for (; it != end() && *it != o; ++it) {
-        if (it == end())
-            return Iterator(0); // soprattutto questo
-    }
+    for (; it != end() && *it != o; ++it);
+    if (it == end())
+        return begin(); // soprattutto questo
     return it;
 }
 
@@ -317,11 +319,10 @@ template<class T>
 typename MyVector<T>::Const_iterator MyVector<T>::csearch(const T &o) const
 {
   Const_iterator it = cbegin();
-  for (; it != cend() && *it != o; ++it) {
-      if (it == cend())
-        //QString arrayUtenti
-          return Const_iterator(0); // soprattutto questo
-  }
+  for (; it != cend() && *it != o; ++it);
+  if (it == cend()){
+      return cbegin();
+    }
   return it;
 }
 
@@ -332,7 +333,7 @@ T& MyVector<T>::operator[](unsigned int i) const
 }
 
 template <class T>
-bool MyVector<T>::push_back(const T& o)
+void MyVector<T>::push_back(const T& o)
 {
   if(size >= capacity){
       capacity *= 2;
@@ -341,17 +342,15 @@ bool MyVector<T>::push_back(const T& o)
       v = tmp;
     }
   v[size++] = o;
-  return true;
 }
 
 template <class T>
-bool MyVector<T>::pop_back()
+void MyVector<T>::pop_back()
 {
     if (size) {
+        delete v[size-1];
         size--;
-        return true;
     }
-    return false;
 }
 
 template <class T>

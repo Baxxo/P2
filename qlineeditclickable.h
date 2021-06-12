@@ -2,13 +2,14 @@
 #define QLINEEDITCLICKABLE_H
 
 #include <QLineEdit>
+#include <QMouseEvent>
 
 
 class QLineEditClickable: public QLineEdit
 {
     Q_OBJECT
 public:
-   explicit QLineEditClickable(QWidget* parent = Q_NULLPTR);//, Qt::WindowFlags f = Qt::WindowFlags()
+   explicit QLineEditClickable(QString text="", QWidget* parent = Q_NULLPTR);
     ~QLineEditClickable() = default;
 
 signals:
@@ -19,3 +20,4 @@ protected:
 };
 
 #endif // QLINEEDITCLICKABLE_H
+

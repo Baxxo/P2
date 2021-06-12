@@ -1,7 +1,8 @@
 #include "model.h"
 
 
-Model::Model(){}
+Model::Model(string _test):test(_test){
+}
 
 void Model::addEntrata(const EntrataFilm &a) {
   listEntrate.push_back(DeepPtr<EntrataFilm>(a));
@@ -42,17 +43,21 @@ void Model::clearVectorUtenti()
   listUtenti.clear();
 }
 
+void Model::clearVectorFamiglie()
+{
+  listFamiglie.clear();
+}
+
 Utente* Model::getUtente(string cf) {
 
-  for (auto it = listUtenti.begin(); it != listUtenti.end(); ++it) {
-      //cout << (*it)->getName() << endl;
-      //cout << (*it)->getCodFisc() << " = "<< cf << endl;
-      if((*it)->getCodFisc() == cf){
-          //cout << (*it)->getName() << endl;
-          return new Utente(**it);
-        }
-  }
-  return nullptr;
+    auto it = listUtenti.cbegin();
+
+    for (; it != listUtenti.cend(); ++it) {
+        if((*it)->getCodFisc() == cf){
+            return new Utente(**it);
+          }
+    }
+    return nullptr;
 }
 
 Sala *Model::getSala(string nome)
@@ -81,4 +86,32 @@ const MyVector<DeepPtr<Utente>> &Model::getListUtenti() const
 const MyVector<DeepPtr<Famiglia>> &Model::getListFamiglie() const
 {
   return listFamiglie;
+}
+
+void Model::addUserToFamily(Famiglia &f, Utente *u)
+{
+  f.addMembro(u);
+}
+
+bool Model::searchCf(const string& cf) const
+{
+  if(!listUtenti.isEmpty()){
+      auto it = listUtenti.csearch(Utente(cf));
+      return (*it)->getCodFisc() == cf;
+    }
+  return false;
+}
+
+bool Model::searchNameFamiglia(const string &name) const
+{
+  if(!listFamiglie.isEmpty()){
+      auto it = listFamiglie.csearch(Famiglia(name));
+      return (*it)->getName() == name;
+    }
+  return false;
+}
+
+string Model::getTest() const
+{
+  return test;
 }

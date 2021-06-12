@@ -16,7 +16,6 @@
 #include <QTextStream>
 #include <QListView>
 #include <QListWidget>
-#include <iostream>
 #include <QDebug>
 #include <QDir>
 #include <QCloseEvent>
@@ -24,8 +23,8 @@
 #include "mainwindow.h"
 
 
-using std::cout;
-using std::endl;
+//using std::cout;
+//using std::endl;
 
 class Admin : public QMainWindow
 {
@@ -36,9 +35,12 @@ public:
 
   void setAbbonamenti();
   void addUtente(QString s);
+  void addFamiglia(QString s);
   void setFamiglie();
 
   void clearListUtenti();
+  void clearListFamiglie();
+  void clearListEntrate();
 
   void setIsAdmin(bool b);
 
