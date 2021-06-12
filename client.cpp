@@ -1,30 +1,35 @@
 #include "client.h"
 #include "controller.h"
 
-Client::Client(Controller *c, QWidget *parent) : controller(c), QMainWindow(parent)
+Client::Client(Controller *c, QWidget *parent) : QMainWindow(parent), controller(c)
 {
+  label = new QLabel("Cliente");
+  label->setProperty("class", "title");
   nuovoUtente= new QPushButton("Crea Nuovo Utente");
   nuovaFamiglia= new QPushButton("Crea nuova Famiglia");
+  nuovoBiglietto=new QPushButton("Acqusita un Biglietto");
   mainLayout=new QGridLayout;
   widget=new QWidget(this);
-  btnLayout=new QHBoxLayout;
 
-  setCentralWidget(widget);
+  btnLayout=new QVBoxLayout;
+  btnLayout->addWidget(label, Qt::AlignCenter);
   btnLayout->addWidget(nuovoUtente, Qt::AlignCenter);
   btnLayout->addWidget(nuovaFamiglia, Qt::AlignCenter);
+  btnLayout->addWidget(nuovoBiglietto, Qt::AlignCenter);
+
   mainLayout->addLayout(btnLayout, 0, 1, Qt::AlignCenter);
   widget->setLayout(mainLayout);
-  desktop = QApplication::desktop();
 
+  setCentralWidget(widget);
+
+  setWindowTitle(QString("Cliente"));
 
   resize(300,300);
   setStyle();
 
-
-
   connect(nuovoUtente, SIGNAL(clicked()), controller, SLOT(openUtente()));
   connect(nuovaFamiglia, SIGNAL(clicked()), controller, SLOT(openFamiglia()));
-
+  connect(nuovoBiglietto, SIGNAL(clicked()), controller, SLOT(openBiglietto()));
 
 }
 

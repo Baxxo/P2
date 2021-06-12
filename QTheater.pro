@@ -24,50 +24,60 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-    Abbonamento.cpp \
-    AbbonamentoFamigliare.cpp \
-    Biglietto.cpp \
-    Data.cpp \
-    EntrataFilm.cpp \
-    Famiglia.cpp \
-    Utente_View.cpp \
+    biglietto_view.cpp \
+    client.cpp \
     controller.cpp \
     famiglia_view.cpp \
     main.cpp \
-    MyVector.cpp \
     regola.cpp \
     regolaarancione.cpp \
     regolabianca.cpp \
     regolagialla.cpp \
     regolarossa.cpp \
-    Sala.cpp \
-    Singolo.cpp \
-    Utente.cpp \
-    Mainwindow.cpp \
+    mainwindow.cpp \
     admin.cpp \
-    client.cpp \
+    abbonamento.cpp \
+    abbonamentoFamigliare.cpp \
+    biglietto.cpp \
+    data.cpp \
+    entrataFilm.cpp \
+    famiglia.cpp \
+    sala.cpp \
+    singolo.cpp \
+    utente.cpp \
+    utente_View.cpp \
+    model.cpp \
+    errordisplay.cpp \
+    qlineeditclickable.cpp \
+    qlabelcf.cpp
 
 HEADERS += \
-    EntrataFilm.h \
-    Famiglia.h \
-    MyVector.h \
-    Utente_View.h \
+    biglietto_view.h \
     controller.h \
     famiglia_view.h \
     regola.h \
     regolaarancione.h \
     regolabianca.h \
     regolagialla.h \
-    Sala.h \
-    Singolo.h \
-    Utente.h \
-    Mainwindow.h \
+    mainwindow.h \
     admin.h \
     client.h \
-    Abbonamento.h \
-    AbbonamentoFamigliare.h \
-    Biglietto.h \
-    Data.h \
+    abbonamento.h \
+    abbonamentoFamigliare.h \
+    biglietto.h \
+    data.h \
+    entrataFilm.h \
+    famiglia.h \
+    myVector.h \
+    sala.h \
+    singolo.h \
+    utente.h \
+    utente_View.h \
+    model.h \
+    deepPtr.h \
+    errordisplay.h \
+    qlineeditclickable.h \
+    qlabelcf.h
 
 FORMS +=
 

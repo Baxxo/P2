@@ -6,10 +6,12 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include <QGridLayout>
-#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QPushButton>
 #include <QWidget>
 #include <QFile>
+#include <QLabel>
+
 #include "mainwindow.h"
 
 class Client : public QMainWindow
@@ -21,14 +23,14 @@ public:
   void setStyle();
 
 private:
-  QDesktopWidget* desktop;
   QGridLayout* mainLayout;
   QPushButton* nuovoUtente;
   QPushButton* nuovaFamiglia;
-  QHBoxLayout* btnLayout;
+  QPushButton* nuovoBiglietto;
+  QVBoxLayout* btnLayout;
   QWidget* widget;
+  QLabel* label;
   Controller* controller;
-
 
 };
 
