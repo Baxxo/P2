@@ -24,6 +24,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    biglietto_view.cpp \
+    client.cpp \
     controller.cpp \
     famiglia_view.cpp \
     main.cpp \
@@ -34,7 +36,6 @@ SOURCES += \
     regolarossa.cpp \
     mainwindow.cpp \
     admin.cpp \
-    client.cpp \
     abbonamento.cpp \
     abbonamentoFamigliare.cpp \
     biglietto.cpp \
@@ -51,6 +52,7 @@ SOURCES += \
     qlabelcf.cpp
 
 HEADERS += \
+    biglietto_view.h \
     controller.h \
     famiglia_view.h \
     regola.h \

@@ -186,10 +186,3 @@ void Famiglia_View::addUtenteToFamiglia(QListWidgetItem* item)
 
   //manca da cercare utente nel vector
 }
-
-
-
-
-
-
-

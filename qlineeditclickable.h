@@ -20,3 +20,4 @@ protected:
 };
 
 #endif // QLINEEDITCLICKABLE_H
+

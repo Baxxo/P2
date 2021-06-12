@@ -26,11 +26,11 @@ private:
   QGridLayout* mainLayout;
   QPushButton* nuovoUtente;
   QPushButton* nuovaFamiglia;
+  QPushButton* nuovoBiglietto;
   QVBoxLayout* btnLayout;
   QWidget* widget;
   QLabel* label;
   Controller* controller;
-
 
 };
 

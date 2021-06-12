@@ -25,7 +25,6 @@
 
 //using std::cout;
 //using std::endl;
-//#include <iostream>
 
 class Admin : public QMainWindow
 {

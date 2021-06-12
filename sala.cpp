@@ -10,6 +10,11 @@ int Sala::getColonne() const{
     return colonne;
 }
 
+std::string Sala::getNomesala() const
+{
+    return nome_sala;
+}
+
 int Sala::getRighe()const{
     return righe;
 }

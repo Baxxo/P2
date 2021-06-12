@@ -1,10 +1,5 @@
 #include "model.h"
 
-/*
-#include <iostream>
-using namespace std;
-*/
-
 
 Model::Model(string _test):test(_test){
 }
@@ -15,22 +10,15 @@ void Model::addEntrata(const EntrataFilm &a) {
 
 void Model::addUtente(const Utente &u) {
   listUtenti.push_back(DeepPtr<Utente>(u));
-
-  /*cout << "model add utente"<<endl;
-  for (auto it = listUtenti.begin(); it != listUtenti.end(); ++it) {
-      cout << (*it)->getName() << " " <<  (*it)->getCodFisc() << endl;
-  }
-  cout <<endl<<endl<<endl<<endl;*/
 }
 
 void Model::addFamiglia(const Famiglia &f) {
-  listFamiglie.push_back(DeepPtr<Famiglia>(f));
+    listFamiglie.push_back(DeepPtr<Famiglia>(f));
+}
 
-
-  /*for (auto it = listFamiglie.begin(); it != listFamiglie.end(); ++it) {
-      cout << (*it)->getName() << endl;
-  }
-  cout <<endl<<endl<<endl<<endl;*/
+void Model::addAcquisto(const Utente &u)
+{
+    listStorico.push_back(DeepPtr<Utente>(u));
 }
 
 bool Model::removeEntrata(const EntrataFilm &a) {
@@ -42,7 +30,12 @@ bool Model::removeUtente(const Utente &u) {
 }
 
 bool Model::removeFamiglia(const Famiglia &f) {
-  return listFamiglie.remove(f);
+    return listFamiglie.remove(f);
+}
+
+bool Model::removeAcquisto(const Utente &u)
+{
+    return listStorico.remove(u);
 }
 
 void Model::clearVectorUtenti()
@@ -57,15 +50,27 @@ void Model::clearVectorFamiglie()
 
 Utente* Model::getUtente(string cf) {
 
-  auto it = listUtenti.cbegin();
+    auto it = listUtenti.cbegin();
 
-  for (; it != listUtenti.cend(); ++it) {
-      if((*it)->getCodFisc() == cf){
-          return new Utente(**it);
-        }
-  }
-  return nullptr;
+    for (; it != listUtenti.cend(); ++it) {
+        if((*it)->getCodFisc() == cf){
+            return new Utente(**it);
+          }
+    }
+    return nullptr;
+}
 
+Sala *Model::getSala(string nome)
+{
+    for (auto it = listSale.begin(); it != listSale.end(); ++it) {
+        //cout << (*it)->getName() << endl;
+        //cout << (*it)->getCodFisc() << " = "<< cf << endl;
+        if((*it)->getNomesala() == nome){
+            //cout << (*it)->getName() << endl;
+            return new Sala(**it);
+          }
+    }
+    return nullptr;
 }
 
 const MyVector<DeepPtr<EntrataFilm> > &Model::getListEntrate() const

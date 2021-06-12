@@ -29,13 +29,23 @@ MainWindow::MainWindow(QWidget *parent)
   pathFamilies->setProperty("class", "path");
   pathFamilies->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
+  pathPosti= new QLabel("name json postiOccupati");
+  pathPosti->setProperty("class", "path");
+  pathPosti->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
+  pathFilm= new QLabel("name json film");
+  pathFilm->setProperty("class", "path");
+  pathFilm->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
   pathEntrata = new QLabel("name json archivio entrate/abbonamenti");
   pathEntrata->setProperty("class", "path");
   pathEntrata->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
-  buttonLayout->addWidget(pathUser,0,1,Qt::AlignRight);
-  buttonLayout->addWidget(pathFamilies,1,1,Qt::AlignRight);
-  buttonLayout->addWidget(pathEntrata,2,1,Qt::AlignRight);
+  buttonLayout->addWidget(pathUser,0,1,Qt::AlignCenter);
+  buttonLayout->addWidget(pathFamilies,1,1,Qt::AlignCenter);
+  buttonLayout->addWidget(pathEntrata,2,1,Qt::AlignCenter);
+  buttonLayout->addWidget(pathPosti, 3, 1, Qt::AlignCenter);
+
 
   widget = new QWidget(this);
   widget->setLayout(mainLayout);
@@ -62,11 +72,13 @@ void MainWindow::setController(Controller *c)
     pathUser->setText(controller->getPathJsonUsers());
     pathFamilies->setText(controller->getPathJsonFamiglie());
     pathEntrata->setText(controller->getPathJsonEntrata());
+    pathPosti->setText(controller->getPathJsonPosti());
+    pathFilm->setText(controller->getPathJsonFilm());
 
     createLayoutSetup();
 }
 
-void MainWindow::changeTitleAdmin(const QString &s)
+void MainWindow::changeTitleAdmin(QString s)
 {
   adminBtn->setText(s);
 }
@@ -76,34 +88,44 @@ void MainWindow::setIsAdmin(bool b)
     controller->setIsAdmin(b);
 }
 
-void MainWindow::setLabelPathUser(const QString &s)
+void MainWindow::setLabelPathUser(QString s)
 {
     pathUser->setText(s);
 }
 
-void MainWindow::setLabelPathFamiglie(const QString &s)
+void MainWindow::setLabelPathFamiglie(QString s)
 {
     pathFamilies->setText(s);
 }
 
-void MainWindow::setLabelPathEntrata(const QString &s)
+void MainWindow::setLabelPathEntrata(QString s)
 {
     pathEntrata->setText(s);
 }
 
-void MainWindow::changeTitleChooseUtenti(const QString& s)
+void MainWindow::setLabelPathPosti(QString s)
+{
+    pathPosti->setText(s);
+}
+
+void MainWindow::setLabelPathFilm(QString s)
+{
+    pathFilm->setText(s);
+}
+
+void MainWindow::changeTitleChooseUtenti(QString s)
 {
     prevChooseUtenti = s;
     if(chooseUtenti != nullptr) chooseUtenti->setText(s);
 }
 
-void MainWindow::changeTitleChooseFamiglie(const QString& s)
+void MainWindow::changeTitleChooseFamiglie(QString s)
 {
     prevChooseFamiglie = s;
     if(chooseFamiglie != nullptr) chooseFamiglie->setText(s);
 }
 
-void MainWindow::changeTitleChooseEntrata(const QString& s)
+void MainWindow::changeTitleChooseEntrata(QString s)
 {
     prevChooseEntrata = s;
     if(chooseEntrata != nullptr) chooseEntrata->setText(s);
@@ -151,6 +173,19 @@ void MainWindow::createLayoutAdCl()
 
 }
 
+void MainWindow::destroyLayoutAdCl()
+{
+  prevAdmin = adminBtn->text();
+  buttonLayout->removeWidget(adminBtn);
+  buttonLayout->removeWidget(clientBtn);
+
+  delete adminBtn;
+  adminBtn = nullptr;
+
+  delete clientBtn;
+  clientBtn = nullptr;
+}
+
 void MainWindow::createLayoutSetup()
 {
   chooseUtenti = new QPushButton(prevChooseUtenti);
@@ -162,27 +197,23 @@ void MainWindow::createLayoutSetup()
   chooseEntrata = new QPushButton("Scegli file json per entrata film");
   chooseEntrata->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 
+  choosePosti= new QPushButton("Scegli file json per posti occupati");
+  choosePosti->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
+  chooseFilm=new QPushButton("Scegli json per film");
+  chooseFilm->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
+
   buttonLayout->addWidget(chooseUtenti,0,0,Qt::AlignCenter);
   buttonLayout->addWidget(chooseFamiglie,1,0,Qt::AlignCenter);
   buttonLayout->addWidget(chooseEntrata,2,0,Qt::AlignCenter);
+  buttonLayout->addWidget(choosePosti, 3, 0, Qt::AlignCenter);
+  buttonLayout->addWidget(chooseFilm, 4, 0, Qt::AlignCenter);
 
   connect(chooseUtenti, SIGNAL(clicked()), controller, SLOT(loadUsersinView()));
   connect(chooseFamiglie, SIGNAL(clicked()), controller, SLOT(loadFamiliesinView()));
-  connect(chooseEntrata, SIGNAL(clicked()), controller, SLOT(loadEntrateinView()));
+  connect(choosePosti, SIGNAL(clicked()), controller, SLOT(loadPostiOccupati()));
+  connect(chooseFilm, SIGNAL(clicked()), controller, SLOT(loadFilm()));
 
-}
-
-void MainWindow::destroyLayoutAdCl()
-{
-  prevAdmin = adminBtn->text();
-  buttonLayout->removeWidget(adminBtn);
-  buttonLayout->removeWidget(clientBtn);
-
-  delete adminBtn;  
-  adminBtn = nullptr;
-
-  delete clientBtn;
-  clientBtn = nullptr;
 }
 
 void MainWindow::destroyLayoutSetup()
@@ -191,6 +222,9 @@ void MainWindow::destroyLayoutSetup()
   buttonLayout->removeWidget(chooseUtenti);
   buttonLayout->removeWidget(chooseFamiglie);
   buttonLayout->removeWidget(chooseEntrata);
+  buttonLayout->removeWidget(choosePosti);
+  buttonLayout->removeWidget(chooseFilm);
+
   delete chooseUtenti;
   chooseUtenti = nullptr;
 
@@ -199,6 +233,12 @@ void MainWindow::destroyLayoutSetup()
 
   delete chooseEntrata;
   chooseEntrata = nullptr;
+
+  delete choosePosti;
+  choosePosti = nullptr;
+
+  delete chooseFilm;
+  chooseFilm = nullptr;
 }
 
 

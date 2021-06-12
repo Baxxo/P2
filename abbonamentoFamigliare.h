@@ -1,21 +1,20 @@
+#ifndef ABBONAMENTOFAMIGLIARE
+#define ABBONAMENTOFAMIGLIARE
 #include "abbonamento.h"
 #include "famiglia.h"
-#ifndef ABBONAMENTOFAMIGLIARE
-#define ABBONAMENTOFAMIGLIARE 1
 
-class AbbonamentoFamigliare: public Abbonamento{
+class AbbonamentoFamigliare : public Abbonamento {
 
 private:
-  Famiglia* famiglia;
+  Famiglia *famiglia;
 
 public:
-
-  AbbonamentoFamigliare(Data* d, Utente* u, Famiglia* f, double p=7.5, string c ="00000", int e=0);
+  AbbonamentoFamigliare(Data *d, Utente *u, Famiglia *f, double p = 7.5,
+                        string c = "00000", int e = 0);
 
   double getPrezzo() const;
 
   virtual ~AbbonamentoFamigliare();
-
 };
 
 #endif
