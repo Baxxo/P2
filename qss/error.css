@@ -1,0 +1,11 @@
+*{
+    background-color: #f00;
+    color: #FFF;
+    font-size:15;
+    font-weight: bold;
+}
+
+QLabel{
+    font-size:30px;
+    font-weight: bold;
+}

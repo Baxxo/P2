@@ -3,7 +3,7 @@
     color: white;
 }
 
-QLabel{
+.title{
     font-size:30px;
     font-weight: bold;
 }
@@ -12,4 +12,14 @@ QPushButton{
     background-color: #fff;
     color: blue;
     padding: 10% 100% ;
+}
+
+.path{
+    font-size:20px;
+    font-weight: normal;
+}
+
+QListWidget::item:selected{
+    background-color: green;
+    color: white;
 }
