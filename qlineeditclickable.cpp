@@ -1,11 +1,13 @@
 #include "qlineeditclickable.h"
 
-QLineEditClickable::QLineEditClickable(QWidget *parent): QLineEdit(parent)
+QLineEditClickable::QLineEditClickable(QString text, QWidget *parent): QLineEdit(text, parent)
 {
 
 }
 
 void QLineEditClickable::mousePressEvent(QMouseEvent *event)
 {
-    emit clicked();
+  if (event->button() == Qt::LeftButton) {
+        emit clicked();
+      }
 }

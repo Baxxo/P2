@@ -1,16 +1,15 @@
 #include "famiglia.h"
 #include <stdexcept>
 
-/*
-#include <QDebug>*/
+/*#include <iostream>
+using namespace std;*/
 
-#include <iostream>
-using namespace std;
+Famiglia::Famiglia(std::string _name, unsigned int c): name(_name), membri(new Utente*[c]),capacity(c), size(0)
+{
 
-Famiglia::Famiglia(unsigned int c): membri(new Utente[c]),capacity(c), size(0)
-{}
+}
 
-Famiglia::Famiglia(const Famiglia &o) : membri(new Utente[o.capacity]), capacity(o.capacity), size(o.size)
+Famiglia::Famiglia(const Famiglia &o) : membri(new Utente*[o.capacity]), capacity(o.capacity), size(o.size), name(o.name)
 {
   for(unsigned int i=0;i<o.size;i++){
       membri[i] = o.membri[i];
@@ -22,40 +21,80 @@ Famiglia::~Famiglia()
   delete[] membri;
 }
 
+string Famiglia::getName() const
+{
+  return name;
+}
+
+void Famiglia::setName(const string &value)
+{
+  name = value;
+}
+
+std::string Famiglia::toString() const
+{
+  return "nome: " + name + " size:" + std::to_string(size);
+}
+
 void Famiglia::resize()
 {
   capacity *= 2;
-  Utente* u = new Utente[capacity];
+  Utente** u = new Utente*[capacity];
   for(unsigned int i = 0U; i<size;i++){
       u[i] = membri[i];
-      //cout << "Famiglia resize: " << u[i].getCodFisc() << endl;
-
     }
   delete[] membri;
   membri = u;
-  //cout << "esco resize" << endl<<endl;
 }
 
 void Famiglia::addMembro(Utente *u)
 {
-  cout << "inzio--------------" << endl;
+  //cout << "inzio--------------" << endl;
   if(size >=capacity){
       resize();
     }
-  membri[size] = *u;
+  membri[size] = u;
   size++;
-
+/*
   for(unsigned int i = 0U; i<size;i++){
-      cout << "Famiglia: " << membri[i].getCodFisc() << endl;
+      cout << "Famiglia: " << membri[i]->getCodFisc() << endl;
 
     }
-  cout << "esco -----------------" << endl<<endl;
+  cout << "esco -----------------" << endl<<endl;*/
 }
 
-bool Famiglia::hasMembro(Utente *u)
+void Famiglia::removeMembro(Utente *u)
+{
+  //cout << "inzio remove--------------" << endl;
+  if(hasMembro(u)){
+      for(unsigned int i=0U;i<size;i++){
+          if(*(membri[i]) == *u){
+              Utente** temp = new Utente*[capacity];
+              for(unsigned int j=0;j<i;j++){
+                  temp[j] = membri[j];
+                }
+              for(unsigned int j=i+1;j<size;j++){
+                  temp[j-1] = membri[j];
+                }
+              size--;
+              delete[] membri;
+              membri = temp;
+            }
+        }
+    }
+
+/*
+  for(unsigned int i = 0U; i<size;i++){
+      cout << "Famiglia: " << membri[i]->getCodFisc() << endl;
+
+    }
+  cout << "esco remove-----------------" << endl<<endl;*/
+}
+
+bool Famiglia::hasMembro(Utente *u) const
 {
   for(unsigned int i=0;i<size;++i){
-      if(u->getCodFisc() == membri[i].getCodFisc()){
+      if(*u == *(membri[i])){
           return true;
         }
     }
@@ -67,17 +106,17 @@ unsigned int Famiglia::getSize() const
   return size;
 }
 
-Utente &Famiglia::operator [](unsigned int i) const{
+
+Utente* Famiglia::operator [](unsigned int i) const{
     if( i >= size ) {
         throw std::out_of_range("Out of range");
       }
-
     return membri[i];
 }
 
-Utente &Famiglia::operator [](int i) const
+Utente* Famiglia::operator [](int i) const
 {
-  if( i >= size ) {
+  if( static_cast<unsigned int>(i) >= size ) {
       throw std::out_of_range("Out of range");
     }
 
@@ -86,7 +125,12 @@ Utente &Famiglia::operator [](int i) const
 
 bool Famiglia::operator ==(const Famiglia &f) const
 {
-  return f.capacity == capacity && f.size == size && f.membri == membri;
+  return f.name == name;
+}
+
+bool Famiglia::operator !=(const Famiglia &f) const
+{
+  return f.name != name;
 }
 
 Famiglia &Famiglia::operator =(const Famiglia &o)

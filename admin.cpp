@@ -65,9 +65,21 @@ void Admin::addUtente(QString s)
   listUt->addItem(item);
 }
 
+void Admin::addFamiglia(QString s)
+{
+  qDebug() << "admin addFamiglia";
+  QListWidgetItem* item = new QListWidgetItem(s);
+  listFam->addItem(item);
+}
+
 void Admin::clearListUtenti()
 {
   listUt->clear();
+}
+
+void Admin::clearListFamiglie()
+{
+  listFam->clear();
 }
 
 void Admin::getClickAbb()

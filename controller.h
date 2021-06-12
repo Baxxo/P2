@@ -39,8 +39,13 @@ private:
     QJsonObject* objUtenti;
 
     QString readFile(const QString &filename);
+
     void popolaVectorUtenti(const QVariantList &list);
+    void popolaVectorFamiglie(const QVariantList &list);
+
     QVariantList *readUtenti(QFile &file, bool update = false);
+    QVariantList *readFimiglie(QFile &file, bool update = false);
+    QVariantList *readEntrata(QFile &file, bool update = false);
     Famiglia* fam;
 
 public slots:
@@ -50,11 +55,11 @@ public slots:
     void openClient();
     void openUtente();
     void openFamiglia();
-    void listaUtenti();
+    void searchCF();
 
-    void readFimiglie();
-    void readEntrata();
     void loadUsersinView();
+    void loadFamiliesinView();
+    void loadEntrateinView();
 
     //slot per Utente_View
     void annullaUtente();
@@ -82,6 +87,7 @@ public:
     Famiglia *getFam() const;
 
     bool addUserToFamily(const QString &cf);
+    bool removeUserFromFamily(const QString &cf);
 };
 
 #endif // CONTROLLER_H

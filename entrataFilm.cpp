@@ -28,3 +28,8 @@ EntrataFilm *EntrataFilm::clone() const
 {
   return new EntrataFilm(*this);
 }
+
+std::string EntrataFilm::toString() const
+{
+  return utente->getCodFisc() + " " + data->ToString();
+}

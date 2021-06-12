@@ -1,24 +1,28 @@
 #include "utente.h"
 
-/*
-#include <iostream>
-using namespace std;
-*/
 
-string Utente::getSurname() const
-{
-  return surname;
-}
+/*#include <iostream>
+using namespace std;*/
 
-Utente::Utente(std::string n, std::string s, unsigned int a, std::string cf, std::string num)
+Utente::Utente(std::string cf, std::string n, std::string s, unsigned int a, std::string num)
   : name(n), surname(s), age(a), codiceFiscale(cf), phoneNumber(num) {}
 
-Utente::Utente(const Utente &o): name(o.name), age(o.age), codiceFiscale(o.codiceFiscale), phoneNumber(o.phoneNumber) {}
+Utente::Utente(const Utente &o): name(o.name), surname(o.surname), age(o.age), codiceFiscale(o.codiceFiscale), phoneNumber(o.phoneNumber) {}
+
+/*Utente::~Utente()
+{
+  cout << "ciao " << codiceFiscale<< endl;
+}*/
 
 
 std::string Utente::getName() const
 {
-    return name;
+  return name;
+}
+
+string Utente::getSurname() const
+{
+  return surname;
 }
 
 unsigned int Utente::getAge() const
@@ -50,15 +54,20 @@ Utente &Utente::operator=(const Utente &o)
 
 bool Utente::operator ==(const Utente &o) const
 {
-  return o.age==age && o.codiceFiscale == codiceFiscale && o.name == name && o.phoneNumber == phoneNumber;
+  return o.codiceFiscale == codiceFiscale;
 }
 
 bool Utente::operator !=(const Utente &o) const
 {
-  return o.age!=age && o.codiceFiscale != codiceFiscale && o.name != name && o.phoneNumber != phoneNumber;
+  return o.codiceFiscale != codiceFiscale;
 }
 
 Utente *Utente::clone() const
 {
- return new Utente(*this);
+  return new Utente(*this);
+}
+
+std::string Utente::toString() const
+{
+  return name + " " + codiceFiscale;
 }

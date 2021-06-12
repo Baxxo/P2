@@ -19,22 +19,25 @@ private:
 
     QLineEditClickable* familyName;
     QListWidget* listaUtenti;
-    QLineEditClickable* search;
+    QLineEditClickable* searchEditText;
 
     QVBoxLayout* menuLayout;
     QVBoxLayout* btnLayout;
     Controller* controller;
-    QPushButton* aggiorna;
+    QPushButton* searchBtn;
     QPushButton* saveFamily;
     QGridLayout* mainlayout;
     QWidget* widget;
 
     QVBoxLayout* layoutListUsers;
     QLabel* labelListaUtenti;
+    QLabel* utility;
 
 private slots:
+
     void signaltest();
     void resizeMe();
+    void cleanUtilityText();
 
     void cleanTextFamily();
     void cleanTextSearch();
@@ -42,17 +45,25 @@ private slots:
     void addUtenteToFamiglia(QListWidgetItem *item);
 
 public:
-    Famiglia_View(Controller* c, QWidget *parent=nullptr);
-    void addUtenteToLista(const QString &text, const QString &cf);
-    //void showMenu();
-    void setStyle();
-    QString getItem(int i);
-    QString getSearch();
-    int getListSize();
-    QString getFamilyName();
 
+    Famiglia_View(Controller* c, QWidget *parent=nullptr);
+
+    void addUtenteToLista(const QString &text, const QString &cf);
+    void setStyle();
+    int getListSize();
     void clearList();
 
+    void selectIndexbyCF(QString cf);
+
+    QString getItem(int i);
+    QString getSearch();
+    QString getFamilyName();
+
+    QString getCF_SearchText() const;
+
+    void findUser(QString search);
+
+    void setUtilityText(QString txt);
 
 };
 

@@ -151,19 +151,6 @@ void MainWindow::createLayoutAdCl()
 
 }
 
-void MainWindow::destroyLayoutAdCl()
-{
-  prevAdmin = adminBtn->text();
-  buttonLayout->removeWidget(adminBtn);
-  buttonLayout->removeWidget(clientBtn);
-
-  delete adminBtn;  
-  adminBtn = nullptr;
-
-  delete clientBtn;
-  clientBtn = nullptr;
-}
-
 void MainWindow::createLayoutSetup()
 {
   chooseUtenti = new QPushButton(prevChooseUtenti);
@@ -180,7 +167,22 @@ void MainWindow::createLayoutSetup()
   buttonLayout->addWidget(chooseEntrata,2,0,Qt::AlignCenter);
 
   connect(chooseUtenti, SIGNAL(clicked()), controller, SLOT(loadUsersinView()));
+  connect(chooseFamiglie, SIGNAL(clicked()), controller, SLOT(loadFamiliesinView()));
+  connect(chooseEntrata, SIGNAL(clicked()), controller, SLOT(loadEntrateinView()));
 
+}
+
+void MainWindow::destroyLayoutAdCl()
+{
+  prevAdmin = adminBtn->text();
+  buttonLayout->removeWidget(adminBtn);
+  buttonLayout->removeWidget(clientBtn);
+
+  delete adminBtn;  
+  adminBtn = nullptr;
+
+  delete clientBtn;
+  clientBtn = nullptr;
 }
 
 void MainWindow::destroyLayoutSetup()

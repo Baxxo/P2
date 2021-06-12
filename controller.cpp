@@ -1,6 +1,7 @@
 #include "controller.h"
 
 #include <QFileDialog>
+#include <QTimer>
 
 using std::string;
 
@@ -11,6 +12,8 @@ Controller::Controller(QObject * parent, Model * m):
   isUtenteOpen(false),
   isFamigliaOpen(false),
   pathJsonUsers(""),
+  pathJsonFamiglie(""),
+  pathJsonEntrata(""),
   fam(nullptr){}
 
 bool Controller::getIsAdmin() const {
@@ -60,8 +63,18 @@ Famiglia *Controller::getFam() const
 bool Controller::addUserToFamily(const QString& cf)
 {
   Utente * u = model->getUtente(cf.toUtf8().constData());
-  if(fam!= nullptr && u != nullptr && !fam->hasMembro(u)){
+  if(fam!= nullptr && u != nullptr){
       fam->addMembro(u);
+      return true;
+    }
+  return false;
+}
+
+bool Controller::removeUserFromFamily(const QString &cf)
+{
+  Utente * u = model->getUtente(cf.toUtf8().constData());
+  if(fam!= nullptr && u != nullptr){
+      fam->removeMembro(u);
       return true;
     }
   return false;
@@ -100,58 +113,54 @@ void Controller::openFamiglia() {
       fam = new Famiglia();
       famigliaView = new Famiglia_View(this);
   }
-
   if(model->getListUtenti().isEmpty()){
       QFile file;
       QVariantList* list = readUtenti(file);
-      view -> changeTitleChooseUtenti("Cambia file json per utenti");
-      if(list != nullptr){
+
+      if(model->getListUtenti().isEmpty() && list != nullptr){
           popolaVectorUtenti(*list);
-      }
+        }
+
+      view -> changeTitleChooseUtenti("Cambia file json per utenti");
   }
 
   famigliaView->clearList();
   for (auto it = model -> getListUtenti().cbegin(); it != model -> getListUtenti().cend(); ++it) {
-      QString text = QString::fromUtf8(((*it) -> getSurname() + " " + (*it) -> getName()+ " ( " + (*it) -> getCodFisc() + " )").c_str());
-      QString cf = QString::fromUtf8(((*it)->getCodFisc()).c_str());
+      QString text = QString::fromStdString(((*it) -> getSurname() + " " + (*it) -> getName()+ " ( " + (*it) -> getCodFisc() + " )").c_str());
+      QString cf = QString::fromStdString(((*it)->getCodFisc()).c_str());
       famigliaView->addUtenteToLista(text,cf);
   }
 
-  isFamigliaOpen = true;
+  isFamigliaOpen = true;  
+
+  QTimer::singleShot(0,famigliaView,SLOT(resizeMe()));
   famigliaView -> show();
 
 }
 
-void Controller::listaUtenti() {
-  /*
-  QJsonObject::iterator a= objUtenti->begin();
-  for(int i=0; i<objUtenti->size();i++){
-      menu->addItem(a.key());
-      a++;
-  }
-  */
-  //readUtenti();
-
-  QString key;
-  bool found = false;
-
-  /*for (auto it = model->getListUtenti().cbegin(); it != model->getListUtenti().cend(); ++it) {
-      if(it.key()==famiglia->getSearch()){
-          key= a.key();
-          found=true;
+void Controller::searchCF() {
+    string cf = famigliaView->getCF_SearchText().toUtf8().constData();
+    if(cf != "" && cf != "Type in a CF and press search"){
+        if(!fam->hasMembro(new Utente(cf))){
+            bool find =  model->searchCf(cf);
+            if(find){
+                famigliaView->findUser(famigliaView->getCF_SearchText());
+              }else{
+                err = new ErrorDisplay(nullptr,"Utente non trovato");
+                err->show();
+                famigliaView->setUtilityText(QString("Utente non trovato"));
+              }
+          }else{
+            err = new ErrorDisplay(nullptr,"Codice fiscale gia' presente nella famiglia");
+            err->show();
+          }
+      }else{
+        err = new ErrorDisplay(nullptr,"Inserisci un codice fiscale valido");
+        err->show();
       }
-  }*/
-
-  if (!found) {
-    key = "CF non presente, crea nuovo utente";
-  }
-
-  //famigliaView -> addUtenteToLista(key);
-
 }
 
 void Controller::annullaUtente() {
-  qDebug() << "test";
 }
 
 void Controller::setView(MainWindow * v) {
@@ -175,9 +184,9 @@ void Controller::salvaUtente() {
   QJsonArray array = v.toArray();
 
   QJsonObject newUser;
+  newUser.insert("CF", utente -> getCF());
   newUser.insert("name", utente -> getName());
   newUser.insert("surname", utente -> getSurname());
-  newUser.insert("CF", utente -> getCF());
   newUser.insert("age", utente -> getAge());
   newUser.insert("tel.Num", utente -> getNumTel());
 
@@ -194,13 +203,19 @@ void Controller::salvaUtente() {
 
   file.write(doc.toJson());
   file.close();
+
+  famigliaView->setUtilityText("Famiglia Salvata e registrata");
 }
 
 void Controller::salvaFamiglia() {
+
+  fam->setName(famigliaView->getFamilyName().toStdString());
+  model->addFamiglia(*fam);
+
   if (pathJsonFamiglie == "") {
-    pathJsonFamiglie = QFileDialog::getOpenFileName(view, tr("Carica json Utenti"), "/home/student/QTheater/json", tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+    pathJsonFamiglie = QFileDialog::getOpenFileName(view, tr("Scegli json famiglie"), "/home/student/QTheater/json", tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
   }
-  QFile file(pathJsonUsers);
+  QFile file(pathJsonFamiglie);
   if (!file.open(QIODevice::ReadOnly)) {
     openError(QString("File open error: Read"));
   }
@@ -208,16 +223,22 @@ void Controller::salvaFamiglia() {
   QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
   file.close();
 
-  QJsonObject newUser;
-  for (int i = 0; i < famigliaView -> getListSize(); i++) {
-    newUser.insert(famigliaView -> getItem(i), famigliaView -> getItem(i));
-  }
+  QJsonValue v = jsonOrg.object().value(QString("Famiglie"));
 
-  qDebug() << newUser.length() << famigliaView -> getListSize();
-  QJsonObject fam;
-  fam.insert(famigliaView -> getFamilyName(), newUser);
+  QJsonArray array = v.toArray();
 
-  QJsonDocument doc(fam);
+  QJsonObject newFamily;
+  newFamily.insert("Name",famigliaView->getFamilyName());
+  for(unsigned int i=0;i<fam->getSize();i++){
+      newFamily.insert(QString::fromStdString("Utente"+std::to_string(i+1)), QString::fromStdString(((*fam)[i])->getCodFisc()));
+    }
+
+  array.push_back(newFamily);
+
+  QJsonObject obj;
+  obj.insert("Famiglie", array);
+
+  QJsonDocument doc(obj);
 
   if (!file.open(QIODevice::WriteOnly)) {
     openError(QString("File open error: Write"));
@@ -225,15 +246,19 @@ void Controller::salvaFamiglia() {
 
   file.write(doc.toJson());
   file.close();
+
+
 }
 
 void Controller::loadUsersinView() {
 
     QFile file;
-    QVariantList* list = readUtenti(file,true);
+    QVariantList* list = readUtenti(file);
     if(list != nullptr){
 
-        popolaVectorUtenti(*list);
+        if(model->getListUtenti().isEmpty()){
+            popolaVectorUtenti(*list);
+          }
 
         view -> changeTitleChooseUtenti("Cambia file json per utenti");
         QFileInfo info(file.fileName());
@@ -244,10 +269,47 @@ void Controller::loadUsersinView() {
             isAdminOpen = true;
         }
         admin -> clearListUtenti();
+        Utente* u;
         for (auto it = model -> getListUtenti().cbegin(); it != model -> getListUtenti().cend(); ++it) {
-            admin -> addUtente(QString::fromUtf8((( * it) -> getSurname() + " " + ( * it) -> getName()).c_str()));
+            u = new Utente(**it);
+            string s = u->getSurname() + " " + u->getName() + " ( " + u->getCodFisc() + " )";
+            admin -> addUtente(QString(s.c_str()));
         }
+
+        if(u) delete u;
+      }
+}
+
+void Controller::loadFamiliesinView()
+{
+  QFile file;
+  QVariantList* list = readFimiglie(file);
+  if(list != nullptr){
+
+      if(model->getListFamiglie().isEmpty()){
+          popolaVectorFamiglie(*list);
+        }
+
+
+      view -> changeTitleChooseFamiglie("Cambia file json per Famiglie");
+      QFileInfo info(file.fileName());
+      view -> setLabelPathFamiglie(info.fileName());
+
+      if(!admin || !isAdminOpen){
+          admin = new Admin(this, view);
+          isAdminOpen = true;
+      }
+      admin -> clearListFamiglie();
+      for (auto it = model -> getListFamiglie().cbegin(); it != model -> getListFamiglie().cend(); ++it) {
+          //qDebug() << "controller ciclo famiglie";
+          admin -> addFamiglia(QString::fromStdString((*it)->getName() + " (membri: " + std::to_string((*it)->getSize()) + " )"));
+      }
     }
+}
+
+void Controller::loadEntrateinView()
+{
+
 }
 
 QVariantList* Controller::readUtenti(QFile &file, bool update) {
@@ -284,25 +346,85 @@ QVariantList* Controller::readUtenti(QFile &file, bool update) {
 
 }
 
+QVariantList *Controller::readFimiglie(QFile &file, bool update)
+{
+
+  if (pathJsonFamiglie == "" || update) {
+    pathJsonFamiglie = QFileDialog::getOpenFileName(view, tr("Carica json Famiglie"), "/home/student/QTheater/json", tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+  }
+  file.setFileName(pathJsonFamiglie);
+
+  if (!file.open(QIODevice::ReadOnly)) {
+    openError(QString("File open error: Read"));
+  } else {
+
+    model -> clearVectorFamiglie();
+
+    QString json = file.readAll();
+
+    QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
+    if (!doc.isEmpty()) {
+      QJsonObject jObj = doc.object();
+
+      QVariantMap mainMap = jObj.toVariantMap();
+      QVariantList* localList = new QVariantList();
+      *localList = mainMap["Famiglie"].toList();
+
+      return localList;
+    } else {
+      openError(QString("Empty file"));
+    }
+
+  }
+
+  return nullptr;
+
+}
+
+QVariantList *Controller::readEntrata(QFile &file, bool update)
+{
+
+}
+
 void Controller::popolaVectorUtenti(const QVariantList &list)
 {
     Utente *u;
+
     for (int i = 0; i < list.length(); ++i) {
       QVariantMap map = list[i].toMap();
-      u = new Utente(map["name"].toString().toUtf8().constData(),
-        map["surname"].toString().toUtf8().constData(),
-        map["age"].toInt(),
-        map["CF"].toString().toUtf8().constData(),
-        map["tel.Num"].toString().toUtf8().constData());
-      model -> addUtente(*u);
+      string cf = map["CF"].toString().toUtf8().constData();
+      if(!model->searchCf(cf)){
+          u = new Utente(
+              map["CF"].toString().toUtf8().constData(),
+              map["name"].toString().toUtf8().constData(),
+              map["surname"].toString().toUtf8().constData(),
+              map["age"].toInt(),
+              map["tel.Num"].toString().toUtf8().constData()
+            );
+          model -> addUtente(*u);
+        }
     }
 
 }
 
-void Controller::readFimiglie() {
+void Controller::popolaVectorFamiglie(const QVariantList &list)
+{
+  Famiglia *fam;
 
-}
+  for (int i = 0; i < list.length(); ++i) {
+    QVariantMap map = list[i].toMap();
 
-void Controller::readEntrata() {
+    string name = map["Name"].toString().toUtf8().constData();
 
+    if(!model->searchNameFamiglia(name)){
+        fam = new Famiglia(name);
+        for(unsigned int j=1;j<map.size();j++){
+            QString key = QString::fromStdString("Utente"+std::to_string(j));
+            string cf = map[key].toString().toUtf8().constData();
+            Utente* u = model->getUtente(cf);
+            fam->addMembro(u);
+          }
+        model->addFamiglia(*fam);
+      }
+  }
 }

@@ -1,29 +1,28 @@
-#include "entrataFilm.h"
 #ifndef ABBONAMENTO
 #define ABBONAMENTO 1
+#include "entrataFilm.h"
 
-#include <iostream>
+//#include <iostream>
+// using std::cout;
 
-using std::cout;
+class Abbonamento : public EntrataFilm {
 
-class Abbonamento: public EntrataFilm{
+private:
+  std::string codice;
+  int entrate;
 
-    private:
-        std::string codice;
-        int entrate;
+public:
+  Abbonamento(Data *d = new Data(), Utente *u = new Utente(), double p = 7.5,
+              string cod = "00000", int entr = 0);
 
-    public:
+  int getEntrate() const;
 
-        Abbonamento(Data* d = new Data(), Utente* u = new Utente(), double p=7.5, string cod ="00000", int entr=0);
+  double getPrezzo() const;
 
-        int getEntrate() const;
+  std::string getCodice() const;
 
-        double getPrezzo() const;
+  Abbonamento &operator=(const Abbonamento &o);
 
-        std::string getCodice() const;
-
-        Abbonamento &operator = (const Abbonamento& o);
-
-        bool operator ==(const Abbonamento& o) const;
+  bool operator==(const Abbonamento &o) const;
 };
 #endif
