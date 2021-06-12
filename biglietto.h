@@ -1,22 +1,20 @@
-#include "entrataFilm.h"
 #ifndef BIGLIETTO
-#define BIGLIETTO 1
+#define BIGLIETTO
+#include "entrataFilm.h"
 
-class Biglietto: public EntrataFilm{
+class Biglietto : public EntrataFilm {
 
-    private:
-        bool riduzione;
-        string film;
+private:
+  bool riduzione;
+  string film;
 
+public:
+  Biglietto(Data *d, Utente *u, double p = 7.5, bool r = false,
+            string f = "null");
 
-    public:
-
-        Biglietto(Data* d, Utente* u, double p=7.5, bool r=false, string f="null");
-
-        bool getRiduzione() const;
-        string getFilm() const;
-        double getPrezzo() const override;
-
+  bool getRiduzione() const;
+  string getFilm() const;
+  double getPrezzo() const override;
 };
 
 #endif

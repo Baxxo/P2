@@ -1,28 +1,25 @@
-#include <iostream>
 #ifndef DATA
-#define DATA 1
+#define DATA
+#include <iostream>
 
 using std::ostream;
 using std::string;
 
-class Data{
-    private:
-        unsigned int  giorno;
-        unsigned int  mese;
-        unsigned int  anno;
+class Data {
+private:
+  unsigned int giorno;
+  unsigned int mese;
+  unsigned int anno;
 
-    public:
+public:
+  Data(unsigned int a = 1990, unsigned int m = 1, unsigned int g = 1);
 
-        Data(unsigned int a= 1990, unsigned int  m = 1, unsigned int  g =1);
+  unsigned int getGiorno() const;
 
-        unsigned int  getGiorno() const;
+  unsigned int getMese() const;
 
-        unsigned int  getMese() const;
+  unsigned int getAnno() const;
 
-        unsigned int  getAnno() const;
-
-        string ToString() const;
-
-
+  string ToString() const;
 };
 #endif
