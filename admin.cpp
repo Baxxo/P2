@@ -2,7 +2,6 @@
 
 Admin::Admin(Controller *c, MainWindow *parent)
     : p(parent), controller(c), i(0) {
-
   baseLayout = new QGridLayout();
   mainLayout = new QVBoxLayout();
 
@@ -86,7 +85,7 @@ void Admin::getClickFam() {
 }
 
 void Admin::closeEvent(QCloseEvent *event) {
-  p->setIsAdmin(false);
+  p->changeTitleAdmin("Admin");
   event->accept();
 }
 

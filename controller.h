@@ -19,17 +19,17 @@
 
 class Controller : public QObject {
   Q_OBJECT
-private:
+ private:
   Model *model;
   MainWindow *view;
   Admin *admin;
   Client *client;
 
-  bool isAdminOpen;
-  bool isClientOpen;
-  bool isUtenteOpen;
-  bool isFamigliaOpen;
-  bool isBigliettoOpen;
+  //  bool isAdminOpen;
+  //  bool isClientOpen;
+  //  bool isUtenteOpen;
+  //  bool isFamigliaOpen;
+  //  bool isBigliettoOpen;
 
   Utente_View *utente;
   Famiglia_View *famigliaView;
@@ -47,36 +47,40 @@ private:
   void popolaVectorUtenti(const QVariantList &list);
   void popolaVectorPosti(const QVariantList &list);
   void popolaVectorFamiglie(const QVariantList &list);
+  void popolaVectorEntrate(const QVariantList &list);
 
-  QVariantList *readUtenti(QFile &file);
-  QVariantList *readFamiglie(QFile &file);
-  QVariantList *readEntrata(QFile &file);
-  QVariantList *readPosti(QFile &file);
-  QVariantList *readFilm(QFile &file);
+  QVariantList *readUtenti(QFile &file, bool canUpdate);
+  QVariantList *readFamiglie(QFile &file, bool canUpdate);
+  QVariantList *readEntrata(QFile &file, bool canUpdate);
+  QVariantList *readPosti(QFile &file, bool canUpdate);
+  QVariantList *readFilm(QFile &file, bool canUpdate);
+
   Famiglia *fam;
 
-  bool canUpdateUtenti;
-  bool canUpdateFamiglie;
-  bool canUpdateEntrata;
-  bool canUpdatePosti;
-  bool canUpdateFilm;
+  void loadUsers(bool canUpdate = false);
+  void loadFamilies(bool canUpdate = false);
+  void loadEntrateinView(bool canUpdate = false);
+  void loadPostiOccupati(bool canUpdate = false);
+  void loadFilm(bool canUpdate = false);
 
-public slots:
+ public slots:
 
   // apertura finestre
   void openAdmin();
   void openClient();
   void openUtente();
   void openFamiglia();
-  void listaUtenti();
+  // void listaUtenti();
   void openBiglietto();
+
   void searchCF();
 
-  void loadUsersinView();
-  void loadFamiliesinView();
-  void loadEntrateinView();
-  void loadPostiOccupati();
-  void loadFilm();
+  // slot per caricare json
+  void loadUsersSlot();
+  void loadFamiliesSlot();
+  void loadEntrateSlot();
+  void loadPostiSlot();
+  void loadFilmSlot();
 
   // slot per Utente_View
   void annullaUtente();
@@ -87,14 +91,14 @@ public slots:
 
   void showSala();
 
-public:
+ public:
   explicit Controller(QObject *parent = nullptr, Model *m = nullptr);
   void setView(MainWindow *v);
 
   ErrorDisplay *err;
 
-  bool getIsAdmin() const;
-  void setIsAdmin(bool value);
+  //  bool getIsAdmin() const;
+  //  void setIsAdmin(bool value);
 
   QString getPathJsonUsers() const;
   QString getPathJsonFamiglie() const;
@@ -112,4 +116,4 @@ public:
   bool removeUserFromFamily(const QString &cf);
 };
 
-#endif // CONTROLLER_H
+#endif  // CONTROLLER_H

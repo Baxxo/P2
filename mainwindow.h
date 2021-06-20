@@ -15,7 +15,7 @@ class Controller;
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
-public:
+ public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow() = default;
 
@@ -27,7 +27,6 @@ public:
   void changeTitleChooseFamiglie(QString s);
   void changeTitleChooseEntrata(QString s);
   void changeTitleAdmin(QString s);
-  void setIsAdmin(bool b);
 
   void setLabelPathUser(QString s);
   void setLabelPathFamiglie(QString s);
@@ -35,11 +34,17 @@ public:
   void setLabelPathPosti(QString s);
   void setLabelPathFilm(QString s);
 
-private slots:
+  void createLayoutSetup();
+  void destroyLayoutSetup();
+
+  void setPrevAdmin(const QString &value);
+
+ private slots:
 
   void changeMenuSlot();
+  void resizeMe();
 
-private:
+ private:
   QDesktopWidget *desktop;
 
   QWidget *widget;
@@ -75,14 +80,17 @@ private:
 
   bool isVisReadBtn;
 
+  //  bool isVisFam;
+  //  bool isVisEntrata;
+  //  bool isVisPosti;
+  //  bool isVisFilm;
+
   void createLayoutAdCl();
   void destroyLayoutAdCl();
-  void createLayoutSetup();
-  void destroyLayoutSetup();
 
   QString prevAdmin;
   QString prevChooseUtenti;
   QString prevChooseFamiglie;
   QString prevChooseEntrata;
 };
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

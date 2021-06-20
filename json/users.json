@@ -97,6 +97,13 @@
             "name": "vbn",
             "surname": "Bonolis",
             "tel.Num": "Numero di telefono"
+        },
+        {
+            "CF": "Codice Fiscale11",
+            "age": "56",
+            "name": "vbn",
+            "surname": "Bonolis",
+            "tel.Num": "Numero di telefono"
         }
     ]
 }
