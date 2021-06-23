@@ -8,28 +8,16 @@ using std::string;
 Controller::Controller(QObject *parent, Model *m)
     : QObject(parent),
       model(m),
+      view(nullptr),
       admin(nullptr),
       client(nullptr),
-      //      isAdminOpen(false),
-      //      isClientOpen(false),
-      //      isUtenteOpen(false),
-      //      isFamigliaOpen(false),
-      //      isBigliettoOpen(false),
+      utente(nullptr),
+      famigliaView(nullptr),
+      bigliettoView(nullptr),
       pathJsonUsers(""),
       pathjsonPosti(""),
       pathJsonFilm(""),
       fam(nullptr) {}
-
-// bool Controller::getIsAdmin() const { return isAdminOpen; }
-
-// void Controller::setIsAdmin(bool value) {
-//  isAdminOpen = value;
-//  if (isAdminOpen) {
-//    view->changeTitleAdmin(QString("Aggiorna admin"));
-//  } else {
-//    view->changeTitleAdmin(QString("Admin"));
-//  }
-//}
 
 QString Controller::getPathJsonUsers() const { return pathJsonUsers; }
 
@@ -112,6 +100,10 @@ void Controller::openClient() {
   if (!client) {
     client = new Client(this);
   }
+
+  if (pathJsonUsers == "") loadUsers();
+  if (pathJsonFamiglie == "") loadFamilies();
+
   client->show();
 }
 
@@ -127,6 +119,7 @@ void Controller::openFamiglia() {
     fam = new Famiglia();
     famigliaView = new Famiglia_View(this);
   }
+  /*
   if (model->getListUtenti().isEmpty()) {
     QFile file;
     QVariantList *list = readUtenti(file, false);
@@ -134,7 +127,10 @@ void Controller::openFamiglia() {
     if (model->getListUtenti().isEmpty() && list != nullptr) {
       popolaVectorUtenti(*list);
     }
-  }
+  }*/
+
+  if (pathJsonUsers == "") loadUsers();
+  if (pathJsonFamiglie == "") loadFamilies();
 
   famigliaView->clearList();
   for (auto it = model->getListUtenti().cbegin();
@@ -151,37 +147,16 @@ void Controller::openFamiglia() {
   famigliaView->show();
 }
 
-// void Controller::listaUtenti() {
-//  /*
-//  QJsonObject::iterator a= objUtenti->begin();
-//  for(int i=0; i<objUtenti->size();i++){
-//      menu->addItem(a.key());
-//      a++;
-//  }
-//  */
-//  // readUtenti();
-
-//  QString key;
-//  bool found = false;
-
-//  /*for (auto it = model->getListUtenti().cbegin(); it !=
-//  model->getListUtenti().cend(); ++it) { if(it.key()==famiglia->getSearch()){
-//          key= a.key();
-//          found=true;
-//      }
-//  }*/
-
-//  if (!found) {
-//    key = "CF non presente, crea nuovo utente";
-//  }
-
-//  // famigliaView -> addUtenteToLista(key);
-//}
-
 void Controller::openBiglietto() {
   if (!bigliettoView) {
     bigliettoView = new Biglietto_View(this);
   }
+
+  if (pathJsonUsers == "") loadUsers();
+  if (pathJsonFamiglie == "") loadFamilies();
+
+  QTimer::singleShot(0, bigliettoView, SLOT(resizeMe()));
+
   bigliettoView->show();
 }
 

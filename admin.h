@@ -1,36 +1,35 @@
 #ifndef ADMIN_H
 #define ADMIN_H
 
-#include <QLabel>
-#include <QMainWindow>
-#include <QDesktopWidget>
 #include <QApplication>
-#include <QGridLayout>
-#include <QVBoxLayout>
-#include <QPushButton>
-#include <QWidget>
-#include <QJsonObject>
+#include <QCloseEvent>
+#include <QDebug>
+#include <QDesktopWidget>
+#include <QDir>
 #include <QFile>
-#include <QJsonDocument>
+#include <QGridLayout>
 #include <QJsonArray>
-#include <QTextStream>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QLabel>
 #include <QListView>
 #include <QListWidget>
-#include <QDebug>
-#include <QDir>
-#include <QCloseEvent>
+#include <QMainWindow>
+#include <QPushButton>
+#include <QTextStream>
+#include <QVBoxLayout>
+#include <QWidget>
 
 #include "mainwindow.h"
+#include "qlineeditclickable.h"
 
+// using std::cout;
+// using std::endl;
 
-//using std::cout;
-//using std::endl;
-
-class Admin : public QMainWindow
-{
+class Admin : public QMainWindow {
   Q_OBJECT
 public:
-  Admin(Controller* c, MainWindow *parent = nullptr);
+  Admin(Controller *c, MainWindow *parent = nullptr);
   ~Admin() = default;
 
   void setAbbonamenti();
@@ -44,35 +43,60 @@ public:
 
   void setIsAdmin(bool b);
 
+  QString getNomeFilm();
+  QString getSalaFilm();
+
 private slots:
   void getClickAbb();
   void getClickUt();
   void getClickFam();
+  void getClickFilm();
+  void addFilmLayout();
+  void addSalaLayout();
 
 private:
-  QDesktopWidget* desktop;
-  QGridLayout* baseLayout;
-  QVBoxLayout* mainLayout;
+  QDesktopWidget *desktop;
+  QGridLayout *baseLayout;
+  QVBoxLayout *mainLayout;
 
-  MainWindow* p;
+  MainWindow *p;
 
-  QLabel* admin;
+  QLabel *admin;
 
-  QListWidget* listAbb;
-  QListWidget* listUt;
-  QListWidget* listFam;
+  QListWidget *listAbb;
+  QListWidget *listUt;
+  QListWidget *listFam;
+  QListWidget *listFilm;
+  QListWidget *listSala;
 
-  QLabel* labelAbb;
-  QLabel* labelUt;
-  QLabel* labelFam;
-  QWidget* widget;
+  QLabel *labelAbb;
+  QLabel *labelUt;
+  QLabel *labelFam;
+  QLabel *labelFilm;
+  QLabel *labelSala;
 
-  QPushButton* readBtn;
-  QPushButton* writeBtn;
+  QWidget *widget;
 
-  Controller* controller;
+  QPushButton *addFilm;
+  QPushButton *addSala;
 
-  int i;
+  QWidget *widgetFilm;
+  QGridLayout *filmLayout;
+  QLineEditClickable *nomeFilm;
+  QLineEditClickable *salaFilm;
+  QPushButton *saveFilm;
+
+  QWidget *widgetSala;
+  QGridLayout *salaLayout;
+  QLineEditClickable *nomeSala;
+  QLineEditClickable *righeSala;
+  QLineEditClickable *colonneSala;
+  QPushButton *saveSala;
+  /*
+    QPushButton *readBtn;
+    QPushButton *writeBtn;*/
+
+  Controller *controller;
 
   void closeEvent(QCloseEvent *event);
 };

@@ -25,12 +25,6 @@ class Controller : public QObject {
   Admin *admin;
   Client *client;
 
-  //  bool isAdminOpen;
-  //  bool isClientOpen;
-  //  bool isUtenteOpen;
-  //  bool isFamigliaOpen;
-  //  bool isBigliettoOpen;
-
   Utente_View *utente;
   Famiglia_View *famigliaView;
   Biglietto_View *bigliettoView;
