@@ -1,80 +1,82 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-#include <QLabel>
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QFile>
 #include <QGridLayout>
+#include <QLabel>
+#include <QMainWindow>
+#include <QPushButton>
 #include <QVBoxLayout>
 #include <QWidget>
-#include <QDesktopWidget>
-#include <QWidget>
-#include <QFile>
-#include <QApplication>
-#include <QPushButton>
-#include <QMainWindow>
-
-//#include <iostream>
 
 class Controller;
 
-//using std::cout;
-
-
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
   Q_OBJECT
 
-public:
+ public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow() = default;
 
-  MainWindow* getMainwindow();
+  MainWindow *getMainwindow();
 
-  void setController(Controller*c);
+  void setController(Controller *c);
 
   void changeTitleChooseUtenti(QString s);
   void changeTitleChooseFamiglie(QString s);
   void changeTitleChooseEntrata(QString s);
   void changeTitleAdmin(QString s);
-  void setIsAdmin(bool b);
+  void changeTitleChooseSala(QString s);
 
   void setLabelPathUser(QString s);
   void setLabelPathFamiglie(QString s);
   void setLabelPathEntrata(QString s);
   void setLabelPathPosti(QString s);
+  void setLabelPathSale(QString s);
   void setLabelPathFilm(QString s);
 
-private slots:
+  void createLayoutSetup();
+  void destroyLayoutSetup();
+
+  void setPrevAdmin(const QString &value);
+
+ private slots:
 
   void changeMenuSlot();
+  void resizeMe();
 
-private:
-  QDesktopWidget* desktop;
+ private:
+  QDesktopWidget *desktop;
 
-  QWidget* widget;
+  QWidget *widget;
 
-  QGridLayout* mainLayout;
-  QVBoxLayout* v_layout;
-  QGridLayout* buttonLayout;
+  QGridLayout *mainLayout;
+  QVBoxLayout *v_layout;
+  QGridLayout *buttonLayout;
 
-  QLabel* title;
+  QLabel *title;
 
-  QPushButton* changeBtn;
+  QPushButton *changeBtn;
 
   QPushButton *chooseUtenti;
-  QPushButton* chooseFamiglie;
-  QPushButton* chooseEntrata;
-  QPushButton* choosePosti;
-  QPushButton* chooseFilm;
+  QPushButton *chooseFamiglie;
+  QPushButton *chooseEntrata;
+  QPushButton *chooseSala;
+  QPushButton *choosePosti;
+  QPushButton *chooseFilm;
 
-  QPushButton* adminBtn;
-  QPushButton* clientBtn;
+  QPushButton *adminBtn;
+  QPushButton *clientBtn;
 
   QLabel *pathUser;
   QLabel *pathFamilies;
   QLabel *pathEntrata;
   QLabel *pathPosti;
+  QLabel *pathSala;
   QLabel *pathFilm;
 
-  Controller* controller;
+  Controller *controller;
 
   void setStyle();
   void changeMenu();
@@ -82,15 +84,17 @@ private:
 
   bool isVisReadBtn;
 
+  //  bool isVisFam;
+  //  bool isVisEntrata;
+  //  bool isVisPosti;
+  //  bool isVisFilm;
+
   void createLayoutAdCl();
   void destroyLayoutAdCl();
-  void createLayoutSetup();
-  void destroyLayoutSetup();
 
   QString prevAdmin;
   QString prevChooseUtenti;
   QString prevChooseFamiglie;
   QString prevChooseEntrata;
-
 };
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

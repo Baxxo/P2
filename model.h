@@ -13,6 +13,7 @@ class Model {
     void addUtente(const Utente & u);
     void addFamiglia(const Famiglia & f);
     void addAcquisto(const Utente &u);
+    void addSala(const Sala &s);
 
     ~Model() = default;
 
@@ -20,10 +21,12 @@ class Model {
     bool removeUtente(const Utente & u);
     bool removeFamiglia(const Famiglia & f);
     bool removeAcquisto(const Utente & u);
+    bool removeSala(const Sala & s);
 
 
     void clearVectorUtenti();
     void clearVectorFamiglie();
+    void cleaVectorSale();
 
     Utente *getUtente(string cf);
     Famiglia & getFamiglia(string cf);
@@ -34,6 +37,7 @@ class Model {
     const MyVector<DeepPtr<EntrataFilm>> &getListEntrate() const;
     const MyVector<DeepPtr<Utente>> &getListUtenti() const;
     const MyVector<DeepPtr<Famiglia>> &getListFamiglie() const;
+    const MyVector<DeepPtr<Sala>> &getListSale() const;
 
     void addUserToFamily(Famiglia& f, Utente *u);
 

@@ -15,6 +15,8 @@ std::string Sala::getNomesala() const
     return nome_sala;
 }
 
+Sala *Sala::clone() const{ return new Sala(*this); }
+
 int Sala::getRighe()const{
     return righe;
 }

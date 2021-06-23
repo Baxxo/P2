@@ -44,10 +44,16 @@ public:
 
   void setIsAdmin(bool b);
 
+  QString getNomeFilm();
+  QString getSalaFilm();
+
 private slots:
   void getClickAbb();
   void getClickUt();
   void getClickFam();
+  void getClickFilm();
+  void addFilmLayout();
+  void addSalaLayout();
 
 private:
   QDesktopWidget* desktop;
@@ -61,18 +67,33 @@ private:
   QListWidget* listAbb;
   QListWidget* listUt;
   QListWidget* listFam;
+  QListWidget* listFilm;
+  QListWidget* listSala;
 
   QLabel* labelAbb;
   QLabel* labelUt;
   QLabel* labelFam;
+  QLabel* labelFilm;
+  QLabel* labelSala;
   QWidget* widget;
 
-  QPushButton* readBtn;
-  QPushButton* writeBtn;
+  QPushButton* addFilm;
+  QPushButton* addSala;
+
+  QWidget* widgetFilm;
+  QGridLayout* filmLayout;
+  QLineEdit* nomeFilm;
+  QLineEdit* salaFilm;
+  QPushButton* saveFilm;
+
+  QWidget* widgetSala;
+  QGridLayout* salaLayout;
+  QLineEdit* nomeSala;
+  QLineEdit* righeSala;
+  QLineEdit* colonneSala;
+  QPushButton* saveSala;
 
   Controller* controller;
-
-  int i;
 
   void closeEvent(QCloseEvent *event);
 };

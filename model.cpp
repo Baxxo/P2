@@ -21,6 +21,11 @@ void Model::addAcquisto(const Utente &u)
     listStorico.push_back(DeepPtr<Utente>(u));
 }
 
+void Model::addSala(const Sala &s)
+{
+    listSale.push_back(DeepPtr<Sala>(s));
+}
+
 bool Model::removeEntrata(const EntrataFilm &a) {
   return listEntrate.remove(a);
 }
@@ -38,6 +43,11 @@ bool Model::removeAcquisto(const Utente &u)
     return listStorico.remove(u);
 }
 
+bool Model::removeSala(const Sala &s)
+{
+    return listSale.remove(s);
+}
+
 void Model::clearVectorUtenti()
 {
   listUtenti.clear();
@@ -45,7 +55,12 @@ void Model::clearVectorUtenti()
 
 void Model::clearVectorFamiglie()
 {
-  listFamiglie.clear();
+    listFamiglie.clear();
+}
+
+void Model::cleaVectorSale()
+{
+    listSale.clear();
 }
 
 Utente* Model::getUtente(string cf) {
@@ -85,7 +100,12 @@ const MyVector<DeepPtr<Utente>> &Model::getListUtenti() const
 
 const MyVector<DeepPtr<Famiglia>> &Model::getListFamiglie() const
 {
-  return listFamiglie;
+    return listFamiglie;
+}
+
+const MyVector<DeepPtr<Sala> > &Model::getListSale() const
+{
+    return listSale;
 }
 
 void Model::addUserToFamily(Famiglia &f, Utente *u)
