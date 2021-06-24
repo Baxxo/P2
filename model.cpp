@@ -1,4 +1,5 @@
 #include "model.h"
+#include <QDebug>
 
 
 Model::Model(string _test):test(_test){

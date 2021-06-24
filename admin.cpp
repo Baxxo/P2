@@ -106,28 +106,21 @@ void Admin::clearListUtenti() { listUt->clear(); }
 
 void Admin::clearListFamiglie() { listFam->clear(); }
 
-QString Admin::getNomeFilm()
-{
-    return nomeFilm->text();
-}
+QString Admin::getNomeFilm(){ return nomeFilm->text(); }
 
-QString Admin::getSalaFilm()
-{
-    return salaFilm->text();
-}
+QString Admin::getColonneSala(){ return colonneSala->text(); }
 
-void Admin::getClickAbb() {
-  qDebug() << "Abbonamento " << listAbb->currentItem()->text();
-}
+QString Admin::getRigheSala(){ return righeSala->text(); }
 
-void Admin::getClickFam() {
-    qDebug() << "Famiglia " << listFam->currentItem()->text();
-}
+QString Admin::getNomeSala(){ return nomeSala->text(); }
 
-void Admin::getClickFilm()
-{
-    qDebug() << "film " << listFilm->currentItem()->text();
-}
+QString Admin::getSalaFilm(){ return salaFilm->text(); }
+
+void Admin::getClickAbb(){ qDebug() << "Abbonamento " << listAbb->currentItem()->text(); }
+
+void Admin::getClickFam(){ qDebug() << "Famiglia " << listFam->currentItem()->text(); }
+
+void Admin::getClickFilm(){ qDebug() << "film " << listFilm->currentItem()->text(); }
 
 void Admin::addFilmLayout()
 {

@@ -338,7 +338,7 @@ void Controller::newSala()
           view, tr("Carica json Sale"), "/home/student/QTheater/json",
           tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
     }
-    QFile file(pathJsonUsers);
+    QFile file(pathJsonSale);
     if (!file.open(QIODevice::ReadOnly)) {
       openError(QString("File open error: Read"));
     }
@@ -346,14 +346,14 @@ void Controller::newSala()
     QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
     file.close();
 
-    QJsonValue v = jsonOrg.object().value(QString("Utenti"));
+    QJsonValue v = jsonOrg.object().value(QString("Sale"));
 
     QJsonArray array = v.toArray();
 
     QJsonObject newSala;
-    newSala.insert("righe", utente->getCF());
-    newSala.insert("colonne", utente->getName());
-    newSala.insert("nome_sala", utente->getSurname());
+    newSala.insert("righe", admin->getRigheSala());
+    newSala.insert("colonne", admin->getColonneSala());
+    newSala.insert("nome_sala", admin->getNomeSala());
 
     array.push_back(newSala);
 
@@ -479,7 +479,6 @@ void Controller::loadSale(bool canUpdate)
     QFile file;
     QVariantList *list = readSale(file, canUpdate);
     if (list != nullptr) {
-        qDebug() << "test 1";
 
       popolaVectorSale(*list);
       QFileInfo info(file.fileName());
@@ -653,18 +652,16 @@ QVariantList *Controller::readSale(QFile &file, bool canUpdate)
         openError(QString("File open error: Read"));
       } else {
         model->cleaVectorSale();
-        qDebug() << "test 0";
 
         QString json = file.readAll();
 
-        QJsonDocument doc = QJsonDocument::fromJson(json.toUtf8());
+        QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
 
         if (!doc.isEmpty()) {
           QJsonObject jObj = doc.object();
 
           QVariantMap mainMap = jObj.toVariantMap();
           QVariantList *localList = new QVariantList();
-          qDebug() << "test 1";
 
           *localList = mainMap["Sale"].toList();
           view->changeTitleChooseSala("Cambia file json per sale");

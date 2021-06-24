@@ -13,12 +13,13 @@ private:
   Utente *matrix;
 
 public:
-  ~Sala();
   Sala(int r = 0, int c = 0, string n = "null");
   int getRighe() const;
   int getColonne() const;
   string getNomesala() const;
   virtual Sala *clone() const;
+  virtual ~Sala() = default;
+
 };
 
 #endif

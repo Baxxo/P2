@@ -45,6 +45,9 @@ public:
   void setIsAdmin(bool b);
 
   QString getNomeFilm();
+  QString getColonneSala();
+  QString getRigheSala();
+  QString getNomeSala();
   QString getSalaFilm();
 
 private slots:
