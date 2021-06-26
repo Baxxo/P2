@@ -53,7 +53,6 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
   utenteBigl->addWidget(searchBtn, Qt::AlignCenter);
 
   mainWidget->setLayout(mainLayout);
-
   mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
   widgetSing->setLayout(utenteBigl);

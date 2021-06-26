@@ -15,7 +15,7 @@ class Controller;
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
- public:
+public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow() = default;
 
@@ -27,11 +27,13 @@ class MainWindow : public QMainWindow {
   void changeTitleChooseFamiglie(QString s);
   void changeTitleChooseEntrata(QString s);
   void changeTitleAdmin(QString s);
+  void changeTitleChooseSala(QString s);
 
   void setLabelPathUser(QString s);
   void setLabelPathFamiglie(QString s);
   void setLabelPathEntrata(QString s);
   void setLabelPathPosti(QString s);
+  void setLabelPathSale(QString s);
   void setLabelPathFilm(QString s);
 
   void createLayoutSetup();
@@ -39,12 +41,12 @@ class MainWindow : public QMainWindow {
 
   void setPrevAdmin(const QString &value);
 
- private slots:
+private slots:
 
   void changeMenuSlot();
   void resizeMe();
 
- private:
+private:
   QDesktopWidget *desktop;
 
   QWidget *widget;
@@ -60,6 +62,7 @@ class MainWindow : public QMainWindow {
   QPushButton *chooseUtenti;
   QPushButton *chooseFamiglie;
   QPushButton *chooseEntrata;
+  QPushButton *chooseSala;
   QPushButton *choosePosti;
   QPushButton *chooseFilm;
 
@@ -70,27 +73,23 @@ class MainWindow : public QMainWindow {
   QLabel *pathFamilies;
   QLabel *pathEntrata;
   QLabel *pathPosti;
+  QLabel *pathSala;
   QLabel *pathFilm;
 
   Controller *controller;
 
-  void setStyle();
-  void changeMenu();
-  void setSlot();
-
   bool isVisReadBtn;
-
-  //  bool isVisFam;
-  //  bool isVisEntrata;
-  //  bool isVisPosti;
-  //  bool isVisFilm;
-
-  void createLayoutAdCl();
-  void destroyLayoutAdCl();
 
   QString prevAdmin;
   QString prevChooseUtenti;
   QString prevChooseFamiglie;
   QString prevChooseEntrata;
+
+  void setStyle();
+  void changeMenu();
+  void setSlot();
+
+  void createLayoutAdCl();
+  void destroyLayoutAdCl();
 };
-#endif  // MAINWINDOW_H
+#endif // MAINWINDOW_H

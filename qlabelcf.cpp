@@ -2,24 +2,13 @@
 
 #include <QVBoxLayout>
 
-#include <QDebug>
-
-QLabelCF::QLabelCF(QLabel *parent, const QString &_cf, QFlag flag, bool s) : QLabel(parent->text()), cf(_cf), select(s)
-{
+QLabelCF::QLabelCF(QLabel *parent, const QString &_cf, QFlag flag, bool s)
+    : QLabel(parent->text()), cf(_cf), select(s) {
   setAlignment(flag);
 }
 
-QString QLabelCF::getCf() const
-{
-  return cf;
-}
+QString QLabelCF::getCf() const { return cf; }
 
-bool QLabelCF::isSelected() const
-{
-  return select;
-}
+bool QLabelCF::isSelected() const { return select; }
 
-void QLabelCF::setSelect(bool s)
-{
-  select = s;
-}
+void QLabelCF::setSelect(bool s) { select = s; }

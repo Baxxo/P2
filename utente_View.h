@@ -1,6 +1,7 @@
 #ifndef UTENTE_VIEW_H
 #define UTENTE_VIEW_H
 #include "mainwindow.h"
+#include "qlineeditclickable.h"
 #include <QDebug>
 #include <QDesktopWidget>
 #include <QDir>
@@ -11,7 +12,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLabel>
-#include <QLineEdit>
 #include <QPushButton>
 #include <QTextStream>
 #include <QVBoxLayout>
@@ -27,11 +27,11 @@ private:
   QVBoxLayout *lineLayout;
   QPushButton *confermaBtn;
   QPushButton *annullaBtn;
-  QLineEdit *name;
-  QLineEdit *surname;
-  QLineEdit *CF;
-  QLineEdit *age;
-  QLineEdit *numtel;
+  QLineEditClickable *name;
+  QLineEditClickable *surname;
+  QLineEditClickable *CF;
+  QLineEditClickable *age;
+  QLineEditClickable *numtel;
   QDesktopWidget *desktop;
   Controller *controller;
 

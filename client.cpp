@@ -1,17 +1,16 @@
 #include "client.h"
 #include "controller.h"
 
-Client::Client(Controller *c, QWidget *parent) : QMainWindow(parent), controller(c)
-{
-  label = new QLabel("Cliente");
-  label->setProperty("class", "title");
-  nuovoUtente= new QPushButton("Crea Nuovo Utente");
-  nuovaFamiglia= new QPushButton("Crea nuova Famiglia");
-  nuovoBiglietto=new QPushButton("Acqusita un Biglietto");
-  mainLayout=new QGridLayout;
-  widget=new QWidget(this);
+Client::Client(Controller *c, QWidget *parent)
+    : QMainWindow(parent), mainLayout(new QGridLayout),
+      nuovaFamiglia(new QPushButton("Crea nuova Famiglia")),
+      nuovoBiglietto(new QPushButton("Acqusita un Biglietto")),
+      btnLayout(new QVBoxLayout), widget(new QWidget(this)),
+      label(new QLabel("Cliente")), controller(c) {
 
-  btnLayout=new QVBoxLayout;
+  label->setProperty("class", "title");
+  nuovoUtente = new QPushButton("Crea Nuovo Utente");
+
   btnLayout->addWidget(label, Qt::AlignCenter);
   btnLayout->addWidget(nuovoUtente, Qt::AlignCenter);
   btnLayout->addWidget(nuovaFamiglia, Qt::AlignCenter);
@@ -24,20 +23,18 @@ Client::Client(Controller *c, QWidget *parent) : QMainWindow(parent), controller
 
   setWindowTitle(QString("Cliente"));
 
-  resize(300,300);
+  resize(300, 300);
   setStyle();
 
   connect(nuovoUtente, SIGNAL(clicked()), controller, SLOT(openUtente()));
   connect(nuovaFamiglia, SIGNAL(clicked()), controller, SLOT(openFamiglia()));
   connect(nuovoBiglietto, SIGNAL(clicked()), controller, SLOT(openBiglietto()));
-
 }
 
-void Client::setStyle()
-{
-    QFile file(":/qss/style.css");
-    file.open(QFile::ReadOnly);
-    QString styleSheet = QLatin1String(file.readAll());
+void Client::setStyle() {
+  QFile file(":/qss/style.css");
+  file.open(QFile::ReadOnly);
+  QString styleSheet = QLatin1String(file.readAll());
 
-    setStyleSheet(styleSheet);
+  setStyleSheet(styleSheet);
 }

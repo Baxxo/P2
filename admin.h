@@ -92,9 +92,6 @@ private:
   QLineEditClickable *righeSala;
   QLineEditClickable *colonneSala;
   QPushButton *saveSala;
-  /*
-    QPushButton *readBtn;
-    QPushButton *writeBtn;*/
 
   Controller *controller;
 
