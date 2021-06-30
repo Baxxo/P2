@@ -4,21 +4,21 @@
             "CF": "test2",
             "age": "44",
             "name": "Ciao",
-	    "surname": "Piero",
+            "surname": "Piero",
             "tel.Num": "Numero di telefono"
         },
         {
             "CF": "test",
             "age": "11",
             "name": "Proprio",
-	    "surname": "Bruno",
+            "surname": "Bruno",
             "tel.Num": "Numero di telefono"
         },
         {
             "CF": "test1",
             "age": "12",
             "name": "Belli",
-	    "surname": "Carlo",
+            "surname": "Carlo",
             "tel.Num": "Numero di telefono"
         },
         {
@@ -107,4 +107,3 @@
         }
     ]
 }
-

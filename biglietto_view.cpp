@@ -2,29 +2,48 @@
 #include "controller.h"
 
 Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
-    : QWidget(parent), controller(c) {
-  tipologia = new QComboBox;
-  compraBiglietto = new QPushButton("Compra");
-  tipologiaBtn = new QPushButton("OK");
-  compraLayout = new QVBoxLayout;
-  layoutTipologia = new QVBoxLayout;
-  mainLayout = new QGridLayout;
-  mainWidget = new QWidget(this);
-  widgetSing = new QWidget();
-  listaFilm = new QListWidget;
-  utenteBigl = new QVBoxLayout;
-  search = new QLineEdit;
-  searchBtn = new QPushButton("ok");
-  salaWidget = new QWidget();
-  salaLayout = new QVBoxLayout;
-  selectSeat = new QPushButton("scegli un posto");
-  posti = new QTableWidget(2, 3);
+    : QWidget(parent), controller(c), prezzo(0), film(""),
+      tipologia(new QComboBox), layoutTipologia(new QVBoxLayout),
+      mainWidget(new QWidget(this)), widgetSing(new QWidget),
+      salaWidget(new QWidget), compraLayout(new QVBoxLayout),
+      mainLayout(new QGridLayout), compraBiglietto(new QPushButton("Compra")),
+      listaFilm(new QListWidget), tipologiaBtn(new QPushButton("OK")),
+      utenteBigl(new QVBoxLayout), search(new QLineEditClickable),
+      searchBtn(new QPushButton("ok")), salaLayout(new QVBoxLayout),
+      selectSeat(new QPushButton("scegli un posto")),
+      posti(new QTableWidget(2, 3))
+
+{
+
+  tipologia->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+  compraBiglietto->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+  tipologiaBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+  mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+  widgetSing->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+  listaFilm->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+  search->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+  searchBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+  salaWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+  selectSeat->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+  posti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
   compraLayout->addWidget(listaFilm, Qt::AlignTop);
   compraLayout->addWidget(compraBiglietto, Qt::AlignBottom);
   compraLayout->addWidget(selectSeat, Qt::AlignRight);
+
   layoutTipologia->addWidget(tipologia, Qt::AlignCenter);
   layoutTipologia->addWidget(tipologiaBtn, Qt::AlignCenter);
+
   salaLayout->addWidget(posti);
 
   mainLayout->addLayout(layoutTipologia, 0, 0, Qt::AlignCenter);
@@ -66,3 +85,5 @@ QString Biglietto_View::getTipologia() { return tipologia->currentText(); }
 void Biglietto_View::getSalaView() { salaWidget->show(); }
 
 void Biglietto_View::showSearch() { widgetSing->show(); }
+
+void Biglietto_View::resizeMe() { adjustSize(); }

@@ -15,21 +15,16 @@
 #include "famiglia_view.h"
 #include "mainwindow.h"
 #include "model.h"
+#include "qlineeditclickable.h"
 #include "utente_View.h"
 
 class Controller : public QObject {
   Q_OBJECT
- private:
+private:
   Model *model;
   MainWindow *view;
   Admin *admin;
   Client *client;
-
-  //  bool isAdminOpen;
-  //  bool isClientOpen;
-  //  bool isUtenteOpen;
-  //  bool isFamigliaOpen;
-  //  bool isBigliettoOpen;
 
   Utente_View *utente;
   Famiglia_View *famigliaView;
@@ -38,9 +33,15 @@ class Controller : public QObject {
   QString pathJsonUsers;
   QString pathJsonFamiglie;
   QString pathJsonEntrata;
-  QString pathjsonPosti;
+  QString pathJsonPosti;
   QString pathJsonFilm;
+  QString pathJsonSale;
+
   QJsonObject *objUtenti;
+
+  QJsonObject filmObj;
+
+  Famiglia *fam;
 
   QString readFile(const QString &filename);
 
@@ -48,22 +49,23 @@ class Controller : public QObject {
   void popolaVectorPosti(const QVariantList &list);
   void popolaVectorFamiglie(const QVariantList &list);
   void popolaVectorEntrate(const QVariantList &list);
+  void popolaVectorSale(const QVariantList &list);
 
   QVariantList *readUtenti(QFile &file, bool canUpdate);
   QVariantList *readFamiglie(QFile &file, bool canUpdate);
   QVariantList *readEntrata(QFile &file, bool canUpdate);
   QVariantList *readPosti(QFile &file, bool canUpdate);
-  QVariantList *readFilm(QFile &file, bool canUpdate);
-
-  Famiglia *fam;
+  QVariantList *readSale(QFile &file, bool canUpdate);
+  QJsonObject *readFilm(QFile &file, bool canUpdate);
 
   void loadUsers(bool canUpdate = false);
   void loadFamilies(bool canUpdate = false);
   void loadEntrateinView(bool canUpdate = false);
   void loadPostiOccupati(bool canUpdate = false);
+  void loadSale(bool canUpdate = false);
   void loadFilm(bool canUpdate = false);
 
- public slots:
+public slots:
 
   // apertura finestre
   void openAdmin();
@@ -80,18 +82,23 @@ class Controller : public QObject {
   void loadFamiliesSlot();
   void loadEntrateSlot();
   void loadPostiSlot();
+  void loadSaleSlot();
   void loadFilmSlot();
 
   // slot per Utente_View
   void annullaUtente();
   void salvaUtente();
   void salvaFamiglia();
+  // gestione film
+  void newFilm();
+
+  void newSala();
 
   void stpBigl();
 
   void showSala();
 
- public:
+public:
   explicit Controller(QObject *parent = nullptr, Model *m = nullptr);
   void setView(MainWindow *v);
 
@@ -104,6 +111,7 @@ class Controller : public QObject {
   QString getPathJsonFamiglie() const;
   QString getPathJsonEntrata() const;
   QString getPathJsonPosti() const;
+  QString getPathJsonSale() const;
   QString getPathJsonFilm() const;
 
   void openError(QString message);
@@ -116,4 +124,4 @@ class Controller : public QObject {
   bool removeUserFromFamily(const QString &cf);
 };
 
-#endif  // CONTROLLER_H
+#endif // CONTROLLER_H

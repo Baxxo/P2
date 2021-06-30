@@ -2,54 +2,56 @@
 #define MODEL_H
 
 #include "abbonamentoFamigliare.h"
-#include "sala.h"
-#include "myVector.h"
 #include "deepPtr.h"
+#include "myVector.h"
+#include "sala.h"
 
 class Model {
-  public:
-    Model(string _test="test");
-    void addEntrata(const EntrataFilm & a);
-    void addUtente(const Utente & u);
-    void addFamiglia(const Famiglia & f);
-    void addAcquisto(const Utente &u);
+public:
+  Model(string _test = "test");
+  void addEntrata(const EntrataFilm &a);
+  void addUtente(const Utente &u);
+  void addFamiglia(const Famiglia &f);
+  void addAcquisto(const Utente &u);
+  void addSala(const Sala &s);
 
-    ~Model() = default;
+  ~Model() = default;
 
-    bool removeEntrata(const EntrataFilm & a);
-    bool removeUtente(const Utente & u);
-    bool removeFamiglia(const Famiglia & f);
-    bool removeAcquisto(const Utente & u);
+  bool removeEntrata(const EntrataFilm &a);
+  bool removeUtente(const Utente &u);
+  bool removeFamiglia(const Famiglia &f);
+  bool removeAcquisto(const Utente &u);
+  bool removeSala(const Sala &s);
 
+  void clearVectorUtenti();
+  void clearVectorFamiglie();
+  void cleaVectorSale();
 
-    void clearVectorUtenti();
-    void clearVectorFamiglie();
+  Utente *getUtente(string cf);
+  Famiglia &getFamiglia(string cf);
+  EntrataFilm &getEntrataFilm();
+  Sala *getSala(string nome);
 
-    Utente *getUtente(string cf);
-    Famiglia & getFamiglia(string cf);
-    EntrataFilm & getEntrataFilm();
-    Sala  *getSala(string nome);
+  const MyVector<DeepPtr<EntrataFilm>> &getListEntrate() const;
+  const MyVector<DeepPtr<Utente>> &getListUtenti() const;
+  const MyVector<DeepPtr<Famiglia>> &getListFamiglie() const;
+  const MyVector<DeepPtr<Sala>> &getListSale() const;
 
+  void addUserToFamily(Famiglia &f, Utente *u);
 
-    const MyVector<DeepPtr<EntrataFilm>> &getListEntrate() const;
-    const MyVector<DeepPtr<Utente>> &getListUtenti() const;
-    const MyVector<DeepPtr<Famiglia>> &getListFamiglie() const;
+  bool searchCf(const string &cf) const;
+  bool searchNameFamiglia(const string &name) const;
 
-    void addUserToFamily(Famiglia& f, Utente *u);
+  string getTest() const;
 
-    bool searchCf(const string& cf) const;
-    bool searchNameFamiglia(const string &name) const;
-
-
-    string getTest() const;
 private:
-    MyVector<DeepPtr<EntrataFilm>> listEntrate;
-    MyVector<DeepPtr<Utente>> listUtenti;
-    MyVector<DeepPtr<Famiglia>> listFamiglie;
-    MyVector<DeepPtr<Utente>> listStorico;
-    MyVector<DeepPtr<Sala>> listSale;
+  MyVector<DeepPtr<EntrataFilm>> listEntrate;
+  MyVector<DeepPtr<Utente>> listUtenti;
+  MyVector<DeepPtr<Famiglia>> listFamiglie;
+  MyVector<DeepPtr<Utente>> listStorico;
+  MyVector<DeepPtr<Sala>> listSale;
 
-    string test;
+  string test;
 };
 
 #endif // MODEL_H

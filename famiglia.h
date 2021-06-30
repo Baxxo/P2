@@ -10,7 +10,7 @@ using std::ostream;
 using std::string;
 
 class Famiglia {
-private:
+ private:
   Utente **membri;
   unsigned int capacity;
   unsigned int size;
@@ -18,7 +18,7 @@ private:
 
   void resize();
 
-public:
+ public:
   Famiglia(string _name = "", unsigned int c = 1);
   Famiglia(const Famiglia &o);
   virtual ~Famiglia();
@@ -39,5 +39,7 @@ public:
   void setName(const string &value);
 
   string toString() const;
+
+  string getCodFisc();
 };
-#endif // FAMIGLIA_H
+#endif  // FAMIGLIA_H

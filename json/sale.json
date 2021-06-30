@@ -1,0 +1,14 @@
+{
+    "Sale": [
+        {
+            "colonne": "7",
+            "nome_sala": "Rossa",
+            "righe": "4"
+        },
+        {
+            "colonne": "8",
+            "nome_sala": "Blu",
+            "righe": "8"
+        }
+    ]
+}

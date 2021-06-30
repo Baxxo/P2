@@ -1,22 +1,25 @@
 #ifndef MYVECTOR_H
 #define MYVECTOR_H
 
-template <class T> class MyVector {
-private:
+#include <QDebug>
+
+template <class T>
+class MyVector {
+ private:
   T *v;
-  unsigned int size;     // numero celle popolate
-  unsigned int capacity; // dimensione totale
+  unsigned int size;      // numero celle popolate
+  unsigned int capacity;  // dimensione totale
 
   T *copy(unsigned int s, unsigned int c);
 
-public:
+ public:
   class Iterator {
     friend class MyVector;
 
-  private:
+   private:
     T *ptr;
 
-  public:
+   public:
     Iterator(T &p);
     Iterator(T *p = nullptr);
 
@@ -38,10 +41,10 @@ public:
   class Const_iterator {
     friend class MyVector;
 
-  private:
+   private:
     const T *ptr;
 
-  public:
+   public:
     Const_iterator(T &p);
     Const_iterator(T *p = nullptr);
 
@@ -71,16 +74,16 @@ public:
 
   Iterator begin();
   Iterator end();
-  Iterator search(const T &o); // forse da mettere const
+  Iterator search(const T &o);  // forse da mettere const
 
   Const_iterator cbegin() const;
   Const_iterator cend() const;
-  Const_iterator csearch(const T &o) const; // forse da mettere const
+  Const_iterator csearch(const T &o) const;  // forse da mettere const
 
   T &operator[](unsigned int i) const;
 
   void push_back(const T &o);
-  void pop_back(); // deve andare void
+  void pop_back();  // deve andare void
 
   bool remove(const T &o);
 
@@ -91,13 +94,21 @@ public:
 
 // --- INIZIO ITERATOR
 
-template <class T> MyVector<T>::Iterator::Iterator(T *p) : ptr(p) {}
+template <class T>
+MyVector<T>::Iterator::Iterator(T *p) : ptr(p) {}
 
-template <class T> MyVector<T>::Iterator::Iterator(T &p) : ptr(T(p)) {}
+template <class T>
+MyVector<T>::Iterator::Iterator(T &p) : ptr(T(p)) {}
 
-template <class T> T *MyVector<T>::Iterator::operator->() const { return ptr; }
+template <class T>
+T *MyVector<T>::Iterator::operator->() const {
+  return ptr;
+}
 
-template <class T> T &MyVector<T>::Iterator::operator*() const { return *ptr; }
+template <class T>
+T &MyVector<T>::Iterator::operator*() const {
+  return *ptr;
+}
 
 template <class T>
 typename MyVector<T>::Iterator &MyVector<T>::Iterator::operator++() {
@@ -135,7 +146,8 @@ bool MyVector<T>::Iterator::operator!=(const MyVector<T>::Iterator &o) const {
   return o.ptr != ptr;
 }
 
-template <class T> T &MyVector<T>::Iterator::operator[](int i) const {
+template <class T>
+T &MyVector<T>::Iterator::operator[](int i) const {
   return *(ptr + i);
 }
 
@@ -143,16 +155,19 @@ template <class T> T &MyVector<T>::Iterator::operator[](int i) const {
 
 // --- INIZIO CONST ITERATOR
 
-template <class T> MyVector<T>::Const_iterator::Const_iterator(T *p) : ptr(p) {}
+template <class T>
+MyVector<T>::Const_iterator::Const_iterator(T *p) : ptr(p) {}
 
 template <class T>
 MyVector<T>::Const_iterator::Const_iterator(T &p) : ptr(T(p)) {}
 
-template <class T> const T *MyVector<T>::Const_iterator::operator->() const {
+template <class T>
+const T *MyVector<T>::Const_iterator::operator->() const {
   return ptr;
 }
 
-template <class T> const T &MyVector<T>::Const_iterator::operator*() const {
+template <class T>
+const T &MyVector<T>::Const_iterator::operator*() const {
   return *ptr;
 }
 
@@ -164,8 +179,8 @@ operator++() {
 }
 
 template <class T>
-typename MyVector<T>::Const_iterator MyVector<T>::Const_iterator::
-operator++(int i) {
+typename MyVector<T>::Const_iterator MyVector<T>::Const_iterator::operator++(
+    int i) {
   Const_iterator tmp = Const_iterator(this);
   ++ptr;
   return tmp;
@@ -179,22 +194,22 @@ operator--() {
 }
 
 template <class T>
-typename MyVector<T>::Const_iterator MyVector<T>::Const_iterator::
-operator--(int i) {
+typename MyVector<T>::Const_iterator MyVector<T>::Const_iterator::operator--(
+    int i) {
   Const_iterator tmp = Const_iterator(this);
   --ptr;
   return tmp;
 }
 
 template <class T>
-bool MyVector<T>::Const_iterator::
-operator==(const MyVector<T>::Const_iterator &o) const {
+bool MyVector<T>::Const_iterator::operator==(
+    const MyVector<T>::Const_iterator &o) const {
   return o.ptr == ptr;
 }
 
 template <class T>
-bool MyVector<T>::Const_iterator::
-operator!=(const MyVector<T>::Const_iterator &o) const {
+bool MyVector<T>::Const_iterator::operator!=(
+    const MyVector<T>::Const_iterator &o) const {
   return o.ptr != ptr;
 }
 
@@ -216,15 +231,17 @@ template <class T>
 MyVector<T>::MyVector(unsigned int s, unsigned int c)
     : v(new T[c]), size(s), capacity(c) {}
 
-template <class T> MyVector<T>::~MyVector() {
-  if (v)
-    delete[] v;
+template <class T>
+MyVector<T>::~MyVector() {
+  if (v) delete[] v;
 }
 
 // da fare---------------------------------
-template <class T> MyVector<T>::MyVector(const MyVector &o) {}
+template <class T>
+MyVector<T>::MyVector(const MyVector &o) {}
 
-template <class T> T *MyVector<T>::copy(unsigned int s, unsigned int c) {
+template <class T>
+T *MyVector<T>::copy(unsigned int s, unsigned int c) {
   if (c <= capacity && s <= size) {
     T *tmp = new T[c];
     for (unsigned int i = 0; i < size; i++) {
@@ -236,13 +253,18 @@ template <class T> T *MyVector<T>::copy(unsigned int s, unsigned int c) {
     return nullptr;
 }
 
-template <class T> unsigned int MyVector<T>::getSize() const { return size; }
+template <class T>
+unsigned int MyVector<T>::getSize() const {
+  return size;
+}
 
-template <class T> typename MyVector<T>::Iterator MyVector<T>::begin() {
+template <class T>
+typename MyVector<T>::Iterator MyVector<T>::begin() {
   return Iterator(v);
 }
 
-template <class T> typename MyVector<T>::Iterator MyVector<T>::end() {
+template <class T>
+typename MyVector<T>::Iterator MyVector<T>::end() {
   return Iterator(v + size);
 }
 
@@ -257,32 +279,39 @@ typename MyVector<T>::Const_iterator MyVector<T>::cend() const {
 }
 
 template <class T>
-typename MyVector<T>::Iterator
-MyVector<T>::search(const T &o) { // da controllare
+typename MyVector<T>::Iterator MyVector<T>::search(
+    const T &o) {  // da controllare
   Iterator it = begin();
   for (; it != end() && *it != o; ++it)
     ;
-  if (it == end())
-    return begin(); // soprattutto questo
+  if (it == end()) return begin();  // soprattutto questo
   return it;
 }
 
 template <class T>
 typename MyVector<T>::Const_iterator MyVector<T>::csearch(const T &o) const {
   Const_iterator it = cbegin();
-  for (; it != cend() && *it != o; ++it)
-    ;
+  qDebug() << "inizio------------------";
+  for (; it != cend() && *it != *o; ++it) {
+    qDebug() << QString::fromStdString("o: " + o->getCodFisc());
+    qDebug() << QString::fromStdString((*it)->getCodFisc());
+    qDebug() << (*it != *o);
+  }
+  qDebug() << "fine------------------";
+
   if (it == cend()) {
     return cbegin();
   }
   return it;
 }
 
-template <class T> T &MyVector<T>::operator[](unsigned int i) const {
+template <class T>
+T &MyVector<T>::operator[](unsigned int i) const {
   return v[i];
 }
 
-template <class T> void MyVector<T>::push_back(const T &o) {
+template <class T>
+void MyVector<T>::push_back(const T &o) {
   if (size >= capacity) {
     capacity *= 2;
     T *tmp = copy(size, capacity);
@@ -292,14 +321,16 @@ template <class T> void MyVector<T>::push_back(const T &o) {
   v[size++] = o;
 }
 
-template <class T> void MyVector<T>::pop_back() {
+template <class T>
+void MyVector<T>::pop_back() {
   if (size) {
     delete v[size - 1];
     size--;
   }
 }
 
-template <class T> bool MyVector<T>::remove(const T &o) {
+template <class T>
+bool MyVector<T>::remove(const T &o) {
   for (unsigned int i = 0; i < size; ++i) {
     if (v[i] == o) {
       for (unsigned int j = i; j < size - 1; j++) {
@@ -312,13 +343,17 @@ template <class T> bool MyVector<T>::remove(const T &o) {
   return false;
 }
 
-template <class T> bool MyVector<T>::isEmpty() const { return size == 0; }
+template <class T>
+bool MyVector<T>::isEmpty() const {
+  return size == 0;
+}
 
-template <class T> void MyVector<T>::clear() {
+template <class T>
+void MyVector<T>::clear() {
   delete[] v;
   size = 0;
   capacity = 1;
   v = new T[capacity];
 }
 
-#endif // MYVECTOR_H
+#endif  // MYVECTOR_H
