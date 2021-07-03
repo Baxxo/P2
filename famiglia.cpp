@@ -97,6 +97,8 @@ bool Famiglia::operator==(const Famiglia &f) const { return f.name == name; }
 
 bool Famiglia::operator!=(const Famiglia &f) const { return f.name != name; }
 
+bool Famiglia::isEmpty() const { return size == 0; }
+
 Famiglia &Famiglia::operator=(const Famiglia &o) {
   if (this != &o) {
     capacity = o.capacity;

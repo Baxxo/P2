@@ -31,6 +31,7 @@ class Famiglia {
   Utente *operator[](int i) const;
   bool operator==(const Famiglia &f) const;
   bool operator!=(const Famiglia &f) const;
+  bool isEmpty() const;
   Famiglia &operator=(const Famiglia &o);
 
   virtual Famiglia *clone() const;

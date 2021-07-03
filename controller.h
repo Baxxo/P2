@@ -20,7 +20,7 @@
 
 class Controller : public QObject {
   Q_OBJECT
-private:
+ private:
   Model *model;
   MainWindow *view;
   Admin *admin;
@@ -42,6 +42,8 @@ private:
   QJsonObject filmObj;
 
   Famiglia *fam;
+
+  ErrorDisplay *err;
 
   QString readFile(const QString &filename);
 
@@ -65,7 +67,7 @@ private:
   void loadSale(bool canUpdate = false);
   void loadFilm(bool canUpdate = false);
 
-public slots:
+ public slots:
 
   // apertura finestre
   void openAdmin();
@@ -98,11 +100,9 @@ public slots:
 
   void showSala();
 
-public:
+ public:
   explicit Controller(QObject *parent = nullptr, Model *m = nullptr);
   void setView(MainWindow *v);
-
-  ErrorDisplay *err;
 
   //  bool getIsAdmin() const;
   //  void setIsAdmin(bool value);
@@ -124,4 +124,4 @@ public:
   bool removeUserFromFamily(const QString &cf);
 };
 
-#endif // CONTROLLER_H
+#endif  // CONTROLLER_H

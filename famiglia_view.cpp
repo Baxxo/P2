@@ -1,22 +1,24 @@
 #include "famiglia_view.h"
-#include "controller.h"
 #include <QTimer>
+#include "controller.h"
 
 Famiglia_View::Famiglia_View(Controller *c, QWidget *parent)
     : QWidget(parent),
       familyName(new QLineEditClickable("Type in a family name")),
       listaUtenti(new QListWidget),
       searchEditText(new QLineEditClickable("Type in a CF and press search")),
-      menuLayout(new QVBoxLayout), btnLayout(new QVBoxLayout),
+      menuLayout(new QVBoxLayout),
+      btnLayout(new QVBoxLayout),
       searchBtn(new QPushButton("Search")),
       saveFamily(new QPushButton("Salva Famiglia")),
-      mainlayout(new QGridLayout), widget(new QWidget(this)),
+      mainlayout(new QGridLayout),
+      widget(new QWidget(this)),
       layoutListUsers(new QVBoxLayout),
       labelListaUtenti(new QLabel(
           "\nUtenti presenti nel sistema\n\n clicca una volra per "
           "aggiungere un utente\n\n clicca di nuovo per rimuoverlo")),
-      utility(new QLabel()), controller(c) {
-
+      utility(new QLabel()),
+      controller(c) {
   widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
   labelListaUtenti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -104,7 +106,7 @@ void Famiglia_View::findUser(QString search) {
 
 void Famiglia_View::setUtilityText(QString txt) {
   utility->setText(txt);
-  QTimer::singleShot(1500, this, SLOT(cleanUtilityText()));
+  QTimer::singleShot(2000, this, SLOT(cleanUtilityText()));
 }
 
 void Famiglia_View::signaltest() { qDebug() << "signal"; }
@@ -114,8 +116,7 @@ void Famiglia_View::resizeMe() { adjustSize(); }
 void Famiglia_View::cleanUtilityText() { utility->setText(""); }
 
 void Famiglia_View::cleanTextFamily() {
-  if (familyName->text() == "Type in a family name")
-    familyName->setText("");
+  if (familyName->text() == "Type in a family name") familyName->setText("");
 }
 
 void Famiglia_View::cleanTextSearch() {
@@ -124,11 +125,9 @@ void Famiglia_View::cleanTextSearch() {
 }
 
 void Famiglia_View::addUtenteToFamiglia(QListWidgetItem *item) {
-
   QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaUtenti->itemWidget(item));
 
   if (!lbl->isSelected()) {
-
     if (controller->addUserToFamily(lbl->getCf())) {
       lbl->setStyleSheet("QLabel { background-color : LightGreen;}");
       lbl->setSelect(true);
@@ -138,9 +137,7 @@ void Famiglia_View::addUtenteToFamiglia(QListWidgetItem *item) {
     }
 
   } else {
-
     if (controller->removeUserFromFamily(lbl->getCf())) {
-
       lbl->setStyleSheet("QLabel { background-color : #00A2E8;}");
       lbl->setSelect(false);
 

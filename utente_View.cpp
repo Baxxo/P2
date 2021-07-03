@@ -2,14 +2,21 @@
 #include "controller.h"
 
 Utente_View::Utente_View(Controller *c, QWidget *parent)
-    : QWidget(parent), widget(new QWidget(this)), mainlayout(new QGridLayout),
-      btnLayout(new QVBoxLayout), lineLayout(new QVBoxLayout),
+    : QWidget(parent),
+      widget(new QWidget(this)),
+      mainlayout(new QGridLayout),
+      btnLayout(new QVBoxLayout),
+      lineLayout(new QVBoxLayout),
       confermaBtn(new QPushButton("Conferma")),
-      annullaBtn(new QPushButton("Annulla")), name(new QLineEditClickable()),
-      surname(new QLineEditClickable()), CF(new QLineEditClickable()),
-      age(new QLineEditClickable()), numtel(new QLineEditClickable()),
-      desktop(new QDesktopWidget), controller(c) {
-
+      annullaBtn(new QPushButton("Annulla")),
+      name(new QLineEditClickable()),
+      surname(new QLineEditClickable()),
+      CF(new QLineEditClickable()),
+      age(new QLineEditClickable()),
+      numtel(new QLineEditClickable()),
+      conferma(new QLabel),
+      desktop(new QDesktopWidget),
+      controller(c) {
   setWindowTitle(QString("Creazione Utente"));
 
   // layout bottoni
@@ -23,6 +30,7 @@ Utente_View::Utente_View(Controller *c, QWidget *parent)
   lineLayout->addWidget(CF, Qt::AlignCenter);
   lineLayout->addWidget(age, Qt::AlignCenter);
   lineLayout->addWidget(numtel, Qt::AlignCenter);
+  lineLayout->addWidget(conferma);
   mainlayout->addLayout(lineLayout, 0, 0, Qt::AlignCenter);
 
   // layout widget, ottimizzazione finestra per il desktop
@@ -62,3 +70,5 @@ QString Utente_View::getCF() const { return CF->text(); }
 QString Utente_View::getAge() const { return age->text(); }
 
 QString Utente_View::getNumTel() const { return numtel->text(); }
+
+void Utente_View::setConferma(const QString &c) { conferma->setText(c); }

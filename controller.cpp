@@ -21,7 +21,8 @@ Controller::Controller(QObject *parent, Model *m)
       pathJsonFilm(""),
       pathJsonSale(""),
       objUtenti(nullptr),
-      fam(nullptr) {}
+      fam(nullptr),
+      err(nullptr) {}
 
 QString Controller::getPathJsonUsers() const { return pathJsonUsers; }
 
@@ -166,18 +167,14 @@ void Controller::searchCF() {
       if (find) {
         famigliaView->findUser(famigliaView->getCF_SearchText());
       } else {
-        err = new ErrorDisplay(nullptr, "Utente non trovato");
-        err->show();
+        openError("Utente non trovato");
         famigliaView->setUtilityText(QString("Utente non trovato"));
       }
     } else {
-      err = new ErrorDisplay(nullptr,
-                             "Codice fiscale gia' presente nella famiglia");
-      err->show();
+      openError("Codice fiscale gia' presente nella famiglia");
     }
   } else {
-    err = new ErrorDisplay(nullptr, "Inserisci un codice fiscale valido");
-    err->show();
+    openError("Inserisci un codice fiscale valido");
   }
 }
 
@@ -235,56 +232,71 @@ void Controller::salvaUtente() {
 
     file.write(doc.toJson());
     file.close();
+    utente->setConferma("Utente inserito");
+  } else {
+    utente->setConferma(("Utente gia` presente nel programma"));
+    openError("Utente gia` presente nel programma");
   }
 }
 
 void Controller::salvaFamiglia() {
   if (!model->searchNameFamiglia(famigliaView->getFamilyName().toStdString())) {
-    fam->setName(famigliaView->getFamilyName().toStdString());
-    model->addFamiglia(*fam);
+    QString name = famigliaView->getFamilyName();
+    qDebug() << name;
+    if (name != "Type in a family name" && name != "") {
+      fam->setName(name.toStdString());
+      if (!fam->isEmpty()) {
+        model->addFamiglia(*fam);
 
-    if (pathJsonFamiglie == "") {
-      pathJsonFamiglie = QFileDialog::getOpenFileName(
-          view, tr("Scegli json famiglie"), "/home/student/QTheater/json",
-          tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+        if (pathJsonFamiglie == "") {
+          pathJsonFamiglie = QFileDialog::getOpenFileName(
+              view, tr("Scegli json famiglie"), "/home/student/QTheater/json",
+              tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+        }
+        QFile file(pathJsonFamiglie);
+        if (!file.open(QIODevice::ReadOnly)) {
+          openError(QString("File open error: Read"));
+        }
+
+        QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
+        file.close();
+
+        QJsonValue v = jsonOrg.object().value(QString("Famiglie"));
+
+        QJsonArray array = v.toArray();
+
+        QJsonObject newFamily;
+        newFamily.insert("Name", famigliaView->getFamilyName());
+        for (unsigned int i = 0; i < fam->getSize(); i++) {
+          newFamily.insert(
+              QString::fromStdString("Utente" + std::to_string(i + 1)),
+              QString::fromStdString(((*fam)[i])->getCodFisc()));
+        }
+
+        array.push_back(newFamily);
+
+        QJsonObject obj;
+        obj.insert("Famiglie", array);
+
+        QJsonDocument doc(obj);
+
+        if (!file.open(QIODevice::WriteOnly)) {
+          openError(QString("File open error: Write"));
+        }
+
+        file.write(doc.toJson());
+        file.close();
+
+        famigliaView->setUtilityText("Famiglia Salvata e registrata");
+
+        delete fam;
+        fam = new Famiglia();
+      } else {
+        openError("inserisci almeno un membro");
+      }
+    } else {
+      openError("inserisci nome famiglia");
     }
-    QFile file(pathJsonFamiglie);
-    if (!file.open(QIODevice::ReadOnly)) {
-      openError(QString("File open error: Read"));
-    }
-
-    QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
-    file.close();
-
-    QJsonValue v = jsonOrg.object().value(QString("Famiglie"));
-
-    QJsonArray array = v.toArray();
-
-    QJsonObject newFamily;
-    newFamily.insert("Name", famigliaView->getFamilyName());
-    for (unsigned int i = 0; i < fam->getSize(); i++) {
-      newFamily.insert(QString::fromStdString("Utente" + std::to_string(i + 1)),
-                       QString::fromStdString(((*fam)[i])->getCodFisc()));
-    }
-
-    array.push_back(newFamily);
-
-    QJsonObject obj;
-    obj.insert("Famiglie", array);
-
-    QJsonDocument doc(obj);
-
-    if (!file.open(QIODevice::WriteOnly)) {
-      openError(QString("File open error: Write"));
-    }
-
-    file.write(doc.toJson());
-    file.close();
-
-    famigliaView->setUtilityText("Famiglia Salvata e registrata");
-
-    delete fam;
-    fam = new Famiglia();
   }
 }
 
