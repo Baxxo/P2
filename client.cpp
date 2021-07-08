@@ -17,6 +17,7 @@ Client::Client(Controller *c, QWidget *parent)
   btnLayout->addWidget(label, Qt::AlignCenter);
   btnLayout->addWidget(nuovoUtente, Qt::AlignCenter);
   btnLayout->addWidget(nuovaFamiglia, Qt::AlignCenter);
+  btnLayout->addWidget(nuovoAbbonamento, Qt::AlignCenter);
   btnLayout->addWidget(nuovoBiglietto, Qt::AlignCenter);
 
   mainLayout->addLayout(btnLayout, 0, 1, Qt::AlignCenter);

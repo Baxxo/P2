@@ -4,24 +4,33 @@
 #include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), desktop(QApplication::desktop()),
-      widget(new QWidget(this)), mainLayout(new QGridLayout()),
-      v_layout(new QVBoxLayout()), buttonLayout(new QGridLayout()),
+    : QMainWindow(parent),
+      desktop(QApplication::desktop()),
+      widget(new QWidget(this)),
+      mainLayout(new QGridLayout()),
+      v_layout(new QVBoxLayout()),
+      buttonLayout(new QGridLayout()),
       title(new QLabel("Setup")),
       changeBtn(new QPushButton(QIcon(":/images/reverse.png"), "")),
-      chooseUtenti(nullptr), chooseFamiglie(nullptr), chooseEntrata(nullptr),
-      chooseSala(nullptr), choosePosti(nullptr), chooseFilm(nullptr),
-      adminBtn(nullptr), clientBtn(nullptr),
+      chooseUtenti(nullptr),
+      chooseFamiglie(nullptr),
+      chooseEntrata(nullptr),
+      chooseSala(nullptr),
+      choosePosti(nullptr),
+      chooseFilm(nullptr),
+      adminBtn(nullptr),
+      clientBtn(nullptr),
       pathUser(new QLabel("name json utenti")),
       pathFamilies(new QLabel("name json famiglie")),
       pathEntrata(new QLabel("name json archivio entrate/abbonamenti")),
       pathPosti(new QLabel("name json postiOccupati")),
       pathSala(new QLabel("name json Sale")),
-      pathFilm(new QLabel("name json film")), controller(nullptr),
-      isVisReadBtn(true), prevAdmin("Admin"),
+      pathFilm(new QLabel("name json film")),
+      controller(nullptr),
+      isVisReadBtn(true),
+      prevAdmin("Admin"),
       prevChooseUtenti("Scegli file json per utenti"),
       prevChooseFamiglie("Scegli file json per famiglie") {
-
   changeBtn->setFixedWidth(50);
 
   title->setProperty("class", "title");
@@ -94,8 +103,7 @@ void MainWindow::setLabelPathFilm(QString s) { pathFilm->setText(s); }
 
 void MainWindow::changeTitleAdmin(QString s) {
   prevAdmin = s;
-  if (adminBtn)
-    adminBtn->setText(s);
+  if (adminBtn) adminBtn->setText(s);
 }
 
 void MainWindow::changeTitleChooseSala(QString s) { pathFilm->setText(s); }
@@ -129,14 +137,12 @@ void MainWindow::changeMenu() {
   if (isVisReadBtn) {
     destroyLayoutSetup();
     createLayoutAdCl();
-    title->setText("QTheater");
 
     isVisReadBtn = false;
 
   } else {
     destroyLayoutAdCl();
     createLayoutSetup();
-    title->setText("Setup");
 
     isVisReadBtn = true;
   }
@@ -144,6 +150,8 @@ void MainWindow::changeMenu() {
 }
 
 void MainWindow::createLayoutAdCl() {
+  title->setText("QTheater");
+
   if (!adminBtn) {
     adminBtn = new QPushButton(prevAdmin);
     adminBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -158,6 +166,8 @@ void MainWindow::createLayoutAdCl() {
 
     connect(clientBtn, SIGNAL(clicked()), controller, SLOT(openClient()));
   }
+
+  isVisReadBtn = false;
 }
 
 void MainWindow::destroyLayoutAdCl() {
@@ -175,6 +185,7 @@ void MainWindow::destroyLayoutAdCl() {
 void MainWindow::setPrevAdmin(const QString &value) { prevAdmin = value; }
 
 void MainWindow::createLayoutSetup() {
+  title->setText("Setup");
   if (chooseUtenti == nullptr) {
     chooseUtenti = new QPushButton(prevChooseUtenti);
     chooseUtenti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -227,13 +238,13 @@ void MainWindow::createLayoutSetup() {
     connect(chooseFilm, SIGNAL(clicked()), controller, SLOT(loadFilmSlot()));
   }
   buttonLayout->addWidget(chooseFilm, 5, 0, Qt::AlignCenter);
+
+  isVisReadBtn = true;
 }
 
 void MainWindow::destroyLayoutSetup() {
-  if (chooseUtenti)
-    prevChooseUtenti = chooseUtenti->text();
-  if (chooseFamiglie)
-    prevChooseFamiglie = chooseFamiglie->text();
+  if (chooseUtenti) prevChooseUtenti = chooseUtenti->text();
+  if (chooseFamiglie) prevChooseFamiglie = chooseFamiglie->text();
   buttonLayout->removeWidget(chooseUtenti);
   buttonLayout->removeWidget(chooseFamiglie);
   buttonLayout->removeWidget(chooseEntrata);
