@@ -1,7 +1,5 @@
 #include "utente.h"
 
-#include <QDebug>
-
 Utente::Utente(std::string cf, std::string n, std::string s, unsigned int a,
                std::string num)
     : name(n), surname(s), age(a), codiceFiscale(cf), phoneNumber(num) {}
@@ -35,16 +33,10 @@ Utente &Utente::operator=(const Utente &o) {
 }
 
 bool Utente::operator==(const Utente &o) const {
-  qDebug() << "Utente ==";
-  qDebug() << QString::fromStdString(o.codiceFiscale);
-  qDebug() << QString::fromStdString(codiceFiscale);
   return o.codiceFiscale == codiceFiscale;
 }
 
 bool Utente::operator!=(const Utente &o) const {
-  qDebug() << "Utente !=";
-  qDebug() << QString::fromStdString(o.codiceFiscale);
-  qDebug() << QString::fromStdString(codiceFiscale);
   return o.codiceFiscale != codiceFiscale;
 }
 

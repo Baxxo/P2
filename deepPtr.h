@@ -1,8 +1,6 @@
 #ifndef DEEPPTR_H
 #define DEEPPTR_H
 
-#include <QDebug>
-
 template <class T>
 class DeepPtr {
  private:
@@ -52,16 +50,11 @@ DeepPtr<T> &DeepPtr<T>::operator=(const DeepPtr<T> &o) {
 
 template <class T>
 bool DeepPtr<T>::operator==(const DeepPtr &o) const {
-  qDebug() << "deepPtr !=";
   return *ptr == *(o.ptr);
 }
 
 template <class T>
 bool DeepPtr<T>::operator!=(const DeepPtr &o) const {
-  qDebug() << "deepPtr !=";
-  qDebug() << QString::fromStdString("o: " + o.ptr->getCodFisc());
-  qDebug() << QString::fromStdString(ptr->getCodFisc());
-  qDebug() << "---esco---";
   return *ptr != *(o.ptr);
 }
 

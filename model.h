@@ -7,7 +7,7 @@
 #include "sala.h"
 
 class Model {
-public:
+ public:
   Model(string _test = "test");
   void addEntrata(const EntrataFilm &a);
   void addUtente(const Utente &u);
@@ -44,7 +44,7 @@ public:
 
   string getTest() const;
 
-private:
+ private:
   MyVector<DeepPtr<EntrataFilm>> listEntrate;
   MyVector<DeepPtr<Utente>> listUtenti;
   MyVector<DeepPtr<Famiglia>> listFamiglie;
@@ -54,4 +54,4 @@ private:
   string test;
 };
 
-#endif // MODEL_H
+#endif  // MODEL_H

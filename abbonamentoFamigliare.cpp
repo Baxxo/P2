@@ -11,6 +11,5 @@ AbbonamentoFamigliare::~AbbonamentoFamigliare() { delete famiglia; }
 }*/
 
 double AbbonamentoFamigliare::getPrezzo() const {
-
-  return EntrataFilm::getPrezzo() * getEntrate(); //*GetNumeroMembri();
+  return EntrataFilm::getPrezzo() * getEntrate();  //*GetNumeroMembri();
 }

@@ -6,17 +6,17 @@ using std::string;
 
 class Sala {
  private:
-  int righe;
-  int colonne;
+  unsigned int righe;
+  unsigned int colonne;
   string nome_sala;
   Utente *matrix;
 
  public:
-  Sala(int r = 0, int c = 0, string n = "null");
+  Sala(unsigned int r = 0, unsigned int c = 0, string n = "null");
   Sala(const Sala &o);
   virtual ~Sala();
-  int getRighe() const;
-  int getColonne() const;
+  unsigned int getRighe() const;
+  unsigned int getColonne() const;
   string getNomesala() const;
   virtual Sala *clone() const;
 

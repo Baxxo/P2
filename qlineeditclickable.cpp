@@ -5,6 +5,7 @@ QLineEditClickable::QLineEditClickable(QString text, QWidget *parent)
 
 void QLineEditClickable::mousePressEvent(QMouseEvent *event) {
   if (event->button() == Qt::LeftButton) {
+    setText("");
     emit clicked();
   }
 }

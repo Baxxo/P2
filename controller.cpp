@@ -3,6 +3,8 @@
 #include <QFileDialog>
 #include <QTimer>
 
+#include <QDebug>
+
 using std::string;
 
 Controller::Controller(QObject *parent, Model *m)
@@ -13,6 +15,7 @@ Controller::Controller(QObject *parent, Model *m)
       client(nullptr),
       utente(nullptr),
       famigliaView(nullptr),
+      abbonamentoView(nullptr),
       bigliettoView(nullptr),
       pathJsonUsers(""),
       pathJsonFamiglie(""),
@@ -146,6 +149,19 @@ void Controller::openFamiglia() {
   famigliaView->show();
 }
 
+void Controller::openAbbonamento() {
+  if (!abbonamentoView) {
+    abbonamentoView = new Abbonamento_view(this);
+  }
+
+  if (pathJsonUsers == "") loadUsers();
+  if (pathJsonFamiglie == "") loadFamilies();
+
+  QTimer::singleShot(0, abbonamentoView, SLOT(resizeMe()));
+
+  abbonamentoView->show();
+}
+
 void Controller::openBiglietto() {
   if (!bigliettoView) {
     bigliettoView = new Biglietto_View(this);
@@ -198,7 +214,6 @@ void Controller::salvaUtente() {
         view, tr("Carica json Utenti"), "/home/student/QTheater/json",
         tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
   }
-  qDebug() << model->searchCf(utente->getCF().toStdString());
   if (!model->searchCf(utente->getCF().toStdString())) {
     QFile file(pathJsonUsers);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -242,7 +257,6 @@ void Controller::salvaUtente() {
 void Controller::salvaFamiglia() {
   if (!model->searchNameFamiglia(famigliaView->getFamilyName().toStdString())) {
     QString name = famigliaView->getFamilyName();
-    qDebug() << name;
     if (name != "Type in a family name" && name != "") {
       fam->setName(name.toStdString());
       if (!fam->isEmpty()) {
@@ -354,47 +368,50 @@ void Controller::newSala() {
 }
 
 void Controller::stpBigl() {
-  if (bigliettoView->getTipologia() == "singolo") {
+  if (bigliettoView->getTipologia() == "Singolo") {
     QString utente = bigliettoView->getSearch();
-    QString CFUtente = QString::fromStdString(
-        model->getUtente(utente.toStdString())->getCodFisc());
+    if (model->searchCf(utente.toStdString())) {
+      bigliettoView->setUtilitySearchText(QString("Codice fiscale Trovato"));
 
-    // save acquirente per tracciamento
-    QFile storico("path");
-    if (!storico.open(QIODevice::ReadWrite)) {
-      openError(QString("File open error: Read"));
+      // save acquirente per tracciamento
+      QFile storico("path");
+      if (!storico.open(QIODevice::ReadWrite)) {
+        openError(QString("File open error: Read"));
+      } else {
+        // read from existing file and load existing users on local obj
+
+        QJsonObject obj;
+        QString settings;
+        QJsonDocument doc(QJsonDocument::fromJson(settings.toUtf8()));
+        settings = storico.readAll();
+        obj = doc.object();
+
+        // save utente in json
+        obj.insert(utente, "nome sala");
+        doc.setObject(obj);
+        storico.write(doc.toJson());
+      }
+      storico.close();
+
+      // save nuovo posto in sala x
+      QFile file("path");
+      if (!file.open(QIODevice::WriteOnly)) {
+        openError(QString("File open error: Read"));
+      } else {
+        // load dei posti già fatto in un'altra funzione perchè servirà prima
+        // save posto nuovo
+        /*questi QJsonObj saranno dichiarati private e non dichiarati localmente
+         * così visto che il load è esterno alla funzione*/
+        QJsonObject posti;
+        posti.insert("nome Sala", "ci sarà un getter di colonna*riga");
+      }
     } else {
-      // read from existing file and load existing users on local obj
-
-      QJsonObject obj;
-      QString settings;
-      QJsonDocument doc(QJsonDocument::fromJson(settings.toUtf8()));
-      settings = storico.readAll();
-      obj = doc.object();
-
-      // save utente in json
-      obj.insert(CFUtente, "nome sala");
-      doc.setObject(obj);
-      storico.write(doc.toJson());
+      bigliettoView->setUtilitySearchText(
+          QString("Codice fiscale non trovato"));
+      openError(QString("Codice fiscale non trovato"));
     }
-    storico.close();
-
-    // save nuovo posto in sala x
-    QFile file("path");
-    if (!file.open(QIODevice::WriteOnly)) {
-      openError(QString("File open error: Read"));
-    } else {
-      // load dei posti già fatto in un'altra funzione perchè servirà prima
-      // save posto nuovo
-      /*questi QJsonObj saranno dichiarati private e non dichiarati localmente
-       * così visto che il load è esterno alla funzione*/
-      QJsonObject posti;
-      posti.insert("nome Sala", "ci sarà un getter di colonna*riga");
-    }
-
-    if (bigliettoView->getTipologia() == "abbonamento") {
-      qDebug() << "abbonamento";
-    }
+  } else if (bigliettoView->getTipologia() == "Abbonamento") {
+    qDebug() << "abbonamento";
   }
 }
 
@@ -441,7 +458,6 @@ void Controller::loadEntrateinView(bool canUpdate) {
     admin->clearListFamiglie();
     for (auto it = model->getListFamiglie().cbegin();
          it != model->getListFamiglie().cend(); ++it) {
-      qDebug() << "controller ciclo famiglie";
       admin->addFamiglia(QString::fromStdString(
           (*it)->getName() + " (membri: " + std::to_string((*it)->getSize()) +
           " )"));
@@ -562,8 +578,6 @@ QVariantList *Controller::readEntrata(QFile &file, bool canUpdate) {
       openError(QString("File open error: Read"));
     } else {
       qDebug() << "ciao:)";
-      // model -> clearVectorUtenti();
-
       QString json = file.readAll();
 
       QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
@@ -597,7 +611,6 @@ QVariantList *Controller::readPosti(QFile &file, bool canUpdate) {
       openError(QString("File open error: Read"));
     } else {
       qDebug() << "ciao:)";
-      // model -> clearVectorUtenti();
 
       QString json = file.readAll();
 
@@ -742,8 +755,7 @@ void Controller::popolaVectorSale(const QVariantList &list) {
   Sala *s = nullptr;
   for (int i = 0; i < list.length(); ++i) {
     QVariantMap map = list[i].toMap();
-    s = new Sala(static_cast<unsigned int>(map["righe"].toInt()),
-                 static_cast<unsigned int>(map["colonne"].toInt()),
+    s = new Sala((map["righe"].toUInt()), (map["colonne"].toUInt()),
                  map["nome_sala"].toString().toUtf8().constData());
     model->addSala(*s);
   }

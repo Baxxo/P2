@@ -2,19 +2,24 @@
 #include "controller.h"
 
 Admin::Admin(Controller *c, MainWindow *parent)
-    : desktop(QApplication::desktop()), baseLayout(new QGridLayout()),
+    : desktop(QApplication::desktop()),
+      baseLayout(new QGridLayout()),
       mainLayout(new QVBoxLayout()),
 
       p(parent),
 
       admin(new QLabel("Admin")),
 
-      listAbb(new QListWidget()), listUt(new QListWidget()),
-      listFam(new QListWidget()), listFilm(new QListWidget()),
+      listAbb(new QListWidget()),
+      listUt(new QListWidget()),
+      listFam(new QListWidget()),
+      listFilm(new QListWidget()),
       listSala(new QListWidget()),
 
-      labelAbb(new QLabel("Abbonamenti")), labelUt(new QLabel("Utenti")),
-      labelFam(new QLabel("Famiglie")), labelFilm(new QLabel("Film")),
+      labelAbb(new QLabel("Abbonamenti")),
+      labelUt(new QLabel("Utenti")),
+      labelFam(new QLabel("Famiglie")),
+      labelFilm(new QLabel("Film")),
       labelSala(new QLabel("Sala")),
 
       widget(new QWidget()),
@@ -22,14 +27,20 @@ Admin::Admin(Controller *c, MainWindow *parent)
       addFilm(new QPushButton("add Film")),
       addSala(new QPushButton("add Sala")),
 
-      widgetFilm(nullptr), filmLayout(nullptr), nomeFilm(nullptr),
-      salaFilm(nullptr), saveFilm(nullptr),
+      widgetFilm(nullptr),
+      filmLayout(nullptr),
+      nomeFilm(nullptr),
+      salaFilm(nullptr),
+      saveFilm(nullptr),
 
-      widgetSala(nullptr), salaLayout(nullptr), nomeSala(nullptr),
-      righeSala(nullptr), colonneSala(nullptr), saveSala(nullptr),
+      widgetSala(nullptr),
+      salaLayout(nullptr),
+      nomeSala(nullptr),
+      righeSala(nullptr),
+      colonneSala(nullptr),
+      saveSala(nullptr),
 
       controller(c) {
-
   setWindowTitle(QString("Admin"));
 
   QFont font;

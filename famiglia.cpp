@@ -26,22 +26,14 @@ void Famiglia::resize() {
 Famiglia::~Famiglia() { delete[] membri; }
 
 void Famiglia::addMembro(Utente *u) {
-  // cout << "inzio--------------" << endl;
   if (size >= capacity) {
     resize();
   }
   membri[size] = u;
   size++;
-  /*
-    for(unsigned int i = 0U; i<size;i++){
-        cout << "Famiglia: " << membri[i]->getCodFisc() << endl;
-
-      }
-    cout << "esco -----------------" << endl<<endl;*/
 }
 
 void Famiglia::removeMembro(Utente *u) {
-  // cout << "inzio remove--------------" << endl;
   if (hasMembro(u)) {
     for (unsigned int i = 0U; i < size; i++) {
       if (*(membri[i]) == *u) {
@@ -58,13 +50,6 @@ void Famiglia::removeMembro(Utente *u) {
       }
     }
   }
-
-  /*
-    for(unsigned int i = 0U; i<size;i++){
-        cout << "Famiglia: " << membri[i]->getCodFisc() << endl;
-
-      }
-    cout << "esco remove-----------------" << endl<<endl;*/
 }
 
 bool Famiglia::hasMembro(Utente *u) {

@@ -50,7 +50,8 @@ SOURCES += \
     model.cpp \
     errordisplay.cpp \
     qlineeditclickable.cpp \
-    qlabelcf.cpp
+    qlabelcf.cpp \
+    abbonamento_view.cpp
 
 HEADERS += \
     biglietto_view.h \
@@ -78,7 +79,8 @@ HEADERS += \
     deepPtr.h \
     errordisplay.h \
     qlineeditclickable.h \
-    qlabelcf.h
+    qlabelcf.h \
+    abbonamento_view.h
 
 FORMS +=
 

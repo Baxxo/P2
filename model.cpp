@@ -1,5 +1,4 @@
 #include "model.h"
-#include <QDebug>
 
 Model::Model(string _test) : test(_test) {}
 
@@ -52,10 +51,7 @@ Utente *Model::getUtente(string cf) {
 
 Sala *Model::getSala(string nome) {
   for (auto it = listSale.begin(); it != listSale.end(); ++it) {
-    // cout << (*it)->getName() << endl;
-    // cout << (*it)->getCodFisc() << " = "<< cf << endl;
     if ((*it)->getNomesala() == nome) {
-      // cout << (*it)->getName() << endl;
       return new Sala(**it);
     }
   }

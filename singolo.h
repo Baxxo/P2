@@ -3,15 +3,16 @@
 #include "abbonamento.h"
 
 class Singolo : public Abbonamento {
-
-private:
+ private:
   int fascia_oraria;
 
-public:
+ public:
   Singolo(Data *d, Utente *u, double p = 7.5, string c = "00000", int e = 0,
           int f = 0);
 
   double getFasciaOraria() const;
+
+  ~Singolo() = default;
 
   double getPrezzo() const override;
 };

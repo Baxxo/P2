@@ -3,14 +3,15 @@
 #include "entrataFilm.h"
 
 class Biglietto : public EntrataFilm {
-
-private:
+ private:
   bool riduzione;
   string film;
 
-public:
+ public:
   Biglietto(Data *d, Utente *u, double p = 7.5, bool r = false,
             string f = "null");
+
+  ~Biglietto() = default;
 
   bool getRiduzione() const;
   string getFilm() const;

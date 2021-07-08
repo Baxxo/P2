@@ -8,6 +8,7 @@
 #include <QString>
 #include <QWidget>
 
+#include "abbonamento_view.h"
 #include "admin.h"
 #include "biglietto_view.h"
 #include "client.h"
@@ -28,6 +29,7 @@ class Controller : public QObject {
 
   Utente_View *utente;
   Famiglia_View *famigliaView;
+  Abbonamento_view *abbonamentoView;
   Biglietto_View *bigliettoView;
 
   QString pathJsonUsers;
@@ -74,7 +76,7 @@ class Controller : public QObject {
   void openClient();
   void openUtente();
   void openFamiglia();
-  // void listaUtenti();
+  void openAbbonamento();
   void openBiglietto();
 
   void searchCF();

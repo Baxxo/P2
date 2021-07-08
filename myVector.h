@@ -236,9 +236,9 @@ MyVector<T>::~MyVector() {
   if (v) delete[] v;
 }
 
-// da fare---------------------------------
 template <class T>
-MyVector<T>::MyVector(const MyVector &o) {}
+MyVector<T>::MyVector(const MyVector &o)
+    : v(o.copy(o.size, o.capacity)), size(o.size), capacity(o.capacity) {}
 
 template <class T>
 T *MyVector<T>::copy(unsigned int s, unsigned int c) {
@@ -291,13 +291,8 @@ typename MyVector<T>::Iterator MyVector<T>::search(
 template <class T>
 typename MyVector<T>::Const_iterator MyVector<T>::csearch(const T &o) const {
   Const_iterator it = cbegin();
-  qDebug() << "inizio------------------";
-  for (; it != cend() && *it != *o; ++it) {
-    qDebug() << QString::fromStdString("o: " + o->getCodFisc());
-    qDebug() << QString::fromStdString((*it)->getCodFisc());
-    qDebug() << (*it != *o);
-  }
-  qDebug() << "fine------------------";
+  for (; it != cend() && *it != *o; ++it)
+    ;
 
   if (it == cend()) {
     return cbegin();

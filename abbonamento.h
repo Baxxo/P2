@@ -7,14 +7,15 @@
 // using std::cout;
 
 class Abbonamento : public EntrataFilm {
-
-private:
+ private:
   std::string codice;
   int entrate;
 
-public:
+ public:
   Abbonamento(Data *d = new Data(), Utente *u = new Utente(), double p = 7.5,
               string cod = "00000", int entr = 0);
+
+  ~Abbonamento() = default;
 
   int getEntrate() const;
 
