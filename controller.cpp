@@ -88,11 +88,18 @@ bool Controller::addUsertToAbb(const QString &cf) {
   QString year = date.toString("yyyy");
   QString month = date.toString("mm");
   QString day = date.toString("dd");
-  Utente *u = model->getUtente(cf.toStdString());
-  abb = new Abbonamento(new Data(year.toUInt(), month.toUInt(), day.toUInt()),
-                        u, 7.5, std::to_string(codAbb++), 10);
 
-  model->addEntrata(abb);
+  Utente *u = model->getUtente(cf.toStdString());
+  chk = chk && u;
+
+  if (chk) {
+    abb = new Abbonamento(new Data(year.toUInt(), month.toUInt(), day.toUInt()),
+                          u, 7.5, std::to_string(codAbb++), 10);
+
+    model->addEntrata(abb);
+  }
+
+  if (u) delete u;
 
   qDebug() << "--";
   for (auto it = model->getListEntrate().cbegin();
@@ -104,13 +111,40 @@ bool Controller::addUsertToAbb(const QString &cf) {
   return chk;
 }
 
-bool Controller::addUsertToAbbFam(const QString &cf) {
+bool Controller::addUsertToAbbFam(const QString &name, const QString &cf) {
   bool chk = true;
   if (abbFam) {
     delete abbFam;
   }
 
-  // DA FARE
+  QDate date = date.currentDate();
+  QString year = date.toString("yyyy");
+  QString month = date.toString("mm");
+  QString day = date.toString("dd");
+
+  Utente *u = model->getUtente(cf.toStdString());
+  chk = chk && u;
+
+  Famiglia *f = model->getFamiglia(name.toStdString());
+  chk = chk && f;
+
+  if (chk) {
+    abbFam = new AbbonamentoFamigliare(
+        new Data(year.toUInt(), month.toUInt(), day.toUInt()), u, f, 7.5,
+        std::to_string(codAbbFam++), 10);
+
+    model->addEntrata(abbFam);
+  }
+
+  if (u) delete u;
+  if (f) delete f;
+
+  qDebug() << "--";
+  for (auto it = model->getListEntrate().cbegin();
+       it != model->getListEntrate().cend(); ++it) {
+    qDebug() << QString::fromStdString((**it).getUtente()->getCodFisc());
+  }
+  qDebug() << "--";
 
   return chk;
 }
@@ -197,16 +231,12 @@ void Controller::openAbbonamento() {
   if (pathJsonUsers == "") loadUsers();
 
   abbonamentoView->clearListUtenti();
-  Utente *u = nullptr;
   for (auto it = model->getListUtenti().cbegin();
        it != model->getListUtenti().cend(); ++it) {
-    u = new Utente(**it);
-    string s =
-        u->getSurname() + " " + u->getName() + " ( " + u->getCodFisc() + " )";
-    abbonamentoView->addUtente(QString::fromStdString(s),
-                               QString::fromStdString(u->getCodFisc()));
-
-    if (u) delete u;
+    abbonamentoView->addUtente(
+        QString::fromStdString((*it)->getSurname() + " " + (*it)->getName() +
+                               " ( " + (*it)->getCodFisc() + " )"),
+        QString::fromStdString((*it)->getCodFisc()));
   }
 
   if (pathJsonFamiglie == "") loadFamilies();
@@ -215,9 +245,10 @@ void Controller::openAbbonamento() {
 
   for (auto it = model->getListFamiglie().cbegin();
        it != model->getListFamiglie().cend(); ++it) {
-    abbonamentoView->addFamiglia(QString::fromStdString(
-        (*it)->getName() + " (membri: " + std::to_string((*it)->getSize()) +
-        " )"));
+    abbonamentoView->addFamiglia(
+        QString::fromStdString((*it)->getName() + " (membri: " +
+                               std::to_string((*it)->getSize()) + " )"),
+        QString::fromStdString((*it)->getName()));
   }
 
   QTimer::singleShot(0, abbonamentoView, SLOT(resizeMe()));

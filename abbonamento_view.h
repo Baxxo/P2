@@ -23,11 +23,14 @@ class Abbonamento_view : public QWidget {
   QRadioButton* abbonamento;
   QRadioButton* abbonamentoFamigliare;
 
-  QLabel* tipoLista;
+  QLabel* utentiLabel;
   QListWidget* listaUtenti;
+  QLabel* famiglieLabel;
   QListWidget* listaFamiglie;
 
   QPushButton* aggiungi;
+
+  QLabel* labelUtility;
 
   bool isUtente;
   bool alreadySelectedUt;
@@ -36,7 +39,7 @@ class Abbonamento_view : public QWidget {
   void setStyle();
 
   bool addUtenteAbb(const QString& cf);
-  bool addFamigliaAbb(QListWidgetItem* item);
+  bool addFamigliaAbb(const QString& name, const QString& cf);
 
  private slots:
 
@@ -53,7 +56,7 @@ class Abbonamento_view : public QWidget {
   explicit Abbonamento_view(Controller* c, QWidget* parent = nullptr);
 
   void addUtente(const QString& s, const QString& cf);
-  void addFamiglia(const QString& name);
+  void addFamiglia(const QString& s, const QString& name);
 
   void clearListUtenti();
   void clearListFamiglie();

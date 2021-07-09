@@ -10,17 +10,22 @@ Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)
       layoutRadio(new QHBoxLayout),
       abbonamento(new QRadioButton("Abbonamento")),
       abbonamentoFamigliare(new QRadioButton("Abbonamento Famigliare")),
-      tipoLista(new QLabel("Lista utenti\nSeleziona solo un utente")),
+      utentiLabel(new QLabel("Lista utenti\nSeleziona solo un utente")),
       listaUtenti(new QListWidget),
+      famiglieLabel(new QLabel("Lista Famiglie\nSeleziona una sola famiglia")),
       listaFamiglie(new QListWidget),
       aggiungi(new QPushButton("Aggiungi")),
+      labelUtility(new QLabel()),
       isUtente(true),
       alreadySelectedUt(false),
       alreadySelectedFm(false) {
-  tipoLista->setAlignment(Qt::AlignHCenter);
-  tipoLista->setProperty("class", "big_text");
+  utentiLabel->setAlignment(Qt::AlignHCenter);
+  utentiLabel->setProperty("class", "big_text");
 
-  listaFamiglie->setProperty("class", "colorSelect");
+  famiglieLabel->setAlignment(Qt::AlignHCenter);
+  famiglieLabel->setProperty("class", "big_text");
+
+  // listaFamiglie->setProperty("class", "colorSelect");
 
   abbonamento->setChecked(true);
   layoutRadio->addWidget(abbonamento);
@@ -29,11 +34,13 @@ Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)
 
   mainLayout->addWidget(tipoAbbonamento);
 
-  mainLayout->addWidget(tipoLista);
+  mainLayout->addWidget(utentiLabel);
   mainLayout->addWidget(listaUtenti);
+  mainLayout->addWidget(famiglieLabel);
   mainLayout->addWidget(listaFamiglie);
   mainLayout->addWidget(aggiungi, Qt::AlignHCenter);
   listaFamiglie->hide();
+  famiglieLabel->hide();
   aggiungi->hide();
 
   setLayout(mainLayout);
@@ -42,15 +49,27 @@ Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)
   connect(abbonamentoFamigliare, SIGNAL(clicked()), this,
           SLOT(showAbbFamiglaire()));
 
-  connect(aggiungi, SIGNAL(clicked()), this, SLOT(addToAbbonamento()));
-
   connect(listaUtenti, SIGNAL(itemClicked(QListWidgetItem *)), this,
           SLOT(clickListUtenti(QListWidgetItem *)));
 
   connect(listaFamiglie, SIGNAL(itemClicked(QListWidgetItem *)), this,
           SLOT(clickListFamiglie(QListWidgetItem *)));
 
+  connect(aggiungi, SIGNAL(clicked()), this, SLOT(addToAbbonamento()));
+
   setStyle();
+
+  setWindowTitle(QString("Creazione abbonamenti"));
+}
+
+void Abbonamento_view::resizeMe() { adjustSize(); }
+
+void Abbonamento_view::setStyle() {
+  QFile file(":/qss/style.css");
+  file.open(QFile::ReadOnly);
+  QString styleSheet = QLatin1String(file.readAll());
+
+  setStyleSheet(styleSheet);
 }
 
 void Abbonamento_view::addUtente(const QString &s, const QString &cf) {
@@ -62,9 +81,9 @@ void Abbonamento_view::addUtente(const QString &s, const QString &cf) {
   listaUtenti->setItemWidget(itemN, widgetText);
 }
 
-void Abbonamento_view::addFamiglia(const QString &name) {
+void Abbonamento_view::addFamiglia(const QString &s, const QString &name) {
   QListWidgetItem *itemN = new QListWidgetItem();
-  QLabel *widgetText = new QLabel(name);
+  QLabelCF *widgetText = new QLabelCF(new QLabel(s), name);
 
   listaFamiglie->addItem(itemN);
   itemN->setSelected(false);
@@ -75,19 +94,11 @@ void Abbonamento_view::clearListUtenti() { listaUtenti->clear(); }
 
 void Abbonamento_view::clearListFamiglie() { listaFamiglie->clear(); }
 
-void Abbonamento_view::setStyle() {
-  QFile file(":/qss/style.css");
-  file.open(QFile::ReadOnly);
-  QString styleSheet = QLatin1String(file.readAll());
-
-  setStyleSheet(styleSheet);
-}
-
 void Abbonamento_view::showAbbonamento() {
   listaFamiglie->hide();
-  listaUtenti->show();
+  famiglieLabel->hide();
   isUtente = false;
-  tipoLista->setText(QString("Lista utenti\nSeleziona solo un utente"));
+  utentiLabel->setText(QString("Lista utenti\nSeleziona solo un utente"));
   if (!alreadySelectedUt)
     aggiungi->hide();
   else
@@ -96,18 +107,15 @@ void Abbonamento_view::showAbbonamento() {
 }
 
 void Abbonamento_view::showAbbFamiglaire() {
-  listaUtenti->hide();
   listaFamiglie->show();
+  famiglieLabel->show();
   isUtente = true;
-  tipoLista->setText(QString("Lista Famiglie\nSeleziona solo una famiglia"));
-  if (!alreadySelectedFm)
+  if (!alreadySelectedFm || !alreadySelectedUt)
     aggiungi->hide();
   else
     aggiungi->show();
   resizeMe();
 }
-
-void Abbonamento_view::resizeMe() { adjustSize(); }
 
 void Abbonamento_view::clickListUtenti(QListWidgetItem *item) {
   QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaUtenti->itemWidget(item));
@@ -130,36 +138,58 @@ void Abbonamento_view::clickListUtenti(QListWidgetItem *item) {
 }
 
 void Abbonamento_view::clickListFamiglie(QListWidgetItem *item) {
-  QLabel *lbl = dynamic_cast<QLabel *>(listaFamiglie->itemWidget(item));
+  QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaFamiglie->itemWidget(item));
 
-  if (!alreadySelectedFm) {
-    lbl->setStyleSheet("QLabel { background-color : LightGreen;}");
-    aggiungi->show();
-    alreadySelectedFm = true;
-
+  if (!lbl->isSelected()) {
+    if (!alreadySelectedFm) {
+      lbl->setStyleSheet("QLabel { background-color : LightGreen;}");
+      lbl->setSelect(true);
+      if (alreadySelectedUt) aggiungi->show();
+      alreadySelectedFm = true;
+    }
   } else {
     lbl->setStyleSheet("QLabel { background-color : #00A2E8;}");
+    lbl->setSelect(false);
     alreadySelectedFm = false;
     aggiungi->hide();
   }
-  listaFamiglie->setItemWidget(item, lbl);
+  listaUtenti->setItemWidget(item, lbl);
   resizeMe();
 }
 
 void Abbonamento_view::addToAbbonamento() {
+  QListWidgetItem *item = listaUtenti->currentItem();
+  QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaUtenti->itemWidget(item));
   if (isUtente) {
-    QListWidgetItem *item = listaUtenti->currentItem();
-    QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaUtenti->itemWidget(item));
     if (addUtenteAbb(lbl->getCf())) {
-      qDebug() << "inserito";
+      labelUtility->setText("Abbonamento creato correttamente");
+    } else {
+      labelUtility->setText("Errore nella crezione dell' abbonamento");
     }
+    alreadySelectedUt = false;
   } else {
-    // addFamigliaAbb(item);
+    QListWidgetItem *itemFam = listaFamiglie->currentItem();
+    QLabelCF *lblFam =
+        dynamic_cast<QLabelCF *>(listaFamiglie->itemWidget(itemFam));
+    if (addFamigliaAbb(lbl->getCf(), lblFam->getCf())) {
+      labelUtility->setText("Abbonamento famigliare creato correttamente");
+    } else {
+      labelUtility->setText(
+          "Errore nella crezione dell' abbonamento famigliare");
+    }
+    alreadySelectedUt = false;
+    alreadySelectedUt = false;
+    delete itemFam;
+    delete lblFam;
   }
+  delete item;
+  delete lbl;
 }
 
 bool Abbonamento_view::addUtenteAbb(const QString &cf) {
   return controller->addUsertToAbb(cf);
 }
 
-bool Abbonamento_view::addFamigliaAbb(QListWidgetItem *item) {}
+bool Abbonamento_view::addFamigliaAbb(const QString &name, const QString &cf) {
+  return controller->addUsertToAbbFam(name, cf);
+}

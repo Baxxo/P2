@@ -28,8 +28,8 @@ class Model {
   void cleaVectorSale();
 
   Utente *getUtente(string cf);
-  Famiglia &getFamiglia(string cf);
-  EntrataFilm &getEntrataFilm();
+  Famiglia *getFamiglia(string name);
+  EntrataFilm *getEntrataFilm();
   Sala *getSala(string nome);
 
   const MyVector<DeepPtr<EntrataFilm>> &getListEntrate() const;

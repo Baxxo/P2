@@ -132,7 +132,7 @@ class Controller : public QObject {
   bool removeUserFromFamily(const QString &cf);
 
   bool addUsertToAbb(const QString &cf);
-  bool addUsertToAbbFam(const QString &cf);
+  bool addUsertToAbbFam(const QString &name, const QString &cf);
 };
 
 #endif  // CONTROLLER_H

@@ -49,6 +49,17 @@ Utente *Model::getUtente(string cf) {
   return nullptr;
 }
 
+Famiglia *Model::getFamiglia(std::string name) {
+  auto it = listFamiglie.cbegin();
+
+  for (; it != listFamiglie.cend(); ++it) {
+    if ((*it)->getName() == name) {
+      return new Famiglia(**it);
+    }
+  }
+  return nullptr;
+}
+
 Sala *Model::getSala(string nome) {
   for (auto it = listSale.begin(); it != listSale.end(); ++it) {
     if ((*it)->getNomesala() == nome) {
