@@ -1,3 +1,7 @@
+.colorSelect::item:selectedF {
+    background-color: LightGreen;
+}
+
 *{
     background-color: #00A2E8;
     color: white;
@@ -24,9 +28,4 @@ QPushButton{
 .path{
     font-size:20px;
     font-weight: normal;
-}
-
-QListWidget::item:selected{
-    background-color: green;
-    color: white;
 }

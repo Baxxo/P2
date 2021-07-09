@@ -4,6 +4,7 @@
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QListWidget>
+#include <QPushButton>
 #include <QRadioButton>
 #include <QVBoxLayout>
 #include <QWidget>
@@ -29,19 +30,24 @@ class Abbonamento_view : public QWidget {
   QPushButton* aggiungi;
 
   bool isUtente;
+  bool alreadySelectedUt;
+  bool alreadySelectedFm;
 
   void setStyle();
 
-  void addUtenteAbb(QListWidgetItem* item);
-  void addFamigliaAbb(QListWidgetItem* item);
+  bool addUtenteAbb(const QString& cf);
+  bool addFamigliaAbb(QListWidgetItem* item);
 
  private slots:
 
   void showAbbonamento();
   void showAbbFamiglaire();
-  void addToAbbonamento(QListWidgetItem* item);
+  void addToAbbonamento();
 
   void resizeMe();
+
+  void clickListUtenti(QListWidgetItem* item);
+  void clickListFamiglie(QListWidgetItem* item);
 
  public:
   explicit Abbonamento_view(Controller* c, QWidget* parent = nullptr);

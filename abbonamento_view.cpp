@@ -1,5 +1,6 @@
 #include "abbonamento_view.h"
 #include <QDebug>
+#include "controller.h"
 
 Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)
     : QWidget(parent),
@@ -9,13 +10,17 @@ Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)
       layoutRadio(new QHBoxLayout),
       abbonamento(new QRadioButton("Abbonamento")),
       abbonamentoFamigliare(new QRadioButton("Abbonamento Famigliare")),
-      tipoLista(new QLabel("Lista utenti")),
+      tipoLista(new QLabel("Lista utenti\nSeleziona solo un utente")),
       listaUtenti(new QListWidget),
       listaFamiglie(new QListWidget),
-      aggiungi(new QPushButton("Aggiugni")),
-      isUtente(true) {
+      aggiungi(new QPushButton("Aggiungi")),
+      isUtente(true),
+      alreadySelectedUt(false),
+      alreadySelectedFm(false) {
   tipoLista->setAlignment(Qt::AlignHCenter);
   tipoLista->setProperty("class", "big_text");
+
+  listaFamiglie->setProperty("class", "colorSelect");
 
   abbonamento->setChecked(true);
   layoutRadio->addWidget(abbonamento);
@@ -27,7 +32,9 @@ Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)
   mainLayout->addWidget(tipoLista);
   mainLayout->addWidget(listaUtenti);
   mainLayout->addWidget(listaFamiglie);
+  mainLayout->addWidget(aggiungi, Qt::AlignHCenter);
   listaFamiglie->hide();
+  aggiungi->hide();
 
   setLayout(mainLayout);
 
@@ -35,10 +42,13 @@ Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)
   connect(abbonamentoFamigliare, SIGNAL(clicked()), this,
           SLOT(showAbbFamiglaire()));
 
+  connect(aggiungi, SIGNAL(clicked()), this, SLOT(addToAbbonamento()));
+
   connect(listaUtenti, SIGNAL(itemClicked(QListWidgetItem *)), this,
-          SLOT(addToAbbonamento(QListWidgetItem *)));
+          SLOT(clickListUtenti(QListWidgetItem *)));
+
   connect(listaFamiglie, SIGNAL(itemClicked(QListWidgetItem *)), this,
-          SLOT(addToAbbonamento(QListWidgetItem *)));
+          SLOT(clickListFamiglie(QListWidgetItem *)));
 
   setStyle();
 }
@@ -77,7 +87,11 @@ void Abbonamento_view::showAbbonamento() {
   listaFamiglie->hide();
   listaUtenti->show();
   isUtente = false;
-  tipoLista->setText(QString("Lista utenti"));
+  tipoLista->setText(QString("Lista utenti\nSeleziona solo un utente"));
+  if (!alreadySelectedUt)
+    aggiungi->hide();
+  else
+    aggiungi->show();
   resizeMe();
 }
 
@@ -85,32 +99,67 @@ void Abbonamento_view::showAbbFamiglaire() {
   listaUtenti->hide();
   listaFamiglie->show();
   isUtente = true;
-  tipoLista->setText(QString("Lista Famiglie"));
+  tipoLista->setText(QString("Lista Famiglie\nSeleziona solo una famiglia"));
+  if (!alreadySelectedFm)
+    aggiungi->hide();
+  else
+    aggiungi->show();
   resizeMe();
 }
 
 void Abbonamento_view::resizeMe() { adjustSize(); }
 
-void Abbonamento_view::addToAbbonamento(QListWidgetItem *item) {
-  if (isUtente) {
-    QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaUtenti->itemWidget(item));
-    if (!lbl->isSelected()) {
-      if (true) {
-        lbl->setStyleSheet("QLabel { background-color : LightGreen;}");
-        lbl->setSelect(true);
-      }
-    } else {
-      lbl->setStyleSheet("QLabel { background-color : #00A2E8;}");
-      lbl->setSelect(false);
-    }
-    // addUtenteAbb(item);
+void Abbonamento_view::clickListUtenti(QListWidgetItem *item) {
+  QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaUtenti->itemWidget(item));
 
-    listaUtenti->setItemWidget(item, lbl);
+  if (!lbl->isSelected()) {
+    if (!alreadySelectedUt) {
+      lbl->setStyleSheet("QLabel { background-color : LightGreen;}");
+      lbl->setSelect(true);
+      aggiungi->show();
+      alreadySelectedUt = true;
+    }
+  } else {
+    lbl->setStyleSheet("QLabel { background-color : #00A2E8;}");
+    lbl->setSelect(false);
+    alreadySelectedUt = false;
+    aggiungi->hide();
+  }
+  listaUtenti->setItemWidget(item, lbl);
+  resizeMe();
+}
+
+void Abbonamento_view::clickListFamiglie(QListWidgetItem *item) {
+  QLabel *lbl = dynamic_cast<QLabel *>(listaFamiglie->itemWidget(item));
+
+  if (!alreadySelectedFm) {
+    lbl->setStyleSheet("QLabel { background-color : LightGreen;}");
+    aggiungi->show();
+    alreadySelectedFm = true;
+
+  } else {
+    lbl->setStyleSheet("QLabel { background-color : #00A2E8;}");
+    alreadySelectedFm = false;
+    aggiungi->hide();
+  }
+  listaFamiglie->setItemWidget(item, lbl);
+  resizeMe();
+}
+
+void Abbonamento_view::addToAbbonamento() {
+  if (isUtente) {
+    QListWidgetItem *item = listaUtenti->currentItem();
+    QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaUtenti->itemWidget(item));
+    if (addUtenteAbb(lbl->getCf())) {
+      qDebug() << "inserito";
+    }
   } else {
     // addFamigliaAbb(item);
   }
 }
 
-void Abbonamento_view::addUtenteAbb(QListWidgetItem *item) {}
+bool Abbonamento_view::addUtenteAbb(const QString &cf) {
+  return controller->addUsertToAbb(cf);
+}
 
-void Abbonamento_view::addFamigliaAbb(QListWidgetItem *item) {}
+bool Abbonamento_view::addFamigliaAbb(QListWidgetItem *item) {}

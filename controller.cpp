@@ -94,10 +94,12 @@ bool Controller::addUsertToAbb(const QString &cf) {
 
   model->addEntrata(abb);
 
+  qDebug() << "--";
   for (auto it = model->getListEntrate().cbegin();
        it != model->getListEntrate().cend(); ++it) {
     qDebug() << QString::fromStdString((**it).getUtente()->getCodFisc());
   }
+  qDebug() << "--";
 
   return chk;
 }
@@ -108,13 +110,7 @@ bool Controller::addUsertToAbbFam(const QString &cf) {
     delete abbFam;
   }
 
-  /*QDate date = date.currentDate();
-  QString year = date.toString("yyyy");
-  QString month = date.toString("mm");
-  QString day = date.toString("dd");
-  Utente *u = model->getUtente(cf.toStdString());
-  abb = new Abbonamento(new Data(year.toUInt(), month.toUInt(), day.toUInt()),
-                        u, 7.5, std::to_string(codAbb++), 10);*/
+  // DA FARE
 
   return chk;
 }

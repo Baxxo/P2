@@ -1,4 +1,5 @@
 #include "utente.h"
+#include <QDebug>
 
 Utente::Utente(std::string cf, std::string n, std::string s, unsigned int a,
                std::string num)
@@ -10,6 +11,8 @@ Utente::Utente(const Utente &o)
       age(o.age),
       codiceFiscale(o.codiceFiscale),
       phoneNumber(o.phoneNumber) {}
+
+/// Utente::~Utente() { qDebug() << "distrutto"; }
 
 std::string Utente::getName() const { return name; }
 
