@@ -2,8 +2,8 @@
 
 Model::Model(string _test) : test(_test) {}
 
-void Model::addEntrata(const EntrataFilm &a) {
-  listEntrate.push_back(DeepPtr<EntrataFilm>(a));
+void Model::addEntrata(EntrataFilm *e) {
+  listEntrate.push_back(DeepPtr<EntrataFilm>(*e));
 }
 
 void Model::addUtente(const Utente &u) {

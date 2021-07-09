@@ -9,7 +9,7 @@
 class Model {
  public:
   Model(string _test = "test");
-  void addEntrata(const EntrataFilm &a);
+  void addEntrata(EntrataFilm *e);
   void addUtente(const Utente &u);
   void addFamiglia(const Famiglia &f);
   void addAcquisto(const Utente &u);

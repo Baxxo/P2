@@ -1,5 +1,6 @@
 #include "controller.h"
 
+#include <QDate>
 #include <QFileDialog>
 #include <QTimer>
 
@@ -25,6 +26,10 @@ Controller::Controller(QObject *parent, Model *m)
       pathJsonSale(""),
       objUtenti(nullptr),
       fam(nullptr),
+      abb(nullptr),
+      codAbb(0),
+      abbFam(nullptr),
+      codAbbFam(0),
       err(nullptr) {}
 
 QString Controller::getPathJsonUsers() const { return pathJsonUsers; }
@@ -74,6 +79,46 @@ bool Controller::removeUserFromFamily(const QString &cf) {
   return false;
 }
 
+bool Controller::addUsertToAbb(const QString &cf) {
+  bool chk = true;
+  if (abb) {
+    delete abb;
+  }
+  QDate date = date.currentDate();
+  QString year = date.toString("yyyy");
+  QString month = date.toString("mm");
+  QString day = date.toString("dd");
+  Utente *u = model->getUtente(cf.toStdString());
+  abb = new Abbonamento(new Data(year.toUInt(), month.toUInt(), day.toUInt()),
+                        u, 7.5, std::to_string(codAbb++), 10);
+
+  model->addEntrata(abb);
+
+  for (auto it = model->getListEntrate().cbegin();
+       it != model->getListEntrate().cend(); ++it) {
+    qDebug() << QString::fromStdString((**it).getUtente()->getCodFisc());
+  }
+
+  return chk;
+}
+
+bool Controller::addUsertToAbbFam(const QString &cf) {
+  bool chk = true;
+  if (abbFam) {
+    delete abbFam;
+  }
+
+  /*QDate date = date.currentDate();
+  QString year = date.toString("yyyy");
+  QString month = date.toString("mm");
+  QString day = date.toString("dd");
+  Utente *u = model->getUtente(cf.toStdString());
+  abb = new Abbonamento(new Data(year.toUInt(), month.toUInt(), day.toUInt()),
+                        u, 7.5, std::to_string(codAbb++), 10);*/
+
+  return chk;
+}
+
 void Controller::openAdmin() {
   if (admin == nullptr) {
     admin = new Admin(this, view);
@@ -90,9 +135,8 @@ void Controller::openAdmin() {
     string s =
         u->getSurname() + " " + u->getName() + " ( " + u->getCodFisc() + " )";
     admin->addUtente(QString(s.c_str()));
+    if (u) delete u;
   }
-
-  if (u) delete u;
 
   if (pathJsonFamiglie == "") loadFamilies();
 
@@ -155,7 +199,30 @@ void Controller::openAbbonamento() {
   }
 
   if (pathJsonUsers == "") loadUsers();
+
+  abbonamentoView->clearListUtenti();
+  Utente *u = nullptr;
+  for (auto it = model->getListUtenti().cbegin();
+       it != model->getListUtenti().cend(); ++it) {
+    u = new Utente(**it);
+    string s =
+        u->getSurname() + " " + u->getName() + " ( " + u->getCodFisc() + " )";
+    abbonamentoView->addUtente(QString::fromStdString(s),
+                               QString::fromStdString(u->getCodFisc()));
+
+    if (u) delete u;
+  }
+
   if (pathJsonFamiglie == "") loadFamilies();
+
+  abbonamentoView->clearListFamiglie();
+
+  for (auto it = model->getListFamiglie().cbegin();
+       it != model->getListFamiglie().cend(); ++it) {
+    abbonamentoView->addFamiglia(QString::fromStdString(
+        (*it)->getName() + " (membri: " + std::to_string((*it)->getSize()) +
+        " )"));
+  }
 
   QTimer::singleShot(0, abbonamentoView, SLOT(resizeMe()));
 

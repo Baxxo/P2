@@ -45,6 +45,12 @@ class Controller : public QObject {
 
   Famiglia *fam;
 
+  Abbonamento *abb;
+  unsigned int codAbb;
+
+  AbbonamentoFamigliare *abbFam;
+  unsigned int codAbbFam;
+
   ErrorDisplay *err;
 
   QString readFile(const QString &filename);
@@ -124,6 +130,9 @@ class Controller : public QObject {
 
   bool addUserToFamily(const QString &cf);
   bool removeUserFromFamily(const QString &cf);
+
+  bool addUsertToAbb(const QString &cf);
+  bool addUsertToAbbFam(const QString &cf);
 };
 
 #endif  // CONTROLLER_H

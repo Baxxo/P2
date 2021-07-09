@@ -28,13 +28,13 @@
 
 class Admin : public QMainWindow {
   Q_OBJECT
-public:
+ public:
   Admin(Controller *c, MainWindow *parent = nullptr);
   ~Admin() = default;
 
   void setAbbonamenti();
-  void addUtente(QString s);
-  void addFamiglia(QString s);
+  void addUtente(const QString &s);
+  void addFamiglia(const QString &s);
   void setFamiglie();
 
   void clearListUtenti();
@@ -49,7 +49,7 @@ public:
   QString getNomeSala();
   QString getSalaFilm();
 
-private slots:
+ private slots:
   void getClickAbb();
   void getClickUt();
   void getClickFam();
@@ -57,7 +57,7 @@ private slots:
   void addFilmLayout();
   void addSalaLayout();
 
-private:
+ private:
   QDesktopWidget *desktop;
   QGridLayout *baseLayout;
   QVBoxLayout *mainLayout;
@@ -101,4 +101,4 @@ private:
   void closeEvent(QCloseEvent *event);
 };
 
-#endif // ADMIN_H
+#endif  // ADMIN_H

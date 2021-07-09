@@ -103,12 +103,12 @@ Admin::Admin(Controller *c, MainWindow *parent)
   setCentralWidget(widget);
 }
 
-void Admin::addUtente(QString s) {
+void Admin::addUtente(const QString &s) {
   QListWidgetItem *item = new QListWidgetItem(s);
   listUt->addItem(item);
 }
 
-void Admin::addFamiglia(QString s) {
+void Admin::addFamiglia(const QString &s) {
   QListWidgetItem *item = new QListWidgetItem(s);
   listFam->addItem(item);
 }
