@@ -70,7 +70,7 @@ class Controller : public QObject {
 
   void loadUsers(bool canUpdate = false);
   void loadFamilies(bool canUpdate = false);
-  void loadEntrateinView(bool canUpdate = false);
+  void loadEntrate(bool canUpdate = false);
   void loadPostiOccupati(bool canUpdate = false);
   void loadSale(bool canUpdate = false);
   void loadFilm(bool canUpdate = false);
@@ -131,8 +131,8 @@ class Controller : public QObject {
   bool addUserToFamily(const QString &cf);
   bool removeUserFromFamily(const QString &cf);
 
-  bool addUsertToAbb(const QString &cf);
-  bool addUsertToAbbFam(const QString &name, const QString &cf);
+  bool createAbbonamento(const QString &cf);
+  bool createAbbonamentoFamigliare(const QString &name, const QString &cf);
 };
 
 #endif  // CONTROLLER_H

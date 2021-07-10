@@ -98,6 +98,40 @@ bool Controller::createAbbonamento(const QString &cf) {
                           u, 7.5, std::to_string(codAbb++), 10);
 
     model->addEntrata(abb);
+
+    QFile file(pathJsonEntrata);
+    if (!file.open(QIODevice::ReadOnly)) {
+      openError(QString("File open error: Read"));
+    }
+
+    QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
+    file.close();
+
+    QJsonValue v = jsonOrg.object().value(QString("Abbonamenti"));
+
+    QJsonArray array = v.toArray();
+
+    QJsonObject newAbbonamento;
+    newAbbonamento.insert("Data",
+                          QString::fromStdString(abb->getData()->ToString()));
+    newAbbonamento.insert(
+        "Utente", QString::fromStdString(abb->getUtente()->getCodFisc()));
+    newAbbonamento.insert("Codice", QString::fromStdString(abb->getCodice()));
+    newAbbonamento.insert("Entrate_rimaste", abb->getEntrate());
+
+    array.push_back(newAbbonamento);
+
+    QJsonObject obj;
+    obj.insert("Abbonamenti", array);
+
+    QJsonDocument doc(obj);
+
+    if (!file.open(QIODevice::WriteOnly)) {
+      openError(QString("File open error: Write"));
+    }
+
+    file.write(doc.toJson());
+    file.close();
   }
 
   // if (u) delete u;
@@ -191,6 +225,7 @@ void Controller::openClient() {
 
   if (pathJsonUsers == "") loadUsers();
   if (pathJsonFamiglie == "") loadFamilies();
+  if (pathJsonEntrata == "") loadFamilies();
 
   client->show();
 }
@@ -295,7 +330,7 @@ void Controller::loadUsersSlot() { loadUsers(true); }
 
 void Controller::loadFamiliesSlot() { loadFamilies(true); }
 
-void Controller::loadEntrateSlot() { loadEntrateinView(true); }
+void Controller::loadEntrateSlot() { loadEntrate(true); }
 
 void Controller::loadPostiSlot() { loadPostiOccupati(true); }
 
@@ -539,26 +574,14 @@ void Controller::loadFamilies(bool canUpdate) {
   }
 }
 
-void Controller::loadEntrateinView(bool canUpdate) {
+void Controller::loadEntrate(bool canUpdate) {
   QFile file;
-  QVariantList *list = readFamiglie(file, canUpdate);
+  QVariantList *list = readEntrata(file, canUpdate);
   if (list != nullptr) {
     popolaVectorEntrate(*list);
 
-    view->changeTitleChooseEntrata("Cambia file json per Entrate");
     QFileInfo info(file.fileName());
-    view->setLabelPathFamiglie(info.fileName());
-
-    if (!admin) {
-      admin = new Admin(this, view);
-    }
-    admin->clearListFamiglie();
-    for (auto it = model->getListFamiglie().cbegin();
-         it != model->getListFamiglie().cend(); ++it) {
-      admin->addFamiglia(QString::fromStdString(
-          (*it)->getName() + " (membri: " + std::to_string((*it)->getSize()) +
-          " )"));
-    }
+    view->setLabelPathEntrata(info.fileName());
   }
 }
 
@@ -669,12 +692,13 @@ QVariantList *Controller::readEntrata(QFile &file, bool canUpdate) {
   }
 
   if (pathJsonEntrata != "") {
-    file.setFileName(pathJsonPosti);
+    file.setFileName(pathJsonEntrata);
 
     if (!file.open(QIODevice::ReadOnly)) {
       openError(QString("File open error: Read"));
-    } else {
-      qDebug() << "ciao:)";
+    } /*else {
+      model->clearVectorEntrate();
+
       QString json = file.readAll();
 
       QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
@@ -683,13 +707,14 @@ QVariantList *Controller::readEntrata(QFile &file, bool canUpdate) {
 
         QVariantMap mainMap = jObj.toVariantMap();
         QVariantList *localList = new QVariantList();
-        *localList = mainMap["Posti"].toList();
+        *localList = mainMap["Abbonamenti"].toList();
+        view->changeTitleChooseFamiglie("Cambia file json per Famiglie");
 
         return localList;
       } else {
         openError(QString("Empty file"));
       }
-    }
+    }*/
   }
 
   return nullptr;

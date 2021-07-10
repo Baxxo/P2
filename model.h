@@ -25,6 +25,7 @@ class Model {
 
   void clearVectorUtenti();
   void clearVectorFamiglie();
+  void clearVectorEntrate();
   void cleaVectorSale();
 
   Utente *getUtente(string cf);

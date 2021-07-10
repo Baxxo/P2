@@ -36,6 +36,8 @@ void Model::clearVectorUtenti() { listUtenti.clear(); }
 
 void Model::clearVectorFamiglie() { listFamiglie.clear(); }
 
+void Model::clearVectorEntrate() { listEntrate.clear(); }
+
 void Model::cleaVectorSale() { listSale.clear(); }
 
 Utente *Model::getUtente(string cf) {
