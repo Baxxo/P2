@@ -38,8 +38,8 @@ class Abbonamento_view : public QWidget {
 
   void setStyle();
 
-  bool addUtenteAbb(const QString& cf);
-  bool addFamigliaAbb(const QString& name, const QString& cf);
+  bool addAbbonamentoToController(const QString& cf);
+  bool addAbbonamentoFamToController(const QString& name, const QString& cf);
 
  private slots:
 

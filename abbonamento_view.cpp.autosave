@@ -202,10 +202,10 @@ void Abbonamento_view::addToAbbonamento() {
 }
 
 bool Abbonamento_view::addAbbonamentoToController(const QString &cf) {
-  return controller->addUsertToAbb(cf);
+  return controller->createAbbonamento(cf);
 }
 
 bool Abbonamento_view::addAbbonamentoFamToController(const QString &name,
                                                      const QString &cf) {
-  return controller->addUsertToAbbFam(name, cf);
+  return controller->createAbbonamentoFamigliare(name, cf);
 }

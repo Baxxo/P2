@@ -79,10 +79,11 @@ bool Controller::removeUserFromFamily(const QString &cf) {
   return false;
 }
 
-bool Controller::addUsertToAbb(const QString &cf) {
+bool Controller::createAbbonamento(const QString &cf) {
   bool chk = true;
   if (abb) {
     delete abb;
+    abb = nullptr;
   }
   QDate date = date.currentDate();
   QString year = date.toString("yyyy");
@@ -99,9 +100,9 @@ bool Controller::addUsertToAbb(const QString &cf) {
     model->addEntrata(abb);
   }
 
-  if (u) delete u;
+  // if (u) delete u;
 
-  qDebug() << "--";
+  qDebug() << "--addUsertToAbb";
   for (auto it = model->getListEntrate().cbegin();
        it != model->getListEntrate().cend(); ++it) {
     qDebug() << QString::fromStdString((**it).getUtente()->getCodFisc());
@@ -111,10 +112,12 @@ bool Controller::addUsertToAbb(const QString &cf) {
   return chk;
 }
 
-bool Controller::addUsertToAbbFam(const QString &name, const QString &cf) {
+bool Controller::createAbbonamentoFamigliare(const QString &name,
+                                             const QString &cf) {
   bool chk = true;
   if (abbFam) {
     delete abbFam;
+    abbFam = nullptr;
   }
 
   QDate date = date.currentDate();
@@ -136,10 +139,10 @@ bool Controller::addUsertToAbbFam(const QString &name, const QString &cf) {
     model->addEntrata(abbFam);
   }
 
-  if (u) delete u;
-  if (f) delete f;
+  // if (u) delete u;
+  // if (f) delete f;
 
-  qDebug() << "--";
+  qDebug() << "--addUsertToAbbFam";
   for (auto it = model->getListEntrate().cbegin();
        it != model->getListEntrate().cend(); ++it) {
     qDebug() << QString::fromStdString((**it).getUtente()->getCodFisc());
