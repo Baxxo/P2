@@ -73,9 +73,10 @@ Famiglia *Model::getFamiglia(std::string name) const {
     if ((*it)->getName() == name) {
       qDebug() << "model get fam " << QString::fromStdString((**it).getName());
       Famiglia *f = new Famiglia(**it);
-      for (unsigned int i = 0; i < f->getSize(); ++i)
-        qDebug() << "model f[" << i << "] "
-                 << QString::fromStdString(f[i].getCodFisc());
+      for (unsigned int i = 0; i < f->getSize(); ++i) {
+        QString cf = QString::fromStdString((*(f[i]))->getCodFisc());
+        qDebug() << "model f[" << i << "] " << cf;
+      }
       qDebug() << "return model";
       return f;
     }

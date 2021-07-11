@@ -34,6 +34,9 @@ class Famiglia {
 
   bool operator==(const Famiglia &f) const;
   bool operator!=(const Famiglia &f) const;
+
+  Utente *&operator*() const;
+  Utente **operator->() const;
   bool isEmpty() const;
   Famiglia &operator=(const Famiglia &o);
 

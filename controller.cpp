@@ -952,7 +952,7 @@ void Controller::popolaVectorEntrate(const QVariantList &list) {
       //------------------------------------
       for (unsigned int i = 0; i < f->getSize(); ++i)
         qDebug() << "controller f[" << i << "] "
-                 << QString::fromStdString(f[i].getCodFisc());
+                 << QString::fromStdString((*(f[i]))->getCodFisc());
 
       //------------------------------------
 

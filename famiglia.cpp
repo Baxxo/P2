@@ -3,7 +3,7 @@
 
 Famiglia::Famiglia(std::string _name, unsigned int c)
     : membri(new Utente *[c]), capacity(c), size(0), name(_name) {
-  qDebug() << "costrut famiglia";
+  //  qDebug() << "costrut famiglia";
 }
 
 Famiglia::Famiglia(const Famiglia &o)
@@ -13,8 +13,11 @@ Famiglia::Famiglia(const Famiglia &o)
       name(o.name) {
   for (unsigned int i = 0; i < o.size; i++) {
     membri[i] = o.membri[i];
+  }
+  for (unsigned int i = 0; i < o.size; i++) {
     qDebug() << "costrut copia famiglia"
-             << QString::fromStdString(membri[i]->getCodFisc());
+             << QString::fromStdString((*(membri[i])).getCodFisc()) << "__ "
+             << QString::fromStdString((*(o.membri[i])).getCodFisc());
   }
   qDebug() << "-fine-";
 }
@@ -96,6 +99,10 @@ Utente *&Famiglia::operator[](int i) const {
 bool Famiglia::operator==(const Famiglia &f) const { return f.name == name; }
 
 bool Famiglia::operator!=(const Famiglia &f) const { return f.name != name; }
+
+Utente *&Famiglia::operator*() const { return *membri; }
+
+Utente **Famiglia::operator->() const { return membri; }
 
 bool Famiglia::isEmpty() const { return size == 0; }
 
