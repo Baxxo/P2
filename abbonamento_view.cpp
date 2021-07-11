@@ -16,6 +16,8 @@ Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)
       listaFamiglie(new QListWidget),
       aggiungi(new QPushButton("Aggiungi")),
       labelUtility(new QLabel()),
+      currentUser(nullptr),
+      currentfamily(nullptr),
       isUtente(true),
       alreadySelectedUt(false),
       alreadySelectedFm(false) {
@@ -24,6 +26,9 @@ Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)
 
   famiglieLabel->setAlignment(Qt::AlignHCenter);
   famiglieLabel->setProperty("class", "big_text");
+
+  labelUtility->setAlignment(Qt::AlignHCenter);
+  labelUtility->setProperty("class", "succes");
 
   // listaFamiglie->setProperty("class", "colorSelect");
 
@@ -39,6 +44,7 @@ Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)
   mainLayout->addWidget(famiglieLabel);
   mainLayout->addWidget(listaFamiglie);
   mainLayout->addWidget(aggiungi, Qt::AlignHCenter);
+  mainLayout->addWidget(labelUtility);
   listaFamiglie->hide();
   famiglieLabel->hide();
   aggiungi->hide();
@@ -55,7 +61,7 @@ Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)
   connect(listaFamiglie, SIGNAL(itemClicked(QListWidgetItem *)), this,
           SLOT(clickListFamiglie(QListWidgetItem *)));
 
-  connect(aggiungi, SIGNAL(clicked()), this, SLOT(addToAbbonamento()));
+  connect(aggiungi, SIGNAL(clicked()), this, SLOT(createAbbonamento()));
   // connect(aggiungi, SIGNAL(clicked()), listaUtenti, SLOT(clearSelection()));
   // connect(aggiungi, SIGNAL(clicked()), listaFamiglie,
   // SLOT(clearSelection()));
@@ -98,29 +104,34 @@ void Abbonamento_view::clearListUtenti() { listaUtenti->clear(); }
 void Abbonamento_view::clearListFamiglie() { listaFamiglie->clear(); }
 
 void Abbonamento_view::showAbbonamento() {
-  listaFamiglie->hide();
   famiglieLabel->hide();
-  isUtente = false;
-  utentiLabel->setText(QString("Lista utenti\nSeleziona solo un utente"));
+  listaFamiglie->hide();
+  isUtente = true;
   if (!alreadySelectedUt)
     aggiungi->hide();
-  else
+  else {
+    if (currentUser) listaUtenti->setCurrentItem(currentUser);
     aggiungi->show();
+  }
   resizeMe();
 }
 
 void Abbonamento_view::showAbbFamiglaire() {
-  listaFamiglie->show();
   famiglieLabel->show();
-  isUtente = true;
+  listaFamiglie->show();
+  isUtente = false;
   if (!alreadySelectedFm || !alreadySelectedUt)
     aggiungi->hide();
-  else
+  else {
+    if (currentUser) listaUtenti->setCurrentItem(currentUser);
+    if (currentfamily) listaFamiglie->setCurrentItem(currentfamily);
     aggiungi->show();
+  }
   resizeMe();
 }
 
 void Abbonamento_view::clickListUtenti(QListWidgetItem *item) {
+  currentUser = item;
   QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaUtenti->itemWidget(item));
 
   if (!lbl->isSelected()) {
@@ -141,6 +152,7 @@ void Abbonamento_view::clickListUtenti(QListWidgetItem *item) {
 }
 
 void Abbonamento_view::clickListFamiglie(QListWidgetItem *item) {
+  currentfamily = item;
   QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaFamiglie->itemWidget(item));
 
   if (!lbl->isSelected()) {
@@ -160,7 +172,7 @@ void Abbonamento_view::clickListFamiglie(QListWidgetItem *item) {
   resizeMe();
 }
 
-void Abbonamento_view::addToAbbonamento() {
+void Abbonamento_view::createAbbonamento() {
   QListWidgetItem *item = listaUtenti->currentItem();
   QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaUtenti->itemWidget(item));
   QLabelCF *lblFam = nullptr;
@@ -168,27 +180,27 @@ void Abbonamento_view::addToAbbonamento() {
 
   if (isUtente) {
     if (addAbbonamentoToController(lbl->getCf())) {
+      labelUtility->setStyleSheet("QLabel { color : LightGreen;}");
       labelUtility->setText("Abbonamento creato correttamente");
     } else {
+      labelUtility->setStyleSheet("QLabel { color : Red;}");
       labelUtility->setText("Errore nella crezione dell' abbonamento");
     }
-    alreadySelectedUt = false;
   } else {
     itemFam = listaFamiglie->currentItem();
     lblFam = dynamic_cast<QLabelCF *>(listaFamiglie->itemWidget(itemFam));
-    if (addAbbonamentoFamToController(lbl->getCf(), lblFam->getCf())) {
+    if (addAbbonamentoFamToController(lblFam->getCf(), lbl->getCf())) {
+      labelUtility->setStyleSheet("QLabel { color : LightGreen;}");
       labelUtility->setText("Abbonamento famigliare creato correttamente");
     } else {
+      labelUtility->setStyleSheet("QLabel { color : Red;}");
       labelUtility->setText(
           "Errore nella crezione dell' abbonamento famigliare");
     }
-    alreadySelectedUt = false;
     alreadySelectedFm = false;
-    // delete itemFam;
-    // delete lblFam;
   }
-  // delete item; in teoria non servono perche' non viene riasseganto nulla
-  // delete lbl;
+  alreadySelectedUt = false;
+  aggiungi->hide();
 
   lbl->setStyleSheet("QLabel { background-color : #00A2E8;}");
   lbl->setSelect(false);

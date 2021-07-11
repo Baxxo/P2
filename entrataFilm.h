@@ -4,22 +4,22 @@
 #include "utente.h"
 
 class EntrataFilm {
-
-private:
+ private:
   Utente *utente;
 
   Data *data;
 
   double prezzo;
 
-public:
-  virtual ~EntrataFilm() = default;
-
+ public:
   EntrataFilm(Data *d = nullptr, Utente *u = nullptr, double p = 7.5);
+  EntrataFilm(const EntrataFilm &o);
+
+  virtual ~EntrataFilm() = default;
 
   virtual double getPrezzo() const;
 
-  Data *getData() const;
+  virtual Data *getData() const;
 
   virtual Utente *getUtente() const;
 

@@ -2,14 +2,18 @@
 #define MODEL_H
 
 #include "abbonamentoFamigliare.h"
+#include "biglietto.h"
 #include "deepPtr.h"
 #include "myVector.h"
 #include "sala.h"
 
 class Model {
  public:
-  Model(string _test = "test");
+  Model();
   void addEntrata(EntrataFilm *e);
+  void addAbbonamento(Abbonamento *e);
+  void addAbbonamentoFam(AbbonamentoFamigliare *e);
+  void addBiglietto(Biglietto *e);
   void addUtente(const Utente &u);
   void addFamiglia(const Famiglia &f);
   void addAcquisto(const Utente &u);
@@ -28,10 +32,10 @@ class Model {
   void clearVectorEntrate();
   void cleaVectorSale();
 
-  Utente *getUtente(string cf);
-  Famiglia *getFamiglia(string name);
-  EntrataFilm *getEntrataFilm();
-  Sala *getSala(string nome);
+  Utente *getUtente(string cf) const;
+  Famiglia *getFamiglia(string name) const;
+  EntrataFilm *getEntrataFilm() const;
+  Sala *getSala(string nome) const;
 
   const MyVector<DeepPtr<EntrataFilm>> &getListEntrate() const;
   const MyVector<DeepPtr<Utente>> &getListUtenti() const;
@@ -51,8 +55,6 @@ class Model {
   MyVector<DeepPtr<Famiglia>> listFamiglie;
   MyVector<DeepPtr<Utente>> listStorico;
   MyVector<DeepPtr<Sala>> listSale;
-
-  string test;
 };
 
 #endif  // MODEL_H

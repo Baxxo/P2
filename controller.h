@@ -55,18 +55,18 @@ class Controller : public QObject {
 
   QString readFile(const QString &filename);
 
-  void popolaVectorUtenti(const QVariantList &list);
-  void popolaVectorPosti(const QVariantList &list);
-  void popolaVectorFamiglie(const QVariantList &list);
-  void popolaVectorEntrate(const QVariantList &list);
-  void popolaVectorSale(const QVariantList &list);
-
   QVariantList *readUtenti(QFile &file, bool canUpdate);
   QVariantList *readFamiglie(QFile &file, bool canUpdate);
   QVariantList *readEntrata(QFile &file, bool canUpdate);
   QVariantList *readPosti(QFile &file, bool canUpdate);
   QVariantList *readSale(QFile &file, bool canUpdate);
   QJsonObject *readFilm(QFile &file, bool canUpdate);
+
+  void popolaVectorUtenti(const QVariantList &list);
+  void popolaVectorPosti(const QVariantList &list);
+  void popolaVectorFamiglie(const QVariantList &list);
+  void popolaVectorEntrate(const QVariantList &list);
+  void popolaVectorSale(const QVariantList &list);
 
   void loadUsers(bool canUpdate = false);
   void loadFamilies(bool canUpdate = false);
@@ -122,7 +122,7 @@ class Controller : public QObject {
   QString getPathJsonSale() const;
   QString getPathJsonFilm() const;
 
-  void openError(QString message);
+  void openError(const QString &message);
 
   void createFamiglia(Famiglia &f, Utente *u);
 

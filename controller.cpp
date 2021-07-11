@@ -46,7 +46,7 @@ QString Controller::getPathJsonFilm() const { return pathJsonFilm; }
 
 void Controller::setView(MainWindow *v) { view = v; }
 
-void Controller::openError(QString message) {
+void Controller::openError(const QString &message) {
   if (err) {
     err->setMessage(message);
   } else {
@@ -62,7 +62,7 @@ void Controller::createFamiglia(Famiglia &f, Utente *u) {
 Famiglia *Controller::getFam() const { return fam; }
 
 bool Controller::addUserToFamily(const QString &cf) {
-  Utente *u = model->getUtente(cf.toUtf8().constData());
+  Utente *u = model->getUtente(cf.toStdString());
   if (fam != nullptr && u != nullptr) {
     fam->addMembro(u);
     return true;
@@ -71,7 +71,7 @@ bool Controller::addUserToFamily(const QString &cf) {
 }
 
 bool Controller::removeUserFromFamily(const QString &cf) {
-  Utente *u = model->getUtente(cf.toUtf8().constData());
+  Utente *u = model->getUtente(cf.toStdString());
   if (fam != nullptr && u != nullptr) {
     fam->removeMembro(u);
     return true;
@@ -87,7 +87,7 @@ bool Controller::createAbbonamento(const QString &cf) {
   }
   QDate date = date.currentDate();
   QString year = date.toString("yyyy");
-  QString month = date.toString("mm");
+  QString month = date.toString("MM");
   QString day = date.toString("dd");
 
   Utente *u = model->getUtente(cf.toStdString());
@@ -97,7 +97,7 @@ bool Controller::createAbbonamento(const QString &cf) {
     abb = new Abbonamento(new Data(year.toUInt(), month.toUInt(), day.toUInt()),
                           u, 7.5, std::to_string(codAbb++), 10);
 
-    model->addEntrata(abb);
+    model->addAbbonamento(abb);
 
     QFile file(pathJsonEntrata);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -107,11 +107,12 @@ bool Controller::createAbbonamento(const QString &cf) {
     QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
     file.close();
 
-    QJsonValue v = jsonOrg.object().value(QString("Abbonamenti"));
+    QJsonValue v = jsonOrg.object().value(QString("Entrate"));
 
     QJsonArray array = v.toArray();
 
     QJsonObject newAbbonamento;
+    newAbbonamento.insert("Tipo", "Abbonamento");
     newAbbonamento.insert("Data",
                           QString::fromStdString(abb->getData()->ToString()));
     newAbbonamento.insert(
@@ -122,7 +123,7 @@ bool Controller::createAbbonamento(const QString &cf) {
     array.push_back(newAbbonamento);
 
     QJsonObject obj;
-    obj.insert("Abbonamenti", array);
+    obj.insert("Entrate", array);
 
     QJsonDocument doc(obj);
 
@@ -133,15 +134,6 @@ bool Controller::createAbbonamento(const QString &cf) {
     file.write(doc.toJson());
     file.close();
   }
-
-  // if (u) delete u;
-
-  qDebug() << "--addUsertToAbb";
-  for (auto it = model->getListEntrate().cbegin();
-       it != model->getListEntrate().cend(); ++it) {
-    qDebug() << QString::fromStdString((**it).getUtente()->getCodFisc());
-  }
-  qDebug() << "--";
 
   return chk;
 }
@@ -156,32 +148,61 @@ bool Controller::createAbbonamentoFamigliare(const QString &name,
 
   QDate date = date.currentDate();
   QString year = date.toString("yyyy");
-  QString month = date.toString("mm");
+  QString month = date.toString("MM");
   QString day = date.toString("dd");
 
   Utente *u = model->getUtente(cf.toStdString());
   chk = chk && u;
 
-  Famiglia *f = model->getFamiglia(name.toStdString());
-  chk = chk && f;
-
   if (chk) {
-    abbFam = new AbbonamentoFamigliare(
-        new Data(year.toUInt(), month.toUInt(), day.toUInt()), u, f, 7.5,
-        std::to_string(codAbbFam++), 10);
+    Famiglia *f = model->getFamiglia(name.toStdString());
+    chk = chk && f;
+    if (chk) {
+      abbFam = new AbbonamentoFamigliare(
+          new Data(year.toUInt(), month.toUInt(), day.toUInt()), u, f, 7.5,
+          std::to_string(codAbbFam++), 10);
 
-    model->addEntrata(abbFam);
+      model->addAbbonamentoFam(abbFam);
+
+      QFile file(pathJsonEntrata);
+      if (!file.open(QIODevice::ReadOnly)) {
+        openError(QString("File open error: Read"));
+      }
+
+      QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
+      file.close();
+
+      QJsonValue v = jsonOrg.object().value(QString("Entrate"));
+
+      QJsonArray array = v.toArray();
+
+      QJsonObject newAbbonamento;
+      newAbbonamento.insert("Tipo", "Abbonamento_Famigliare");
+      newAbbonamento.insert(
+          "Data", QString::fromStdString(abbFam->getData()->ToString()));
+      newAbbonamento.insert(
+          "Utente", QString::fromStdString(abbFam->getUtente()->getCodFisc()));
+      newAbbonamento.insert(
+          "Famiglia", QString::fromStdString(abbFam->getFamiglia()->getName()));
+      newAbbonamento.insert("Codice",
+                            QString::fromStdString(abbFam->getCodice()));
+      newAbbonamento.insert("Entrate_rimaste", abbFam->getEntrate());
+
+      array.push_back(newAbbonamento);
+
+      QJsonObject obj;
+      obj.insert("Entrate", array);
+
+      QJsonDocument doc(obj);
+
+      if (!file.open(QIODevice::WriteOnly)) {
+        openError(QString("File open error: Write"));
+      }
+
+      file.write(doc.toJson());
+      file.close();
+    }
   }
-
-  // if (u) delete u;
-  // if (f) delete f;
-
-  qDebug() << "--addUsertToAbbFam";
-  for (auto it = model->getListEntrate().cbegin();
-       it != model->getListEntrate().cend(); ++it) {
-    qDebug() << QString::fromStdString((**it).getUtente()->getCodFisc());
-  }
-  qDebug() << "--";
 
   return chk;
 }
@@ -215,6 +236,39 @@ void Controller::openAdmin() {
         " )"));
   }
 
+  if (pathJsonEntrata == "") loadEntrate();
+
+  admin->clearListEntrate();
+  for (auto it = model->getListEntrate().cbegin();
+       it != model->getListEntrate().cend(); ++it) {
+    qDebug() << "sono qui 3";
+    Abbonamento &ab = dynamic_cast<Abbonamento &>((**it));
+    qDebug() << "sono qui 4";
+
+    try {
+      AbbonamentoFamigliare &abf = dynamic_cast<AbbonamentoFamigliare &>(ab);
+      qDebug() << "sono qui 5";
+      qDebug() << "sono qui 5.1 ";
+      admin->addEntrata(QString::fromStdString("Abbonamento Famigliare " +
+                                               abf.getFamiglia()->getName()),
+                        QString::fromStdString(abf.getCodice()));
+      qDebug() << "sono qui 6";
+
+    } catch (const std::bad_cast &) {
+      qDebug() << "sono qui 5.2";
+      Utente *u = ab.getUtente();
+      qDebug() << "sono qui 5.3";
+      string s1 = "Abbonamento " + u->toString();
+      qDebug() << "sono qui 5.4";
+      string s2 = ab.getCodice();
+      qDebug() << "sono qui 5.5";
+      admin->addEntrata(QString::fromStdString(s1), QString::fromStdString(s2));
+      qDebug() << "sono qui 7";
+    }
+  }
+
+  qDebug() << "sono qui 4";
+
   admin->show();
 }
 
@@ -225,7 +279,7 @@ void Controller::openClient() {
 
   if (pathJsonUsers == "") loadUsers();
   if (pathJsonFamiglie == "") loadFamilies();
-  if (pathJsonEntrata == "") loadFamilies();
+  if (pathJsonEntrata == "") loadEntrate();
 
   client->show();
 }
@@ -308,7 +362,7 @@ void Controller::openBiglietto() {
 }
 
 void Controller::searchCF() {
-  string cf = famigliaView->getCF_SearchText().toUtf8().constData();
+  string cf = famigliaView->getCF_SearchText().toStdString();
   if (cf != "" && cf != "Type in a CF and press search") {
     if (!fam->hasMembro(new Utente(cf))) {
       bool find = model->searchCf(cf);
@@ -347,6 +401,12 @@ void Controller::salvaUtente() {
         tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
   }
   if (!model->searchCf(utente->getCF().toStdString())) {
+    Utente *u = new Utente(
+        utente->getCF().toStdString(), utente->getName().toStdString(),
+        utente->getSurname().toStdString(), utente->getAge().toUInt(),
+        utente->getNumTel().toStdString());
+    model->addUtente(*u);
+
     QFile file(pathJsonUsers);
     if (!file.open(QIODevice::ReadOnly)) {
       openError(QString("File open error: Read"));
@@ -434,9 +494,6 @@ void Controller::salvaFamiglia() {
         file.close();
 
         famigliaView->setUtilityText("Famiglia Salvata e registrata");
-
-        delete fam;
-        fam = new Famiglia();
       } else {
         openError("inserisci almeno un membro");
       }
@@ -639,7 +696,7 @@ QVariantList *Controller::readUtenti(QFile &file, bool canUpdate) {
 
         return localList;
       } else {
-        openError(QString("Empty file"));
+        openError(QString("File vuoto"));
       }
     }
   }
@@ -675,7 +732,7 @@ QVariantList *Controller::readFamiglie(QFile &file, bool canUpdate) {
 
         return localList;
       } else {
-        openError(QString("Empty file"));
+        openError(QString("File vuoto"));
       }
     }
   }
@@ -696,7 +753,7 @@ QVariantList *Controller::readEntrata(QFile &file, bool canUpdate) {
 
     if (!file.open(QIODevice::ReadOnly)) {
       openError(QString("File open error: Read"));
-    } /*else {
+    } else {
       model->clearVectorEntrate();
 
       QString json = file.readAll();
@@ -707,14 +764,14 @@ QVariantList *Controller::readEntrata(QFile &file, bool canUpdate) {
 
         QVariantMap mainMap = jObj.toVariantMap();
         QVariantList *localList = new QVariantList();
-        *localList = mainMap["Abbonamenti"].toList();
-        view->changeTitleChooseFamiglie("Cambia file json per Famiglie");
+        *localList = mainMap["Entrate"].toList();
+        view->changeTitleChooseEntrata("Cambia file json per Entrate");
 
         return localList;
       } else {
-        openError(QString("Empty file"));
+        openError(QString("File vuoto"));
       }
-    }*/
+    }
   }
 
   return nullptr;
@@ -746,7 +803,7 @@ QVariantList *Controller::readPosti(QFile &file, bool canUpdate) {
 
         return localList;
       } else {
-        openError(QString("Empty file"));
+        openError(QString("File vuoto"));
       }
     }
   }
@@ -783,7 +840,7 @@ QVariantList *Controller::readSale(QFile &file, bool canUpdate) {
 
         return localList;
       } else {
-        openError(QString("Empty file"));
+        openError(QString("File vuoto"));
       }
     }
   }
@@ -817,7 +874,7 @@ QJsonObject *Controller::readFilm(QFile &file, bool canUpdate) {
         return jObj;
 
       } else {
-        openError(QString("Empty file"));
+        openError(QString("File vuoto"));
       }
     }
   }
@@ -830,18 +887,15 @@ void Controller::popolaVectorUtenti(const QVariantList &list) {
 
   for (int i = 0; i < list.length(); ++i) {
     QVariantMap map = list[i].toMap();
-    string cf = map["CF"].toString().toUtf8().constData();
+    string cf = map["CF"].toString().toStdString();
     if (!model->searchCf(cf)) {
-      u = new Utente(map["CF"].toString().toUtf8().constData(),
-                     map["name"].toString().toUtf8().constData(),
-                     map["surname"].toString().toUtf8().constData(),
+      u = new Utente(map["CF"].toString().toStdString(),
+                     map["name"].toString().toStdString(),
+                     map["surname"].toString().toStdString(),
                      static_cast<unsigned int>(map["age"].toInt()),
-                     map["tel.Num"].toString().toUtf8().constData());
+                     map["tel.Num"].toString().toStdString());
       model->addUtente(*u);
     }
-  }
-  if (u) {
-    delete u;
   }
 }
 
@@ -853,35 +907,92 @@ void Controller::popolaVectorFamiglie(const QVariantList &list) {
   for (int i = 0; i < list.length(); ++i) {
     QVariantMap map = list[i].toMap();
 
-    string name = map["Name"].toString().toUtf8().constData();
+    string name = map["Name"].toString().toStdString();
 
     if (!model->searchNameFamiglia(name)) {
       fam = new Famiglia(name);
       for (int j = 1; j < map.size(); j++) {
         QString key = QString::fromStdString("Utente" + std::to_string(j));
-        string cf = map[key].toString().toUtf8().constData();
+        string cf = map[key].toString().toStdString();
         Utente *u = model->getUtente(cf);
         fam->addMembro(u);
       }
       model->addFamiglia(*fam);
     }
   }
-  if (fam) {
-    delete fam;
-  }
 }
 
-void Controller::popolaVectorEntrate(const QVariantList &list) {}
+void Controller::popolaVectorEntrate(const QVariantList &list) {
+  qDebug() << "popolaVectorEntrate";
+  for (int i = 0; i < list.length(); ++i) {
+    QVariantMap map = list[i].toMap();
+
+    QString tipo = map["Tipo"].toString();
+
+    if (tipo == "Abbonamento") {
+      Abbonamento *a = new Abbonamento(
+          new Data(map["Data"].toString().toStdString()),
+          model->getUtente(map["Utente"].toString().toStdString()), 7.5,
+          map["Codice"].toString().toStdString(),
+          map["Entrate_rimaste"].toInt());
+
+      if (map["Codice"].toUInt() > codAbb) codAbb = map["Codice"].toUInt();
+      qDebug() << "Abb" << QString::fromStdString(a->getUtente()->getCodFisc());
+      model->addAbbonamento(a);
+
+    } else if (tipo == "Abbonamento_Famigliare")
+
+    {
+      qDebug() << "Abbonamento_Famigliare";
+      Famiglia *f =
+          model->getFamiglia(map["Famiglia"].toString().toStdString());
+
+      qDebug() << "Controller ";
+
+      //------------------------------------
+      for (unsigned int i = 0; i < f->getSize(); ++i)
+        qDebug() << "controller f[" << i << "] "
+                 << QString::fromStdString(f[i].getCodFisc());
+
+      //------------------------------------
+
+      AbbonamentoFamigliare *af = new AbbonamentoFamigliare(
+          new Data(map["Data"].toString().toStdString()),
+          model->getUtente(map["Utente"].toString().toStdString()),
+          model->getFamiglia(map["Famiglia"].toString().toStdString()), 7.5,
+          map["Codice"].toString().toStdString(),
+          map["Entrate_rimaste"].toInt());
+
+      if (map["Codice"].toUInt() > codAbbFam)
+        codAbbFam = map["Codice"].toUInt();
+
+      qDebug() << "Abb Fam"
+               << QString::fromStdString(af->getFamiglia()->getName());
+      model->addAbbonamentoFam(af);
+
+    }
+
+    else if (tipo == "Biglietto") {
+      Biglietto *b = new Biglietto(
+          new Data(map["Data"].toString().toStdString()),
+          model->getUtente(map["Utente"].toString().toStdString()), 7.5,
+          map["Riduzione"].toBool(), map["Film"].toString().toStdString());
+
+      model->addBiglietto(b);
+    }
+  }
+}
 
 void Controller::popolaVectorSale(const QVariantList &list) {
   Sala *s = nullptr;
   for (int i = 0; i < list.length(); ++i) {
     QVariantMap map = list[i].toMap();
     s = new Sala((map["righe"].toUInt()), (map["colonne"].toUInt()),
-                 map["nome_sala"].toString().toUtf8().constData());
+                 map["nome_sala"].toString().toStdString());
     model->addSala(*s);
-  }
-  if (s) {
-    delete s;
+    /*if (s) {
+      delete s;
+      s = nullptr;
+    }*/
   }
 }

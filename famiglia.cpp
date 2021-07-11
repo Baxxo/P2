@@ -1,7 +1,10 @@
 #include "famiglia.h"
+#include <QDebug>
 
 Famiglia::Famiglia(std::string _name, unsigned int c)
-    : membri(new Utente *[c]), capacity(c), size(0), name(_name) {}
+    : membri(new Utente *[c]), capacity(c), size(0), name(_name) {
+  qDebug() << "costrut famiglia";
+}
 
 Famiglia::Famiglia(const Famiglia &o)
     : membri(new Utente *[o.capacity]),
@@ -10,7 +13,10 @@ Famiglia::Famiglia(const Famiglia &o)
       name(o.name) {
   for (unsigned int i = 0; i < o.size; i++) {
     membri[i] = o.membri[i];
+    qDebug() << "costrut copia famiglia"
+             << QString::fromStdString(membri[i]->getCodFisc());
   }
+  qDebug() << "-fine-";
 }
 
 void Famiglia::resize() {
@@ -19,11 +25,15 @@ void Famiglia::resize() {
   for (unsigned int i = 0U; i < size; i++) {
     u[i] = membri[i];
   }
-  delete[] membri;
+  destroy(membri);
   membri = u;
 }
 
-Famiglia::~Famiglia() { delete[] membri; }
+void Famiglia::destroy(Utente **u) {
+  if (u) delete[] u;
+}
+
+Famiglia::~Famiglia() { destroy(membri); }
 
 void Famiglia::addMembro(Utente *u) {
   if (size >= capacity) {
@@ -45,7 +55,7 @@ void Famiglia::removeMembro(Utente *u) {
           temp[j - 1] = membri[j];
         }
         size--;
-        delete[] membri;
+        destroy(membri);
         membri = temp;
       }
     }
@@ -63,18 +73,23 @@ bool Famiglia::hasMembro(Utente *u) {
 
 unsigned int Famiglia::getSize() const { return size; }
 
-Utente *Famiglia::operator[](unsigned int i) const {
+Utente *&Famiglia::operator[](unsigned int i) const {
+  qDebug() << "Famiglia::operator[](unsigned int i) ";
   if (i >= size) {
     throw std::out_of_range("Out of range");
   }
+
+  qDebug() << QString::fromStdString(membri[i]->getCodFisc());
   return membri[i];
 }
 
-Utente *Famiglia::operator[](int i) const {
+Utente *&Famiglia::operator[](int i) const {
+  qDebug() << "Famiglia::operator[](int i) ";
   if (static_cast<unsigned int>(i) >= size) {
     throw std::out_of_range("Out of range");
   }
 
+  qDebug() << QString::fromStdString(membri[i]->getCodFisc());
   return membri[i];
 }
 

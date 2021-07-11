@@ -32,6 +32,9 @@ class Abbonamento_view : public QWidget {
 
   QLabel* labelUtility;
 
+  QListWidgetItem* currentUser;
+  QListWidgetItem* currentfamily;
+
   bool isUtente;
   bool alreadySelectedUt;
   bool alreadySelectedFm;
@@ -45,7 +48,7 @@ class Abbonamento_view : public QWidget {
 
   void showAbbonamento();
   void showAbbFamiglaire();
-  void addToAbbonamento();
+  void createAbbonamento();
 
   void resizeMe();
 

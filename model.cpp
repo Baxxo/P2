@@ -1,9 +1,24 @@
 #include "model.h"
 
-Model::Model(string _test) : test(_test) {}
+Model::Model() {}
 
 void Model::addEntrata(EntrataFilm *e) {
   listEntrate.push_back(DeepPtr<EntrataFilm>(*e));
+}
+
+void Model::addAbbonamento(Abbonamento *e) {
+  DeepPtr<EntrataFilm> tmp(new Abbonamento(*e));
+  listEntrate.push_back(tmp);
+}
+
+void Model::addAbbonamentoFam(AbbonamentoFamigliare *e) {
+  DeepPtr<EntrataFilm> tmp(new AbbonamentoFamigliare(*e));
+  listEntrate.push_back(tmp);
+}
+
+void Model::addBiglietto(Biglietto *e) {
+  DeepPtr<EntrataFilm> tmp(new Biglietto(*e));
+  listEntrate.push_back(tmp);
 }
 
 void Model::addUtente(const Utente &u) {
@@ -40,7 +55,7 @@ void Model::clearVectorEntrate() { listEntrate.clear(); }
 
 void Model::cleaVectorSale() { listSale.clear(); }
 
-Utente *Model::getUtente(string cf) {
+Utente *Model::getUtente(string cf) const {
   auto it = listUtenti.cbegin();
 
   for (; it != listUtenti.cend(); ++it) {
@@ -51,19 +66,25 @@ Utente *Model::getUtente(string cf) {
   return nullptr;
 }
 
-Famiglia *Model::getFamiglia(std::string name) {
+Famiglia *Model::getFamiglia(std::string name) const {
   auto it = listFamiglie.cbegin();
 
   for (; it != listFamiglie.cend(); ++it) {
     if ((*it)->getName() == name) {
-      return new Famiglia(**it);
+      qDebug() << "model get fam " << QString::fromStdString((**it).getName());
+      Famiglia *f = new Famiglia(**it);
+      for (unsigned int i = 0; i < f->getSize(); ++i)
+        qDebug() << "model f[" << i << "] "
+                 << QString::fromStdString(f[i].getCodFisc());
+      qDebug() << "return model";
+      return f;
     }
   }
   return nullptr;
 }
 
-Sala *Model::getSala(string nome) {
-  for (auto it = listSale.begin(); it != listSale.end(); ++it) {
+Sala *Model::getSala(string nome) const {
+  for (auto it = listSale.cbegin(); it != listSale.cend(); ++it) {
     if ((*it)->getNomesala() == nome) {
       return new Sala(**it);
     }
@@ -102,5 +123,3 @@ bool Model::searchNameFamiglia(const string &name) const {
   }
   return false;
 }
-
-string Model::getTest() const { return test; }

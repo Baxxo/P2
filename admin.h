@@ -21,6 +21,7 @@
 #include <QWidget>
 
 #include "mainwindow.h"
+#include "qlabelcf.h"
 #include "qlineeditclickable.h"
 
 // using std::cout;
@@ -35,6 +36,7 @@ class Admin : public QMainWindow {
   void setAbbonamenti();
   void addUtente(const QString &s);
   void addFamiglia(const QString &s);
+  void addEntrata(const QString &s, const QString &cod);
   void setFamiglie();
 
   void clearListUtenti();

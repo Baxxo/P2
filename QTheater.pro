@@ -44,7 +44,6 @@ SOURCES += \
     entrataFilm.cpp \
     famiglia.cpp \
     sala.cpp \
-    singolo.cpp \
     utente.cpp \
     utente_View.cpp \
     model.cpp \
@@ -72,7 +71,6 @@ HEADERS += \
     famiglia.h \
     myVector.h \
     sala.h \
-    singolo.h \
     utente.h \
     utente_View.h \
     model.h \

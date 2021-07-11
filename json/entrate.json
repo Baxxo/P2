@@ -1,16 +1,43 @@
 {
-    "Abbonamenti": [
+    "Entrate": [
         {
-            "Codice": "0",
-            "Data": "2021/0/10",
+            "Codice": "1",
+            "Data": "2021/7/11",
             "Entrate_rimaste": 10,
-            "Utente": "test1"
+            "Famiglia": "testFam",
+            "Tipo": "Abbonamento_Famigliare",
+            "Utente": "Codice Fiscale1"
+        },
+        {
+            "Codice": "2",
+            "Data": "2021/7/11",
+            "Entrate_rimaste": 10,
+            "Famiglia": "testFam",
+            "Tipo": "Abbonamento_Famigliare",
+            "Utente": "Codice Fiscale1"
+        },
+        {
+            "Codice": "3",
+            "Data": "2021/7/11",
+            "Entrate_rimaste": 10,
+            "Famiglia": "test",
+            "Tipo": "Abbonamento_Famigliare",
+            "Utente": "Codice Fiscale3"
+        },
+        {
+            "Codice": "4",
+            "Data": "2021/7/11",
+            "Entrate_rimaste": 10,
+            "Famiglia": "test",
+            "Tipo": "Abbonamento_Famigliare",
+            "Utente": "Codice Fiscale3"
         },
         {
             "Codice": "1",
-            "Data": "2021/0/10",
+            "Data": "2021/7/11",
             "Entrate_rimaste": 10,
-            "Utente": "Codice Fiscale2"
+            "Tipo": "Abbonamento",
+            "Utente": "Codice Fiscale5"
         }
     ]
 }

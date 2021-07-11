@@ -9,6 +9,7 @@ int main(int argc, char *argv[]) {
   MainWindow v;
 
   Model *m = new Model();
+
   Controller *c = new Controller(nullptr, m);
 
   c->setView(&v);

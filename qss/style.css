@@ -1,10 +1,10 @@
-.colorSelect::item:selectedF {
-    background-color: LightGreen;
-}
-
 *{
     background-color: #00A2E8;
     color: white;
+}
+
+.colorSelect::item:selectedF {
+background-color: LightGreen;
 }
 
 .title{
@@ -15,6 +15,11 @@
 
 .big_text{
     font-size:20px;
+    font-weight: bold;
+    padding: 15px;
+}
+
+.success{
     font-weight: bold;
     padding: 15px;
 }

@@ -10,7 +10,10 @@ Utente::Utente(const Utente &o)
       surname(o.surname),
       age(o.age),
       codiceFiscale(o.codiceFiscale),
-      phoneNumber(o.phoneNumber) {}
+      phoneNumber(o.phoneNumber) {
+  qDebug() << "costruito utente copia "
+           << QString::fromStdString(codiceFiscale);
+}
 
 /// Utente::~Utente() { qDebug() << "distrutto"; }
 

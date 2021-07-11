@@ -25,7 +25,7 @@ class DeepPtr {
 };
 
 template <class T>
-DeepPtr<T>::DeepPtr(T *p) : ptr(p) {}
+DeepPtr<T>::DeepPtr(T *p) : ptr(p != nullptr ? p->clone() : nullptr) {}
 
 template <class T>
 DeepPtr<T>::DeepPtr(const T &o) : ptr(new T(o)) {}

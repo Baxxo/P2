@@ -12,6 +12,8 @@ class MyVector {
 
   T *copy(unsigned int s, unsigned int c);
 
+  void destroy(T *v);
+
  public:
   class Iterator {
     friend class MyVector;
@@ -233,7 +235,7 @@ MyVector<T>::MyVector(unsigned int s, unsigned int c)
 
 template <class T>
 MyVector<T>::~MyVector() {
-  if (v) delete[] v;
+  destroy(v);
 }
 
 template <class T>
@@ -242,13 +244,15 @@ MyVector<T>::MyVector(const MyVector &o)
 
 template <class T>
 T *MyVector<T>::copy(unsigned int s, unsigned int c) {
-  if (c <= capacity && s <= size) {
+  qDebug() << "My Vector capacity " << capacity << " c " << c << " size "
+           << size << " s " << s;
+  if (s <= c && size <= s) {
     T *tmp = new T[c];
+    size = s;
     for (unsigned int i = 0; i < size; i++) {
       tmp[i] = v[i];
     }
     return tmp;
-
   } else
     return nullptr;
 }
@@ -256,6 +260,11 @@ T *MyVector<T>::copy(unsigned int s, unsigned int c) {
 template <class T>
 unsigned int MyVector<T>::getSize() const {
   return size;
+}
+
+template <class T>
+void MyVector<T>::destroy(T *v) {
+  if (v) delete[] v;
 }
 
 template <class T>
@@ -310,7 +319,7 @@ void MyVector<T>::push_back(const T &o) {
   if (size >= capacity) {
     capacity *= 2;
     T *tmp = copy(size, capacity);
-    delete[] v;
+    destroy(v);
     v = tmp;
   }
   v[size++] = o;
@@ -319,7 +328,7 @@ void MyVector<T>::push_back(const T &o) {
 template <class T>
 void MyVector<T>::pop_back() {
   if (size) {
-    delete v[size - 1];
+    // delete v[size - 1];
     size--;
   }
 }
@@ -345,7 +354,7 @@ bool MyVector<T>::isEmpty() const {
 
 template <class T>
 void MyVector<T>::clear() {
-  delete[] v;
+  destroy(v);
   size = 0;
   capacity = 1;
   v = new T[capacity];

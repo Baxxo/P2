@@ -113,9 +113,19 @@ void Admin::addFamiglia(const QString &s) {
   listFam->addItem(item);
 }
 
+void Admin::addEntrata(const QString &s, const QString &cod) {
+  QLabelCF *lbl = new QLabelCF(new QLabel(s), cod);
+  QListWidgetItem *item = new QListWidgetItem();
+  listAbb->addItem(item);
+  item->setSelected(false);
+  listAbb->setItemWidget(item, lbl);
+}
+
 void Admin::clearListUtenti() { listUt->clear(); }
 
 void Admin::clearListFamiglie() { listFam->clear(); }
+
+void Admin::clearListEntrate() { listAbb->clear(); }
 
 QString Admin::getNomeFilm() { return nomeFilm->text(); }
 
