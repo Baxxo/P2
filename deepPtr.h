@@ -1,6 +1,8 @@
 #ifndef DEEPPTR_H
 #define DEEPPTR_H
 
+#include <QDebug>
+
 template <class T>
 class DeepPtr {
  private:
@@ -20,29 +22,34 @@ class DeepPtr {
   T &operator*() const;
   T *operator->() const;
 
-  DeepPtr<T> &operator++();
-  DeepPtr<T> &operator--();
+  // DeepPtr<T> &operator++();
+  // DeepPtr<T> &operator--();
 };
 
 template <class T>
-DeepPtr<T>::DeepPtr(T *p) : ptr(p != nullptr ? p->clone() : nullptr) {}
+DeepPtr<T>::DeepPtr(T *p) : ptr(p ? p->clone() : nullptr) {}
 
 template <class T>
 DeepPtr<T>::DeepPtr(const T &o) : ptr(new T(o)) {}
+
 template <class T>
 DeepPtr<T>::DeepPtr(const DeepPtr<T> &o)
-    : ptr(o.ptr ? o.ptr->clone() : nullptr) {}
+    : ptr(o.ptr != nullptr ? o.ptr->clone() : nullptr) {}
 
 template <class T>
 DeepPtr<T>::~DeepPtr() {
-  if (ptr) delete ptr;
+  if (ptr) {
+    //    qDebug() << "distrutto deepPtr "
+    //             << QString::fromStdString(ptr->getCodFisc());
+    delete ptr;
+  }
 }
 
 template <class T>
 DeepPtr<T> &DeepPtr<T>::operator=(const DeepPtr<T> &o) {
   if (this != &o) {
     if (ptr) delete ptr;
-    ptr = o.ptr ? o.ptr->clone() : nullptr;
+    ptr = (o.ptr ? o.ptr->clone() : nullptr);
   }
 
   return *this;
@@ -50,11 +57,13 @@ DeepPtr<T> &DeepPtr<T>::operator=(const DeepPtr<T> &o) {
 
 template <class T>
 bool DeepPtr<T>::operator==(const DeepPtr &o) const {
+  //  qDebug() << "DeepPtr<T>::operator==";
   return *ptr == *(o.ptr);
 }
 
 template <class T>
 bool DeepPtr<T>::operator!=(const DeepPtr &o) const {
+  //  qDebug() << "DeepPtr<T>::operator!=";
   return *ptr != *(o.ptr);
 }
 
@@ -67,7 +76,7 @@ template <class T>
 T *DeepPtr<T>::operator->() const {
   return ptr;
 }
-
+/*
 template <class T>
 DeepPtr<T> &DeepPtr<T>::operator++() {
   if (ptr + 1 != nullptr) ++ptr;
@@ -78,6 +87,6 @@ template <class T>
 DeepPtr<T> &DeepPtr<T>::operator--() {
   if (ptr - 1 != nullptr) --ptr;
   return *this;
-}
+}*/
 
 #endif  // DEEPPTR_H

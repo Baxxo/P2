@@ -51,6 +51,8 @@ class Controller : public QObject {
   AbbonamentoFamigliare *abbFam;
   unsigned int codAbbFam;
 
+  unsigned int codBigl;
+
   ErrorDisplay *err;
 
   QString readFile(const QString &filename);
@@ -121,6 +123,8 @@ class Controller : public QObject {
   QString getPathJsonPosti() const;
   QString getPathJsonSale() const;
   QString getPathJsonFilm() const;
+
+  bool RemoveAbbonamento(const QString &cod);
 
   void openError(const QString &message);
 

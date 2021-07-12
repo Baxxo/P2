@@ -5,20 +5,21 @@
 
 class AbbonamentoFamigliare : public Abbonamento {
  private:
-  Famiglia *famiglia;
+  string famiglia;
 
  public:
-  AbbonamentoFamigliare(Data *d = nullptr, Utente *u = nullptr,
-                        Famiglia *f = nullptr, double p = 7.5,
-                        string c = "00000", int e = 0);
+  AbbonamentoFamigliare(Data *d = nullptr, string u = "", string f = "",
+                        double p = 7.5, string c = "00000", int e = 0);
 
   AbbonamentoFamigliare(const AbbonamentoFamigliare &o);
 
   double getPrezzo() const;
 
-  ~AbbonamentoFamigliare();
+  AbbonamentoFamigliare &operator=(const AbbonamentoFamigliare &o);
 
-  Famiglia *getFamiglia() const;
+  ~AbbonamentoFamigliare() = default;
+
+  std::string getFamiglia() const;
 
   AbbonamentoFamigliare *clone() const;
 };

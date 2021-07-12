@@ -11,13 +11,13 @@ class Model {
  public:
   Model();
   void addEntrata(EntrataFilm *e);
-  void addAbbonamento(Abbonamento *e);
-  void addAbbonamentoFam(AbbonamentoFamigliare *e);
-  void addBiglietto(Biglietto *e);
-  void addUtente(const Utente &u);
-  void addFamiglia(const Famiglia &f);
-  void addAcquisto(const Utente &u);
-  void addSala(const Sala &s);
+  //  void addAbbonamento(Abbonamento *e);
+  //  void addAbbonamentoFam(AbbonamentoFamigliare *e);
+  //  void addBiglietto(Biglietto *e);
+  void addUtente(Utente *u);
+  void addFamiglia(Famiglia *f);
+  void addAcquisto(Utente *u);
+  void addSala(Sala *s);
 
   ~Model() = default;
 
@@ -34,7 +34,7 @@ class Model {
 
   Utente *getUtente(string cf) const;
   Famiglia *getFamiglia(string name) const;
-  EntrataFilm *getEntrataFilm() const;
+  EntrataFilm *getEntrataFilm(string cod) const;
   Sala *getSala(string nome) const;
 
   const MyVector<DeepPtr<EntrataFilm>> &getListEntrate() const;

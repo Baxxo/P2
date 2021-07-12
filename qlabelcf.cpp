@@ -3,9 +3,7 @@
 #include <QVBoxLayout>
 
 QLabelCF::QLabelCF(QLabel *parent, const QString &_cf, QFlag flag, bool s)
-    : QLabel(parent->text()), cf(_cf), select(s) {
-  setAlignment(flag);
-}
+    : QLabel(parent->text(), parent, flag), cf(_cf), select(s) {}
 
 QString QLabelCF::getCf() const { return cf; }
 

@@ -1,43 +1,31 @@
 #include "abbonamentoFamigliare.h"
 #include <QDebug>
 
-AbbonamentoFamigliare::AbbonamentoFamigliare(Data *d, Utente *u, Famiglia *f,
+AbbonamentoFamigliare::AbbonamentoFamigliare(Data *d, string u, string f,
                                              double p, string c, int e)
-    : Abbonamento(d, u, p, c, e), famiglia(f) {
-  qDebug() << "costruttore abb fam 1.1"
-           << QString::fromStdString(famiglia->getName());
-  qDebug() << "costruttore abb f 1.1" << QString::fromStdString(f->getName());
-
-  for (unsigned int i = 0; i < f->getSize(); ++i)
-    qDebug() << "f[" << i << "] " << QString::fromStdString(f[i].getCodFisc());
-}
+    : Abbonamento(d, u, p, c, e), famiglia(f) {}
 
 AbbonamentoFamigliare::AbbonamentoFamigliare(const AbbonamentoFamigliare &o)
     : Abbonamento(o), famiglia(o.famiglia) {}
 
-AbbonamentoFamigliare::~AbbonamentoFamigliare() {
-  qDebug() << "distr abb fam 1";
-  if (famiglia != nullptr) {
-    qDebug() << "distr abb fam 1.1"
-             << QString::fromStdString(famiglia->getName());
+// AbbonamentoFamigliare::~AbbonamentoFamigliare() {}
 
-    for (unsigned int i = 0; i < famiglia->getSize(); ++i)
-      qDebug() << QString::fromStdString(famiglia[i].getCodFisc());
-
-    delete famiglia;
-
-    qDebug() << "distr abb fam 1.2";
-  }
-  qDebug() << "distr abb fam 2";
-}
-
-Famiglia *AbbonamentoFamigliare::getFamiglia() const { return famiglia; }
+std::string AbbonamentoFamigliare::getFamiglia() const { return famiglia; }
 
 AbbonamentoFamigliare *AbbonamentoFamigliare::clone() const {
-  qDebug() << "clone abb fam";
+  // qDebug() << "clone AbbonamentoFamigliare";
   return new AbbonamentoFamigliare(*this);
 }
 
 double AbbonamentoFamigliare::getPrezzo() const {
   return EntrataFilm::getPrezzo() * getEntrate();
+}
+
+AbbonamentoFamigliare &AbbonamentoFamigliare::operator=(
+    const AbbonamentoFamigliare &o) {
+  if (this != &o) {
+    Abbonamento::operator=(o);
+    famiglia = o.famiglia;
+  }
+  return *this;
 }

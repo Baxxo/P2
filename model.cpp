@@ -3,10 +3,10 @@
 Model::Model() {}
 
 void Model::addEntrata(EntrataFilm *e) {
-  listEntrate.push_back(DeepPtr<EntrataFilm>(*e));
+  listEntrate.push_back(DeepPtr<EntrataFilm>(e));
 }
 
-void Model::addAbbonamento(Abbonamento *e) {
+/*void Model::addAbbonamento(Abbonamento *e) {
   DeepPtr<EntrataFilm> tmp(new Abbonamento(*e));
   listEntrate.push_back(tmp);
 }
@@ -20,32 +20,47 @@ void Model::addBiglietto(Biglietto *e) {
   DeepPtr<EntrataFilm> tmp(new Biglietto(*e));
   listEntrate.push_back(tmp);
 }
-
-void Model::addUtente(const Utente &u) {
+*/
+void Model::addUtente(Utente *u) {
+  //  qDebug() << "addUtente " << QString::fromStdString(u->getCodFisc());
   listUtenti.push_back(DeepPtr<Utente>(u));
+  //  qDebug() << "--";
 }
 
-void Model::addFamiglia(const Famiglia &f) {
+void Model::addFamiglia(Famiglia *f) {
   listFamiglie.push_back(DeepPtr<Famiglia>(f));
 }
 
-void Model::addAcquisto(const Utente &u) {
+void Model::addAcquisto(Utente *u) {
   listStorico.push_back(DeepPtr<Utente>(u));
 }
 
-void Model::addSala(const Sala &s) { listSale.push_back(DeepPtr<Sala>(s)); }
+void Model::addSala(Sala *s) { listSale.push_back(DeepPtr<Sala>(s)); }
 
 bool Model::removeEntrata(const EntrataFilm &a) {
-  return listEntrate.remove(a);
+  DeepPtr<EntrataFilm> tmp(new EntrataFilm(a));
+  return listEntrate.remove(tmp);
 }
 
-bool Model::removeUtente(const Utente &u) { return listUtenti.remove(u); }
+bool Model::removeUtente(const Utente &u) {
+  DeepPtr<Utente> tmp(new Utente(u));
+  return listUtenti.remove(tmp);
+}
 
-bool Model::removeFamiglia(const Famiglia &f) { return listFamiglie.remove(f); }
+bool Model::removeFamiglia(const Famiglia &f) {
+  DeepPtr<Famiglia> tmp(new Famiglia(f));
+  return listFamiglie.remove(tmp);
+}
 
-bool Model::removeAcquisto(const Utente &u) { return listStorico.remove(u); }
+bool Model::removeAcquisto(const Utente &u) {
+  DeepPtr<Utente> tmp(new Utente(u));
+  return listStorico.remove(tmp);
+}
 
-bool Model::removeSala(const Sala &s) { return listSale.remove(s); }
+bool Model::removeSala(const Sala &s) {
+  DeepPtr<Sala> tmp(new Sala(s));
+  return listSale.remove(tmp);
+}
 
 void Model::clearVectorUtenti() { listUtenti.clear(); }
 
@@ -71,14 +86,18 @@ Famiglia *Model::getFamiglia(std::string name) const {
 
   for (; it != listFamiglie.cend(); ++it) {
     if ((*it)->getName() == name) {
-      qDebug() << "model get fam " << QString::fromStdString((**it).getName());
-      Famiglia *f = new Famiglia(**it);
-      for (unsigned int i = 0; i < f->getSize(); ++i) {
-        QString cf = QString::fromStdString((*(f[i]))->getCodFisc());
-        qDebug() << "model f[" << i << "] " << cf;
-      }
-      qDebug() << "return model";
-      return f;
+      return new Famiglia(**it);
+    }
+  }
+  return nullptr;
+}
+
+EntrataFilm *Model::getEntrataFilm(std::string cod) const {
+  auto it = listEntrate.cbegin();
+
+  for (; it != listEntrate.cend(); ++it) {
+    if ((*it)->getCodice() == cod) {
+      return new EntrataFilm(**it);
     }
   }
   return nullptr;
@@ -110,16 +129,19 @@ const MyVector<DeepPtr<Sala>> &Model::getListSale() const { return listSale; }
 void Model::addUserToFamily(Famiglia &f, Utente *u) { f.addMembro(u); }
 
 bool Model::searchCf(const string &cf) const {
+  //  qDebug() << "searchCf";
   if (!listUtenti.isEmpty()) {
-    auto it = listUtenti.csearch(Utente(cf));
+    //    qDebug() << "not empty";
+    auto it = listUtenti.csearch(new Utente(cf));
     return (*it)->getCodFisc() == cf;
   }
+  //  qDebug() << "empty";
   return false;
 }
 
 bool Model::searchNameFamiglia(const string &name) const {
   if (!listFamiglie.isEmpty()) {
-    auto it = listFamiglie.csearch(Famiglia(name));
+    auto it = listFamiglie.csearch(new Famiglia(name));
     return (*it)->getName() == name;
   }
   return false;

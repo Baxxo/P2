@@ -1,28 +1,39 @@
 #include "entrataFilm.h"
 #include <QDebug>
 
-EntrataFilm::EntrataFilm(Data *d, Utente *u, double p)
-    : utente(u), data(d), prezzo(p) {}
+EntrataFilm::EntrataFilm(std::string cod, Data *d, string u, double p)
+    : codice(cod), utente(u), data(d), prezzo(p) {}
 
 EntrataFilm::EntrataFilm(const EntrataFilm &o)
-    : utente(o.utente), data(o.data), prezzo(o.prezzo) {}
+    : codice(o.codice), utente(o.utente), data(o.data), prezzo(o.prezzo) {}
 
 double EntrataFilm::getPrezzo() const { return prezzo; }
 
 Data *EntrataFilm::getData() const { return data; }
 
-Utente *EntrataFilm::getUtente() const { return utente; }
+std::string EntrataFilm::getUtente() const { return utente; }
 
 bool EntrataFilm::operator==(const EntrataFilm &o) const {
-  return o.getData() == data && o.getPrezzo() == prezzo &&
-         o.getUtente() == utente;
+  return o.codice == codice;
+}
+
+EntrataFilm &EntrataFilm::operator=(const EntrataFilm &o) {
+  if (this != &o) {
+    codice = o.codice;
+    utente = o.utente;
+    data = o.data;
+    prezzo = o.prezzo;
+  }
+  return *this;
 }
 
 EntrataFilm *EntrataFilm::clone() const {
-  qDebug() << "clone";
+  // qDebug() << "clone entrata";
   return new EntrataFilm(*this);
 }
 
 std::string EntrataFilm::toString() const {
-  return utente->getCodFisc() + " " + data->ToString();
+  return utente + " " + data->ToString();
 }
+
+string EntrataFilm::getCodice() const { return codice; }

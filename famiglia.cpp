@@ -14,12 +14,12 @@ Famiglia::Famiglia(const Famiglia &o)
   for (unsigned int i = 0; i < o.size; i++) {
     membri[i] = o.membri[i];
   }
-  for (unsigned int i = 0; i < o.size; i++) {
-    qDebug() << "costrut copia famiglia"
-             << QString::fromStdString((*(membri[i])).getCodFisc()) << "__ "
-             << QString::fromStdString((*(o.membri[i])).getCodFisc());
-  }
-  qDebug() << "-fine-";
+  //  for (unsigned int i = 0; i < o.size; i++) {
+  //    qDebug() << "costrut copia famiglia"
+  //             << QString::fromStdString((*(membri[i])).getCodFisc()) << "__ "
+  //             << QString::fromStdString((*(o.membri[i])).getCodFisc());
+  //  }
+  //  qDebug() << "-fine-";
 }
 
 void Famiglia::resize() {
@@ -77,22 +77,22 @@ bool Famiglia::hasMembro(Utente *u) {
 unsigned int Famiglia::getSize() const { return size; }
 
 Utente *&Famiglia::operator[](unsigned int i) const {
-  qDebug() << "Famiglia::operator[](unsigned int i) ";
+  //  qDebug() << "Famiglia::operator[](unsigned int i) ";
   if (i >= size) {
     throw std::out_of_range("Out of range");
   }
 
-  qDebug() << QString::fromStdString(membri[i]->getCodFisc());
+  //  qDebug() << QString::fromStdString(membri[i]->getCodFisc());
   return membri[i];
 }
 
 Utente *&Famiglia::operator[](int i) const {
-  qDebug() << "Famiglia::operator[](int i) ";
+  //  qDebug() << "Famiglia::operator[](int i) ";
   if (static_cast<unsigned int>(i) >= size) {
     throw std::out_of_range("Out of range");
   }
 
-  qDebug() << QString::fromStdString(membri[i]->getCodFisc());
+  //  qDebug() << QString::fromStdString(membri[i]->getCodFisc());
   return membri[i];
 }
 

@@ -1,18 +1,19 @@
 #ifndef ENTRATAFILM
 #define ENTRATAFILM
 #include "data.h"
-#include "utente.h"
 
 class EntrataFilm {
  private:
-  Utente *utente;
+  string codice;
+  string utente;
 
   Data *data;
 
   double prezzo;
 
  public:
-  EntrataFilm(Data *d = nullptr, Utente *u = nullptr, double p = 7.5);
+  EntrataFilm(string cod = "0", Data *d = nullptr, string u = "",
+              double p = 7.5);
   EntrataFilm(const EntrataFilm &o);
 
   virtual ~EntrataFilm() = default;
@@ -21,12 +22,16 @@ class EntrataFilm {
 
   virtual Data *getData() const;
 
-  virtual Utente *getUtente() const;
+  virtual string getUtente() const;
 
   virtual bool operator==(const EntrataFilm &o) const;
 
+  virtual EntrataFilm &operator=(const EntrataFilm &o);
+
   virtual EntrataFilm *clone() const;
 
-  string toString() const;
+  virtual string toString() const;
+
+  virtual string getCodice() const;
 };
 #endif

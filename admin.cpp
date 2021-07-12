@@ -121,27 +121,6 @@ void Admin::addEntrata(const QString &s, const QString &cod) {
   listAbb->setItemWidget(item, lbl);
 }
 
-void Admin::clearListUtenti() { listUt->clear(); }
-
-void Admin::clearListFamiglie() { listFam->clear(); }
-
-void Admin::clearListEntrate() { listAbb->clear(); }
-
-QString Admin::getNomeFilm() { return nomeFilm->text(); }
-
-QString Admin::getSalaFilm() { return salaFilm->text(); }
-
-QString Admin::getColonneSala() { return colonneSala->text(); }
-
-QString Admin::getRigheSala() { return righeSala->text(); }
-
-void Admin::getClickFam() {
-  qDebug() << "Famiglia " << listFam->currentItem()->text();
-}
-
-void Admin::getClickFilm() {
-  qDebug() << "film " << listFilm->currentItem()->text();
-}
 void Admin::addFilmLayout() {
   widgetFilm = new QWidget();
   filmLayout = new QGridLayout;
@@ -157,12 +136,6 @@ void Admin::addFilmLayout() {
   widgetFilm->show();
 
   connect(saveFilm, SIGNAL(clicked()), controller, SLOT(newFilm()));
-}
-
-QString Admin::getNomeSala() { return nomeSala->text(); }
-
-void Admin::getClickAbb() {
-  qDebug() << "Abbonamento " << listAbb->currentItem()->text();
 }
 
 void Admin::addSalaLayout() {
@@ -188,11 +161,41 @@ void Admin::addSalaLayout() {
   connect(saveSala, SIGNAL(clicked()), controller, SLOT(newSala()));
 }
 
-void Admin::closeEvent(QCloseEvent *event) {
-  p->changeTitleAdmin("Admin");
-  event->accept();
+void Admin::clearListUtenti() { listUt->clear(); }
+
+void Admin::clearListFamiglie() { listFam->clear(); }
+
+void Admin::clearListEntrate() { listAbb->clear(); }
+
+QString Admin::getNomeFilm() { return nomeFilm->text(); }
+
+QString Admin::getSalaFilm() { return salaFilm->text(); }
+
+QString Admin::getColonneSala() { return colonneSala->text(); }
+
+QString Admin::getRigheSala() { return righeSala->text(); }
+
+void Admin::getClickFam() {
+  qDebug() << "Famiglia " << listFam->currentItem()->text();
+}
+
+void Admin::getClickFilm() {
+  qDebug() << "film " << listFilm->currentItem()->text();
 }
 
 void Admin::getClickUt() {
   qDebug() << "Utente " << listUt->currentItem()->text();
+}
+
+void Admin::getClickAbb() {
+  QLabelCF *lbl =
+      dynamic_cast<QLabelCF *>(listAbb->itemWidget(listAbb->currentItem()));
+  qDebug() << lbl->text() << " -- " << lbl->getCf();
+}
+
+QString Admin::getNomeSala() { return nomeSala->text(); }
+
+void Admin::closeEvent(QCloseEvent *event) {
+  p->changeTitleAdmin("Admin");
+  event->accept();
 }
