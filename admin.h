@@ -80,6 +80,8 @@ class Admin : public QMainWindow {
   QLabel *labelFilm;
   QLabel *labelSala;
 
+  QLabel *utility;
+
   QWidget *widget;
 
   QPushButton *addFilm;

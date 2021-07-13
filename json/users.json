@@ -118,6 +118,13 @@
             "name": "proprio",
             "surname": "Surname",
             "tel.Num": "Numero di telefono"
+        },
+        {
+            "CF": "provaCodFIsc",
+            "age": "123",
+            "name": "provaNome",
+            "surname": "provaCognome",
+            "tel.Num": "provaNumero"
         }
     ]
 }

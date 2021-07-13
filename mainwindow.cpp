@@ -186,7 +186,7 @@ void MainWindow::setPrevAdmin(const QString &value) { prevAdmin = value; }
 
 void MainWindow::createLayoutSetup() {
   title->setText("Setup");
-  if (chooseUtenti == nullptr) {
+  if (!chooseUtenti) {
     chooseUtenti = new QPushButton(prevChooseUtenti);
     chooseUtenti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -194,7 +194,7 @@ void MainWindow::createLayoutSetup() {
   }
   buttonLayout->addWidget(chooseUtenti, 0, 0, Qt::AlignCenter);
 
-  if (chooseFamiglie == nullptr) {
+  if (!chooseFamiglie) {
     chooseFamiglie = new QPushButton(prevChooseFamiglie);
     chooseFamiglie->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -204,14 +204,14 @@ void MainWindow::createLayoutSetup() {
   if (controller->getPathJsonUsers() != "")
     buttonLayout->addWidget(chooseFamiglie, 1, 0, Qt::AlignCenter);
 
-  if (chooseEntrata == nullptr) {
+  if (!chooseEntrata) {
     chooseEntrata = new QPushButton("Scegli file json per entrata film");
     chooseEntrata->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     connect(chooseEntrata, SIGNAL(clicked()), controller,
             SLOT(loadEntrateSlot()));
   }
-  if (controller->getPathJsonUsers() != "")
+  if (controller->getPathJsonFamiglie() != "")
     buttonLayout->addWidget(chooseEntrata, 2, 0, Qt::AlignCenter);
 
   if (choosePosti == nullptr) {
@@ -223,7 +223,7 @@ void MainWindow::createLayoutSetup() {
   if (controller->getPathJsonUsers() != "")
     buttonLayout->addWidget(choosePosti, 3, 0, Qt::AlignCenter);
 
-  if (chooseSala == nullptr) {
+  if (!chooseSala) {
     chooseSala = new QPushButton("Scegli json per sala");
     chooseSala->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -231,7 +231,7 @@ void MainWindow::createLayoutSetup() {
   }
   buttonLayout->addWidget(chooseSala, 4, 0, Qt::AlignCenter);
 
-  if (chooseFilm == nullptr) {
+  if (!chooseFilm) {
     chooseFilm = new QPushButton("Scegli json per film");
     chooseFilm->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 

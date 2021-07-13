@@ -52,7 +52,7 @@ class Model {
 
   string getTest() const;
 
-  // private:
+ private:
   MyVector<DeepPtr<EntrataFilm>> listEntrate;
   MyVector<DeepPtr<Utente>> listUtenti;
   MyVector<DeepPtr<Famiglia>> listFamiglie;

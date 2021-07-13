@@ -207,14 +207,7 @@ bool Controller::createAbbonamentoFamigliare(const QString &name,
   return chk;
 }
 
-void Controller::openAdmin() {
-  if (admin == nullptr) {
-    admin = new Admin(this, view);
-  }
-  view->changeTitleAdmin(QString("Aggiorna admin"));
-
-  if (pathJsonUsers == "") loadUsers();
-
+void Controller::loadUtentiInAdmin() {
   admin->clearListUtenti();
   for (auto it = model->getListUtenti().cbegin();
        it != model->getListUtenti().cend(); ++it) {
@@ -222,9 +215,9 @@ void Controller::openAdmin() {
                (**it).getCodFisc() + " )";
     admin->addUtente(QString(s.c_str()));
   }
+}
 
-  if (pathJsonFamiglie == "") loadFamilies();
-
+void Controller::loadFamiglieInAdmin() {
   admin->clearListFamiglie();
   for (auto it = model->getListFamiglie().cbegin();
        it != model->getListFamiglie().cend(); ++it) {
@@ -232,9 +225,9 @@ void Controller::openAdmin() {
         (*it)->getName() + " (membri: " + std::to_string((*it)->getSize()) +
         " )"));
   }
+}
 
-  if (pathJsonEntrata == "") loadEntrate();
-
+void Controller::loadEntrateInAdmin() {
   admin->clearListEntrate();
   for (auto it = model->getListEntrate().cbegin();
        it != model->getListEntrate().cend(); ++it) {
@@ -251,9 +244,28 @@ void Controller::openAdmin() {
       string s2 = ab->getCodice();
       admin->addEntrata(QString::fromStdString(s1), QString::fromStdString(s2));
     }
-
-    admin->show();
   }
+}
+
+void Controller::openAdmin() {
+  if (admin == nullptr) {
+    admin = new Admin(this, view);
+  }
+  view->changeTitleAdmin(QString("Aggiorna admin"));
+
+  if (pathJsonUsers == "") loadUsers();
+
+  loadUtentiInAdmin();
+
+  if (pathJsonFamiglie == "") loadFamilies();
+
+  loadFamiglieInAdmin();
+
+  if (pathJsonEntrata == "") loadEntrate();
+
+  loadEntrateInAdmin();
+
+  admin->show();
 }
 
 void Controller::openClient() {
@@ -424,6 +436,9 @@ void Controller::salvaUtente() {
     file.write(doc.toJson());
     file.close();
     utente->setConferma("Utente inserito");
+    if (admin && admin->isVisible()) {
+      loadUtentiInAdmin();
+    }
   } else {
     utente->setConferma(("Utente gia` presente nel programma"));
     openError("Utente gia` presente nel programma");
@@ -478,6 +493,9 @@ void Controller::salvaFamiglia() {
         file.close();
 
         famigliaView->setUtilityText("Famiglia Salvata e registrata");
+        if (admin && admin->isVisible()) {
+          loadFamiglieInAdmin();
+        }
       } else {
         openError("inserisci almeno un membro");
       }
@@ -598,6 +616,7 @@ void Controller::loadUsers(bool canUpdate) {
   QVariantList *list = readUtenti(file, canUpdate);
   if (list != nullptr) {
     popolaVectorUtenti(*list);
+    view->createLayoutSetup();
 
     QFileInfo info(file.fileName());
     view->setLabelPathUser(info.fileName());
@@ -609,6 +628,7 @@ void Controller::loadFamilies(bool canUpdate) {
   QVariantList *list = readFamiglie(file, canUpdate);
   if (list != nullptr) {
     popolaVectorFamiglie(*list);
+    view->createLayoutSetup();
 
     QFileInfo info(file.fileName());
     view->setLabelPathFamiglie(info.fileName());
@@ -620,6 +640,7 @@ void Controller::loadEntrate(bool canUpdate) {
   QVariantList *list = readEntrata(file, canUpdate);
   if (list != nullptr) {
     popolaVectorEntrate(*list);
+    view->createLayoutSetup();
 
     QFileInfo info(file.fileName());
     view->setLabelPathEntrata(info.fileName());
@@ -676,7 +697,6 @@ QVariantList *Controller::readUtenti(QFile &file, bool canUpdate) {
         QVariantList *localList = new QVariantList();
         *localList = mainMap["Utenti"].toList();
         view->changeTitleChooseUtenti("Cambia file json per utenti");
-        view->createLayoutSetup();
 
         return localList;
       } else {

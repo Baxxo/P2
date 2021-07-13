@@ -22,6 +22,8 @@ Admin::Admin(Controller *c, MainWindow *parent)
       labelFilm(new QLabel("Film")),
       labelSala(new QLabel("Sala")),
 
+      utility(new QLabel("Premi due volte per eliminare un abbonamento")),
+
       widget(new QWidget()),
 
       addFilm(new QPushButton("add Film")),
@@ -72,7 +74,7 @@ Admin::Admin(Controller *c, MainWindow *parent)
 
   listUt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-  connect(listAbb, SIGNAL(itemClicked(QListWidgetItem *)), this,
+  connect(listAbb, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this,
           SLOT(getClickAbb()));
   connect(listFam, SIGNAL(itemClicked(QListWidgetItem *)), this,
           SLOT(getClickFam()));
@@ -83,6 +85,7 @@ Admin::Admin(Controller *c, MainWindow *parent)
 
   baseLayout->addWidget(labelAbb, 0, 0, Qt::AlignCenter);
   baseLayout->addWidget(listAbb, 1, 0);
+  baseLayout->addWidget(utility, 2, 0);
 
   baseLayout->addWidget(labelUt, 0, 1, Qt::AlignCenter);
   baseLayout->addWidget(listUt, 1, 1);
@@ -90,13 +93,13 @@ Admin::Admin(Controller *c, MainWindow *parent)
   baseLayout->addWidget(labelFam, 0, 2, Qt::AlignCenter);
   baseLayout->addWidget(listFam, 1, 2);
 
-  baseLayout->addWidget(labelFilm, 2, 0, Qt::AlignCenter);
-  baseLayout->addWidget(listFilm, 3, 0);
-  baseLayout->addWidget(addFilm, 4, 0);
+  baseLayout->addWidget(labelFilm, 3, 0, Qt::AlignCenter);
+  baseLayout->addWidget(listFilm, 4, 0);
+  baseLayout->addWidget(addFilm, 5, 0);
 
-  baseLayout->addWidget(labelSala, 2, 1, Qt::AlignCenter);
-  baseLayout->addWidget(listSala, 3, 1);
-  baseLayout->addWidget(addSala, 4, 1);
+  baseLayout->addWidget(labelSala, 3, 1, Qt::AlignCenter);
+  baseLayout->addWidget(listSala, 4, 1);
+  baseLayout->addWidget(addSala, 5, 1);
 
   resize(1000, 400);
 
@@ -190,8 +193,14 @@ void Admin::getClickUt() {
 void Admin::getClickAbb() {
   QLabelCF *lbl =
       dynamic_cast<QLabelCF *>(listAbb->itemWidget(listAbb->currentItem()));
-  qDebug() << lbl->text() << " -- " << lbl->getCf();
-  controller->removeAbbonamento(lbl->getCf());
+  QString prev = lbl->text();
+  if (controller->removeAbbonamento(lbl->getCf())) {
+    controller->loadEntrateInAdmin();
+    utility->setText(utility->text() + "\n" + prev + " rimosso con Successo");
+  } else {
+    utility->setText(utility->text() +
+                     "\nErrore nella rimozione dell' abbonamento " + prev);
+  }
 }
 
 QString Admin::getNomeSala() { return nomeSala->text(); }

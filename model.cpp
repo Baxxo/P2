@@ -135,7 +135,6 @@ bool Model::searchNameFamiglia(const string &name) const {
 }
 
 bool Model::searchEntrata(const string &cod) const {
-  qDebug() << "model search";
   if (!listEntrate.isEmpty()) {
     auto it = listEntrate.csearch(new EntrataFilm(cod));
     return (*it)->getCodice() == cod;

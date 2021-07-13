@@ -137,6 +137,10 @@ class Controller : public QObject {
 
   bool createAbbonamento(const QString &cf);
   bool createAbbonamentoFamigliare(const QString &name, const QString &cf);
+
+  void loadUtentiInAdmin();
+  void loadFamiglieInAdmin();
+  void loadEntrateInAdmin();
 };
 
 #endif  // CONTROLLER_H
