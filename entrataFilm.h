@@ -2,13 +2,13 @@
 #define ENTRATAFILM
 #include "data.h"
 
+using std::string;
+
 class EntrataFilm {
  private:
   string codice;
   string utente;
-
   Data *data;
-
   double prezzo;
 
  public:
@@ -25,6 +25,8 @@ class EntrataFilm {
   virtual string getUtente() const;
 
   virtual bool operator==(const EntrataFilm &o) const;
+
+  virtual bool operator!=(const EntrataFilm &o) const;
 
   virtual EntrataFilm &operator=(const EntrataFilm &o);
 

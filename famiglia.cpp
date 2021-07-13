@@ -1,7 +1,7 @@
 #include "famiglia.h"
 #include <QDebug>
 
-Famiglia::Famiglia(std::string _name, unsigned int c)
+Famiglia::Famiglia(string _name, unsigned int c)
     : membri(new Utente *[c]), capacity(c), size(0), name(_name) {
   //  qDebug() << "costrut famiglia";
 }
@@ -117,12 +117,12 @@ Famiglia &Famiglia::operator=(const Famiglia &o) {
 
 Famiglia *Famiglia::clone() const { return new Famiglia(*this); }
 
-std::string Famiglia::getName() const { return name; }
+string Famiglia::getName() const { return name; }
 
-void Famiglia::setName(const std::string &value) { name = value; }
+void Famiglia::setName(const string &value) { name = value; }
 
-std::string Famiglia::toString() const {
+string Famiglia::toString() const {
   return "nome: " + name + " size:" + std::to_string(size);
 }
 
-std::string Famiglia::getCodFisc() { return ""; }
+string Famiglia::getCodFisc() { return ""; }

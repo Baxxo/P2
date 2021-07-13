@@ -1,7 +1,7 @@
 #include "abbonamento.h"
 #include <QDebug>
 
-Abbonamento::Abbonamento(Data *d, std::string u, double p, string cod, int entr)
+Abbonamento::Abbonamento(Data *d, string u, double p, string cod, int entr)
     : EntrataFilm(cod, d, u, p), entrate(entr) {}
 
 Abbonamento::Abbonamento(const Abbonamento &o)
@@ -21,7 +21,4 @@ Abbonamento &Abbonamento::operator=(const Abbonamento &o) {
   return *this;
 }
 
-Abbonamento *Abbonamento::clone() const {
-  // qDebug() << "clone Abbonamento";
-  return new Abbonamento(*this);
-}
+Abbonamento *Abbonamento::clone() const { return new Abbonamento(*this); }

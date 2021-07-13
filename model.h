@@ -7,6 +7,8 @@
 #include "myVector.h"
 #include "sala.h"
 
+using std::string;
+
 class Model {
  public:
   Model();
@@ -46,10 +48,11 @@ class Model {
 
   bool searchCf(const string &cf) const;
   bool searchNameFamiglia(const string &name) const;
+  bool searchEntrata(const string &cod) const;
 
   string getTest() const;
 
- private:
+  // private:
   MyVector<DeepPtr<EntrataFilm>> listEntrate;
   MyVector<DeepPtr<Utente>> listUtenti;
   MyVector<DeepPtr<Famiglia>> listFamiglie;

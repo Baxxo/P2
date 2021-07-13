@@ -1,8 +1,7 @@
 #include "biglietto.h"
 #include <QDebug>
 
-Biglietto::Biglietto(std::string c, Data *d, std::string u, double p, bool r,
-                     string f)
+Biglietto::Biglietto(string c, Data *d, string u, double p, bool r, string f)
     : EntrataFilm(c, d, u, p), riduzione(r), film(f) {}
 
 Biglietto::Biglietto(const Biglietto &o)

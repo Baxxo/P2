@@ -124,7 +124,7 @@ class Controller : public QObject {
   QString getPathJsonSale() const;
   QString getPathJsonFilm() const;
 
-  bool RemoveAbbonamento(const QString &cod);
+  bool removeAbbonamento(const QString &cod);
 
   void openError(const QString &message);
 

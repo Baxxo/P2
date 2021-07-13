@@ -6,26 +6,7 @@ void Model::addEntrata(EntrataFilm *e) {
   listEntrate.push_back(DeepPtr<EntrataFilm>(e));
 }
 
-/*void Model::addAbbonamento(Abbonamento *e) {
-  DeepPtr<EntrataFilm> tmp(new Abbonamento(*e));
-  listEntrate.push_back(tmp);
-}
-
-void Model::addAbbonamentoFam(AbbonamentoFamigliare *e) {
-  DeepPtr<EntrataFilm> tmp(new AbbonamentoFamigliare(*e));
-  listEntrate.push_back(tmp);
-}
-
-void Model::addBiglietto(Biglietto *e) {
-  DeepPtr<EntrataFilm> tmp(new Biglietto(*e));
-  listEntrate.push_back(tmp);
-}
-*/
-void Model::addUtente(Utente *u) {
-  //  qDebug() << "addUtente " << QString::fromStdString(u->getCodFisc());
-  listUtenti.push_back(DeepPtr<Utente>(u));
-  //  qDebug() << "--";
-}
+void Model::addUtente(Utente *u) { listUtenti.push_back(DeepPtr<Utente>(u)); }
 
 void Model::addFamiglia(Famiglia *f) {
   listFamiglie.push_back(DeepPtr<Famiglia>(f));
@@ -81,7 +62,7 @@ Utente *Model::getUtente(string cf) const {
   return nullptr;
 }
 
-Famiglia *Model::getFamiglia(std::string name) const {
+Famiglia *Model::getFamiglia(string name) const {
   auto it = listFamiglie.cbegin();
 
   for (; it != listFamiglie.cend(); ++it) {
@@ -92,12 +73,21 @@ Famiglia *Model::getFamiglia(std::string name) const {
   return nullptr;
 }
 
-EntrataFilm *Model::getEntrataFilm(std::string cod) const {
+EntrataFilm *Model::getEntrataFilm(string cod) const {
   auto it = listEntrate.cbegin();
 
   for (; it != listEntrate.cend(); ++it) {
     if ((*it)->getCodice() == cod) {
-      return new EntrataFilm(**it);
+      if (dynamic_cast<Biglietto *>(&(**it))) {
+        return new Biglietto(*dynamic_cast<Biglietto *>(&(**it)));
+      } else if (dynamic_cast<Abbonamento *>(&(**it))) {
+        if (dynamic_cast<AbbonamentoFamigliare *>(&(**it))) {
+          return new AbbonamentoFamigliare(
+              *dynamic_cast<AbbonamentoFamigliare *>(&(**it)));
+        } else {
+          return new Abbonamento(*dynamic_cast<Abbonamento *>(&(**it)));
+        }
+      }
     }
   }
   return nullptr;
@@ -129,13 +119,10 @@ const MyVector<DeepPtr<Sala>> &Model::getListSale() const { return listSale; }
 void Model::addUserToFamily(Famiglia &f, Utente *u) { f.addMembro(u); }
 
 bool Model::searchCf(const string &cf) const {
-  //  qDebug() << "searchCf";
   if (!listUtenti.isEmpty()) {
-    //    qDebug() << "not empty";
     auto it = listUtenti.csearch(new Utente(cf));
     return (*it)->getCodFisc() == cf;
   }
-  //  qDebug() << "empty";
   return false;
 }
 
@@ -143,6 +130,15 @@ bool Model::searchNameFamiglia(const string &name) const {
   if (!listFamiglie.isEmpty()) {
     auto it = listFamiglie.csearch(new Famiglia(name));
     return (*it)->getName() == name;
+  }
+  return false;
+}
+
+bool Model::searchEntrata(const string &cod) const {
+  qDebug() << "model search";
+  if (!listEntrate.isEmpty()) {
+    auto it = listEntrate.csearch(new EntrataFilm(cod));
+    return (*it)->getCodice() == cod;
   }
   return false;
 }

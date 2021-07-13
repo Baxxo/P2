@@ -191,6 +191,7 @@ void Admin::getClickAbb() {
   QLabelCF *lbl =
       dynamic_cast<QLabelCF *>(listAbb->itemWidget(listAbb->currentItem()));
   qDebug() << lbl->text() << " -- " << lbl->getCf();
+  controller->removeAbbonamento(lbl->getCf());
 }
 
 QString Admin::getNomeSala() { return nomeSala->text(); }

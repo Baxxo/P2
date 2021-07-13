@@ -8,12 +8,9 @@ AbbonamentoFamigliare::AbbonamentoFamigliare(Data *d, string u, string f,
 AbbonamentoFamigliare::AbbonamentoFamigliare(const AbbonamentoFamigliare &o)
     : Abbonamento(o), famiglia(o.famiglia) {}
 
-// AbbonamentoFamigliare::~AbbonamentoFamigliare() {}
-
-std::string AbbonamentoFamigliare::getFamiglia() const { return famiglia; }
+string AbbonamentoFamigliare::getFamiglia() const { return famiglia; }
 
 AbbonamentoFamigliare *AbbonamentoFamigliare::clone() const {
-  // qDebug() << "clone AbbonamentoFamigliare";
   return new AbbonamentoFamigliare(*this);
 }
 

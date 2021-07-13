@@ -17,7 +17,7 @@ Sala::~Sala() { delete[] matrix; }
 
 unsigned int Sala::getColonne() const { return colonne; }
 
-std::string Sala::getNomesala() const { return nome_sala; }
+string Sala::getNomesala() const { return nome_sala; }
 
 Sala *Sala::clone() const { return new Sala(*this); }
 

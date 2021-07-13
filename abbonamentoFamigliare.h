@@ -3,6 +3,8 @@
 #include "abbonamento.h"
 #include "famiglia.h"
 
+using std::string;
+
 class AbbonamentoFamigliare : public Abbonamento {
  private:
   string famiglia;
@@ -19,7 +21,7 @@ class AbbonamentoFamigliare : public Abbonamento {
 
   ~AbbonamentoFamigliare() = default;
 
-  std::string getFamiglia() const;
+  string getFamiglia() const;
 
   AbbonamentoFamigliare *clone() const;
 };

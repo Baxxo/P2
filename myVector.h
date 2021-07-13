@@ -291,7 +291,7 @@ template <class T>
 typename MyVector<T>::Iterator MyVector<T>::search(const T &o) {
   Iterator it = begin();
   for (; it != end() && *it != o; ++it) {
-    qDebug() << "vector " << QString::fromStdString((**it).getCodFisc());
+    //    qDebug() << "vector " << QString::fromStdString((**it).getCodFisc());
   }
   if (it == end()) return begin();
   return it;
@@ -300,11 +300,7 @@ typename MyVector<T>::Iterator MyVector<T>::search(const T &o) {
 template <class T>
 typename MyVector<T>::Const_iterator MyVector<T>::csearch(const T &o) const {
   Const_iterator it = cbegin();
-  //  qDebug() << "vector begin " <<
-  //  QString::fromStdString((**it).getCodFisc());
-  for (; it != cend() && *it != o; ++it) /* {
- //    qDebug() << "vector " << QString::fromStdString((**it).getCodFisc());
-   }*/
+  for (; it != cend() && *it != o; ++it)
     ;
 
   if (it == cend()) return cbegin();
@@ -325,8 +321,6 @@ void MyVector<T>::push_back(const T &o) {
     v = tmp;
   }
   v[size++] = o;
-  //  qDebug() << "vector push back "
-  //           << QString::fromStdString(v[size - 1]->getCodFisc());
 }
 
 template <class T>
