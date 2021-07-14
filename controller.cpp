@@ -262,6 +262,13 @@ void Controller::loadFilmInAdmin() {
   }
 }
 
+void Controller::loadFilmInBigliettoview() {
+  bigliettoView->clearListFilm();
+  for (auto it = filmObj.begin(); it != filmObj.end(); ++it) {
+    bigliettoView->addFilminList((it).key());
+  }
+}
+
 void Controller::openAdmin() {
   if (admin == nullptr) {
     admin = new Admin(this, view);
@@ -379,9 +386,8 @@ void Controller::openBiglietto() {
 
   QTimer::singleShot(0, bigliettoView, SLOT(resizeMe()));
 
-  for (auto it = filmObj.begin(); it != filmObj.end(); ++it) {
-    bigliettoView->addFilminList((it).key());
-  }
+  if (pathJsonFilm == "") loadFilm();
+  loadFilmInBigliettoview();
 
   bigliettoView->show();
 }

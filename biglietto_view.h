@@ -60,14 +60,16 @@ class Biglietto_View : public QWidget {
   QString getSearch();
   QString getTipologia();
   void getSalaView();
-  void addFilminList(QString s);
+  void addFilminList(const QString &s);
   int getCurrentColumn();
   int getCurrentRow();
   QString getNomeSala();
   QString getSelectedFilm();
   int getColonneMax();
   void setPostoOccupato(int r, int c);
-  void createSalaView(int r, int c, QString f);
+  void createSalaView(int r, int c, const QString &f);
+
+  void clearListFilm();
 
  public slots:
   void resizeSala();

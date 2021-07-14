@@ -131,7 +131,7 @@ void Biglietto_View::getSalaView() {
   salaWidget->show();
 }
 
-void Biglietto_View::addFilminList(QString s) {
+void Biglietto_View::addFilminList(const QString &s) {
   QListWidgetItem *item = new QListWidgetItem(s);
   listaFilm->addItem(item);
 }
@@ -154,7 +154,7 @@ void Biglietto_View::setPostoOccupato(int r, int c) {
   posti->setItem(r, c, item);
 }
 
-void Biglietto_View::createSalaView(int r, int c, QString f) {
+void Biglietto_View::createSalaView(int r, int c, const QString &f) {
   if (posti) {
     delete posti;
   }
@@ -182,6 +182,8 @@ void Biglietto_View::createSalaView(int r, int c, QString f) {
 
   getSalaView();
 }
+
+void Biglietto_View::clearListFilm() { listaFilm->clear(); }
 
 QString Biglietto_View::getSearch() { return search->text(); }
 
