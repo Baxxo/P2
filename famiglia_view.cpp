@@ -132,7 +132,6 @@ void Famiglia_View::addUtenteToFamiglia(QListWidgetItem *item) {
       lbl->setStyleSheet("QLabel { background-color : LightGreen;}");
       lbl->setSelect(true);
 
-      listaUtenti->setItemWidget(item, lbl);
       setUtilityText(QString("Utente aggiunto"));
     }
 
@@ -140,11 +139,9 @@ void Famiglia_View::addUtenteToFamiglia(QListWidgetItem *item) {
     if (controller->removeUserFromFamily(lbl->getCf())) {
       lbl->setStyleSheet("QLabel { background-color : #00A2E8;}");
       lbl->setSelect(false);
-
-      listaUtenti->setItemWidget(item, lbl);
       setUtilityText(QString("Utente rimosso"));
     }
   }
-
+  listaUtenti->setItemWidget(item, lbl);
   // manca da cercare utente nel vector
 }

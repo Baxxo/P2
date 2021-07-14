@@ -1,2 +1,10 @@
+<<<<<<< HEAD
 **/.o
 **/.user
+=======
+*.log
+*.o
+*.txt
+*.user.*
+*.pro.user.*
+>>>>>>> feature/AbbonamentoFam

@@ -18,6 +18,8 @@ class Famiglia {
 
   void resize();
 
+  void destroy(Utente **u);
+
  public:
   Famiglia(string _name = "", unsigned int c = 1);
   Famiglia(const Famiglia &o);
@@ -27,10 +29,15 @@ class Famiglia {
   bool hasMembro(Utente *u);
   unsigned int getSize() const;
 
-  Utente *operator[](unsigned int i) const;
-  Utente *operator[](int i) const;
+  Utente *&operator[](unsigned int i) const;
+  Utente *&operator[](int i) const;
+
   bool operator==(const Famiglia &f) const;
   bool operator!=(const Famiglia &f) const;
+
+  Utente *&operator*() const;
+  Utente **operator->() const;
+
   bool isEmpty() const;
   Famiglia &operator=(const Famiglia &o);
 
@@ -40,7 +47,5 @@ class Famiglia {
   void setName(const string &value);
 
   string toString() const;
-
-  string getCodFisc();
 };
 #endif  // FAMIGLIA_H

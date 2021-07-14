@@ -113,11 +113,18 @@
             "tel.Num": "Numero di telefono"
         },
         {
-            "CF": "GLLDNL00B04F443V",
-            "age": "21",
-            "name": "Danilo",
-            "surname": "Gallina",
-            "tel.Num": "3426739719"
+            "CF": "ciaone",
+            "age": "24",
+            "name": "proprio",
+            "surname": "Surname",
+            "tel.Num": "Numero di telefono"
+        },
+        {
+            "CF": "provaCodFIsc",
+            "age": "123",
+            "name": "provaNome",
+            "surname": "provaCognome",
+            "tel.Num": "provaNumero"
         }
     ]
 }

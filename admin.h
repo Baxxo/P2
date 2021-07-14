@@ -21,6 +21,7 @@
 #include <QWidget>
 
 #include "mainwindow.h"
+#include "qlabelcf.h"
 #include "qlineeditclickable.h"
 
 // using std::cout;
@@ -28,22 +29,24 @@
 
 class Admin : public QMainWindow {
   Q_OBJECT
-public:
+ public:
   Admin(Controller *c, MainWindow *parent = nullptr);
   ~Admin() = default;
 
   void setAbbonamenti();
-  void addUtente(QString s);
-  void addFamiglia(QString s);
-  void addFilminList(QString s);
-  void addSale(QString s);
+  void addUtenteinList(const QString &s);
+  void addFamigliainList(const QString &s);
+  void addEntrata(const QString &s, const QString &cod);
   void setFamiglie();
+  void addFilminList(const QString &s);
+  void addSaleinList(const QString &s);
 
+  void clearListEntrate();
   void clearListUtenti();
   void clearListFamiglie();
+
   void clearListFilm();
   void clearListSale();
-  void clearListEntrate();
 
   void setIsAdmin(bool b);
 
@@ -53,7 +56,7 @@ public:
   QString getNomeSala();
   QString getSalaFilm();
 
-private slots:
+ private slots:
   void getClickAbb();
   void getClickUt();
   void getClickFam();
@@ -61,7 +64,7 @@ private slots:
   void addFilmLayout();
   void addSalaLayout();
 
-private:
+ private:
   QDesktopWidget *desktop;
   QGridLayout *baseLayout;
   QVBoxLayout *mainLayout;
@@ -82,6 +85,8 @@ private:
   QLabel *labelFilm;
   QLabel *labelSala;
 
+  QLabel *utility;
+
   QWidget *widget;
 
   QPushButton *addFilm;
@@ -101,7 +106,8 @@ private:
   QPushButton *saveSala;
 
   Controller *controller;
+
   void closeEvent(QCloseEvent *event);
 };
 
-#endif // ADMIN_H
+#endif  // ADMIN_H

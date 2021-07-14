@@ -1,7 +1,10 @@
 #include "famiglia.h"
+#include <QDebug>
 
-Famiglia::Famiglia(std::string _name, unsigned int c)
-    : membri(new Utente *[c]), capacity(c), size(0), name(_name) {}
+Famiglia::Famiglia(string _name, unsigned int c)
+    : membri(new Utente *[c]), capacity(c), size(0), name(_name) {
+  //  qDebug() << "costrut famiglia";
+}
 
 Famiglia::Famiglia(const Famiglia &o)
     : membri(new Utente *[o.capacity]),
@@ -19,29 +22,25 @@ void Famiglia::resize() {
   for (unsigned int i = 0U; i < size; i++) {
     u[i] = membri[i];
   }
-  delete[] membri;
+  destroy(membri);
   membri = u;
 }
 
-Famiglia::~Famiglia() { delete[] membri; }
+void Famiglia::destroy(Utente **u) {
+  if (u) delete[] u;
+}
+
+Famiglia::~Famiglia() { destroy(membri); }
 
 void Famiglia::addMembro(Utente *u) {
-  // cout << "inzio--------------" << endl;
   if (size >= capacity) {
     resize();
   }
   membri[size] = u;
   size++;
-  /*
-    for(unsigned int i = 0U; i<size;i++){
-        cout << "Famiglia: " << membri[i]->getCodFisc() << endl;
-
-      }
-    cout << "esco -----------------" << endl<<endl;*/
 }
 
 void Famiglia::removeMembro(Utente *u) {
-  // cout << "inzio remove--------------" << endl;
   if (hasMembro(u)) {
     for (unsigned int i = 0U; i < size; i++) {
       if (*(membri[i]) == *u) {
@@ -53,18 +52,11 @@ void Famiglia::removeMembro(Utente *u) {
           temp[j - 1] = membri[j];
         }
         size--;
-        delete[] membri;
+        destroy(membri);
         membri = temp;
       }
     }
   }
-
-  /*
-    for(unsigned int i = 0U; i<size;i++){
-        cout << "Famiglia: " << membri[i]->getCodFisc() << endl;
-
-      }
-    cout << "esco remove-----------------" << endl<<endl;*/
 }
 
 bool Famiglia::hasMembro(Utente *u) {
@@ -78,24 +70,28 @@ bool Famiglia::hasMembro(Utente *u) {
 
 unsigned int Famiglia::getSize() const { return size; }
 
-Utente *Famiglia::operator[](unsigned int i) const {
+Utente *&Famiglia::operator[](unsigned int i) const {
   if (i >= size) {
     throw std::out_of_range("Out of range");
   }
+
   return membri[i];
 }
 
-Utente *Famiglia::operator[](int i) const {
+Utente *&Famiglia::operator[](int i) const {
   if (static_cast<unsigned int>(i) >= size) {
     throw std::out_of_range("Out of range");
   }
-
   return membri[i];
 }
 
 bool Famiglia::operator==(const Famiglia &f) const { return f.name == name; }
 
 bool Famiglia::operator!=(const Famiglia &f) const { return f.name != name; }
+
+Utente *&Famiglia::operator*() const { return *membri; }
+
+Utente **Famiglia::operator->() const { return membri; }
 
 bool Famiglia::isEmpty() const { return size == 0; }
 
@@ -110,12 +106,10 @@ Famiglia &Famiglia::operator=(const Famiglia &o) {
 
 Famiglia *Famiglia::clone() const { return new Famiglia(*this); }
 
-std::string Famiglia::getName() const { return name; }
+string Famiglia::getName() const { return name; }
 
-void Famiglia::setName(const std::string &value) { name = value; }
+void Famiglia::setName(const string &value) { name = value; }
 
-std::string Famiglia::toString() const {
+string Famiglia::toString() const {
   return "nome: " + name + " size:" + std::to_string(size);
 }
-
-std::string Famiglia::getCodFisc() { return ""; }

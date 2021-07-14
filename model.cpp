@@ -1,45 +1,57 @@
 #include "model.h"
-#include <QDebug>
 
-Model::Model(string _test) : test(_test) {}
+Model::Model() {}
 
-void Model::addEntrata(const EntrataFilm &a) {
-  listEntrate.push_back(DeepPtr<EntrataFilm>(a));
+void Model::addEntrata(EntrataFilm *e) {
+  listEntrate.push_back(DeepPtr<EntrataFilm>(e));
 }
 
-void Model::addUtente(const Utente &u) {
-  listUtenti.push_back(DeepPtr<Utente>(u));
-}
+void Model::addUtente(Utente *u) { listUtenti.push_back(DeepPtr<Utente>(u)); }
 
-void Model::addFamiglia(const Famiglia &f) {
+void Model::addFamiglia(Famiglia *f) {
   listFamiglie.push_back(DeepPtr<Famiglia>(f));
 }
 
-void Model::addAcquisto(const Utente &u) {
+void Model::addAcquisto(Utente *u) {
   listStorico.push_back(DeepPtr<Utente>(u));
 }
 
-void Model::addSala(const Sala &s) { listSale.push_back(DeepPtr<Sala>(s)); }
+void Model::addSala(Sala *s) { listSale.push_back(DeepPtr<Sala>(s)); }
 
 bool Model::removeEntrata(const EntrataFilm &a) {
-  return listEntrate.remove(a);
+  DeepPtr<EntrataFilm> tmp(new EntrataFilm(a));
+  return listEntrate.remove(tmp);
 }
 
-bool Model::removeUtente(const Utente &u) { return listUtenti.remove(u); }
+bool Model::removeUtente(const Utente &u) {
+  DeepPtr<Utente> tmp(new Utente(u));
+  return listUtenti.remove(tmp);
+}
 
-bool Model::removeFamiglia(const Famiglia &f) { return listFamiglie.remove(f); }
+bool Model::removeFamiglia(const Famiglia &f) {
+  DeepPtr<Famiglia> tmp(new Famiglia(f));
+  return listFamiglie.remove(tmp);
+}
 
-bool Model::removeAcquisto(const Utente &u) { return listStorico.remove(u); }
+bool Model::removeAcquisto(const Utente &u) {
+  DeepPtr<Utente> tmp(new Utente(u));
+  return listStorico.remove(tmp);
+}
 
-bool Model::removeSala(const Sala &s) { return listSale.remove(s); }
+bool Model::removeSala(const Sala &s) {
+  DeepPtr<Sala> tmp(new Sala(s));
+  return listSale.remove(tmp);
+}
 
 void Model::clearVectorUtenti() { listUtenti.clear(); }
 
 void Model::clearVectorFamiglie() { listFamiglie.clear(); }
 
+void Model::clearVectorEntrate() { listEntrate.clear(); }
+
 void Model::cleaVectorSale() { listSale.clear(); }
 
-Utente *Model::getUtente(string cf) {
+Utente *Model::getUtente(string cf) const {
   auto it = listUtenti.cbegin();
 
   for (; it != listUtenti.cend(); ++it) {
@@ -50,12 +62,40 @@ Utente *Model::getUtente(string cf) {
   return nullptr;
 }
 
-Sala *Model::getSala(string nome) {
-  for (auto it = listSale.begin(); it != listSale.end(); ++it) {
-    // cout << (*it)->getName() << endl;
-    // cout << (*it)->getCodFisc() << " = "<< cf << endl;
+Famiglia *Model::getFamiglia(string name) const {
+  auto it = listFamiglie.cbegin();
+
+  for (; it != listFamiglie.cend(); ++it) {
+    if ((*it)->getName() == name) {
+      return new Famiglia(**it);
+    }
+  }
+  return nullptr;
+}
+
+EntrataFilm *Model::getEntrataFilm(string cod) const {
+  auto it = listEntrate.cbegin();
+
+  for (; it != listEntrate.cend(); ++it) {
+    if ((*it)->getCodice() == cod) {
+      if (dynamic_cast<Biglietto *>(&(**it))) {
+        return new Biglietto(*dynamic_cast<Biglietto *>(&(**it)));
+      } else if (dynamic_cast<Abbonamento *>(&(**it))) {
+        if (dynamic_cast<AbbonamentoFamigliare *>(&(**it))) {
+          return new AbbonamentoFamigliare(
+              *dynamic_cast<AbbonamentoFamigliare *>(&(**it)));
+        } else {
+          return new Abbonamento(*dynamic_cast<Abbonamento *>(&(**it)));
+        }
+      }
+    }
+  }
+  return nullptr;
+}
+
+Sala *Model::getSala(string nome) const {
+  for (auto it = listSale.cbegin(); it != listSale.cend(); ++it) {
     if ((*it)->getNomesala() == nome) {
-      // cout << (*it)->getName() << endl;
       return new Sala(**it);
     }
   }
@@ -80,7 +120,7 @@ void Model::addUserToFamily(Famiglia &f, Utente *u) { f.addMembro(u); }
 
 bool Model::searchCf(const string &cf) const {
   if (!listUtenti.isEmpty()) {
-    auto it = listUtenti.csearch(Utente(cf));
+    auto it = listUtenti.csearch(new Utente(cf));
     return (*it)->getCodFisc() == cf;
   }
   return false;
@@ -88,10 +128,16 @@ bool Model::searchCf(const string &cf) const {
 
 bool Model::searchNameFamiglia(const string &name) const {
   if (!listFamiglie.isEmpty()) {
-    auto it = listFamiglie.csearch(Famiglia(name));
+    auto it = listFamiglie.csearch(new Famiglia(name));
     return (*it)->getName() == name;
   }
   return false;
 }
 
-string Model::getTest() const { return test; }
+bool Model::searchEntrata(const string &cod) const {
+  if (!listEntrate.isEmpty()) {
+    auto it = listEntrate.csearch(new EntrataFilm(cod));
+    return (*it)->getCodice() == cod;
+  }
+  return false;
+}

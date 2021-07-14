@@ -3,13 +3,34 @@
     color: white;
 }
 
-QLabel{
+.colorSelect::item:selectedF {
+background-color: LightGreen;
+}
+
+.title{
     font-size:30px;
     font-weight: bold;
+    padding: 30px;
+}
+
+.big_text{
+    font-size:20px;
+    font-weight: bold;
+    padding: 15px;
+}
+
+.success{
+    font-weight: bold;
+    padding: 15px;
 }
 
 QPushButton{
     background-color: #fff;
     color: blue;
     padding: 10% 100% ;
+}
+
+.path{
+    font-size:20px;
+    font-weight: normal;
 }
