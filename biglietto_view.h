@@ -17,37 +17,46 @@ class Biglietto_View : public QWidget {
   Controller *controller;
   int prezzo;
   QString film;
+
+  QGridLayout *mainLayout;
+
   QLabel *labelTipo;
   QComboBox *tipologia;
-  QVBoxLayout *layoutTipologia;
-  QWidget *mainWidget;
-  QWidget *widgetSing;
-  QWidget *salaWidget;
-  QVBoxLayout *compraLayout;
-  QGridLayout *mainLayout;
-  QPushButton *compraBiglietto;
-  QLabel *labelListaFilm;
-  QListWidget *listaFilm;
   QPushButton *tipologiaBtn;
-  QVBoxLayout *utenteBigl;
+  QVBoxLayout *layoutTipologia;
+
   QLabel *searchUtility;
   QLineEditClickable *search;
   QPushButton *searchBtn;
-  QVBoxLayout *salaLayout;
+  QVBoxLayout *utenteBigl;
+  QWidget *widgetSearchCf;
+
+  QLabel *labelListaFilm;
+  QListWidget *listaFilm;
+  QVBoxLayout *compraLayout;
+
   QPushButton *selectSeat;
+  QVBoxLayout *salaLayout;
+  QWidget *salaWidget;
+
   QTableWidget *posti;
+
+  QPushButton *compraBiglietto;
+
+ private slots:
+  void showSearch();
 
  public:
   explicit Biglietto_View(Controller *c, QWidget *parent = nullptr);
   void setStyle();
   QString getSearch();
   QString getTipologia();
-  void getSalaView();
+  void showSalaView();
 
   void setUtilitySearchText(const QString &s);
 
- private slots:
-  void showSearch();
+ public slots:
+  void resizeSala();
   void resizeMe();
 };
 

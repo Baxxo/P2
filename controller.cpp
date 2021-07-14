@@ -559,7 +559,7 @@ void Controller::newSala() {
 }
 
 void Controller::stpBigl() {
-  if (bigliettoView->getTipologia() == "Singolo") {
+  if (bigliettoView->getTipologia() == "Biglietto") {
     QString utente = bigliettoView->getSearch();
     if (model->searchCf(utente.toStdString())) {
       bigliettoView->setUtilitySearchText(QString("Codice fiscale Trovato"));
@@ -608,7 +608,8 @@ void Controller::stpBigl() {
 
 void Controller::showSala() {
   // QTableWidget sala(2, 3);
-  bigliettoView->getSalaView();
+  bigliettoView->showSalaView();
+  bigliettoView->resizeSala();
 }
 
 void Controller::loadUsers(bool canUpdate) {
