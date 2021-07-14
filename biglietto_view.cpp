@@ -143,7 +143,13 @@ int Biglietto_View::getCurrentRow() { return posti->currentRow(); }
 QString Biglietto_View::getNomeSala() { return nomeSala->text(); }
 
 QString Biglietto_View::getSelectedFilm() {
-  return listaFilm->currentItem()->text();
+  QListWidgetItem *current = listaFilm->currentItem();
+  if (current) {
+    return listaFilm->currentItem()->text();
+  } else {
+    controller->openError("seleziona un film prima");
+    return nullptr;
+  }
 }
 
 int Biglietto_View::getColonneMax() { return colonneMax->text().toInt(); }
