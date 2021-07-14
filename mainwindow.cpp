@@ -4,54 +4,49 @@
 #include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent),
-      chooseUtenti(nullptr),
-      chooseFamiglie(nullptr),
-      chooseEntrata(nullptr),
-      choosePosti(nullptr),
-      chooseFilm(nullptr),
-      chooseSala(nullptr),
-      adminBtn(nullptr),
-      clientBtn(nullptr),
-      controller(nullptr),
-      isVisReadBtn(true) {
-  changeBtn = new QPushButton(QIcon(":/images/reverse.png"), "");
+    : QMainWindow(parent), desktop(QApplication::desktop()),
+      widget(new QWidget(this)), mainLayout(new QGridLayout()),
+      v_layout(new QVBoxLayout()), buttonLayout(new QGridLayout()),
+      title(new QLabel("Setup")),
+      changeBtn(new QPushButton(QIcon(":/images/reverse.png"), "")),
+      chooseUtenti(nullptr), chooseFamiglie(nullptr), chooseEntrata(nullptr),
+      chooseSala(nullptr), choosePosti(nullptr), chooseFilm(nullptr),
+      adminBtn(nullptr), clientBtn(nullptr),
+      pathUser(new QLabel("name json utenti")),
+      pathFamilies(new QLabel("name json famiglie")),
+      pathEntrata(new QLabel("name json archivio entrate/abbonamenti")),
+      pathPosti(new QLabel("name json postiOccupati")),
+      pathSala(new QLabel("name json Sale")),
+      pathFilm(new QLabel("name json film")), controller(nullptr),
+      isVisReadBtn(true), prevAdmin("Admin"),
+      prevChooseUtenti("Scegli file json per utenti"),
+      prevChooseFamiglie("Scegli file json per famiglie") {
+
   changeBtn->setFixedWidth(50);
 
-  title = new QLabel("Setup");
   title->setProperty("class", "title");
 
-  v_layout = new QVBoxLayout();
   v_layout->addWidget(title, Qt::AlignTop);
 
-  buttonLayout = new QGridLayout();
-
-  mainLayout = new QGridLayout();
   mainLayout->addWidget(changeBtn, 0, 0, Qt::AlignRight);
   mainLayout->addLayout(v_layout, 1, 0, Qt::AlignCenter);
   mainLayout->addLayout(buttonLayout, 2, 0, Qt::AlignCenter);
 
-  pathUser = new QLabel("name json utenti");
   pathUser->setProperty("class", "path");
   pathUser->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-  pathFamilies = new QLabel("name json famiglie");
   pathFamilies->setProperty("class", "path");
   pathFamilies->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-  pathPosti = new QLabel("name json postiOccupati");
   pathPosti->setProperty("class", "path");
   pathPosti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-  pathSala = new QLabel("name json Sale");
   pathSala->setProperty("class", "path");
   pathSala->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-  pathFilm = new QLabel("name json film");
   pathFilm->setProperty("class", "path");
   pathFilm->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-  pathEntrata = new QLabel("name json archivio entrate/abbonamenti");
   pathEntrata->setProperty("class", "path");
   pathEntrata->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -61,21 +56,14 @@ MainWindow::MainWindow(QWidget *parent)
   buttonLayout->addWidget(pathSala, 3, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathPosti, 4, 1, Qt::AlignCenter);
 
-  widget = new QWidget(this);
   widget->setLayout(mainLayout);
 
   setCentralWidget(widget);
-
-  desktop = QApplication::desktop();
 
   resize(300, 300);
   move((desktop->width() - 300) / 2, (desktop->height() - 300) / 2);
 
   setStyle();
-
-  prevAdmin = "Admin";
-  prevChooseUtenti = "Scegli file json per utenti";
-  prevChooseFamiglie = "Scegli file json per famiglie";
 }
 
 void MainWindow::setController(Controller *c) {
@@ -100,16 +88,17 @@ void MainWindow::setLabelPathEntrata(QString s) { pathEntrata->setText(s); }
 
 void MainWindow::setLabelPathPosti(QString s) { pathPosti->setText(s); }
 
-void MainWindow::setLabelPathSale(QString s){ pathSala->setText(s); }
+void MainWindow::setLabelPathSale(QString s) { pathSala->setText(s); }
 
 void MainWindow::setLabelPathFilm(QString s) { pathFilm->setText(s); }
 
 void MainWindow::changeTitleAdmin(QString s) {
   prevAdmin = s;
-  if (adminBtn) adminBtn->setText(s);
+  if (adminBtn)
+    adminBtn->setText(s);
 }
 
-void MainWindow::changeTitleChooseSala(QString s){ pathFilm->setText(s); }
+void MainWindow::changeTitleChooseSala(QString s) { pathFilm->setText(s); }
 
 void MainWindow::changeTitleChooseUtenti(QString s) {
   prevChooseUtenti = s;
@@ -241,8 +230,10 @@ void MainWindow::createLayoutSetup() {
 }
 
 void MainWindow::destroyLayoutSetup() {
-  if (chooseUtenti) prevChooseUtenti = chooseUtenti->text();
-  if (chooseFamiglie) prevChooseFamiglie = chooseFamiglie->text();
+  if (chooseUtenti)
+    prevChooseUtenti = chooseUtenti->text();
+  if (chooseFamiglie)
+    prevChooseFamiglie = chooseFamiglie->text();
   buttonLayout->removeWidget(chooseUtenti);
   buttonLayout->removeWidget(chooseFamiglie);
   buttonLayout->removeWidget(chooseEntrata);

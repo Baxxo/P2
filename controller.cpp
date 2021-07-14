@@ -8,32 +8,21 @@ using std::string;
 Controller::Controller(QObject *parent, Model *m)
     : QObject(parent),
       model(m),
+      view(nullptr),
       admin(nullptr),
       client(nullptr),
       utente(nullptr),
       famigliaView(nullptr),
       bigliettoView(nullptr),
-      //      isAdminOpen(false),
-      //      isClientOpen(false),
-      //      isUtenteOpen(false),
-      //      isFamigliaOpen(false),
-      //      isBigliettoOpen(false),
       pathJsonUsers(""),
+      pathJsonFamiglie(""),
+      pathJsonEntrata(""),
       pathJsonPosti(""),
-      pathJsonSale(""),
       pathJsonFilm(""),
-      fam(nullptr) {}
-
-// bool Controller::getIsAdmin() const { return isAdminOpen; }
-
-// void Controller::setIsAdmin(bool value) {
-//  isAdminOpen = value;
-//  if (isAdminOpen) {
-//    view->changeTitleAdmin(QString("Aggiorna admin"));
-//  } else {
-//    view->changeTitleAdmin(QString("Admin"));
-//  }
-//}
+      pathJsonSale(""),
+      objUtenti(nullptr),
+      fam(nullptr),
+      err(nullptr) {}
 
 QString Controller::getPathJsonUsers() const { return pathJsonUsers; }
 
@@ -43,9 +32,11 @@ QString Controller::getPathJsonEntrata() const { return pathJsonEntrata; }
 
 QString Controller::getPathJsonPosti() const { return pathJsonPosti; }
 
-QString Controller::getPathJsonSale() const{ return pathJsonSale; }
+QString Controller::getPathJsonSale() const { return pathJsonSale; }
 
 QString Controller::getPathJsonFilm() const { return pathJsonFilm; }
+
+void Controller::setView(MainWindow *v) { view = v; }
 
 void Controller::openError(QString message) {
   if (err) {
@@ -80,9 +71,8 @@ bool Controller::removeUserFromFamily(const QString &cf) {
   return false;
 }
 
-void Controller::openAdmin() {  // BUG quando apro direttamente admin non cambia
-                                // bene layout da setup a quell'altro
-  if (!admin) {
+void Controller::openAdmin() {
+  if (admin == nullptr) {
     admin = new Admin(this, view);
   }
   view->changeTitleAdmin(QString("Aggiorna admin"));
@@ -111,6 +101,19 @@ void Controller::openAdmin() {  // BUG quando apro direttamente admin non cambia
         " )"));
   }
 
+  if (pathJsonSale == "") loadSale();
+
+  admin->clearListSale();
+  for (auto it = model->getListSale().cbegin();
+       it != model->getListSale().cend(); ++it) {
+    admin->addSale(QString::fromStdString((**it).getNomesala()));
+  }
+
+  if (pathJsonFilm == "") loadFilm();
+  admin->clearListFilm();
+  for (auto it= filmObj.begin(); it != filmObj.end(); ++it){
+      admin->addFilminList((it).key());
+  }
   admin->show();
 }
 
@@ -118,6 +121,10 @@ void Controller::openClient() {
   if (!client) {
     client = new Client(this);
   }
+
+  if (pathJsonUsers == "") loadUsers();
+  if (pathJsonFamiglie == "") loadFamilies();
+
   client->show();
 }
 
@@ -133,14 +140,9 @@ void Controller::openFamiglia() {
     fam = new Famiglia();
     famigliaView = new Famiglia_View(this);
   }
-  if (model->getListUtenti().isEmpty()) {
-    QFile file;
-    QVariantList *list = readUtenti(file, false);
 
-    if (model->getListUtenti().isEmpty() && list != nullptr) {
-      popolaVectorUtenti(*list);
-    }
-  }
+  if (pathJsonUsers == "") loadUsers();
+  if (pathJsonFamiglie == "") loadFamilies();
 
   famigliaView->clearList();
   for (auto it = model->getListUtenti().cbegin();
@@ -157,37 +159,19 @@ void Controller::openFamiglia() {
   famigliaView->show();
 }
 
-// void Controller::listaUtenti() {
-//  /*
-//  QJsonObject::iterator a= objUtenti->begin();
-//  for(int i=0; i<objUtenti->size();i++){
-//      menu->addItem(a.key());
-//      a++;
-//  }
-//  */
-//  // readUtenti();
-
-//  QString key;
-//  bool found = false;
-
-//  /*for (auto it = model->getListUtenti().cbegin(); it !=
-//  model->getListUtenti().cend(); ++it) { if(it.key()==famiglia->getSearch()){
-//          key= a.key();
-//          found=true;
-//      }
-//  }*/
-
-//  if (!found) {
-//    key = "CF non presente, crea nuovo utente";
-//  }
-
-//  // famigliaView -> addUtenteToLista(key);
-//}
-
 void Controller::openBiglietto() {
   if (!bigliettoView) {
     bigliettoView = new Biglietto_View(this);
   }
+
+  if (pathJsonUsers == "") loadUsers();
+  if (pathJsonFamiglie == "") loadFamilies();
+
+  QTimer::singleShot(0, bigliettoView, SLOT(resizeMe()));
+
+  for (auto it= filmObj.begin(); it != filmObj.end(); ++it){
+      bigliettoView->addFilminList((it).key());}
+
   bigliettoView->show();
 }
 
@@ -199,18 +183,14 @@ void Controller::searchCF() {
       if (find) {
         famigliaView->findUser(famigliaView->getCF_SearchText());
       } else {
-        err = new ErrorDisplay(nullptr, "Utente non trovato");
-        err->show();
+        openError("Utente non trovato");
         famigliaView->setUtilityText(QString("Utente non trovato"));
       }
     } else {
-      err = new ErrorDisplay(nullptr,
-                             "Codice fiscale gia' presente nella famiglia");
-      err->show();
+      openError("Codice fiscale gia' presente nella famiglia");
     }
   } else {
-    err = new ErrorDisplay(nullptr, "Inserisci un codice fiscale valido");
-    err->show();
+    openError("Inserisci un codice fiscale valido");
   }
 }
 
@@ -228,117 +208,14 @@ void Controller::loadFilmSlot() { loadFilm(true); }
 
 void Controller::annullaUtente() { qDebug() << "test"; }
 
-void Controller::setView(MainWindow *v) { view = v; }
-
 void Controller::salvaUtente() {
   if (pathJsonUsers == "") {
     pathJsonUsers = QFileDialog::getOpenFileName(
         view, tr("Carica json Utenti"), "/home/student/QTheater/json",
         tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
   }
-  QFile file(pathJsonUsers);
-  if (!file.open(QIODevice::ReadOnly)) {
-    openError(QString("File open error: Read"));
-  }
-
-  QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
-  file.close();
-
-  QJsonValue v = jsonOrg.object().value(QString("Utenti"));
-
-  QJsonArray array = v.toArray();
-
-  QJsonObject newUser;
-  newUser.insert("CF", utente->getCF());
-  newUser.insert("name", utente->getName());
-  newUser.insert("surname", utente->getSurname());
-  newUser.insert("age", utente->getAge());
-  newUser.insert("tel.Num", utente->getNumTel());
-
-  array.push_back(newUser);
-
-  QJsonObject obj;
-  obj.insert("Utenti", array);
-
-  QJsonDocument doc(obj);
-
-  if (!file.open(QIODevice::WriteOnly)) {
-    openError(QString("File open error: Write"));
-  }
-
-  file.write(doc.toJson());
-  file.close();
-
-  famigliaView->setUtilityText("Famiglia Salvata e registrata");
-}
-
-void Controller::salvaFamiglia() {
-  fam->setName(famigliaView->getFamilyName().toStdString());
-  model->addFamiglia(*fam);
-
-  if (pathJsonFamiglie == "") {
-    pathJsonFamiglie = QFileDialog::getOpenFileName(
-        view, tr("Scegli json famiglie"), "/home/student/QTheater/json",
-        tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
-  }
-  QFile file(pathJsonFamiglie);
-  if (!file.open(QIODevice::ReadOnly)) {
-    openError(QString("File open error: Read"));
-  }
-
-  QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
-  file.close();
-
-  QJsonValue v = jsonOrg.object().value(QString("Famiglie"));
-
-  QJsonArray array = v.toArray();
-
-  QJsonObject newFamily;
-  newFamily.insert("Name", famigliaView->getFamilyName());
-  for (unsigned int i = 0; i < fam->getSize(); i++) {
-    newFamily.insert(QString::fromStdString("Utente" + std::to_string(i + 1)),
-                     QString::fromStdString(((*fam)[i])->getCodFisc()));
-  }
-
-  array.push_back(newFamily);
-
-  QJsonObject obj;
-  obj.insert("Famiglie", array);
-
-  QJsonDocument doc(obj);
-
-  if (!file.open(QIODevice::WriteOnly)) {
-    openError(QString("File open error: Write"));
-  }
-
-  file.write(doc.toJson());
-  file.close();
-}
-
-void Controller::newFilm()
-{
-    QFile file(pathJsonFilm);
-    if (!file.open(QIODevice::ReadWrite)) {
-      openError(QString("File open error: Read"));
-    }
-
-    QJsonDocument doc;
-
-    filmObj.insert(admin->getNomeFilm(), admin->getSalaFilm());
-
-    doc.setObject(filmObj);
-    file.write(doc.toJson());
-    file.close();
-}
-
-void Controller::newSala()
-{
-    if (pathJsonSale == "") {
-      pathJsonSale = QFileDialog::getOpenFileName(
-          view, tr("Carica json Sale"), "/home/student/QTheater/json",
-          tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
-    }
-    QFile file(pathJsonSale);
+  if (!model->searchCf(utente->getCF().toStdString())) {
+    QFile file(pathJsonUsers);
     if (!file.open(QIODevice::ReadOnly)) {
       openError(QString("File open error: Read"));
     }
@@ -346,19 +223,21 @@ void Controller::newSala()
     QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
     file.close();
 
-    QJsonValue v = jsonOrg.object().value(QString("Sale"));
+    QJsonValue v = jsonOrg.object().value(QString("Utenti"));
 
     QJsonArray array = v.toArray();
 
-    QJsonObject newSala;
-    newSala.insert("righe", admin->getRigheSala());
-    newSala.insert("colonne", admin->getColonneSala());
-    newSala.insert("nome_sala", admin->getNomeSala());
+    QJsonObject newUser;
+    newUser.insert("name", utente->getName());
+    newUser.insert("surname", utente->getSurname());
+    newUser.insert("CF", utente->getCF());
+    newUser.insert("age", utente->getAge());
+    newUser.insert("tel.Num", utente->getNumTel());
 
-    array.push_back(newSala);
+    array.push_back(newUser);
 
     QJsonObject obj;
-    obj.insert("Sale", array);
+    obj.insert("Utenti", array);
 
     QJsonDocument doc(obj);
 
@@ -368,6 +247,177 @@ void Controller::newSala()
 
     file.write(doc.toJson());
     file.close();
+    utente->setConferma("Utente inserito");
+  } else {
+    utente->setConferma(("Utente gia` presente nel programma"));
+    openError("Utente gia` presente nel programma");
+  }
+}
+
+void Controller::salvaFamiglia() {
+  if (!model->searchNameFamiglia(famigliaView->getFamilyName().toStdString())) {
+    QString name = famigliaView->getFamilyName();
+
+    if (name != "Type in a family name" && name != "") {
+      fam->setName(name.toStdString());
+      if (!fam->isEmpty()) {
+        model->addFamiglia(*fam);
+
+        if (pathJsonFamiglie == "") {
+          pathJsonFamiglie = QFileDialog::getOpenFileName(
+              view, tr("Scegli json famiglie"), "/home/student/QTheater/json",
+              tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+        }
+        QFile file(pathJsonFamiglie);
+        if (!file.open(QIODevice::ReadOnly)) {
+          openError(QString("File open error: Read"));
+        }
+
+        QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
+        file.close();
+
+        QJsonValue v = jsonOrg.object().value(QString("Famiglie"));
+
+        QJsonArray array = v.toArray();
+
+        QJsonObject newFamily;
+        newFamily.insert("Name", famigliaView->getFamilyName());
+        for (unsigned int i = 0; i < fam->getSize(); i++) {
+          newFamily.insert(
+              QString::fromStdString("Utente" + std::to_string(i + 1)),
+              QString::fromStdString(((*fam)[i])->getCodFisc()));
+        }
+
+        array.push_back(newFamily);
+
+        QJsonObject obj;
+        obj.insert("Famiglie", array);
+
+        QJsonDocument doc(obj);
+
+        if (!file.open(QIODevice::WriteOnly)) {
+          openError(QString("File open error: Write"));
+        }
+
+        file.write(doc.toJson());
+        file.close();
+
+        famigliaView->setUtilityText("Famiglia Salvata e registrata");
+
+        delete fam;
+        fam = new Famiglia();
+      } else {
+        openError("inserisci almeno un membro");
+      }
+    } else {
+      openError("inserisci nome famiglia");
+    }
+  }
+}
+
+void Controller::newFilm() {
+  QFile file(pathJsonFilm);
+  if (!file.open(QIODevice::ReadWrite)) {
+    openError(QString("File open error: Read"));
+  }
+
+  QJsonDocument doc;
+
+  filmObj.insert(admin->getNomeFilm(), admin->getSalaFilm());
+
+  doc.setObject(filmObj);
+  file.write(doc.toJson());
+  file.close();
+}
+
+void Controller::newSala() {
+  if (pathJsonSale == "") {
+    pathJsonSale = QFileDialog::getOpenFileName(
+        view, tr("Carica json Sale"), "/home/student/QTheater/json",
+        tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+  }
+  QFile file(pathJsonSale);
+  if (!file.open(QIODevice::ReadOnly)) {
+    openError(QString("File open error: Read"));
+  }
+
+  QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
+  file.close();
+
+  QJsonValue v = jsonOrg.object().value(QString("Sale"));
+
+  QJsonArray array = v.toArray();
+
+  QJsonObject newSala;
+  newSala.insert("righe", admin->getRigheSala());
+  newSala.insert("colonne", admin->getColonneSala());
+  newSala.insert("nome_sala", admin->getNomeSala());
+
+  array.push_back(newSala);
+
+  QJsonObject obj;
+  obj.insert("Sale", array);
+
+  QJsonDocument doc(obj);
+
+  if (!file.open(QIODevice::WriteOnly)) {
+    openError(QString("File open error: Write"));
+  }
+
+  file.write(doc.toJson());
+  file.close();
+
+  //aggiunta di array vuoto in json posti
+  QFile filePosti(pathJsonPosti);
+  if (!filePosti.open(QIODevice::ReadWrite)) {
+    openError(QString("File open error: Read"));
+  }
+
+  QJsonDocument docPosti;
+  QJsonArray* arrayVuoto= new QJsonArray;
+  postiObj.insert(admin->getNomeSala(), *arrayVuoto);
+  if (arrayVuoto){
+      delete arrayVuoto;
+  }
+  docPosti.setObject(postiObj);
+  filePosti.write(docPosti.toJson());
+  filePosti.close();
+
+
+}
+
+void Controller::newPostoOccupato()
+{
+    QFile file(pathJsonPosti);
+    if (!file.open(QIODevice::ReadWrite)) {
+      openError(QString("File open error: Read"));
+    }
+    QJsonDocument doc;
+    QJsonArray* array= new QJsonArray;
+    auto it= postiObj.find(bigliettoView->getNomeSala());
+    *array=it.value().toArray();
+    array->append(bigliettoView->getCurrentColumn() + (bigliettoView->getCurrentRow()*bigliettoView->getColonneMax()));
+
+    postiObj.insert(bigliettoView->getNomeSala(), *array);
+
+    doc.setObject(postiObj);
+    file.write(doc.toJson());
+    file.close();
+}
+
+void Controller::setPostiOccupati()
+{
+    QString s=bigliettoView->getNomeSala();
+    auto it= postiObj.find(s);
+    QJsonArray* array= new QJsonArray;
+    *array=it.value().toArray();
+    int row, column;
+    for(int i=0; i<array->size(); ++i){
+        row=array->at(i).toInt()/bigliettoView->getColonneMax();
+        column=(array->at(i).toInt())%bigliettoView->getColonneMax();
+        bigliettoView->setPostoOccupato(row, column);
+    }
+
 }
 
 void Controller::stpBigl() {
@@ -416,8 +466,17 @@ void Controller::stpBigl() {
 }
 
 void Controller::showSala() {
-  // QTableWidget sala(2, 3);
-  bigliettoView->getSalaView();
+
+    QString s= bigliettoView->getSelectedFilm();
+    QString f= filmObj.find(s).value().toString();
+    int rows, columns;
+    for(auto it= model->getListSale().cbegin();it!= model->getListSale().cend(); ++it){
+        if(QString::fromStdString((**it).getNomesala())==f){
+            rows=(**it).getRighe();
+            columns=(**it).getColonne(); 
+        }
+    }
+    bigliettoView->createSalaView(rows, columns, f);
 }
 
 void Controller::loadUsers(bool canUpdate) {
@@ -468,29 +527,27 @@ void Controller::loadEntrateinView(bool canUpdate) {
 
 void Controller::loadPostiOccupati(bool canUpdate) {
   QFile file;
-  QVariantList *list = readPosti(file, canUpdate);
-  if (list != nullptr) {
-    qDebug() << "cose";
+  QJsonObject *obj = readPosti(file, canUpdate);
+  if (obj != nullptr) {
+    postiObj= *obj;
   }
 }
 
-void Controller::loadSale(bool canUpdate)
-{
-    QFile file;
-    QVariantList *list = readSale(file, canUpdate);
-    if (list != nullptr) {
-
-      popolaVectorSale(*list);
-      QFileInfo info(file.fileName());
-      view->setLabelPathSale(info.fileName());
-    }
+void Controller::loadSale(bool canUpdate) {
+  QFile file;
+  QVariantList *list = readSale(file, canUpdate);
+  if (list != nullptr) {
+    popolaVectorSale(*list);
+    QFileInfo info(file.fileName());
+    view->setLabelPathSale(info.fileName());
+  }
 }
 
 void Controller::loadFilm(bool canUpdate) {
   QFile file;
   QJsonObject *obj = readFilm(file, canUpdate);
   if (obj != nullptr) {
-    filmObj=*obj;
+    filmObj = *obj;
   }
 }
 
@@ -603,7 +660,7 @@ QVariantList *Controller::readEntrata(QFile &file, bool canUpdate) {
   return nullptr;
 }
 
-QVariantList *Controller::readPosti(QFile &file, bool canUpdate) {
+QJsonObject *Controller::readPosti(QFile &file, bool canUpdate) {
   if (pathJsonPosti == "" || canUpdate) {
     pathJsonPosti = QFileDialog::getOpenFileName(
         view, tr("Carica json Posti"), "/home/student/QTheater/json",
@@ -615,18 +672,50 @@ QVariantList *Controller::readPosti(QFile &file, bool canUpdate) {
     if (!file.open(QIODevice::ReadOnly)) {
       openError(QString("File open error: Read"));
     } else {
-      qDebug() << "ciao:)";
-      // model -> clearVectorUtenti();
 
       QString json = file.readAll();
 
       QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
       if (!doc.isEmpty()) {
+        QJsonObject *jObj = new QJsonObject;
+
+        *jObj = doc.object();
+
+        return jObj;
+
+      } else {
+        openError(QString("Empty file"));
+      }
+    }
+  }
+}
+
+QVariantList *Controller::readSale(QFile &file, bool canUpdate) {
+  if (pathJsonSale == "" || canUpdate) {
+    pathJsonSale = QFileDialog::getOpenFileName(
+        view, tr("Carica json Sale"), "/home/student/QTheater/json",
+        tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+  }
+  if (pathJsonSale != "") {
+    file.setFileName(pathJsonSale);
+
+    if (!file.open(QIODevice::ReadOnly)) {
+      openError(QString("File open error: Read"));
+    } else {
+      model->cleaVectorSale();
+
+      QString json = file.readAll();
+
+      QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
+
+      if (!doc.isEmpty()) {
         QJsonObject jObj = doc.object();
 
         QVariantMap mainMap = jObj.toVariantMap();
         QVariantList *localList = new QVariantList();
-        *localList = mainMap["Posti"].toList();
+
+        *localList = mainMap["Sale"].toList();
+        view->changeTitleChooseSala("Cambia file json per sale");
 
         return localList;
       } else {
@@ -636,45 +725,6 @@ QVariantList *Controller::readPosti(QFile &file, bool canUpdate) {
   }
 
   return nullptr;
-}
-
-QVariantList *Controller::readSale(QFile &file, bool canUpdate)
-{
-    if (pathJsonSale == "" || canUpdate) {
-      pathJsonSale = QFileDialog::getOpenFileName(
-          view, tr("Carica json Sale"), "/home/student/QTheater/json",
-          tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
-    }
-    if (pathJsonSale != "") {
-      file.setFileName(pathJsonSale);
-
-      if (!file.open(QIODevice::ReadOnly)) {
-        openError(QString("File open error: Read"));
-      } else {
-        model->cleaVectorSale();
-
-        QString json = file.readAll();
-
-        QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
-
-        if (!doc.isEmpty()) {
-          QJsonObject jObj = doc.object();
-
-          QVariantMap mainMap = jObj.toVariantMap();
-          QVariantList *localList = new QVariantList();
-
-          *localList = mainMap["Sale"].toList();
-          view->changeTitleChooseSala("Cambia file json per sale");
-
-          return localList;
-        }
-        else {
-          openError(QString("Empty file"));
-        }
-      }
-    }
-
-    return nullptr;
 }
 
 QJsonObject *Controller::readFilm(QFile &file, bool canUpdate) {
@@ -690,15 +740,14 @@ QJsonObject *Controller::readFilm(QFile &file, bool canUpdate) {
     if (!file.open(QIODevice::ReadOnly)) {
       openError(QString("File open error: Read"));
     } else {
-      qDebug() << "ciao:)";
 
       QString json = file.readAll();
 
       QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
       if (!doc.isEmpty()) {
-        QJsonObject* jObj = new QJsonObject;
+        QJsonObject *jObj = new QJsonObject;
 
-        *jObj= doc.object();
+        *jObj = doc.object();
 
         return jObj;
 
@@ -731,28 +780,10 @@ void Controller::popolaVectorUtenti(const QVariantList &list) {
   }
 }
 
-void Controller::popolaVectorPosti(const QVariantList &list) {
-  /*Utente *u = nullptr;
-
-  for (int i = 0; i < list.length(); ++i) {
-    QVariantMap map = list[i].toMap();
-    string cf = map["CF"].toString().toUtf8().constData();
-    if (!model->searchCf(cf)) {
-      u = new Utente(map["CF"].toString().toUtf8().constData(),
-                     map["name"].toString().toUtf8().constData(),
-                     map["surname"].toString().toUtf8().constData(),
-                     static_cast<unsigned int>(map["age"].toInt()),
-                     map["tel.Num"].toString().toUtf8().constData());
-      model->addUtente(*u);
-    }
-  }
-  if (u) {
-    delete u;
-  }*/
-}
+void Controller::popolaVectorPosti(const QVariantList &list) {}
 
 void Controller::popolaVectorFamiglie(const QVariantList &list) {
-  Famiglia *fam;
+  Famiglia *fam = nullptr;
 
   for (int i = 0; i < list.length(); ++i) {
     QVariantMap map = list[i].toMap();
@@ -777,19 +808,16 @@ void Controller::popolaVectorFamiglie(const QVariantList &list) {
 
 void Controller::popolaVectorEntrate(const QVariantList &list) {}
 
-void Controller::popolaVectorSale(const QVariantList &list)
-{
-    Sala *s = nullptr;
-    for (int i = 0; i < list.length(); ++i) {
-      QVariantMap map = list[i].toMap();
-        s = new Sala(static_cast<unsigned int>(map["righe"].toInt()),
-                       static_cast<unsigned int>(map["colonne"].toInt()),
-                       map["nome_sala"].toString().toUtf8().constData());
-        model->addSala(*s);
-    }
-    if (s) {
-      delete s;
-    }
+void Controller::popolaVectorSale(const QVariantList &list) {
+  Sala *s = nullptr;
+  for (int i = 0; i < list.length(); ++i) {
+    QVariantMap map = list[i].toMap();
+    s = new Sala(static_cast<unsigned int>(map["righe"].toInt()),
+                 static_cast<unsigned int>(map["colonne"].toInt()),
+                 map["nome_sala"].toString().toUtf8().constData());
+    model->addSala(*s);
+  }
+  if (s) {
+    delete s;
+  }
 }
-
-

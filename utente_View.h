@@ -1,6 +1,5 @@
 #ifndef UTENTE_VIEW_H
 #define UTENTE_VIEW_H
-#include "mainwindow.h"
 #include <QDebug>
 #include <QDesktopWidget>
 #include <QDir>
@@ -11,31 +10,33 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLabel>
-#include <QLineEdit>
 #include <QPushButton>
 #include <QTextStream>
 #include <QVBoxLayout>
 #include <QWidget>
+#include "mainwindow.h"
+#include "qlineeditclickable.h"
 
 class Utente_View : public QWidget {
   Q_OBJECT
 
-private:
+ private:
   QWidget *widget;
   QGridLayout *mainlayout;
   QVBoxLayout *btnLayout;
   QVBoxLayout *lineLayout;
   QPushButton *confermaBtn;
   QPushButton *annullaBtn;
-  QLineEdit *name;
-  QLineEdit *surname;
-  QLineEdit *CF;
-  QLineEdit *age;
-  QLineEdit *numtel;
+  QLineEditClickable *name;
+  QLineEditClickable *surname;
+  QLineEditClickable *CF;
+  QLineEditClickable *age;
+  QLineEditClickable *numtel;
+  QLabel *conferma;
   QDesktopWidget *desktop;
   Controller *controller;
 
-public:
+ public:
   Utente_View(Controller *c, QWidget *parent = nullptr);
   void setStyle();
   QString getName() const;
@@ -43,6 +44,7 @@ public:
   QString getCF() const;
   QString getAge() const;
   QString getNumTel() const;
+  void setConferma(const QString &c);
 };
 
-#endif // UTENTE_VIEW_H
+#endif  // UTENTE_VIEW_H

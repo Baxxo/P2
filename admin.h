@@ -1,45 +1,49 @@
 #ifndef ADMIN_H
 #define ADMIN_H
 
-#include <QLabel>
-#include <QMainWindow>
-#include <QDesktopWidget>
 #include <QApplication>
-#include <QGridLayout>
-#include <QVBoxLayout>
-#include <QPushButton>
-#include <QWidget>
-#include <QJsonObject>
+#include <QCloseEvent>
+#include <QDebug>
+#include <QDesktopWidget>
+#include <QDir>
 #include <QFile>
-#include <QJsonDocument>
+#include <QGridLayout>
 #include <QJsonArray>
-#include <QTextStream>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QLabel>
 #include <QListView>
 #include <QListWidget>
-#include <QDebug>
-#include <QDir>
-#include <QCloseEvent>
+#include <QComboBox>
+#include <QMainWindow>
+#include <QPushButton>
+#include <QTextStream>
+#include <QVBoxLayout>
+#include <QWidget>
 
 #include "mainwindow.h"
+#include "qlineeditclickable.h"
 
+// using std::cout;
+// using std::endl;
 
-//using std::cout;
-//using std::endl;
-
-class Admin : public QMainWindow
-{
+class Admin : public QMainWindow {
   Q_OBJECT
 public:
-  Admin(Controller* c, MainWindow *parent = nullptr);
+  Admin(Controller *c, MainWindow *parent = nullptr);
   ~Admin() = default;
 
   void setAbbonamenti();
   void addUtente(QString s);
   void addFamiglia(QString s);
+  void addFilminList(QString s);
+  void addSale(QString s);
   void setFamiglie();
 
   void clearListUtenti();
   void clearListFamiglie();
+  void clearListFilm();
+  void clearListSale();
   void clearListEntrate();
 
   void setIsAdmin(bool b);
@@ -49,6 +53,7 @@ public:
   QString getRigheSala();
   QString getNomeSala();
   QString getSalaFilm();
+  QString getRegola();
 
 private slots:
   void getClickAbb();
@@ -59,45 +64,46 @@ private slots:
   void addSalaLayout();
 
 private:
-  QDesktopWidget* desktop;
-  QGridLayout* baseLayout;
-  QVBoxLayout* mainLayout;
+  QDesktopWidget *desktop;
+  QGridLayout *baseLayout;
+  QVBoxLayout *mainLayout;
 
-  MainWindow* p;
+  MainWindow *p;
 
-  QLabel* admin;
+  QLabel *admin;
 
-  QListWidget* listAbb;
-  QListWidget* listUt;
-  QListWidget* listFam;
-  QListWidget* listFilm;
-  QListWidget* listSala;
+  QListWidget *listAbb;
+  QListWidget *listUt;
+  QListWidget *listFam;
+  QListWidget *listFilm;
+  QListWidget *listSala;
 
-  QLabel* labelAbb;
-  QLabel* labelUt;
-  QLabel* labelFam;
-  QLabel* labelFilm;
-  QLabel* labelSala;
-  QWidget* widget;
+  QLabel *labelAbb;
+  QLabel *labelUt;
+  QLabel *labelFam;
+  QLabel *labelFilm;
+  QLabel *labelSala;
 
-  QPushButton* addFilm;
-  QPushButton* addSala;
+  QWidget *widget;
 
-  QWidget* widgetFilm;
-  QGridLayout* filmLayout;
-  QLineEdit* nomeFilm;
-  QLineEdit* salaFilm;
-  QPushButton* saveFilm;
+  QPushButton *addFilm;
+  QPushButton *addSala;
 
-  QWidget* widgetSala;
-  QGridLayout* salaLayout;
-  QLineEdit* nomeSala;
-  QLineEdit* righeSala;
-  QLineEdit* colonneSala;
-  QPushButton* saveSala;
+  QWidget *widgetFilm;
+  QGridLayout *filmLayout;
+  QLineEditClickable *nomeFilm;
+  QLineEditClickable *salaFilm;
+  QPushButton *saveFilm;
 
-  Controller* controller;
+  QWidget *widgetSala;
+  QGridLayout *salaLayout;
+  QLineEditClickable *nomeSala;
+  QLineEditClickable *righeSala;
+  QLineEditClickable *colonneSala;
+  QPushButton *saveSala;
+  QComboBox* regola;
 
+  Controller *controller;
   void closeEvent(QCloseEvent *event);
 };
 

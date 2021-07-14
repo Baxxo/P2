@@ -5,21 +5,21 @@
 using std::string;
 
 class Sala {
-
-private:
+ private:
   int righe;
   int colonne;
   string nome_sala;
-  Utente *matrix;
 
-public:
+ public:
   Sala(int r = 0, int c = 0, string n = "null");
+  Sala(const Sala &o);
   int getRighe() const;
   int getColonne() const;
   string getNomesala() const;
   virtual Sala *clone() const;
-  virtual ~Sala() = default;
 
+  bool operator==(const Sala &o) const;
+  bool operator!=(const Sala &o) const;
 };
 
 #endif

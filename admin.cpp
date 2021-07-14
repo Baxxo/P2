@@ -2,9 +2,33 @@
 #include "controller.h"
 
 Admin::Admin(Controller *c, MainWindow *parent)
-    : p(parent), controller(c){
-  baseLayout = new QGridLayout();
-  mainLayout = new QVBoxLayout();
+    : desktop(QApplication::desktop()), baseLayout(new QGridLayout()),
+      mainLayout(new QVBoxLayout()),
+
+      p(parent),
+
+      admin(new QLabel("Admin")),
+
+      listAbb(new QListWidget()), listUt(new QListWidget()),
+      listFam(new QListWidget()), listFilm(new QListWidget()),
+      listSala(new QListWidget()),
+
+      labelAbb(new QLabel("Abbonamenti")), labelUt(new QLabel("Utenti")),
+      labelFam(new QLabel("Famiglie")), labelFilm(new QLabel("Film")),
+      labelSala(new QLabel("Sala")),
+
+      widget(new QWidget()),
+
+      addFilm(new QPushButton("add Film")),
+      addSala(new QPushButton("add Sala")),
+
+      widgetFilm(nullptr), filmLayout(nullptr), nomeFilm(nullptr),
+      salaFilm(nullptr), saveFilm(nullptr), regola(new QComboBox()),
+
+      widgetSala(nullptr), salaLayout(nullptr), nomeSala(nullptr),
+      righeSala(nullptr), colonneSala(nullptr), saveSala(nullptr),
+
+      controller(c){
 
   setWindowTitle(QString("Admin"));
 
@@ -12,49 +36,36 @@ Admin::Admin(Controller *c, MainWindow *parent)
   font.setPointSize(50);
   font.setBold(true);
 
-  admin = new QLabel("Admin");
   admin->setFont(font);
   admin->setProperty("class", "title");
 
   mainLayout->addWidget(admin, 0, Qt::AlignCenter);
   mainLayout->addLayout(baseLayout);
 
-  widget = new QWidget();
   widget->setLayout(mainLayout);
 
-  desktop = QApplication::desktop();
   font.setPointSize(15);
 
-  labelAbb = new QLabel("Abbonamenti");
+  regola->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+  regola->setFont(font);
+  regola->addItem("bianca");
+  regola->addItem("gialla");
+  regola->addItem("arancione");
+  regola->addItem("rossa");
+
   labelAbb->setFont(font);
   labelAbb->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  listAbb = new QListWidget();
+
   listAbb->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-  labelFilm = new QLabel("Film");
-  labelFilm->setFont(font);
-  labelFilm->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  listFilm = new QListWidget();
-  listFilm->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  addFilm= new QPushButton("add Film");
-
-  labelSala = new QLabel("Sala");
-  labelSala->setFont(font);
-  labelSala->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  listSala = new QListWidget();
-  listSala->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  addSala= new QPushButton("add Sala");
-
-  labelFam = new QLabel("Famiglie");
   labelFam->setFont(font);
   labelFam->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  listFam = new QListWidget();
+
   listFam->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-  labelUt = new QLabel("Utenti");
   labelUt->setFont(font);
   labelUt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  listUt = new QListWidget();
+
   listUt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
   connect(listAbb, SIGNAL(itemClicked(QListWidgetItem *)), this,
@@ -66,30 +77,28 @@ Admin::Admin(Controller *c, MainWindow *parent)
   connect(addFilm, SIGNAL(clicked()), this, SLOT(addFilmLayout()));
   connect(addSala, SIGNAL(clicked()), this, SLOT(addSalaLayout()));
 
-
   baseLayout->addWidget(labelAbb, 0, 0, Qt::AlignCenter);
-  baseLayout->addWidget(labelUt, 0, 1, Qt::AlignCenter);
-  baseLayout->addWidget(labelFam, 0, 2, Qt::AlignCenter);
-  baseLayout->addWidget(labelFilm, 0, 3, Qt::AlignCenter);
-  baseLayout->addWidget(labelSala, 0, 4, Qt::AlignCenter);
-
-
   baseLayout->addWidget(listAbb, 1, 0);
+
+  baseLayout->addWidget(labelUt, 0, 1, Qt::AlignCenter);
   baseLayout->addWidget(listUt, 1, 1);
+
+  baseLayout->addWidget(labelFam, 0, 2, Qt::AlignCenter);
   baseLayout->addWidget(listFam, 1, 2);
-  baseLayout->addWidget(listFilm, 1, 3);
-  baseLayout->addWidget(listSala, 1, 4);
 
+  baseLayout->addWidget(labelFilm, 2, 0, Qt::AlignCenter);
+  baseLayout->addWidget(listFilm, 3, 0);
+  baseLayout->addWidget(addFilm, 4, 0);
 
-  baseLayout->addWidget(addFilm, 2, 3);
-  baseLayout->addWidget(addSala, 2, 4);
+  baseLayout->addWidget(labelSala, 2, 1, Qt::AlignCenter);
+  baseLayout->addWidget(listSala, 3, 1);
+  baseLayout->addWidget(addSala, 4, 1);
 
+  baseLayout->addWidget(regola, 2, 2, Qt::AlignCenter);
 
   resize(1000, 400);
 
   setCentralWidget(widget);
-
-
 }
 
 void Admin::addUtente(QString s) {
@@ -102,66 +111,87 @@ void Admin::addFamiglia(QString s) {
   listFam->addItem(item);
 }
 
+void Admin::addFilminList(QString s)
+{
+    QListWidgetItem *item = new QListWidgetItem(s);
+    listFilm->addItem(item);
+}
+
+void Admin::addSale(QString s)
+{
+    QListWidgetItem *item = new QListWidgetItem(s);
+    listSala->addItem(item);
+}
+
 void Admin::clearListUtenti() { listUt->clear(); }
 
 void Admin::clearListFamiglie() { listFam->clear(); }
 
-QString Admin::getNomeFilm(){ return nomeFilm->text(); }
+void Admin::clearListFilm(){ listFilm->clear(); }
 
-QString Admin::getColonneSala(){ return colonneSala->text(); }
+void Admin::clearListSale(){ listSala->clear(); }
 
-QString Admin::getRigheSala(){ return righeSala->text(); }
+QString Admin::getNomeFilm() { return nomeFilm->text(); }
 
-QString Admin::getNomeSala(){ return nomeSala->text(); }
+QString Admin::getSalaFilm() { return salaFilm->text(); }
 
-QString Admin::getSalaFilm(){ return salaFilm->text(); }
+QString Admin::getRegola(){ return regola->currentText(); }
 
-void Admin::getClickAbb(){ qDebug() << "Abbonamento " << listAbb->currentItem()->text(); }
+QString Admin::getColonneSala() { return colonneSala->text(); }
 
-void Admin::getClickFam(){ qDebug() << "Famiglia " << listFam->currentItem()->text(); }
+QString Admin::getRigheSala() { return righeSala->text(); }
 
-void Admin::getClickFilm(){ qDebug() << "film " << listFilm->currentItem()->text(); }
-
-void Admin::addFilmLayout()
-{
-    widgetFilm= new QWidget();
-    filmLayout= new QGridLayout;
-    nomeFilm= new QLineEdit;
-    salaFilm= new QLineEdit;
-    saveFilm= new QPushButton("Salva");
-
-    filmLayout->addWidget(nomeFilm, 0, 0);
-    filmLayout->addWidget(salaFilm, 1, 0);
-    filmLayout->addWidget(saveFilm, 2, 0);
-
-    widgetFilm->setLayout(filmLayout);
-    widgetFilm->show();
-
-    connect(saveFilm, SIGNAL(clicked()), controller, SLOT(newFilm()));
+void Admin::getClickFam() {
+  qDebug() << "Famiglia " << listFam->currentItem()->text();
 }
 
-void Admin::addSalaLayout()
-{
-    widgetSala= new QWidget();
-    salaLayout= new QGridLayout;
-    nomeSala= new QLineEdit;
-    righeSala= new QLineEdit;
-    colonneSala= new QLineEdit;
-    saveSala= new QPushButton("Salva");
+void Admin::getClickFilm() {
+  qDebug() << "film " << listFilm->currentItem()->text();
+}
+void Admin::addFilmLayout() {
+  widgetFilm = new QWidget();
+  filmLayout = new QGridLayout;
+  nomeFilm = new QLineEditClickable;
+  salaFilm = new QLineEditClickable;
+  saveFilm = new QPushButton("Salva");
 
-    salaLayout->addWidget(nomeSala, 0, 0);
-    salaLayout->addWidget(righeSala, 1, 0);
-    salaLayout->addWidget(colonneSala, 2, 0);
-    salaLayout->addWidget(saveSala, 3, 0);
+  filmLayout->addWidget(nomeFilm, 0, 0);
+  filmLayout->addWidget(salaFilm, 1, 0);
+  filmLayout->addWidget(saveFilm, 2, 0);
 
-    nomeSala->setText("nome Sala");
-    righeSala->setText("numero righe");
-    colonneSala->setText("numero colonne");
+  widgetFilm->setLayout(filmLayout);
+  widgetFilm->show();
 
-    widgetSala->setLayout(salaLayout);
-    widgetSala->show();
+  connect(saveFilm, SIGNAL(clicked()), controller, SLOT(newFilm()));
+}
 
-    connect(saveSala, SIGNAL(clicked()), controller, SLOT(newSala()));
+QString Admin::getNomeSala() { return nomeSala->text(); }
+
+void Admin::getClickAbb() {
+  qDebug() << "Abbonamento " << listAbb->currentItem()->text();
+}
+
+void Admin::addSalaLayout() {
+  widgetSala = new QWidget();
+  salaLayout = new QGridLayout;
+  nomeSala = new QLineEditClickable;
+  righeSala = new QLineEditClickable;
+  colonneSala = new QLineEditClickable;
+  saveSala = new QPushButton("Salva");
+
+  salaLayout->addWidget(nomeSala, 0, 0);
+  salaLayout->addWidget(righeSala, 1, 0);
+  salaLayout->addWidget(colonneSala, 2, 0);
+  salaLayout->addWidget(saveSala, 3, 0);
+
+  nomeSala->setText("nome Sala");
+  righeSala->setText("numero righe");
+  colonneSala->setText("numero colonne");
+
+  widgetSala->setLayout(salaLayout);
+  widgetSala->show();
+
+  connect(saveSala, SIGNAL(clicked()), controller, SLOT(newSala()));
 }
 
 void Admin::closeEvent(QCloseEvent *event) {

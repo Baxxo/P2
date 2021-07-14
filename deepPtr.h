@@ -1,11 +1,14 @@
 #ifndef DEEPPTR_H
 #define DEEPPTR_H
 
-template <class T> class DeepPtr {
-private:
+#include <QDebug>
+
+template <class T>
+class DeepPtr {
+ private:
   T *ptr;
 
-public:
+ public:
   DeepPtr(T *p = nullptr);
   DeepPtr(const T &o);
   DeepPtr(const DeepPtr<T> &o);
@@ -23,50 +26,65 @@ public:
   DeepPtr<T> &operator--();
 };
 
-template <class T> DeepPtr<T>::DeepPtr(T *p) : ptr(p) {}
+template <class T>
+DeepPtr<T>::DeepPtr(T *p) : ptr(p) {}
 
-template <class T> DeepPtr<T>::DeepPtr(const T &o) : ptr(new T(o)) {}
+template <class T>
+DeepPtr<T>::DeepPtr(const T &o) : ptr(new T(o)) {}
 template <class T>
 DeepPtr<T>::DeepPtr(const DeepPtr<T> &o)
     : ptr(o.ptr ? o.ptr->clone() : nullptr) {}
 
-template <class T> DeepPtr<T>::~DeepPtr() {
-  if (ptr)
-    delete ptr;
+template <class T>
+DeepPtr<T>::~DeepPtr() {
+  if (ptr) delete ptr;
 }
 
-template <class T> DeepPtr<T> &DeepPtr<T>::operator=(const DeepPtr<T> &o) {
+template <class T>
+DeepPtr<T> &DeepPtr<T>::operator=(const DeepPtr<T> &o) {
   if (this != &o) {
-    if (ptr)
-      delete ptr;
+    if (ptr) delete ptr;
     ptr = o.ptr ? o.ptr->clone() : nullptr;
   }
 
   return *this;
 }
 
-template <class T> bool DeepPtr<T>::operator==(const DeepPtr &o) const {
-  return ptr == o.ptr;
+template <class T>
+bool DeepPtr<T>::operator==(const DeepPtr &o) const {
+  qDebug() << "deepPtr !=";
+  return *ptr == *(o.ptr);
 }
 
-template <class T> bool DeepPtr<T>::operator!=(const DeepPtr &o) const {
-  return ptr != o.ptr;
+template <class T>
+bool DeepPtr<T>::operator!=(const DeepPtr &o) const {
+  qDebug() << "deepPtr !=";
+  qDebug() << QString::fromStdString("o: " + o.ptr->getCodFisc());
+  qDebug() << QString::fromStdString(ptr->getCodFisc());
+  qDebug() << "---esco---";
+  return *ptr != *(o.ptr);
 }
 
-template <class T> T &DeepPtr<T>::operator*() const { return *ptr; }
+template <class T>
+T &DeepPtr<T>::operator*() const {
+  return *ptr;
+}
 
-template <class T> T *DeepPtr<T>::operator->() const { return ptr; }
+template <class T>
+T *DeepPtr<T>::operator->() const {
+  return ptr;
+}
 
-template <class T> DeepPtr<T> &DeepPtr<T>::operator++() {
-  if (ptr + 1 != nullptr)
-    ++ptr;
+template <class T>
+DeepPtr<T> &DeepPtr<T>::operator++() {
+  if (ptr + 1 != nullptr) ++ptr;
   return *this;
 }
 
-template <class T> DeepPtr<T> &DeepPtr<T>::operator--() {
-  if (ptr - 1 != nullptr)
-    --ptr;
+template <class T>
+DeepPtr<T> &DeepPtr<T>::operator--() {
+  if (ptr - 1 != nullptr) --ptr;
   return *this;
 }
 
-#endif // DEEPPTR_H
+#endif  // DEEPPTR_H

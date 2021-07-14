@@ -1,12 +1,17 @@
 #include "utente.h"
 
+#include <QDebug>
+
 Utente::Utente(std::string cf, std::string n, std::string s, unsigned int a,
                std::string num)
     : name(n), surname(s), age(a), codiceFiscale(cf), phoneNumber(num) {}
 
 Utente::Utente(const Utente &o)
-    : name(o.name), surname(o.surname), age(o.age),
-      codiceFiscale(o.codiceFiscale), phoneNumber(o.phoneNumber) {}
+    : name(o.name),
+      surname(o.surname),
+      age(o.age),
+      codiceFiscale(o.codiceFiscale),
+      phoneNumber(o.phoneNumber) {}
 
 std::string Utente::getName() const { return name; }
 
@@ -30,10 +35,16 @@ Utente &Utente::operator=(const Utente &o) {
 }
 
 bool Utente::operator==(const Utente &o) const {
+  qDebug() << "Utente ==";
+  qDebug() << QString::fromStdString(o.codiceFiscale);
+  qDebug() << QString::fromStdString(codiceFiscale);
   return o.codiceFiscale == codiceFiscale;
 }
 
 bool Utente::operator!=(const Utente &o) const {
+  qDebug() << "Utente !=";
+  qDebug() << QString::fromStdString(o.codiceFiscale);
+  qDebug() << QString::fromStdString(codiceFiscale);
   return o.codiceFiscale != codiceFiscale;
 }
 

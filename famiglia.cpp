@@ -4,7 +4,9 @@ Famiglia::Famiglia(std::string _name, unsigned int c)
     : membri(new Utente *[c]), capacity(c), size(0), name(_name) {}
 
 Famiglia::Famiglia(const Famiglia &o)
-    : membri(new Utente *[o.capacity]), capacity(o.capacity), size(o.size),
+    : membri(new Utente *[o.capacity]),
+      capacity(o.capacity),
+      size(o.size),
       name(o.name) {
   for (unsigned int i = 0; i < o.size; i++) {
     membri[i] = o.membri[i];
@@ -95,6 +97,8 @@ bool Famiglia::operator==(const Famiglia &f) const { return f.name == name; }
 
 bool Famiglia::operator!=(const Famiglia &f) const { return f.name != name; }
 
+bool Famiglia::isEmpty() const { return size == 0; }
+
 Famiglia &Famiglia::operator=(const Famiglia &o) {
   if (this != &o) {
     capacity = o.capacity;
@@ -113,3 +117,5 @@ void Famiglia::setName(const std::string &value) { name = value; }
 std::string Famiglia::toString() const {
   return "nome: " + name + " size:" + std::to_string(size);
 }
+
+std::string Famiglia::getCodFisc() { return ""; }
