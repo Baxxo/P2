@@ -42,6 +42,8 @@ Admin::Admin(Controller *c, MainWindow *parent)
       colonneSala(nullptr),
       saveSala(nullptr),
 
+      regola(new QComboBox()),
+
       controller(c) {
   setWindowTitle(QString("Admin"));
 
@@ -58,6 +60,13 @@ Admin::Admin(Controller *c, MainWindow *parent)
   widget->setLayout(mainLayout);
 
   font.setPointSize(15);
+
+  regola->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+  regola->setFont(font);
+  regola->addItem("bianca");
+  regola->addItem("gialla");
+  regola->addItem("arancione");
+  regola->addItem("rossa");
 
   labelAbb->setFont(font);
   labelAbb->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -102,6 +111,8 @@ Admin::Admin(Controller *c, MainWindow *parent)
   baseLayout->addWidget(listSala, 4, 1);
   baseLayout->addWidget(addSala, 5, 1);
 
+  baseLayout->addWidget(regola, 2, 2, Qt::AlignCenter);
+
   resize(1000, 400);
 
   setCentralWidget(widget);
@@ -141,6 +152,8 @@ QString Admin::getNomeFilm() { return nomeFilm->text(); }
 
 QString Admin::getSalaFilm() { return salaFilm->text(); }
 
+QString Admin::getRegola() { return regola->currentText(); }
+
 QString Admin::getColonneSala() { return colonneSala->text(); }
 
 QString Admin::getRigheSala() { return righeSala->text(); }
@@ -152,6 +165,7 @@ void Admin::getClickFam() {
 void Admin::getClickFilm() {
   qDebug() << "film " << listFilm->currentItem()->text();
 }
+
 void Admin::addEntrata(const QString &s, const QString &cod) {
   QLabelCF *lbl = new QLabelCF(new QLabel(s), cod);
   QListWidgetItem *item = new QListWidgetItem();

@@ -953,6 +953,7 @@ QJsonObject *Controller::readFilm(QFile &file, bool canUpdate) {
         QJsonObject *jObj = new QJsonObject;
 
         *jObj = doc.object();
+        view->changeTitleChooseSala("Cambia file json per sale");
 
         return jObj;
 

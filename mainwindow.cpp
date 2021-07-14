@@ -135,6 +135,13 @@ void MainWindow::changeTitleChooseEntrata(const QString &s) {
   }
 }
 
+void MainWindow::changeTitleChooseFilm(const QString &s) {
+  prevChooseFilm = s;
+  if (chooseFilm) {
+    chooseFilm->setText(s);
+  }
+}
+
 void MainWindow::changeMenuSlot() { changeMenu(); }
 
 void MainWindow::resizeMe() { adjustSize(); }
