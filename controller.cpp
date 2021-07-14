@@ -744,6 +744,9 @@ void Controller::loadPostiOccupati(bool canUpdate) {
   QJsonObject *obj = readPosti(file, canUpdate);
   if (obj != nullptr) {
     postiObj = *obj;
+
+    QFileInfo info(file.fileName());
+    view->setLabelPathPosti(info.fileName());
   }
 }
 
@@ -762,6 +765,9 @@ void Controller::loadFilm(bool canUpdate) {
   QJsonObject *obj = readFilm(file, canUpdate);
   if (obj) {
     filmObj = *obj;
+
+    QFileInfo info(file.fileName());
+    view->setLabelPathFilm(info.fileName());
   }
 }
 
@@ -927,7 +933,6 @@ QVariantList *Controller::readSale(QFile &file, bool canUpdate) {
         QVariantList *localList = new QVariantList();
 
         *localList = mainMap["Sale"].toList();
-        view->changeTitleChooseSala("Cambia file json per sale");
 
         return localList;
       } else {

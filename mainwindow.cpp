@@ -62,8 +62,9 @@ MainWindow::MainWindow(QWidget *parent)
   buttonLayout->addWidget(pathUser, 0, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathFamilies, 1, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathEntrata, 2, 1, Qt::AlignCenter);
-  buttonLayout->addWidget(pathSala, 3, 1, Qt::AlignCenter);
-  buttonLayout->addWidget(pathPosti, 4, 1, Qt::AlignCenter);
+  buttonLayout->addWidget(pathPosti, 3, 1, Qt::AlignCenter);
+  buttonLayout->addWidget(pathSala, 4, 1, Qt::AlignCenter);
+  buttonLayout->addWidget(pathFilm, 5, 1, Qt::AlignCenter);
 
   widget->setLayout(mainLayout);
 
@@ -229,7 +230,7 @@ void MainWindow::createLayoutSetup() {
   if (controller->getPathJsonFamiglie() != "")
     buttonLayout->addWidget(chooseEntrata, 2, 0, Qt::AlignCenter);
 
-  if (choosePosti == nullptr) {
+  if (!choosePosti) {
     choosePosti = new QPushButton("Scegli file json per posti occupati");
     choosePosti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
