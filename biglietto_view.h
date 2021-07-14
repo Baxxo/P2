@@ -2,58 +2,80 @@
 #define BIGLIETTO_VIEW_H
 
 #include <QComboBox>
-#include <QDebug>
 #include <QListWidget>
 #include <QTableWidget>
 #include <QWidget>
 
+#include <QDebug>
+
+#include <qlineeditclickable.h>
 #include "mainwindow.h"
 
 class Biglietto_View : public QWidget {
   Q_OBJECT
-private:
+ private:
   Controller *controller;
   int prezzo;
   QString film;
-  QComboBox *tipologia;
-  QVBoxLayout *layoutTipologia;
-  QWidget *mainWidget;
-  QWidget *widgetSing;
-  QWidget *salaWidget;
-  QVBoxLayout *compraLayout;
+
   QGridLayout *mainLayout;
-  QPushButton *compraBiglietto;
-  QListWidget *listaFilm;
+
+  QLabel *labelTipo;
+  QComboBox *tipologia;
   QPushButton *tipologiaBtn;
-  QVBoxLayout *utenteBigl;
-  QLineEdit *search;
+  QVBoxLayout *layoutTipologia;
+
+  QLabel *searchUtility;
+  QLineEditClickable *search;
   QPushButton *searchBtn;
+  QVBoxLayout *utenteBigl;
+  QWidget *widgetSearchCf;
+
+  QLabel *labelListaFilm;
+  QListWidget *listaFilm;
+  QVBoxLayout *compraLayout;
+
+  QPushButton *selectSeat;
   QVBoxLayout *salaLayout;
+  QWidget *salaWidget;
+
   QTableWidget *posti;
-  QLabel* nomeSala;
-  QLabel* colonneMax;
-  
+  QLabel *nomeSala;
+  QLabel *colonneMax;
+
+  QPushButton *compraBiglietto;
+
   unsigned int *postiOccupati;
 
-public:
+  QWidget *mainWidget;
+  QWidget *widgetSing;
+
+ private slots:
+  void showSearch();
+  void showSalaView();
+
+ public:
   explicit Biglietto_View(Controller *c, QWidget *parent = nullptr);
   void setStyle();
   QString getSearch();
   QString getTipologia();
   void getSalaView();
-  void addFilminList(QString s);
+  void addFilminList(const QString &s);
   int getCurrentColumn();
   int getCurrentRow();
   QString getNomeSala();
   QString getSelectedFilm();
   int getColonneMax();
   void setPostoOccupato(int r, int c);
-  void createSalaView(int r, int c, QString f);
+  void createSalaView(int r, int c, const QString &f);
 
-private slots:
-  void showSearch();
+  void clearListFilm();
+
+ public slots:
+  void resizeSala();
   void resizeMe();
 
+  void setUtilitySearchText(const QString &s);
 };
 
-#endif // BIGLIETTO_VIEW_H
+#endif  // BIGLIETTO_VIEW_H

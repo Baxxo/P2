@@ -2,34 +2,49 @@
 #include "controller.h"
 
 Admin::Admin(Controller *c, MainWindow *parent)
-    : desktop(QApplication::desktop()), baseLayout(new QGridLayout()),
+    : desktop(QApplication::desktop()),
+      baseLayout(new QGridLayout()),
       mainLayout(new QVBoxLayout()),
 
       p(parent),
 
       admin(new QLabel("Admin")),
 
-      listAbb(new QListWidget()), listUt(new QListWidget()),
-      listFam(new QListWidget()), listFilm(new QListWidget()),
+      listAbb(new QListWidget()),
+      listUt(new QListWidget()),
+      listFam(new QListWidget()),
+      listFilm(new QListWidget()),
       listSala(new QListWidget()),
 
-      labelAbb(new QLabel("Abbonamenti")), labelUt(new QLabel("Utenti")),
-      labelFam(new QLabel("Famiglie")), labelFilm(new QLabel("Film")),
+      labelAbb(new QLabel("Abbonamenti")),
+      labelUt(new QLabel("Utenti")),
+      labelFam(new QLabel("Famiglie")),
+      labelFilm(new QLabel("Film")),
       labelSala(new QLabel("Sala")),
+
+      utility(new QLabel("Premi due volte per eliminare un abbonamento")),
 
       widget(new QWidget()),
 
       addFilm(new QPushButton("add Film")),
       addSala(new QPushButton("add Sala")),
 
-      widgetFilm(nullptr), filmLayout(nullptr), nomeFilm(nullptr),
-      salaFilm(nullptr), saveFilm(nullptr), regola(new QComboBox()),
+      widgetFilm(nullptr),
+      filmLayout(nullptr),
+      nomeFilm(nullptr),
+      salaFilm(nullptr),
+      saveFilm(nullptr),
 
-      widgetSala(nullptr), salaLayout(nullptr), nomeSala(nullptr),
-      righeSala(nullptr), colonneSala(nullptr), saveSala(nullptr),
+      widgetSala(nullptr),
+      salaLayout(nullptr),
+      nomeSala(nullptr),
+      righeSala(nullptr),
+      colonneSala(nullptr),
+      saveSala(nullptr),
 
-      controller(c){
+      regola(new QComboBox()),
 
+      controller(c) {
   setWindowTitle(QString("Admin"));
 
   QFont font;
@@ -68,7 +83,7 @@ Admin::Admin(Controller *c, MainWindow *parent)
 
   listUt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-  connect(listAbb, SIGNAL(itemClicked(QListWidgetItem *)), this,
+  connect(listAbb, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this,
           SLOT(getClickAbb()));
   connect(listFam, SIGNAL(itemClicked(QListWidgetItem *)), this,
           SLOT(getClickFam()));
@@ -80,19 +95,21 @@ Admin::Admin(Controller *c, MainWindow *parent)
   baseLayout->addWidget(labelAbb, 0, 0, Qt::AlignCenter);
   baseLayout->addWidget(listAbb, 1, 0);
 
+  baseLayout->addWidget(utility, 2, 0);
+
   baseLayout->addWidget(labelUt, 0, 1, Qt::AlignCenter);
   baseLayout->addWidget(listUt, 1, 1);
 
   baseLayout->addWidget(labelFam, 0, 2, Qt::AlignCenter);
   baseLayout->addWidget(listFam, 1, 2);
 
-  baseLayout->addWidget(labelFilm, 2, 0, Qt::AlignCenter);
-  baseLayout->addWidget(listFilm, 3, 0);
-  baseLayout->addWidget(addFilm, 4, 0);
+  baseLayout->addWidget(labelFilm, 3, 0, Qt::AlignCenter);
+  baseLayout->addWidget(listFilm, 4, 0);
+  baseLayout->addWidget(addFilm, 5, 0);
 
-  baseLayout->addWidget(labelSala, 2, 1, Qt::AlignCenter);
-  baseLayout->addWidget(listSala, 3, 1);
-  baseLayout->addWidget(addSala, 4, 1);
+  baseLayout->addWidget(labelSala, 3, 1, Qt::AlignCenter);
+  baseLayout->addWidget(listSala, 4, 1);
+  baseLayout->addWidget(addSala, 5, 1);
 
   baseLayout->addWidget(regola, 2, 2, Qt::AlignCenter);
 
@@ -101,41 +118,41 @@ Admin::Admin(Controller *c, MainWindow *parent)
   setCentralWidget(widget);
 }
 
-void Admin::addUtente(QString s) {
+void Admin::addUtenteinList(const QString &s) {
   QListWidgetItem *item = new QListWidgetItem(s);
   listUt->addItem(item);
 }
 
-void Admin::addFamiglia(QString s) {
+void Admin::addFamigliainList(const QString &s) {
   QListWidgetItem *item = new QListWidgetItem(s);
   listFam->addItem(item);
 }
 
-void Admin::addFilminList(QString s)
-{
-    QListWidgetItem *item = new QListWidgetItem(s);
-    listFilm->addItem(item);
+void Admin::addFilminList(const QString &s) {
+  QListWidgetItem *item = new QListWidgetItem(s);
+  listFilm->addItem(item);
 }
 
-void Admin::addSale(QString s)
-{
-    QListWidgetItem *item = new QListWidgetItem(s);
-    listSala->addItem(item);
+void Admin::addSaleinList(const QString &s) {
+  QListWidgetItem *item = new QListWidgetItem(s);
+  listSala->addItem(item);
 }
 
 void Admin::clearListUtenti() { listUt->clear(); }
 
 void Admin::clearListFamiglie() { listFam->clear(); }
 
-void Admin::clearListFilm(){ listFilm->clear(); }
+void Admin::clearListFilm() { listFilm->clear(); }
 
-void Admin::clearListSale(){ listSala->clear(); }
+void Admin::clearListSale() { listSala->clear(); }
+
+void Admin::clearListEntrate() { listAbb->clear(); }
 
 QString Admin::getNomeFilm() { return nomeFilm->text(); }
 
 QString Admin::getSalaFilm() { return salaFilm->text(); }
 
-QString Admin::getRegola(){ return regola->currentText(); }
+QString Admin::getRegola() { return regola->currentText(); }
 
 QString Admin::getColonneSala() { return colonneSala->text(); }
 
@@ -148,6 +165,15 @@ void Admin::getClickFam() {
 void Admin::getClickFilm() {
   qDebug() << "film " << listFilm->currentItem()->text();
 }
+
+void Admin::addEntrata(const QString &s, const QString &cod) {
+  QLabelCF *lbl = new QLabelCF(new QLabel(s), cod);
+  QListWidgetItem *item = new QListWidgetItem();
+  listAbb->addItem(item);
+  item->setSelected(false);
+  listAbb->setItemWidget(item, lbl);
+}
+
 void Admin::addFilmLayout() {
   widgetFilm = new QWidget();
   filmLayout = new QGridLayout;
@@ -166,10 +192,6 @@ void Admin::addFilmLayout() {
 }
 
 QString Admin::getNomeSala() { return nomeSala->text(); }
-
-void Admin::getClickAbb() {
-  qDebug() << "Abbonamento " << listAbb->currentItem()->text();
-}
 
 void Admin::addSalaLayout() {
   widgetSala = new QWidget();
@@ -194,11 +216,24 @@ void Admin::addSalaLayout() {
   connect(saveSala, SIGNAL(clicked()), controller, SLOT(newSala()));
 }
 
+void Admin::getClickUt() {
+  qDebug() << "Utente " << listUt->currentItem()->text();
+}
+
+void Admin::getClickAbb() {
+  QLabelCF *lbl =
+      dynamic_cast<QLabelCF *>(listAbb->itemWidget(listAbb->currentItem()));
+  QString prev = lbl->text();
+  if (controller->removeAbbonamento(lbl->getCf())) {
+    controller->loadEntrateInAdmin();
+    utility->setText(utility->text() + "\n" + prev + " rimosso con Successo");
+  } else {
+    utility->setText(utility->text() +
+                     "\nErrore nella rimozione dell' abbonamento " + prev);
+  }
+}
+
 void Admin::closeEvent(QCloseEvent *event) {
   p->changeTitleAdmin("Admin");
   event->accept();
-}
-
-void Admin::getClickUt() {
-  qDebug() << "Utente " << listUt->currentItem()->text();
 }

@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include <QCloseEvent>
+#include <QComboBox>
 #include <QDebug>
 #include <QDesktopWidget>
 #include <QDir>
@@ -14,7 +15,6 @@
 #include <QLabel>
 #include <QListView>
 #include <QListWidget>
-#include <QComboBox>
 #include <QMainWindow>
 #include <QPushButton>
 #include <QTextStream>
@@ -22,6 +22,7 @@
 #include <QWidget>
 
 #include "mainwindow.h"
+#include "qlabelcf.h"
 #include "qlineeditclickable.h"
 
 // using std::cout;
@@ -29,41 +30,8 @@
 
 class Admin : public QMainWindow {
   Q_OBJECT
-public:
-  Admin(Controller *c, MainWindow *parent = nullptr);
-  ~Admin() = default;
 
-  void setAbbonamenti();
-  void addUtente(QString s);
-  void addFamiglia(QString s);
-  void addFilminList(QString s);
-  void addSale(QString s);
-  void setFamiglie();
-
-  void clearListUtenti();
-  void clearListFamiglie();
-  void clearListFilm();
-  void clearListSale();
-  void clearListEntrate();
-
-  void setIsAdmin(bool b);
-
-  QString getNomeFilm();
-  QString getColonneSala();
-  QString getRigheSala();
-  QString getNomeSala();
-  QString getSalaFilm();
-  QString getRegola();
-
-private slots:
-  void getClickAbb();
-  void getClickUt();
-  void getClickFam();
-  void getClickFilm();
-  void addFilmLayout();
-  void addSalaLayout();
-
-private:
+ private:
   QDesktopWidget *desktop;
   QGridLayout *baseLayout;
   QVBoxLayout *mainLayout;
@@ -84,6 +52,8 @@ private:
   QLabel *labelFilm;
   QLabel *labelSala;
 
+  QLabel *utility;
+
   QWidget *widget;
 
   QPushButton *addFilm;
@@ -101,10 +71,47 @@ private:
   QLineEditClickable *righeSala;
   QLineEditClickable *colonneSala;
   QPushButton *saveSala;
-  QComboBox* regola;
+  QComboBox *regola;
 
   Controller *controller;
+
   void closeEvent(QCloseEvent *event);
+
+ private slots:
+  void getClickAbb();
+  void getClickUt();
+  void getClickFam();
+  void getClickFilm();
+  void addFilmLayout();
+  void addSalaLayout();
+
+ public:
+  Admin(Controller *c, MainWindow *parent = nullptr);
+  ~Admin() = default;
+
+  void setAbbonamenti();
+  void addUtenteinList(const QString &s);
+  void addFamigliainList(const QString &s);
+  void addEntrata(const QString &s, const QString &cod);
+  void setFamiglie();
+  void addFilminList(const QString &s);
+  void addSaleinList(const QString &s);
+
+  void clearListEntrate();
+  void clearListUtenti();
+  void clearListFamiglie();
+
+  void clearListFilm();
+  void clearListSale();
+
+  void setIsAdmin(bool b);
+
+  QString getNomeFilm();
+  QString getColonneSala();
+  QString getRigheSala();
+  QString getNomeSala();
+  QString getSalaFilm();
+  QString getRegola();
 };
 
-#endif // ADMIN_H
+#endif  // ADMIN_H

@@ -1,9 +1,6 @@
 #include "utente.h"
 
-#include <QDebug>
-
-Utente::Utente(std::string cf, std::string n, std::string s, unsigned int a,
-               std::string num)
+Utente::Utente(string cf, string n, string s, unsigned int a, string num)
     : name(n), surname(s), age(a), codiceFiscale(cf), phoneNumber(num) {}
 
 Utente::Utente(const Utente &o)
@@ -13,15 +10,15 @@ Utente::Utente(const Utente &o)
       codiceFiscale(o.codiceFiscale),
       phoneNumber(o.phoneNumber) {}
 
-std::string Utente::getName() const { return name; }
+string Utente::getName() const { return name; }
 
 string Utente::getSurname() const { return surname; }
 
 unsigned int Utente::getAge() const { return age; }
 
-std::string Utente::getCodFisc() const { return codiceFiscale; }
+string Utente::getCodFisc() const { return codiceFiscale; }
 
-std::string Utente::getPhoneNumber() const { return phoneNumber; }
+string Utente::getPhoneNumber() const { return phoneNumber; }
 
 Utente &Utente::operator=(const Utente &o) {
   if (this != &o) {
@@ -35,19 +32,13 @@ Utente &Utente::operator=(const Utente &o) {
 }
 
 bool Utente::operator==(const Utente &o) const {
-  qDebug() << "Utente ==";
-  qDebug() << QString::fromStdString(o.codiceFiscale);
-  qDebug() << QString::fromStdString(codiceFiscale);
   return o.codiceFiscale == codiceFiscale;
 }
 
 bool Utente::operator!=(const Utente &o) const {
-  qDebug() << "Utente !=";
-  qDebug() << QString::fromStdString(o.codiceFiscale);
-  qDebug() << QString::fromStdString(codiceFiscale);
   return o.codiceFiscale != codiceFiscale;
 }
 
 Utente *Utente::clone() const { return new Utente(*this); }
 
-std::string Utente::toString() const { return name + " " + codiceFiscale; }
+string Utente::toString() const { return name + " " + codiceFiscale; }

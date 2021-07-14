@@ -1,16 +1,28 @@
 #include "abbonamentoFamigliare.h"
+#include <QDebug>
 
-AbbonamentoFamigliare::AbbonamentoFamigliare(Data *d, Utente *u, Famiglia *f,
+AbbonamentoFamigliare::AbbonamentoFamigliare(Data *d, string u, string f,
                                              double p, string c, int e)
     : Abbonamento(d, u, p, c, e), famiglia(f) {}
 
-AbbonamentoFamigliare::~AbbonamentoFamigliare() { delete famiglia; }
+AbbonamentoFamigliare::AbbonamentoFamigliare(const AbbonamentoFamigliare &o)
+    : Abbonamento(o), famiglia(o.famiglia) {}
 
-/*int AbbonamentoFamigliare::GetNumeroMembri() const{
-    return numero_membri;
-}*/
+string AbbonamentoFamigliare::getFamiglia() const { return famiglia; }
+
+AbbonamentoFamigliare *AbbonamentoFamigliare::clone() const {
+  return new AbbonamentoFamigliare(*this);
+}
 
 double AbbonamentoFamigliare::getPrezzo() const {
+  return EntrataFilm::getPrezzo() * getEntrate();
+}
 
-  return EntrataFilm::getPrezzo() * getEntrate(); //*GetNumeroMembri();
+AbbonamentoFamigliare &AbbonamentoFamigliare::operator=(
+    const AbbonamentoFamigliare &o) {
+  if (this != &o) {
+    Abbonamento::operator=(o);
+    famiglia = o.famiglia;
+  }
+  return *this;
 }

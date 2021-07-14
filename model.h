@@ -2,18 +2,22 @@
 #define MODEL_H
 
 #include "abbonamentoFamigliare.h"
+#include "biglietto.h"
 #include "deepPtr.h"
 #include "myVector.h"
 #include "sala.h"
 
+using std::string;
+
 class Model {
-public:
-  Model(string _test = "test");
-  void addEntrata(const EntrataFilm &a);
-  void addUtente(const Utente &u);
-  void addFamiglia(const Famiglia &f);
-  void addAcquisto(const Utente &u);
-  void addSala(const Sala &s);
+ public:
+  Model();
+
+  void addEntrata(EntrataFilm *e);
+  void addUtente(Utente *u);
+  void addFamiglia(Famiglia *f);
+  void addAcquisto(Utente *u);
+  void addSala(Sala *s);
 
   ~Model() = default;
 
@@ -25,12 +29,13 @@ public:
 
   void clearVectorUtenti();
   void clearVectorFamiglie();
+  void clearVectorEntrate();
   void cleaVectorSale();
 
-  Utente *getUtente(string cf);
-  Famiglia &getFamiglia(string cf);
-  EntrataFilm &getEntrataFilm();
-  Sala *getSala(string nome);
+  Utente *getUtente(string cf) const;
+  Famiglia *getFamiglia(string name) const;
+  EntrataFilm *getEntrataFilm(string cod) const;
+  Sala *getSala(string nome) const;
 
   const MyVector<DeepPtr<EntrataFilm>> &getListEntrate() const;
   const MyVector<DeepPtr<Utente>> &getListUtenti() const;
@@ -41,17 +46,16 @@ public:
 
   bool searchCf(const string &cf) const;
   bool searchNameFamiglia(const string &name) const;
+  bool searchEntrata(const string &cod) const;
 
   string getTest() const;
 
-private:
+ private:
   MyVector<DeepPtr<EntrataFilm>> listEntrate;
   MyVector<DeepPtr<Utente>> listUtenti;
   MyVector<DeepPtr<Famiglia>> listFamiglie;
   MyVector<DeepPtr<Utente>> listStorico;
   MyVector<DeepPtr<Sala>> listSale;
-
-  string test;
 };
 
-#endif // MODEL_H
+#endif  // MODEL_H

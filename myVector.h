@@ -12,6 +12,8 @@ class MyVector {
 
   T *copy(unsigned int s, unsigned int c);
 
+  void destroy(T *v);
+
  public:
   class Iterator {
     friend class MyVector;
@@ -233,22 +235,24 @@ MyVector<T>::MyVector(unsigned int s, unsigned int c)
 
 template <class T>
 MyVector<T>::~MyVector() {
-  if (v) delete[] v;
+  destroy(v);
 }
 
-// da fare---------------------------------
 template <class T>
-MyVector<T>::MyVector(const MyVector &o) {}
+MyVector<T>::MyVector(const MyVector &o)
+    : v(o.copy(o.size, o.capacity)), size(o.size), capacity(o.capacity) {}
 
 template <class T>
 T *MyVector<T>::copy(unsigned int s, unsigned int c) {
-  if (c <= capacity && s <= size) {
+  //  qDebug() << "My Vector capacity " << capacity << " c " << c << " size "
+  //           << size << " s " << s;
+  if (s <= c && size <= s) {
     T *tmp = new T[c];
     for (unsigned int i = 0; i < size; i++) {
       tmp[i] = v[i];
     }
+    // std::copy(v,v+s,tmp);
     return tmp;
-
   } else
     return nullptr;
 }
@@ -256,6 +260,11 @@ T *MyVector<T>::copy(unsigned int s, unsigned int c) {
 template <class T>
 unsigned int MyVector<T>::getSize() const {
   return size;
+}
+
+template <class T>
+void MyVector<T>::destroy(T *v) {
+  if (v) delete[] v;
 }
 
 template <class T>
@@ -279,29 +288,22 @@ typename MyVector<T>::Const_iterator MyVector<T>::cend() const {
 }
 
 template <class T>
-typename MyVector<T>::Iterator MyVector<T>::search(
-    const T &o) {  // da controllare
+typename MyVector<T>::Iterator MyVector<T>::search(const T &o) {
   Iterator it = begin();
-  for (; it != end() && *it != o; ++it)
-    ;
-  if (it == end()) return begin();  // soprattutto questo
+  for (; it != end() && *it != o; ++it) {
+    //    qDebug() << "vector " << QString::fromStdString((**it).getCodFisc());
+  }
+  if (it == end()) return begin();
   return it;
 }
 
 template <class T>
 typename MyVector<T>::Const_iterator MyVector<T>::csearch(const T &o) const {
   Const_iterator it = cbegin();
-  qDebug() << "inizio------------------";
-  for (; it != cend() && *it != *o; ++it) {
-    qDebug() << QString::fromStdString("o: " + o->getCodFisc());
-    qDebug() << QString::fromStdString((*it)->getCodFisc());
-    qDebug() << (*it != *o);
-  }
-  qDebug() << "fine------------------";
+  for (; it != cend() && *it != o; ++it)
+    ;
 
-  if (it == cend()) {
-    return cbegin();
-  }
+  if (it == cend()) return cbegin();
   return it;
 }
 
@@ -315,7 +317,7 @@ void MyVector<T>::push_back(const T &o) {
   if (size >= capacity) {
     capacity *= 2;
     T *tmp = copy(size, capacity);
-    delete[] v;
+    destroy(v);
     v = tmp;
   }
   v[size++] = o;
@@ -324,7 +326,6 @@ void MyVector<T>::push_back(const T &o) {
 template <class T>
 void MyVector<T>::pop_back() {
   if (size) {
-    delete v[size - 1];
     size--;
   }
 }
@@ -350,7 +351,7 @@ bool MyVector<T>::isEmpty() const {
 
 template <class T>
 void MyVector<T>::clear() {
-  delete[] v;
+  destroy(v);
   size = 0;
   capacity = 1;
   v = new T[capacity];

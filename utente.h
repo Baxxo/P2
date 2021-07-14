@@ -6,14 +6,14 @@ using std::ostream;
 using std::string;
 
 class Utente {
-private:
+ private:
   string name;
   string surname;
   unsigned int age;
   string codiceFiscale;
   string phoneNumber;
 
-public:
+ public:
   Utente(string cf = "", string n = "", string s = "", unsigned int a = 0,
          string num = "");
   Utente(const Utente &o);

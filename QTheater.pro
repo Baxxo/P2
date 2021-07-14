@@ -44,13 +44,13 @@ SOURCES += \
     entrataFilm.cpp \
     famiglia.cpp \
     sala.cpp \
-    singolo.cpp \
     utente.cpp \
     utente_View.cpp \
     model.cpp \
     errordisplay.cpp \
     qlineeditclickable.cpp \
-    qlabelcf.cpp
+    qlabelcf.cpp \
+    abbonamento_view.cpp
 
 HEADERS += \
     biglietto_view.h \
@@ -71,14 +71,14 @@ HEADERS += \
     famiglia.h \
     myVector.h \
     sala.h \
-    singolo.h \
     utente.h \
     utente_View.h \
     model.h \
     deepPtr.h \
     errordisplay.h \
     qlineeditclickable.h \
-    qlabelcf.h
+    qlabelcf.h \
+    abbonamento_view.h
 
 FORMS +=
 

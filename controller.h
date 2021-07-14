@@ -8,6 +8,7 @@
 #include <QString>
 #include <QWidget>
 
+#include "abbonamento_view.h"
 #include "admin.h"
 #include "biglietto_view.h"
 #include "client.h"
@@ -28,6 +29,7 @@ class Controller : public QObject {
 
   Utente_View *utente;
   Famiglia_View *famigliaView;
+  Abbonamento_view *abbonamentoView;
   Biglietto_View *bigliettoView;
 
   QString pathJsonUsers;
@@ -40,19 +42,31 @@ class Controller : public QObject {
   QJsonObject *objUtenti;
 
   QJsonObject filmObj;
+
   QJsonObject postiObj;
 
   Famiglia *fam;
+
+  Abbonamento *abb;
+  unsigned int codAbb;
+
+  AbbonamentoFamigliare *abbFam;
+  unsigned int codAbbFam;
+
+  unsigned int codBigl;
 
   ErrorDisplay *err;
 
   QString readFile(const QString &filename);
 
-  void popolaVectorUtenti(const QVariantList &list);
-  void popolaVectorPosti(const QVariantList &list);
-  void popolaVectorFamiglie(const QVariantList &list);
-  void popolaVectorEntrate(const QVariantList &list);
-  void popolaVectorSale(const QVariantList &list);
+  void loadUsers(bool canUpdate = false);
+  void loadFamilies(bool canUpdate = false);
+  void loadEntrateinView(bool canUpdate = false);
+
+  void loadEntrate(bool canUpdate = false);
+  void loadPostiOccupati(bool canUpdate = false);
+  void loadSale(bool canUpdate = false);
+  void loadFilm(bool canUpdate = false);
 
   QVariantList *readUtenti(QFile &file, bool canUpdate);
   QVariantList *readFamiglie(QFile &file, bool canUpdate);
@@ -61,12 +75,10 @@ class Controller : public QObject {
   QVariantList *readSale(QFile &file, bool canUpdate);
   QJsonObject *readFilm(QFile &file, bool canUpdate);
 
-  void loadUsers(bool canUpdate = false);
-  void loadFamilies(bool canUpdate = false);
-  void loadEntrateinView(bool canUpdate = false);
-  void loadPostiOccupati(bool canUpdate = false);
-  void loadSale(bool canUpdate = false);
-  void loadFilm(bool canUpdate = false);
+  void popolaVectorUtenti(const QVariantList &list);
+  void popolaVectorFamiglie(const QVariantList &list);
+  void popolaVectorEntrate(const QVariantList &list);
+  void popolaVectorSale(const QVariantList &list);
 
  public slots:
 
@@ -75,7 +87,7 @@ class Controller : public QObject {
   void openClient();
   void openUtente();
   void openFamiglia();
-  // void listaUtenti();
+  void openAbbonamento();
   void openBiglietto();
 
   void searchCF();
@@ -96,13 +108,14 @@ class Controller : public QObject {
   void newFilm();
 
   void newSala();
-  //void setSala();
+
+  // void setSala();
   void newPostoOccupato();
   void setPostiOccupati();
+
   void stpBigl();
 
   void showSala();
-
 
  public:
   explicit Controller(QObject *parent = nullptr, Model *m = nullptr);
@@ -118,7 +131,9 @@ class Controller : public QObject {
   QString getPathJsonSale() const;
   QString getPathJsonFilm() const;
 
-  void openError(QString message);
+  bool removeAbbonamento(const QString &cod);
+
+  void openError(const QString &message);
 
   void createFamiglia(Famiglia &f, Utente *u);
 
@@ -127,6 +142,15 @@ class Controller : public QObject {
   bool addUserToFamily(const QString &cf);
   bool removeUserFromFamily(const QString &cf);
 
+  bool createAbbonamento(const QString &cf);
+  bool createAbbonamentoFamigliare(const QString &name, const QString &cf);
+
+  void loadUtentiInAdmin();
+  void loadFamiglieInAdmin();
+  void loadEntrateInAdmin();
+  void loadSaleInAdmin();
+  void loadFilmInAdmin();
+  void loadFilmInBigliettoview();
 };
 
 #endif  // CONTROLLER_H

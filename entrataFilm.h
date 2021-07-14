@@ -1,32 +1,39 @@
 #ifndef ENTRATAFILM
 #define ENTRATAFILM
 #include "data.h"
-#include "utente.h"
+
+using std::string;
 
 class EntrataFilm {
-
-private:
-  Utente *utente;
-
+ private:
+  string codice;
+  string utente;
   Data *data;
-
   double prezzo;
 
-public:
-  virtual ~EntrataFilm() = default;
+ public:
+  EntrataFilm(string cod = "0", Data *d = nullptr, string u = "",
+              double p = 7.5);
+  EntrataFilm(const EntrataFilm &o);
 
-  EntrataFilm(Data *d = nullptr, Utente *u = nullptr, double p = 7.5);
+  virtual ~EntrataFilm() = default;
 
   virtual double getPrezzo() const;
 
-  Data *getData() const;
+  virtual Data *getData() const;
 
-  virtual Utente *getUtente() const;
+  virtual string getUtente() const;
 
   virtual bool operator==(const EntrataFilm &o) const;
 
+  virtual bool operator!=(const EntrataFilm &o) const;
+
+  virtual EntrataFilm &operator=(const EntrataFilm &o);
+
   virtual EntrataFilm *clone() const;
 
-  string toString() const;
+  virtual string toString() const;
+
+  virtual string getCodice() const;
 };
 #endif

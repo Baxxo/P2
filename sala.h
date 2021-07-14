@@ -6,15 +6,18 @@ using std::string;
 
 class Sala {
  private:
-  int righe;
-  int colonne;
+  unsigned int righe;
+  unsigned int colonne;
   string nome_sala;
 
  public:
-  Sala(int r = 0, int c = 0, string n = "null");
+  Sala(unsigned int r = 0, unsigned int c = 0, string n = "null");
   Sala(const Sala &o);
-  int getRighe() const;
-  int getColonne() const;
+
+  virtual ~Sala() = default;
+
+  unsigned int getRighe() const;
+  unsigned int getColonne() const;
   string getNomesala() const;
   virtual Sala *clone() const;
 

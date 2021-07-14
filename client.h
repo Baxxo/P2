@@ -1,37 +1,35 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QFile>
+#include <QGridLayout>
 #include <QLabel>
 #include <QMainWindow>
-#include <QDesktopWidget>
-#include <QApplication>
-#include <QGridLayout>
-#include <QVBoxLayout>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <QWidget>
-#include <QFile>
-#include <QLabel>
 
 #include "mainwindow.h"
 
-class Client : public QMainWindow
-{
+class Client : public QMainWindow {
   Q_OBJECT
-public:
-  Client(Controller* c, QWidget *parent = nullptr);
+ public:
+  Client(Controller* c, QWidget* parent = nullptr);
   ~Client() = default;
   void setStyle();
 
-private:
+ private:
   QGridLayout* mainLayout;
   QPushButton* nuovoUtente;
   QPushButton* nuovaFamiglia;
+  QPushButton* nuovoAbbonamento;
   QPushButton* nuovoBiglietto;
   QVBoxLayout* btnLayout;
   QWidget* widget;
   QLabel* label;
   Controller* controller;
-
 };
 
-#endif // CLIENT_H
+#endif  // CLIENT_H
