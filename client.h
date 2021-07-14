@@ -6,21 +6,31 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include <QGridLayout>
-#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QPushButton>
+#include <QWidget>
+#include <QFile>
+#include <QLabel>
+
+#include "mainwindow.h"
 
 class Client : public QMainWindow
 {
   Q_OBJECT
 public:
-  Client(QWidget *parent = nullptr);
+  Client(Controller* c, QWidget *parent = nullptr);
   ~Client() = default;
+  void setStyle();
 
 private:
-  QDesktopWidget* desktop;
-  QGridLayout* baseLayout;
-  QHBoxLayout* mainLayout;
-
+  QGridLayout* mainLayout;
+  QPushButton* nuovoUtente;
+  QPushButton* nuovaFamiglia;
+  QPushButton* nuovoBiglietto;
+  QVBoxLayout* btnLayout;
+  QWidget* widget;
   QLabel* label;
+  Controller* controller;
 
 };
 
