@@ -275,23 +275,15 @@ void Controller::openAdmin() {
   }
   view->changeTitleAdmin(QString("Aggiorna admin"));
 
-  if (pathJsonUsers == "") loadUsers();
+  readJson();
 
   loadUtentiInAdmin();
 
-  if (pathJsonFamiglie == "") loadFamilies();
-
   loadFamiglieInAdmin();
-
-  if (pathJsonEntrata == "") loadEntrate();
 
   loadEntrateInAdmin();
 
-  if (pathJsonSale == "") loadSale();
-
   loadSaleInAdmin();
-
-  if (pathJsonFilm == "") loadFilm();
 
   loadFilmInAdmin();
 
@@ -305,9 +297,7 @@ void Controller::openClient() {
     client = new Client(this);
   }
 
-  if (pathJsonUsers == "") loadUsers();
-  if (pathJsonFamiglie == "") loadFamilies();
-  if (pathJsonEntrata == "") loadEntrate();
+  readJson();
 
   client->show();
 }
@@ -324,9 +314,6 @@ void Controller::openFamiglia() {
     fam = new Famiglia();
     famigliaView = new Famiglia_View(this);
   }
-
-  if (pathJsonUsers == "") loadUsers();
-  if (pathJsonFamiglie == "") loadFamilies();
 
   famigliaView->clearList();
   for (auto it = model->getListUtenti().cbegin();
@@ -348,8 +335,6 @@ void Controller::openAbbonamento() {
     abbonamentoView = new Abbonamento_view(this);
   }
 
-  if (pathJsonUsers == "") loadUsers();
-
   abbonamentoView->clearListUtenti();
   for (auto it = model->getListUtenti().cbegin();
        it != model->getListUtenti().cend(); ++it) {
@@ -358,8 +343,6 @@ void Controller::openAbbonamento() {
                                " ( " + (*it)->getCodFisc() + " )"),
         QString::fromStdString((*it)->getCodFisc()));
   }
-
-  if (pathJsonFamiglie == "") loadFamilies();
 
   abbonamentoView->clearListFamiglie();
 
@@ -380,9 +363,6 @@ void Controller::openBiglietto() {
   if (!bigliettoView) {
     bigliettoView = new Biglietto_View(this);
   }
-
-  if (pathJsonUsers == "") loadUsers();
-  if (pathJsonFamiglie == "") loadFamilies();
 
   QTimer::singleShot(0, bigliettoView, SLOT(resizeMe()));
 
@@ -1061,4 +1041,13 @@ void Controller::popolaVectorSale(const QVariantList &list) {
                  map["nome_sala"].toString().toUtf8().constData());
     model->addSala(s);
   }
+}
+
+void Controller::readJson() {
+  if (pathJsonUsers == "") loadUsers();
+  if (pathJsonFamiglie == "") loadFamilies();
+  if (pathJsonEntrata == "") loadEntrate();
+  if (pathJsonPosti == "") loadPostiOccupati();
+  if (pathJsonSale == "") loadSale();
+  if (pathJsonFilm == "") loadFilm();
 }

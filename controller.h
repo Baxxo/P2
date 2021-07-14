@@ -80,6 +80,8 @@ class Controller : public QObject {
   void popolaVectorEntrate(const QVariantList &list);
   void popolaVectorSale(const QVariantList &list);
 
+  void readJson();
+
  public slots:
 
   // apertura finestre
