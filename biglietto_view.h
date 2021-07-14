@@ -47,6 +47,9 @@ class Biglietto_View : public QWidget {
 
   unsigned int *postiOccupati;
 
+  QWidget *mainWidget;
+  QWidget *widgetSing;
+
  private slots:
   void showSearch();
   void showSalaView();

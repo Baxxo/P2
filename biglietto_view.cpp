@@ -34,7 +34,10 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
 
       compraBiglietto(new QPushButton("Compra")),
 
-      postiOccupati(nullptr)
+      postiOccupati(nullptr),
+
+      mainWidget(new QWidget(this)),
+      widgetSing(new QWidget)
 
 {
   //  parte per selezionare se biglietto o abbonamento
@@ -88,15 +91,6 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
   compraLayout->addWidget(selectSeat, Qt::AlignRight);
 
   connect(selectSeat, SIGNAL(clicked()), controller, SLOT(showSala()));
-
-  // widget per selezionare posto in sala
-  salaLayout->addWidget(posti);
-  salaWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-  salaWidget->setLayout(salaLayout);
-  salaWidget->hide();
-
-  // tabella per posti
-  posti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
   //-------------------------------------------------------------------------
 
@@ -170,6 +164,8 @@ void Biglietto_View::createSalaView(int r, int c, QString f) {
 
   salaWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
   posti = new QTableWidget(r, c);
+  // posti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
   nomeSala = new QLabel;
   colonneMax = new QLabel;
   nomeSala->setText(f);
