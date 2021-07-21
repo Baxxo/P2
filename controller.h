@@ -75,6 +75,8 @@ class Controller : public QObject {
   QVariantList *readSale(QFile &file, bool canUpdate);
   QJsonObject *readFilm(QFile &file, bool canUpdate);
 
+  QVariantList *readFromJson(const QString &type, QFile &file, bool canUpdate);
+
   void popolaVectorUtenti(const QVariantList &list);
   void popolaVectorFamiglie(const QVariantList &list);
   void popolaVectorEntrate(const QVariantList &list);

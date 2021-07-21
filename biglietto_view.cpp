@@ -1,6 +1,8 @@
 #include "biglietto_view.h"
 #include "controller.h"
 
+#include <QHeaderView>
+
 Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
     : QWidget(parent),
       controller(c),
@@ -24,7 +26,7 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
       listaFilm(new QListWidget),
       compraLayout(new QVBoxLayout),
 
-      selectSeat(new QPushButton("scegli un posto")),
+      // selectSeat(new QPushButton("scegli un posto")),
       salaLayout(new QVBoxLayout),
       salaWidget(new QWidget),
 
@@ -87,10 +89,10 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
 
   // selezione del posto desiderato
 
-  selectSeat->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  compraLayout->addWidget(selectSeat, Qt::AlignRight);
+  // selectSeat->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+  // compraLayout->addWidget(selectSeat, Qt::AlignRight);
 
-  connect(selectSeat, SIGNAL(clicked()), controller, SLOT(showSala()));
+  // connect(selectSeat, SIGNAL(clicked()), controller, SLOT(showSala()));
 
   //-------------------------------------------------------------------------
 
@@ -160,7 +162,8 @@ void Biglietto_View::setPostoOccupato(int r, int c) {
   posti->setItem(r, c, item);
 }
 
-void Biglietto_View::createSalaView(int r, int c, const QString &f) {
+void Biglietto_View::createSalaView(unsigned int r, unsigned int c,
+                                    const QString &f) {
   if (posti) {
     delete posti;
   }
@@ -168,17 +171,20 @@ void Biglietto_View::createSalaView(int r, int c, const QString &f) {
     delete nomeSala;
   }
 
-  salaWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  posti = new QTableWidget(r, c);
-  // posti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  salaWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  posti = new QTableWidget(static_cast<int>(r), static_cast<int>(c));
+  posti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-  nomeSala = new QLabel;
+  //  QHeaderView *header = posti->horizontalHeader();
+  //  header->setSectionResizeMode(0,QHeaderView::Stretch);
+
+  nomeSala = new QLabel(f);
+  nomeSala->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
   colonneMax = new QLabel;
-  nomeSala->setText(f);
   colonneMax->setText(QString::number(c));
-  posti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  nomeSala->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  colonneMax->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+  colonneMax->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
   salaLayout->addWidget(nomeSala);
   salaLayout->addWidget(posti);
   salaLayout->addWidget(colonneMax);
@@ -206,9 +212,16 @@ void Biglietto_View::setUtilitySearchText(const QString &s) {
 
 void Biglietto_View::showSearch() { widgetSearchCf->show(); }
 
-void Biglietto_View::resizeMe() { adjustSize(); }
+void Biglietto_View::resizeMe() {
+  adjustSize();
+  qDebug() << "resizeMe";
+}
 
 void Biglietto_View::resizeSala() {
-  qDebug() << "ciao";
-  if (salaWidget) salaWidget->adjustSize();
+  if (salaWidget) {
+    salaWidget->adjustSize();
+    salaWidget->resize(200 * posti->rowCount(), 50 * posti->columnCount());
+    qDebug() << "resizeSala" << 20 * posti->columnCount() << " "
+             << 200 * posti->rowCount();
+  }
 }
