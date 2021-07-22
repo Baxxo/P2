@@ -230,7 +230,7 @@ void MainWindow::createLayoutSetup() {
   if (controller->getPathJsonFamiglie() != "")
     buttonLayout->addWidget(chooseEntrata, 2, 0, Qt::AlignCenter);
 
-  if (choosePosti == nullptr) {
+  if (!choosePosti) {
     choosePosti = new QPushButton("Scegli file json per posti occupati");
     choosePosti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 

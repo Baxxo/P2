@@ -772,11 +772,17 @@ void Controller::loadFilm(bool canUpdate) {
 }
 
 QVariantList *Controller::readUtenti(QFile &file, bool canUpdate) {
-  if (pathJsonUsers == "" || canUpdate) {
-    pathJsonUsers = QFileDialog::getOpenFileName(
-        view, tr("Carica json Utenti"), "/home/student/QTheater/json",
-        tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
-  }
+   bool t=false;
+   while(!t){
+        if (pathJsonUsers == "" || canUpdate) {
+            pathJsonUsers = QFileDialog::getOpenFileName(
+            view, tr("Carica json Utenti"), "/home/student/QTheater/json",
+            tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+            }
+        if(pathJsonUsers.contains("users")) {
+            t=true;
+        }
+   }
   if (pathJsonUsers != "") {
     file.setFileName(pathJsonUsers);
 
@@ -807,11 +813,17 @@ QVariantList *Controller::readUtenti(QFile &file, bool canUpdate) {
 }
 
 QVariantList *Controller::readFamiglie(QFile &file, bool canUpdate) {
-  if (pathJsonFamiglie == "" || canUpdate) {
-    pathJsonFamiglie = QFileDialog::getOpenFileName(
-        view, tr("Carica json Famiglie"), "/home/student/QTheater/json",
-        tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
-  }
+  //bool t=false;
+  //while(!t){
+        if (pathJsonFamiglie == "" || canUpdate) {
+            pathJsonFamiglie = QFileDialog::getOpenFileName(
+            view, tr("Carica json Famiglie"), "/home/student/QTheater/json",
+            tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+        }
+//        if(pathJsonUsers.contains("families")) {
+//            t=true;
+//        }
+  //}
 
   if (pathJsonFamiglie != "") {
     file.setFileName(pathJsonFamiglie);
@@ -843,10 +855,17 @@ QVariantList *Controller::readFamiglie(QFile &file, bool canUpdate) {
 }
 
 QVariantList *Controller::readEntrata(QFile &file, bool canUpdate) {
-  if (pathJsonEntrata == "" || canUpdate) {
-    pathJsonEntrata = QFileDialog::getOpenFileName(
-        view, tr("Carica json Entrate"), "/home/student/QTheater/json",
-        tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+  bool t=false;
+  while(!t){
+        if (pathJsonEntrata == "" || canUpdate) {
+            pathJsonEntrata = QFileDialog::getOpenFileName(
+            view, tr("Carica json Entrate"), "/home/student/QTheater/json",
+            tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+        }
+
+        if(pathJsonEntrata.contains("entrate")) {
+            t=true;
+        }
   }
 
   if (pathJsonEntrata != "") {
@@ -879,11 +898,17 @@ QVariantList *Controller::readEntrata(QFile &file, bool canUpdate) {
 }
 
 QJsonObject *Controller::readPosti(QFile &file, bool canUpdate) {
-  if (pathJsonPosti == "" || canUpdate) {
-    pathJsonPosti = QFileDialog::getOpenFileName(
-        view, tr("Carica json Posti"), "/home/student/QTheater/json",
-        tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
-  }
+  bool t=false;
+//  while(!t){
+        if (pathJsonPosti == "" || canUpdate) {
+            pathJsonPosti = QFileDialog::getOpenFileName(
+            view, tr("Carica json Posti"), "/home/student/QTheater/json",
+            tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+        }
+//        if(pathJsonUsers.contains("posti")) {
+//            t=true;
+//        }
+//  }
   if (pathJsonPosti != "") {
     file.setFileName(pathJsonPosti);
 
@@ -909,11 +934,17 @@ QJsonObject *Controller::readPosti(QFile &file, bool canUpdate) {
 }
 
 QVariantList *Controller::readSale(QFile &file, bool canUpdate) {
-  if (pathJsonSale == "" || canUpdate) {
-    pathJsonSale = QFileDialog::getOpenFileName(
-        view, tr("Carica json Sale"), "/home/student/QTheater/json",
-        tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
-  }
+  bool t=false;
+//  while(!t){
+        if (pathJsonSale == "" || canUpdate) {
+            pathJsonSale = QFileDialog::getOpenFileName(
+            view, tr("Carica json Sale"), "/home/student/QTheater/json",
+            tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+        }
+//        if(pathJsonUsers.contains("sale")) {
+//            t=true;
+//        }
+//  }
   if (pathJsonSale != "") {
     file.setFileName(pathJsonSale);
 
@@ -933,7 +964,6 @@ QVariantList *Controller::readSale(QFile &file, bool canUpdate) {
         QVariantList *localList = new QVariantList();
 
         *localList = mainMap["Sale"].toList();
-        view->changeTitleChooseSala("Cambia file json per sale");
 
         return localList;
       } else {
