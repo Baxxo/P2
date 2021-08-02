@@ -5,8 +5,8 @@ Client::Client(Controller *c, QWidget *parent)
     : QMainWindow(parent),
       mainLayout(new QGridLayout),
       nuovaFamiglia(new QPushButton("Crea nuova Famiglia")),
-      nuovoAbbonamento(new QPushButton("Acquista un Abbonamento")),
-      nuovoBiglietto(new QPushButton("Acquista un Biglietto")),
+      nuovoAbbonamento(new QPushButton("Acqusita un Abbonamento")),
+      nuovoBiglietto(new QPushButton("Acqusita un Biglietto")),
       btnLayout(new QVBoxLayout),
       widget(new QWidget(this)),
       label(new QLabel("Cliente")),
@@ -28,7 +28,6 @@ Client::Client(Controller *c, QWidget *parent)
 
   setWindowTitle(QString("Cliente"));
 
-  resize(300, 300);
   setStyle();
 
   connect(nuovoUtente, SIGNAL(clicked()), controller, SLOT(openUtente()));
@@ -45,3 +44,5 @@ void Client::setStyle() {
 
   setStyleSheet(styleSheet);
 }
+
+void Client::resizeMe() { adjustSize(); }

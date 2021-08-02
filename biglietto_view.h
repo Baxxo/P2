@@ -35,7 +35,7 @@ class Biglietto_View : public QWidget {
   QListWidget *listaFilm;
   QVBoxLayout *compraLayout;
 
-  // QPushButton *selectSeat;
+  QPushButton *selectSeat;
   QVBoxLayout *salaLayout;
   QWidget *salaWidget;
 
@@ -66,7 +66,7 @@ class Biglietto_View : public QWidget {
   QString getNomeSala();
   QString getSelectedFilm();
   int getColonneMax();
-  void setPostoOccupato(int r, int c);
+  void setPostoOccupato(unsigned int r, unsigned int c);
   void createSalaView(unsigned int r, unsigned int c, const QString &f);
 
   void clearListFilm();

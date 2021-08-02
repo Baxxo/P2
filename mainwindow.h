@@ -60,7 +60,15 @@ class MainWindow : public QMainWindow {
   void setSlot();
 
   void createLayoutAdCl();
-  void destroyLayoutAdCl();
+  void hideLayoutAdCLl();
+  void showLayoutAdCLl();
+  //  void destroyLayoutAdCl();
+
+  void createLayoutSetup();
+  void hideLayoutSetup();
+  //  void destroyLayoutSetup();
+
+  void showPath();
 
  private slots:
 
@@ -90,9 +98,8 @@ class MainWindow : public QMainWindow {
   void setLabelPathSale(const QString &s);
   void setLabelPathFilm(const QString &s);
 
-  void createLayoutSetup();
-  void destroyLayoutSetup();
-
   void setPrevAdmin(const QString &value);
+
+  void showLayoutSetup();
 };
 #endif  // MAINWINDOW_H

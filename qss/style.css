@@ -27,10 +27,15 @@ background-color: LightGreen;
 QPushButton{
     background-color: #fff;
     color: blue;
-    padding: 10% 100% ;
+    padding: 15% 100%;
+    margin-bottom: 7%;
 }
 
 .path{
     font-size:20px;
     font-weight: normal;
+}
+
+.changeBtn{
+    padding: 10%;
 }
