@@ -29,6 +29,36 @@
             "Entrate_rimaste": 10,
             "Tipo": "Abbonamento",
             "Utente": "Codice Fiscale4"
+        },
+        {
+            "Codice": "2",
+            "Data": "2021/7/22",
+            "Entrate_rimaste": 10,
+            "Tipo": "Abbonamento",
+            "Utente": "Codice Fiscale2"
+        },
+        {
+            "Codice": "3",
+            "Data": "2021/7/22",
+            "Entrate_rimaste": 10,
+            "Famiglia": "a",
+            "Tipo": "Abbonamento_Famigliare",
+            "Utente": "test1"
+        },
+        {
+            "Codice": "3",
+            "Data": "2021/7/22",
+            "Entrate_rimaste": 10,
+            "Tipo": "Abbonamento",
+            "Utente": "qwerty"
+        },
+        {
+            "Codice": "4",
+            "Data": "2021/7/22",
+            "Entrate_rimaste": 10,
+            "Famiglia": "eccoloqua",
+            "Tipo": "Abbonamento_Famigliare",
+            "Utente": "qwerty"
         }
     ]
 }

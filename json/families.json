@@ -51,6 +51,12 @@
             "Utente1": "provaCodFIsc",
             "Utente2": "ciaone",
             "Utente3": "Codice Fiscale123"
+        },
+        {
+            "Name": "eccoloqua",
+            "Utente1": "qwerty",
+            "Utente2": "ciaone",
+            "Utente3": "provaCodFIsc"
         }
     ]
 }

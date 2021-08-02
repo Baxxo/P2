@@ -121,6 +121,8 @@ class Controller : public QObject {
 
   void showSala();
 
+  void buyBiglietto();
+
  public:
   explicit Controller(QObject *parent = nullptr, Model *m = nullptr);
   void setView(MainWindow *v);

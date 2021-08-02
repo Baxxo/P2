@@ -116,6 +116,8 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
   connect(listaFilm, SIGNAL(itemClicked(QListWidgetItem *)), controller,
           SLOT(setPostiOccupati()));
 
+  connect(compraBiglietto, SIGNAL(clicked()), controller, SLOT(buyBiglietto()));
+
   setStyle();
 }
 

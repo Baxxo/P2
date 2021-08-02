@@ -47,6 +47,7 @@ class Model {
   bool searchCf(const string &cf) const;
   bool searchNameFamiglia(const string &name) const;
   bool searchEntrata(const string &cod) const;
+  bool seachEntrataByUtente(const string &utente) const;
 
   string getTest() const;
 
