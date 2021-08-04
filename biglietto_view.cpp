@@ -14,9 +14,8 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
       tipologiaBtn(new QPushButton("OK")),
       layoutTipologia(new QVBoxLayout),
 
-      searchUtility(new QLabel(QString("Inserisci CF da cercare"))),
-      search(new QLineEditClickable("inserisci codice fiscale da cercare")),
-      searchBtn(new QPushButton("ok")),
+      searchUtility(new QLabel("")),
+      listaSearch(new QListWidget),
       utenteBigl(new QVBoxLayout),
       widgetSearchCf(new QWidget),
 
@@ -37,7 +36,11 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
       postiOccupati(nullptr),
 
       mainWidget(new QWidget(this)),
-      widgetSing(new QWidget)
+      widgetSing(new QWidget),
+      selectName(""),
+      titleSearch(""),
+      isAlreadySelectdSearch(false),
+      selectFromSearch("")
 
 {
   //  parte per selezionare se biglietto o abbonamento
@@ -59,19 +62,16 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
   //-------------------------------------------------------------------------
 
   // widget per ricerca cf utenti
-  searchUtility->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+  searchUtility->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   utenteBigl->addWidget(searchUtility, Qt::AlignCenter);
 
-  search->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  utenteBigl->addWidget(search, Qt::AlignCenter);
+  utenteBigl->addWidget(listaSearch, Qt::AlignCenter);
 
-  searchBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  utenteBigl->addWidget(searchBtn, Qt::AlignCenter);
+  connect(listaSearch, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this,
+          SLOT(getNameSelect(QListWidgetItem *)));
 
   widgetSearchCf->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
   widgetSearchCf->setLayout(utenteBigl);
-
-  connect(searchBtn, SIGNAL(clicked()), controller, SLOT(stpBigl()));
 
   //-------------------------------------------------------------------------
 
@@ -113,8 +113,9 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
           SLOT(showSala()));
   connect(listaFilm, SIGNAL(itemClicked(QListWidgetItem *)), controller,
           SLOT(setPostiOccupati()));
-
   connect(compraBiglietto, SIGNAL(clicked()), controller, SLOT(buyBiglietto()));
+  connect(listaSearch, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this,
+          SLOT(selectFromListSearch(QListWidgetItem *)));
 
   setStyle();
 }
@@ -125,6 +126,7 @@ void Biglietto_View::setStyle() {
   QString styleSheet = QLatin1String(file.readAll());
 
   setStyleSheet(styleSheet);
+  widgetSearchCf->setStyleSheet(styleSheet);
 }
 
 void Biglietto_View::getSalaView() {
@@ -136,6 +138,16 @@ void Biglietto_View::getSalaView() {
 void Biglietto_View::addFilminList(const QString &s) {
   QListWidgetItem *item = new QListWidgetItem(s);
   listaFilm->addItem(item);
+}
+
+void Biglietto_View::addEntrataToLista(const QString &text,
+                                       const QString &cod) {
+  QListWidgetItem *itemN = new QListWidgetItem();
+  QLabelCF *widgetText = new QLabelCF(new QLabel(text), cod);
+
+  listaSearch->addItem(itemN);
+  itemN->setSelected(false);
+  listaSearch->setItemWidget(itemN, widgetText);
 }
 
 int Biglietto_View::getCurrentColumn() { return posti->currentColumn(); }
@@ -194,8 +206,6 @@ void Biglietto_View::createSalaView(unsigned int r, unsigned int c,
 
 void Biglietto_View::clearListFilm() { listaFilm->clear(); }
 
-QString Biglietto_View::getSearch() { return search->text(); }
-
 QString Biglietto_View::getTipologia() { return tipologia->currentText(); }
 
 void Biglietto_View::showSalaView() {
@@ -203,11 +213,48 @@ void Biglietto_View::showSalaView() {
   resizeSala();
 }
 
+void Biglietto_View::getNameSelect(QListWidgetItem *item) {
+  QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaSearch->itemWidget(item));
+
+  selectName = lbl->getCf();
+}
+
+void Biglietto_View::popolaLista(int index) {
+  listaSearch->clear();
+  controller->popolaEntrateBiglietto(index);
+}
+
+void Biglietto_View::selectFromListSearch(QListWidgetItem *item) {
+  QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaSearch->itemWidget(item));
+
+  if (!lbl->isSelected() && !isAlreadySelectdSearch) {
+    lbl->setStyleSheet("QLabel { background-color : LightGreen;}");
+    lbl->setSelect(true);
+    isAlreadySelectdSearch = true;
+  } else if (lbl->isSelected() && isAlreadySelectdSearch) {
+    lbl->setStyleSheet("QLabel { background-color : #00A2E8;}");
+    lbl->setSelect(false);
+    isAlreadySelectdSearch = false;
+  }
+  listaSearch->setItemWidget(item, lbl);
+}
+
 void Biglietto_View::setUtilitySearchText(const QString &s) {
   searchUtility->setText(s);
 }
 
-void Biglietto_View::showSearch() { widgetSearchCf->show(); }
+QString Biglietto_View::getSelectName() const { return selectName; }
+
+void Biglietto_View::setTitleSearch(const QString &t) {
+  titleSearch = "Clicca due volte per selezionare " + t;
+}
+
+void Biglietto_View::showSearch() {
+  listaSearch->clear();
+  controller->popolaEntrateBiglietto(tipologia->currentIndex());
+  searchUtility->setText(titleSearch);
+  widgetSearchCf->show();
+}
 
 void Biglietto_View::resizeMe() { adjustSize(); }
 

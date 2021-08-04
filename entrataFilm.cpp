@@ -33,6 +33,8 @@ EntrataFilm &EntrataFilm::operator=(const EntrataFilm &o) {
 
 EntrataFilm *EntrataFilm::clone() const { return new EntrataFilm(*this); }
 
-string EntrataFilm::toString() const { return utente + " " + data->ToString(); }
+string EntrataFilm::toString() const {
+  return "Utente: " + utente + " - Data: " + data->ToString();
+}
 
 string EntrataFilm::getCodice() const { return codice; }

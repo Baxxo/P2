@@ -645,7 +645,7 @@ void Controller::setPostiOccupati() {
 
 void Controller::stpBigl() {
   if (bigliettoView->getTipologia() == "Biglietto") {
-    QString utente = bigliettoView->getSearch();
+    QString utente = bigliettoView->getSelectName();
     if (model->searchCf(utente.toStdString())) {
       bigliettoView->setUtilitySearchText(QString("Codice fiscale Trovato"));
 
@@ -706,6 +706,33 @@ void Controller::showSala() {
 }
 
 void Controller::buyBiglietto() {}
+
+void Controller::popolaEntrateBiglietto(int index) {
+  switch (index) {
+    case 0:
+      bigliettoView->setTitleSearch("Utente");
+      for (auto it = model->getListUtenti().cbegin();
+           it != model->getListUtenti().cend(); ++it) {
+        bigliettoView->addEntrataToLista(
+            QString::fromStdString((*it)->toString()),
+            QString::fromStdString((*it)->getCodFisc()));
+      }
+      break;
+    case 1:
+      bigliettoView->setTitleSearch("Abbonamento");
+      for (auto it = model->getListEntrate().cbegin();
+           it != model->getListEntrate().cend(); ++it) {
+        try {
+          Abbonamento &dumb = dynamic_cast<Abbonamento &>(**it);
+          bigliettoView->addEntrataToLista(
+              QString::fromStdString(dumb.toString()),
+              QString::fromStdString(dumb.getCodice()));
+        } catch (std::bad_cast e) {
+        }
+      }
+      break;
+  }
+}
 
 void Controller::loadUsers(bool canUpdate) {
   QFile file;

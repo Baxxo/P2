@@ -170,6 +170,7 @@ void MainWindow::changeMenu() {
     isVisReadBtn = true;
   }
   showPath();
+
   QTimer::singleShot(0, this, SLOT(resizeMe()));
 }
 
@@ -309,6 +310,7 @@ void MainWindow::showPath() {
   if (controller->getPathJsonSale() == "") {
     pathSala->hide();
   }
+  move((desktop->width() - 300) / 2, (desktop->height() - 300) / 2);
 }
 
 void MainWindow::setStyle() {

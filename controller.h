@@ -153,6 +153,8 @@ class Controller : public QObject {
   void loadSaleInAdmin();
   void loadFilmInAdmin();
   void loadFilmInBigliettoview();
+
+  void popolaEntrateBiglietto(int index);
 };
 
 #endif  // CONTROLLER_H
