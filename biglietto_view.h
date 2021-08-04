@@ -89,6 +89,8 @@ class Biglietto_View : public QWidget {
   QString getSelectName() const;
   void setTitleSearch(const QString &t);
 
+  QString getSelectFromSearch() const;
+
  public slots:
   void resizeSala();
   void resizeMe();

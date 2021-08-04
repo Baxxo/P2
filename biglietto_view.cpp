@@ -231,10 +231,12 @@ void Biglietto_View::selectFromListSearch(QListWidgetItem *item) {
     lbl->setStyleSheet("QLabel { background-color : LightGreen;}");
     lbl->setSelect(true);
     isAlreadySelectdSearch = true;
+    selectFromSearch = lbl->text();
   } else if (lbl->isSelected() && isAlreadySelectdSearch) {
     lbl->setStyleSheet("QLabel { background-color : #00A2E8;}");
     lbl->setSelect(false);
     isAlreadySelectdSearch = false;
+    selectFromSearch = "";
   }
   listaSearch->setItemWidget(item, lbl);
 }
@@ -248,6 +250,8 @@ QString Biglietto_View::getSelectName() const { return selectName; }
 void Biglietto_View::setTitleSearch(const QString &t) {
   titleSearch = "Clicca due volte per selezionare " + t;
 }
+
+QString Biglietto_View::getSelectFromSearch() const { return selectFromSearch; }
 
 void Biglietto_View::showSearch() {
   listaSearch->clear();
