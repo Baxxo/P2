@@ -17,6 +17,8 @@ class Abbonamento : public EntrataFilm {
 
   int getEntrate() const;
 
+  int removeOneEntrata();
+
   double getPrezzo() const;
 
   Abbonamento &operator=(const Abbonamento &o);

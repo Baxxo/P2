@@ -1,4 +1,5 @@
 #include "biglietto.h"
+#include <QDebug>
 
 Biglietto::Biglietto(string c, Data *d, string u, double p, bool r, string f)
     : EntrataFilm(c, d, u, p), riduzione(r), film(f) {}
@@ -21,7 +22,9 @@ Biglietto &Biglietto::operator=(const Biglietto &o) {
 string Biglietto::getFilm() const { return film; }
 
 double Biglietto::getPrezzo() const {
+    qDebug() << "biglietto";
   return EntrataFilm::getPrezzo() - (getRiduzione() * 0.85);
+
 }
 
 Biglietto *Biglietto::clone() const {

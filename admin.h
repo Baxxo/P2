@@ -93,6 +93,7 @@ class Admin : public QMainWindow {
   void addUtenteinList(const QString &s);
   void addFamigliainList(const QString &s);
   void addEntrata(const QString &s, const QString &cod);
+  void addAbbonamento(const QString &s, const QString &cod);
   void setFamiglie();
   void addFilminList(const QString &s);
   void addSaleinList(const QString &s);
@@ -100,6 +101,7 @@ class Admin : public QMainWindow {
   void clearListEntrate();
   void clearListUtenti();
   void clearListFamiglie();
+  void clearListAbbonamenti();
 
   void clearListFilm();
   void clearListSale();

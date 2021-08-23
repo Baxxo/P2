@@ -7,7 +7,9 @@ EntrataFilm::EntrataFilm(string cod, Data *d, string u, double p)
 EntrataFilm::EntrataFilm(const EntrataFilm &o)
     : codice(o.codice), utente(o.utente), data(o.data), prezzo(o.prezzo) {}
 
-double EntrataFilm::getPrezzo() const { return prezzo; }
+double EntrataFilm::getPrezzo() const { qDebug() << "entrata film";
+    return prezzo;
+                                      }
 
 Data *EntrataFilm::getData() const { return data; }
 

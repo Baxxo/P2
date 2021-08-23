@@ -3,7 +3,12 @@
 Model::Model() {}
 
 void Model::addEntrata(EntrataFilm *e) {
-  listEntrate.push_back(DeepPtr<EntrataFilm>(e));
+    listEntrate.push_back(DeepPtr<EntrataFilm>(e));
+}
+
+void Model::addAbbonamento(Abbonamento *a)
+{
+    listAbbonamenti.push_back(DeepPtr<Abbonamento>(a));
 }
 
 void Model::addUtente(Utente *u) { listUtenti.push_back(DeepPtr<Utente>(u)); }
@@ -48,6 +53,8 @@ void Model::clearVectorUtenti() { listUtenti.clear(); }
 void Model::clearVectorFamiglie() { listFamiglie.clear(); }
 
 void Model::clearVectorEntrate() { listEntrate.clear(); }
+
+void Model::clearVectorAbbonamenti(){ listAbbonamenti.clear(); }
 
 void Model::cleaVectorSale() { listSale.clear(); }
 
@@ -102,6 +109,16 @@ Sala *Model::getSala(string nome) const {
   return nullptr;
 }
 
+Abbonamento *Model::getAbbonamento(std::string cod) const
+{
+    for (auto it = listAbbonamenti.cbegin(); it != listAbbonamenti.cend(); ++it) {
+      if ((*it)->getCodice() == cod) {
+        return new Abbonamento(**it);
+      }
+    }
+    return nullptr;
+}
+
 const MyVector<DeepPtr<EntrataFilm>> &Model::getListEntrate() const {
   return listEntrate;
 }
@@ -115,6 +132,11 @@ const MyVector<DeepPtr<Famiglia>> &Model::getListFamiglie() const {
 }
 
 const MyVector<DeepPtr<Sala>> &Model::getListSale() const { return listSale; }
+
+const MyVector<DeepPtr<Abbonamento> > &Model::getListAbbonamenti() const
+{
+    return listAbbonamenti;
+}
 
 void Model::addUserToFamily(Famiglia &f, Utente *u) { f.addMembro(u); }
 

@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QString>
 #include <QWidget>
+#include <QMessageBox>
 
 #include "abbonamento_view.h"
 #include "admin.h"
@@ -38,6 +39,7 @@ class Controller : public QObject {
   QString pathJsonPosti;
   QString pathJsonFilm;
   QString pathJsonSale;
+  QString pathJsonAbbonamenti;
 
   QJsonObject *objUtenti;
 
@@ -48,7 +50,7 @@ class Controller : public QObject {
   Famiglia *fam;
 
   Abbonamento *abb;
-  unsigned int codAbb;
+  int codAbb;
 
   AbbonamentoFamigliare *abbFam;
   unsigned int codAbbFam;
@@ -67,6 +69,7 @@ class Controller : public QObject {
   void loadPostiOccupati(bool canUpdate = false);
   void loadSale(bool canUpdate = false);
   void loadFilm(bool canUpdate = false);
+  void loadAbbonamenti(bool canUpdate = false);
 
   QVariantList *readUtenti(QFile &file, bool canUpdate);
   QVariantList *readFamiglie(QFile &file, bool canUpdate);
@@ -74,10 +77,12 @@ class Controller : public QObject {
   QJsonObject *readPosti(QFile &file, bool canUpdate);
   QVariantList *readSale(QFile &file, bool canUpdate);
   QJsonObject *readFilm(QFile &file, bool canUpdate);
+  QVariantMap *readAbbonamenti(QFile &file, bool canUpdate);
 
   void popolaVectorUtenti(const QVariantList &list);
   void popolaVectorFamiglie(const QVariantList &list);
   void popolaVectorEntrate(const QVariantList &list);
+  void popolaVectorAbbonamenti(const QVariantMap &map);
   void popolaVectorSale(const QVariantList &list);
 
  public slots:
@@ -99,6 +104,7 @@ class Controller : public QObject {
   void loadPostiSlot();
   void loadSaleSlot();
   void loadFilmSlot();
+  void loadAbbonamentiSlot();
 
   // slot per Utente_View
   void annullaUtente();
@@ -132,6 +138,7 @@ class Controller : public QObject {
   QString getPathJsonPosti() const;
   QString getPathJsonSale() const;
   QString getPathJsonFilm() const;
+  QString getPathJsonAbbonamenti() const;
 
   bool removeAbbonamento(const QString &cod);
 
@@ -152,7 +159,9 @@ class Controller : public QObject {
   void loadEntrateInAdmin();
   void loadSaleInAdmin();
   void loadFilmInAdmin();
+  void loadAbbonamentiInAdmin();
   void loadFilmInBigliettoview();
+
 };
 
 #endif  // CONTROLLER_H

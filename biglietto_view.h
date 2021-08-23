@@ -66,7 +66,7 @@ class Biglietto_View : public QWidget {
   QString getNomeSala();
   QString getSelectedFilm();
   int getColonneMax();
-  void setPostoOccupato(unsigned int r, unsigned int c);
+  void setPostoOccupato(unsigned int r, unsigned int c, QString regola);
   void createSalaView(unsigned int r, unsigned int c, const QString &f);
 
   void clearListFilm();

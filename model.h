@@ -14,6 +14,7 @@ class Model {
   Model();
 
   void addEntrata(EntrataFilm *e);
+  void addAbbonamento(Abbonamento *a);
   void addUtente(Utente *u);
   void addFamiglia(Famiglia *f);
   void addAcquisto(Utente *u);
@@ -30,17 +31,20 @@ class Model {
   void clearVectorUtenti();
   void clearVectorFamiglie();
   void clearVectorEntrate();
+  void clearVectorAbbonamenti();
   void cleaVectorSale();
 
   Utente *getUtente(string cf) const;
   Famiglia *getFamiglia(string name) const;
   EntrataFilm *getEntrataFilm(string cod) const;
   Sala *getSala(string nome) const;
+  Abbonamento *getAbbonamento(string cod) const;
 
   const MyVector<DeepPtr<EntrataFilm>> &getListEntrate() const;
   const MyVector<DeepPtr<Utente>> &getListUtenti() const;
   const MyVector<DeepPtr<Famiglia>> &getListFamiglie() const;
   const MyVector<DeepPtr<Sala>> &getListSale() const;
+  const MyVector<DeepPtr<Abbonamento>> &getListAbbonamenti() const;
 
   void addUserToFamily(Famiglia &f, Utente *u);
 
@@ -57,6 +61,7 @@ class Model {
   MyVector<DeepPtr<Famiglia>> listFamiglie;
   MyVector<DeepPtr<Utente>> listStorico;
   MyVector<DeepPtr<Sala>> listSale;
+  MyVector<DeepPtr<Abbonamento>> listAbbonamenti;
 };
 
 #endif  // MODEL_H

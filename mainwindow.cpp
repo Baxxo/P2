@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
       chooseSala(nullptr),
       choosePosti(nullptr),
       chooseFilm(nullptr),
+      chooseAbbonamenti(nullptr),
       adminBtn(nullptr),
       clientBtn(nullptr),
       pathUser(new QLabel("name json utenti")),
@@ -26,11 +27,13 @@ MainWindow::MainWindow(QWidget *parent)
       pathPosti(new QLabel("name json postiOccupati")),
       pathSala(new QLabel("name json Sale")),
       pathFilm(new QLabel("name json film")),
+      pathAbbonamenti(new QLabel("name json ABbonamenti")),
       controller(nullptr),
       isVisReadBtn(true),
       prevAdmin("Admin"),
       prevChooseUtenti("Scegli file json per utenti"),
-      prevChooseFamiglie("Scegli file json per famiglie") {
+      prevChooseFamiglie("Scegli file json per famiglie"),
+      prevChooseAbbonamenti("scegli file json per abbonamenti"){
   changeBtn->setMinimumWidth(50);
   changeBtn->setProperty("class", "changeBtn");
 
@@ -60,12 +63,16 @@ MainWindow::MainWindow(QWidget *parent)
   pathEntrata->setProperty("class", "path");
   pathEntrata->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
+  pathAbbonamenti->setProperty("class", "path");
+  pathAbbonamenti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
   buttonLayout->addWidget(pathUser, 0, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathFamilies, 1, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathEntrata, 2, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathPosti, 3, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathSala, 4, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathFilm, 5, 1, Qt::AlignCenter);
+  buttonLayout->addWidget(pathAbbonamenti, 6, 1, Qt::AlignCenter);
 
   widget->setLayout(mainLayout);
 
@@ -86,6 +93,7 @@ void MainWindow::setController(Controller *c) {
   pathPosti->setText(controller->getPathJsonPosti());
   pathFilm->setText(controller->getPathJsonFilm());
   pathSala->setText(controller->getPathJsonSale());
+  pathAbbonamenti->setText(controller->getPathJsonAbbonamenti());
 
   createLayoutAdCl();
   createLayoutSetup();
@@ -111,13 +119,20 @@ void MainWindow::setLabelPathSale(const QString &s) { pathSala->setText(s); }
 
 void MainWindow::setLabelPathFilm(const QString &s) { pathFilm->setText(s); }
 
+void MainWindow::setLabelPathAbbonamenti(const QString &s){ pathAbbonamenti->setText(s); }
+
 void MainWindow::changeTitleAdmin(const QString &s) {
   prevAdmin = s;
   if (adminBtn) adminBtn->setText(s);
 }
 
 void MainWindow::changeTitleChooseSala(const QString &s) {
-  pathFilm->setText(s);
+    pathFilm->setText(s);
+}
+
+void MainWindow::changeTitleChooseAbbonamenti(const QString &s)
+{
+    pathAbbonamenti->setText(s);
 }
 
 void MainWindow::changeTitleChooseUtenti(const QString &s) {
@@ -247,6 +262,16 @@ void MainWindow::createLayoutSetup() {
   buttonLayout->addWidget(chooseFilm, 5, 0, Qt::AlignCenter);
 
   isVisReadBtn = true;
+
+  if (!chooseAbbonamenti) {
+    chooseAbbonamenti = new QPushButton("Scegli json per abbonamenti");
+    chooseAbbonamenti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+    connect(chooseAbbonamenti, SIGNAL(clicked()), controller, SLOT(loadAbbonamentiSlot()));
+  }
+  buttonLayout->addWidget(chooseAbbonamenti, 6, 0, Qt::AlignCenter);
+
+  isVisReadBtn = true;
 }
 
 void MainWindow::hideLayoutAdCLl() {
@@ -270,6 +295,7 @@ void MainWindow::hideLayoutSetup() {
   choosePosti->hide();
   chooseFilm->hide();
   chooseSala->hide();
+  chooseAbbonamenti->hide();
 }
 
 void MainWindow::showLayoutSetup() {
@@ -281,10 +307,12 @@ void MainWindow::showLayoutSetup() {
     chooseFamiglie->show();
     chooseEntrata->show();
     choosePosti->show();
+    chooseAbbonamenti->show();
   } else {
     chooseFamiglie->hide();
     chooseEntrata->hide();
     choosePosti->hide();
+    chooseAbbonamenti->hide();
   }
   chooseFilm->show();
   chooseSala->show();
@@ -308,6 +336,9 @@ void MainWindow::showPath() {
   }
   if (controller->getPathJsonSale() == "") {
     pathSala->hide();
+  }
+  if (controller->getPathJsonAbbonamenti() == "") {
+    pathAbbonamenti->hide();
   }
 }
 

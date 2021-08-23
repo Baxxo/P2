@@ -156,10 +156,61 @@ QString Biglietto_View::getSelectedFilm() {
 
 int Biglietto_View::getColonneMax() { return colonneMax->text().toInt(); }
 
-void Biglietto_View::setPostoOccupato(unsigned int r, unsigned int c) {
+void Biglietto_View::setPostoOccupato(unsigned int r, unsigned int c, QString regola) {
   QTableWidgetItem *item = new QTableWidgetItem("occupato");
   item->setBackgroundColor("red");
   posti->setItem(static_cast<int>(r), static_cast<int>(c), item);
+  int x= (r*getColonneMax()) +c;
+  if(regola=="gialla"){
+      QTableWidgetItem *itemdist1 = new QTableWidgetItem("distanziamento");
+      QTableWidgetItem *itemdist2 = new QTableWidgetItem("distanziamento");
+      itemdist1->setBackgroundColor("yellow");
+      itemdist2->setBackgroundColor("yellow");
+      if(x%getColonneMax() == getColonneMax()-1){
+            posti->setItem(static_cast<int>(r), static_cast<int>(c-1), itemdist1);
+            }
+      if(x%getColonneMax() == 0){
+            posti->setItem(static_cast<int>(r), static_cast<int>(c+1), itemdist1);
+            }
+      else{
+            posti->setItem(static_cast<int>(r), static_cast<int>(c-1), itemdist1);
+            posti->setItem(static_cast<int>(r), static_cast<int>(c+1), itemdist2);
+            }
+  }
+  if(regola=="arancione"){
+      QTableWidgetItem *itemdist1 = new QTableWidgetItem("distanziamento");
+      QTableWidgetItem *itemdist2 = new QTableWidgetItem("distanziamento");
+      QTableWidgetItem *itemdist3 = new QTableWidgetItem("distanziamento");
+      QTableWidgetItem *itemdist4 = new QTableWidgetItem("distanziamento");
+      itemdist1->setBackgroundColor("yellow");
+      itemdist2->setBackgroundColor("yellow");
+      itemdist3->setBackgroundColor("yellow");
+      itemdist4->setBackgroundColor("yellow");
+      if(x%getColonneMax() == getColonneMax()-1){
+            posti->setItem(static_cast<int>(r), static_cast<int>(c-1), itemdist1);
+            posti->setItem(static_cast<int>(r), static_cast<int>(c-2), itemdist2);
+            }
+      if(x%getColonneMax() == 0){
+            posti->setItem(static_cast<int>(r), static_cast<int>(c+1), itemdist1);
+            posti->setItem(static_cast<int>(r), static_cast<int>(c+2), itemdist2);
+            }
+      if(x%getColonneMax() == getColonneMax()-2){
+          posti->setItem(static_cast<int>(r), static_cast<int>(c-1), itemdist1);
+          posti->setItem(static_cast<int>(r), static_cast<int>(c-2), itemdist2);
+          posti->setItem(static_cast<int>(r), static_cast<int>(c+1), itemdist3);
+      }
+      if(x%getColonneMax() == 1){
+            posti->setItem(static_cast<int>(r), static_cast<int>(c+1), itemdist1);
+            posti->setItem(static_cast<int>(r), static_cast<int>(c+2), itemdist2);
+            posti->setItem(static_cast<int>(r), static_cast<int>(c-1), itemdist3);
+            }
+      else{
+            posti->setItem(static_cast<int>(r), static_cast<int>(c-1), itemdist1);
+            posti->setItem(static_cast<int>(r), static_cast<int>(c-2), itemdist2);
+            posti->setItem(static_cast<int>(r), static_cast<int>(c+1), itemdist3);
+            posti->setItem(static_cast<int>(r), static_cast<int>(c+2), itemdist4);
+            }
+  }
 }
 
 void Biglietto_View::createSalaView(unsigned int r, unsigned int c,
