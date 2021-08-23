@@ -1,0 +1,33 @@
+{
+    "Abbonamenti": {
+        "0": {
+            "Codice": "0",
+            "Data": "2021/8/23",
+            "Entrate_rimaste": 10,
+            "Tipo": "Abbonamento",
+            "Utente": "Codice Fiscale5"
+        },
+        "1": {
+            "Codice": "1",
+            "Data": "2021/8/23",
+            "Entrate_rimaste": 10,
+            "Tipo": "Abbonamento",
+            "Utente": "Codice Fiscale6"
+        },
+        "2": {
+            "Codice": "2",
+            "Data": "2021/8/23",
+            "Entrate_rimaste": 10,
+            "Tipo": "Abbonamento",
+            "Utente": "test2"
+        },
+        "3": {
+            "Codice": "3",
+            "Data": "2021/8/23",
+            "Entrate_rimaste": 10,
+            "Famiglia": "test1",
+            "Tipo": "Abbonamento_Famigliare",
+            "Utente": "test1"
+        }
+    }
+}
