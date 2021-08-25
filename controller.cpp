@@ -750,11 +750,10 @@ void Controller::buyBiglietto() {
                   if (!file.open(QIODevice::ReadOnly)) {
                     openError(QString("File open error: Read"));
                   }
-
                   QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
                   file.close();
 
-                  QJsonValue v = jsonOrg.object().value(QString("Utenti"));
+                  QJsonValue v = jsonOrg.object().value(QString("Entrate"));
 
                   QJsonArray array = v.toArray();
 
@@ -768,7 +767,7 @@ void Controller::buyBiglietto() {
                   array.push_back(newUser);
 
                   QJsonObject obj;
-                  obj.insert("Utenti", array);
+                  obj.insert("Entrate", array);
 
                   QJsonDocument doc(obj);
 
@@ -785,7 +784,6 @@ void Controller::buyBiglietto() {
     if(bigliettoView->getTipologia()== "Abbonamento"){
         QString cod=bigliettoView->getSearch();
         for(auto it=model->getListAbbonamenti().cbegin(); it!=model->getListAbbonamenti().cend(); ++it){
-
             if(cod==QString::fromStdString((**it).getUtente())){
                 Abbonamento *ab = dynamic_cast<Abbonamento *>(&(**it));
 
@@ -799,7 +797,7 @@ void Controller::buyBiglietto() {
                     QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
                     file.close();
 
-                    QJsonValue v = jsonOrg.object().value(QString("Abbonamenti"));
+                    QJsonValue v = jsonOrg.object().value(QString("Entrate"));
 
                     QJsonArray array = v.toArray();
 
@@ -818,7 +816,7 @@ void Controller::buyBiglietto() {
                     array.push_back(newAbbonamento);
 
                     QJsonObject obj;
-                    obj.insert("Abbonamenti", array);
+                    obj.insert("Entrate", array);
 
                     QJsonDocument doc(obj);
 
@@ -879,7 +877,7 @@ void Controller::buyBiglietto() {
                 QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
                 file.close();
 
-                QJsonValue v = jsonOrg.object().value(QString("Abbonamenti"));
+                QJsonValue v = jsonOrg.object().value(QString("Entrate"));
 
                 QJsonArray array = v.toArray();
 
@@ -897,7 +895,7 @@ void Controller::buyBiglietto() {
                 array.push_back(newAbbonamento);
 
                 QJsonObject obj;
-                obj.insert("Abbonamenti", array);
+                obj.insert("Entrate", array);
 
                 QJsonDocument doc(obj);
 
@@ -949,8 +947,6 @@ void Controller::buyBiglietto() {
 
               model->addAbbonamento(&(**it));
 
-
-// -------------------------------------------------------------------------------------------------------
                     }
                 }
             }
