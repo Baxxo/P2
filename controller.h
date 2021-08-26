@@ -53,7 +53,7 @@ class Controller : public QObject {
   int codAbb;
 
   AbbonamentoFamigliare *abbFam;
-  unsigned int codAbbFam;
+  unsigned int codUt;
 
   unsigned int codBigl;
 
@@ -73,7 +73,8 @@ class Controller : public QObject {
 
   QVariantList *readUtenti(QFile &file, bool canUpdate);
   QVariantList *readFamiglie(QFile &file, bool canUpdate);
-  QVariantList *readEntrata(QFile &file, bool canUpdate);
+  QVariantList *readEntrataAbb(QFile &file, bool canUpdate);
+  QVariantList *readEntrataBigl(QFile &file, bool canUpdate);
   QJsonObject *readPosti(QFile &file, bool canUpdate);
   QVariantList *readSale(QFile &file, bool canUpdate);
   QJsonObject *readFilm(QFile &file, bool canUpdate);
@@ -81,7 +82,7 @@ class Controller : public QObject {
 
   void popolaVectorUtenti(const QVariantList &list);
   void popolaVectorFamiglie(const QVariantList &list);
-  void popolaVectorEntrate(const QVariantList &list);
+  void popolaVectorEntrate(const QVariantList &listAbb, const QVariantList &listBigl);
   void popolaVectorAbbonamenti(const QVariantMap &map);
   void popolaVectorSale(const QVariantList &list);
 

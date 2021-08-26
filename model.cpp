@@ -33,6 +33,12 @@ bool Model::removeUtente(const Utente &u) {
   return listUtenti.remove(tmp);
 }
 
+bool Model::removeAbbonamento(const Abbonamento &a)
+{
+    DeepPtr<Abbonamento> tmp(new Abbonamento(a));
+    return listAbbonamenti.remove(tmp);
+}
+
 bool Model::removeFamiglia(const Famiglia &f) {
   DeepPtr<Famiglia> tmp(new Famiglia(f));
   return listFamiglie.remove(tmp);

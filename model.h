@@ -24,6 +24,7 @@ class Model {
 
   bool removeEntrata(const EntrataFilm &a);
   bool removeUtente(const Utente &u);
+  bool removeAbbonamento(const Abbonamento&a);
   bool removeFamiglia(const Famiglia &f);
   bool removeAcquisto(const Utente &u);
   bool removeSala(const Sala &s);
