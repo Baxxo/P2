@@ -25,33 +25,33 @@ void Model::addSala(Sala *s) { listSale.push_back(DeepPtr<Sala>(s)); }
 
 bool Model::removeEntrata(const EntrataFilm &a) {
   DeepPtr<EntrataFilm> tmp(new EntrataFilm(a));
-  return listEntrate.remove(tmp);
+  return listEntrate.erase(tmp);
 }
 
 bool Model::removeUtente(const Utente &u) {
   DeepPtr<Utente> tmp(new Utente(u));
-  return listUtenti.remove(tmp);
+  return listUtenti.erase(tmp);
 }
 
 bool Model::removeAbbonamento(const Abbonamento &a)
 {
     DeepPtr<Abbonamento> tmp(new Abbonamento(a));
-    return listAbbonamenti.remove(tmp);
+    return listAbbonamenti.erase(tmp);
 }
 
 bool Model::removeFamiglia(const Famiglia &f) {
   DeepPtr<Famiglia> tmp(new Famiglia(f));
-  return listFamiglie.remove(tmp);
+  return listFamiglie.erase(tmp);
 }
 
 bool Model::removeAcquisto(const Utente &u) {
   DeepPtr<Utente> tmp(new Utente(u));
-  return listStorico.remove(tmp);
+  return listStorico.erase(tmp);
 }
 
 bool Model::removeSala(const Sala &s) {
   DeepPtr<Sala> tmp(new Sala(s));
-  return listSale.remove(tmp);
+  return listSale.erase(tmp);
 }
 
 void Model::clearVectorUtenti() { listUtenti.clear(); }

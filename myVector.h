@@ -87,7 +87,7 @@ class MyVector {
   void push_back(const T &o);
   void pop_back();  // deve andare void
 
-  bool remove(const T &o);
+  bool erase(const T &o);
 
   bool isEmpty() const;
 
@@ -331,7 +331,7 @@ void MyVector<T>::pop_back() {
 }
 
 template <class T>
-bool MyVector<T>::remove(const T &o) {
+bool MyVector<T>::erase(const T &o) {
   for (unsigned int i = 0; i < size; ++i) {
     if (v[i] == o) {
       for (unsigned int j = i; j < size - 1; j++) {
