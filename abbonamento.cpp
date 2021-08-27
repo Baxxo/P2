@@ -9,10 +9,7 @@ Abbonamento::Abbonamento(const Abbonamento &o)
 
 int Abbonamento::getEntrate() const { return entrate; }
 
-int Abbonamento::removeOneEntrata()
-{
-    entrate=entrate-1;
-}
+int Abbonamento::removeOneEntrata() { --entrate; }
 
 double Abbonamento::getPrezzo() const {
   return EntrataFilm::getPrezzo() * getEntrate();
