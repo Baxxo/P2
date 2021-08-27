@@ -4,10 +4,10 @@
 #include <QComboBox>
 #include <QFile>
 #include <QJsonArray>
+#include <QMessageBox>
 #include <QObject>
 #include <QString>
 #include <QWidget>
-#include <QMessageBox>
 
 #include "abbonamento_view.h"
 #include "admin.h"
@@ -82,7 +82,8 @@ class Controller : public QObject {
 
   void popolaVectorUtenti(const QVariantList &list);
   void popolaVectorFamiglie(const QVariantList &list);
-  void popolaVectorEntrate(const QVariantList &listAbb, const QVariantList &listBigl);
+  void popolaVectorEntrate(const QVariantList &listAbb,
+                           const QVariantList &listBigl);
   void popolaVectorAbbonamenti(const QVariantMap &map);
   void popolaVectorSale(const QVariantList &list);
 
@@ -163,6 +164,7 @@ class Controller : public QObject {
   void loadAbbonamentiInAdmin();
   void loadFilmInBigliettoview();
 
+  void popolaEntrateBiglietto(int index);
 };
 
 #endif  // CONTROLLER_H
