@@ -14,6 +14,7 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
       tipologiaBtn(new QPushButton("OK")),
       layoutTipologia(new QVBoxLayout),
 
+      selectedItemSearch(new QLabel("Selezionato: ")),
       searchUtility(new QLabel("")),
       listaSearch(new QListWidget),
       utenteBigl(new QVBoxLayout),
@@ -43,6 +44,8 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
       selectFromSearch("")
 
 {
+  selectedItemSearch->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+  layoutTipologia->addWidget(selectedItemSearch, Qt::AlignCenter);
   //  parte per selezionare se biglietto o abbonamento
   labelTipo->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
   layoutTipologia->addWidget(labelTipo, Qt::AlignCenter);
@@ -288,6 +291,7 @@ void Biglietto_View::selectFromListSearch(QListWidgetItem *item) {
     isAlreadySelectdSearch = false;
     selectFromSearch = "";
   }
+  selectedItemSearch->setText("Selezionato: " + selectFromSearch);
   listaSearch->setItemWidget(item, lbl);
 }
 

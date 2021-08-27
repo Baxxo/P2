@@ -25,6 +25,7 @@ class Biglietto_View : public QWidget {
   QPushButton *tipologiaBtn;
   QVBoxLayout *layoutTipologia;
 
+  QLabel *selectedItemSearch;
   QLabel *searchUtility;
   QListWidget *listaSearch;
   QVBoxLayout *utenteBigl;
