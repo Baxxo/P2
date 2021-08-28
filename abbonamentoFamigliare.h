@@ -23,7 +23,7 @@ class AbbonamentoFamigliare : public Abbonamento {
 
   string getFamiglia() const;
 
-  AbbonamentoFamigliare *clone() const;
+  AbbonamentoFamigliare *clone() const override;
 };
 
 #endif

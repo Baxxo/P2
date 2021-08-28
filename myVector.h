@@ -38,6 +38,8 @@ class MyVector {
 
     bool operator==(const Iterator &o) const;
     bool operator!=(const Iterator &o) const;
+    bool operator<(const Iterator &o) const;
+    bool operator>(const Iterator &o) const;
   };
 
   class Const_iterator {
@@ -87,7 +89,9 @@ class MyVector {
   void push_back(const T &o);
   void pop_back();  // deve andare void
 
-  bool remove(const T &o);
+  bool erase(Iterator it);
+
+  Iterator erase(Iterator it1, Iterator it2);
 
   bool isEmpty() const;
 
@@ -331,17 +335,26 @@ void MyVector<T>::pop_back() {
 }
 
 template <class T>
-bool MyVector<T>::remove(const T &o) {
-  for (unsigned int i = 0; i < size; ++i) {
-    if (v[i] == o) {
-      for (unsigned int j = i; j < size - 1; j++) {
-        v[j] = v[j + 1];
-      }
-      size--;
-      return true;
-    }
-  }
+bool MyVector<T>::erase(MyVector::Iterator it) {
+
+  MyVector::Iterator i = erase(it, ++it);
+
+  if(i!=nullptr) return true;
+
   return false;
+
+}
+
+template<class T>
+typename MyVector<T>::Iterator MyVector<T>::erase(MyVector::Iterator it1, MyVector::Iterator it2)
+{
+    if(!size) return nullptr;
+        if(it1<begin()) return erase(begin(),it2);
+        if(it2>end()) return erase(it1,end());
+        copy(it2,it1);
+        int offset = static_cast<int>(it2.ptr-it1.ptr);
+        size-=offset;
+        return it1;
 }
 
 template <class T>
@@ -358,3 +371,15 @@ void MyVector<T>::clear() {
 }
 
 #endif  // MYVECTOR_H
+
+template<class T>
+bool MyVector<T>::Iterator::operator<(const MyVector::Iterator &o) const
+{
+    return ptr<o.ptr;
+}
+
+template<class T>
+bool MyVector<T>::Iterator::operator>(const MyVector::Iterator &o) const
+{
+    return ptr>o.ptr;
+}

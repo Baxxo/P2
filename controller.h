@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QString>
 #include <QWidget>
+#include <QMessageBox>
 
 #include "abbonamento_view.h"
 #include "admin.h"
@@ -38,6 +39,7 @@ class Controller : public QObject {
   QString pathJsonPosti;
   QString pathJsonFilm;
   QString pathJsonSale;
+  QString pathJsonAbbonamenti;
 
   QJsonObject *objUtenti;
 
@@ -48,10 +50,9 @@ class Controller : public QObject {
   Famiglia *fam;
 
   Abbonamento *abb;
-  unsigned int codAbb;
+  int cod;
 
   AbbonamentoFamigliare *abbFam;
-  unsigned int codAbbFam;
 
   unsigned int codBigl;
 
@@ -68,16 +69,19 @@ class Controller : public QObject {
   void loadSale(bool canUpdate = false);
   void loadFilm(bool canUpdate = false);
 
+
   QVariantList *readUtenti(QFile &file, bool canUpdate);
   QVariantList *readFamiglie(QFile &file, bool canUpdate);
-  QVariantList *readEntrata(QFile &file, bool canUpdate);
+  QVariantMap *readEntrata(QFile &file, bool canUpdate);
   QJsonObject *readPosti(QFile &file, bool canUpdate);
   QVariantList *readSale(QFile &file, bool canUpdate);
   QJsonObject *readFilm(QFile &file, bool canUpdate);
 
+
   void popolaVectorUtenti(const QVariantList &list);
   void popolaVectorFamiglie(const QVariantList &list);
-  void popolaVectorEntrate(const QVariantList &list);
+  void popolaVectorEntrate(const QVariantMap &map);
+
   void popolaVectorSale(const QVariantList &list);
 
  public slots:
@@ -100,6 +104,7 @@ class Controller : public QObject {
   void loadSaleSlot();
   void loadFilmSlot();
 
+
   // slot per Utente_View
   void annullaUtente();
   void salvaUtente();
@@ -117,6 +122,8 @@ class Controller : public QObject {
 
   void showSala();
 
+  void buyBiglietto();
+
  public:
   explicit Controller(QObject *parent = nullptr, Model *m = nullptr);
   void setView(MainWindow *v);
@@ -130,6 +137,7 @@ class Controller : public QObject {
   QString getPathJsonPosti() const;
   QString getPathJsonSale() const;
   QString getPathJsonFilm() const;
+  QString getPathJsonAbbonamenti() const;
 
   bool removeAbbonamento(const QString &cod);
 
@@ -150,7 +158,11 @@ class Controller : public QObject {
   void loadEntrateInAdmin();
   void loadSaleInAdmin();
   void loadFilmInAdmin();
+  void loadAbbonamentiInAdmin();
   void loadFilmInBigliettoview();
+
+  void popolaEntrateBiglietto(int index);
+
 };
 
 #endif  // CONTROLLER_H

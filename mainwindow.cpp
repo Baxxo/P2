@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
       chooseSala(nullptr),
       choosePosti(nullptr),
       chooseFilm(nullptr),
+      chooseAbbonamenti(nullptr),
       adminBtn(nullptr),
       clientBtn(nullptr),
       pathUser(new QLabel("name json utenti")),
@@ -26,12 +27,15 @@ MainWindow::MainWindow(QWidget *parent)
       pathPosti(new QLabel("name json postiOccupati")),
       pathSala(new QLabel("name json Sale")),
       pathFilm(new QLabel("name json film")),
+      pathAbbonamenti(new QLabel("name json ABbonamenti")),
       controller(nullptr),
       isVisReadBtn(true),
       prevAdmin("Admin"),
       prevChooseUtenti("Scegli file json per utenti"),
-      prevChooseFamiglie("Scegli file json per famiglie") {
-  changeBtn->setFixedWidth(50);
+      prevChooseFamiglie("Scegli file json per famiglie"),
+      prevChooseAbbonamenti("scegli file json per abbonamenti"){
+  changeBtn->setMinimumWidth(50);
+  changeBtn->setProperty("class", "changeBtn");
 
   title->setProperty("class", "title");
 
@@ -59,18 +63,21 @@ MainWindow::MainWindow(QWidget *parent)
   pathEntrata->setProperty("class", "path");
   pathEntrata->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
+  pathAbbonamenti->setProperty("class", "path");
+  pathAbbonamenti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
   buttonLayout->addWidget(pathUser, 0, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathFamilies, 1, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathEntrata, 2, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathPosti, 3, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathSala, 4, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathFilm, 5, 1, Qt::AlignCenter);
+  buttonLayout->addWidget(pathAbbonamenti, 6, 1, Qt::AlignCenter);
 
   widget->setLayout(mainLayout);
 
   setCentralWidget(widget);
 
-  resize(300, 300);
   move((desktop->width() - 300) / 2, (desktop->height() - 300) / 2);
 
   setStyle();
@@ -86,8 +93,14 @@ void MainWindow::setController(Controller *c) {
   pathPosti->setText(controller->getPathJsonPosti());
   pathFilm->setText(controller->getPathJsonFilm());
   pathSala->setText(controller->getPathJsonSale());
+  pathAbbonamenti->setText(controller->getPathJsonAbbonamenti());
 
+  createLayoutAdCl();
   createLayoutSetup();
+
+  showLayoutSetup();
+
+  showPath();
 }
 
 void MainWindow::setLabelPathUser(const QString &s) { pathUser->setText(s); }
@@ -106,13 +119,20 @@ void MainWindow::setLabelPathSale(const QString &s) { pathSala->setText(s); }
 
 void MainWindow::setLabelPathFilm(const QString &s) { pathFilm->setText(s); }
 
+void MainWindow::setLabelPathAbbonamenti(const QString &s){ pathAbbonamenti->setText(s); }
+
 void MainWindow::changeTitleAdmin(const QString &s) {
   prevAdmin = s;
   if (adminBtn) adminBtn->setText(s);
 }
 
 void MainWindow::changeTitleChooseSala(const QString &s) {
-  pathFilm->setText(s);
+    pathFilm->setText(s);
+}
+
+void MainWindow::changeTitleChooseAbbonamenti(const QString &s)
+{
+    pathAbbonamenti->setText(s);
 }
 
 void MainWindow::changeTitleChooseUtenti(const QString &s) {
@@ -149,19 +169,22 @@ void MainWindow::resizeMe() { adjustSize(); }
 
 void MainWindow::changeMenu() {
   if (isVisReadBtn) {
-    destroyLayoutSetup();
-    createLayoutAdCl();
     title->setText("QTheater");
+    hideLayoutSetup();
+
+    showLayoutAdCLl();
 
     isVisReadBtn = false;
 
   } else {
-    destroyLayoutAdCl();
-    createLayoutSetup();
     title->setText("Setup");
+    hideLayoutAdCLl();
+
+    showLayoutSetup();
 
     isVisReadBtn = true;
   }
+  showPath();
   QTimer::singleShot(0, this, SLOT(resizeMe()));
 }
 
@@ -186,20 +209,6 @@ void MainWindow::createLayoutAdCl() {
   isVisReadBtn = false;
 }
 
-void MainWindow::destroyLayoutAdCl() {
-  prevAdmin = adminBtn->text();
-  buttonLayout->removeWidget(adminBtn);
-  buttonLayout->removeWidget(clientBtn);
-
-  delete adminBtn;
-  adminBtn = nullptr;
-
-  delete clientBtn;
-  clientBtn = nullptr;
-}
-
-void MainWindow::setPrevAdmin(const QString &value) { prevAdmin = value; }
-
 void MainWindow::createLayoutSetup() {
   title->setText("Setup");
   if (!chooseUtenti) {
@@ -217,8 +226,7 @@ void MainWindow::createLayoutSetup() {
     connect(chooseFamiglie, SIGNAL(clicked()), controller,
             SLOT(loadFamiliesSlot()));
   }
-  if (controller->getPathJsonUsers() != "")
-    buttonLayout->addWidget(chooseFamiglie, 1, 0, Qt::AlignCenter);
+  buttonLayout->addWidget(chooseFamiglie, 1, 0, Qt::AlignCenter);
 
   if (!chooseEntrata) {
     chooseEntrata = new QPushButton("Scegli file json per entrata film");
@@ -227,8 +235,7 @@ void MainWindow::createLayoutSetup() {
     connect(chooseEntrata, SIGNAL(clicked()), controller,
             SLOT(loadEntrateSlot()));
   }
-  if (controller->getPathJsonFamiglie() != "")
-    buttonLayout->addWidget(chooseEntrata, 2, 0, Qt::AlignCenter);
+  buttonLayout->addWidget(chooseEntrata, 2, 0, Qt::AlignCenter);
 
   if (!choosePosti) {
     choosePosti = new QPushButton("Scegli file json per posti occupati");
@@ -236,8 +243,7 @@ void MainWindow::createLayoutSetup() {
 
     connect(choosePosti, SIGNAL(clicked()), controller, SLOT(loadPostiSlot()));
   }
-  if (controller->getPathJsonUsers() != "")
-    buttonLayout->addWidget(choosePosti, 3, 0, Qt::AlignCenter);
+  buttonLayout->addWidget(choosePosti, 3, 0, Qt::AlignCenter);
 
   if (!chooseSala) {
     chooseSala = new QPushButton("Scegli json per sala");
@@ -256,35 +262,84 @@ void MainWindow::createLayoutSetup() {
   buttonLayout->addWidget(chooseFilm, 5, 0, Qt::AlignCenter);
 
   isVisReadBtn = true;
+
+  if (!chooseAbbonamenti) {
+    chooseAbbonamenti = new QPushButton("Scegli json per abbonamenti");
+    chooseAbbonamenti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+
+  }
+  buttonLayout->addWidget(chooseAbbonamenti, 6, 0, Qt::AlignCenter);
+
+  isVisReadBtn = true;
 }
 
-void MainWindow::destroyLayoutSetup() {
-  if (chooseUtenti) prevChooseUtenti = chooseUtenti->text();
-  if (chooseFamiglie) prevChooseFamiglie = chooseFamiglie->text();
-  buttonLayout->removeWidget(chooseUtenti);
-  buttonLayout->removeWidget(chooseFamiglie);
-  buttonLayout->removeWidget(chooseEntrata);
-  buttonLayout->removeWidget(choosePosti);
-  buttonLayout->removeWidget(chooseFilm);
-  buttonLayout->removeWidget(chooseSala);
+void MainWindow::hideLayoutAdCLl() {
+  adminBtn->hide();
+  clientBtn->hide();
+}
 
-  delete chooseUtenti;
-  chooseUtenti = nullptr;
+void MainWindow::showLayoutAdCLl() {
+  hideLayoutSetup();
 
-  delete chooseFamiglie;
-  chooseFamiglie = nullptr;
+  adminBtn->show();
+  clientBtn->show();
+}
 
-  delete chooseEntrata;
-  chooseEntrata = nullptr;
+void MainWindow::setPrevAdmin(const QString &value) { prevAdmin = value; }
 
-  delete choosePosti;
-  choosePosti = nullptr;
+void MainWindow::hideLayoutSetup() {
+  chooseUtenti->hide();
+  chooseFamiglie->hide();
+  chooseEntrata->hide();
+  choosePosti->hide();
+  chooseFilm->hide();
+  chooseSala->hide();
+  chooseAbbonamenti->hide();
+}
 
-  delete chooseSala;
-  chooseSala = nullptr;
+void MainWindow::showLayoutSetup() {
+  hideLayoutAdCLl();
 
-  delete chooseFilm;
-  chooseFilm = nullptr;
+  chooseUtenti->show();
+
+  if (controller->getPathJsonUsers() != "") {
+    chooseFamiglie->show();
+    chooseEntrata->show();
+    choosePosti->show();
+    chooseAbbonamenti->show();
+  } else {
+    chooseFamiglie->hide();
+    chooseEntrata->hide();
+    choosePosti->hide();
+    chooseAbbonamenti->hide();
+  }
+  chooseFilm->show();
+  chooseSala->show();
+}
+
+void MainWindow::showPath() {
+  if (controller->getPathJsonUsers() == "") {
+    pathUser->hide();
+  }
+  if (controller->getPathJsonFamiglie() == "") {
+    pathFamilies->hide();
+  }
+  if (controller->getPathJsonEntrata() == "") {
+    pathEntrata->hide();
+  }
+  if (controller->getPathJsonFilm() == "") {
+    pathFilm->hide();
+  }
+  if (controller->getPathJsonPosti() == "") {
+    pathPosti->hide();
+  }
+  if (controller->getPathJsonSale() == "") {
+    pathSala->hide();
+  }
+  if (controller->getPathJsonAbbonamenti() == "") {
+    pathAbbonamenti->hide();
+  }
 }
 
 void MainWindow::setStyle() {

@@ -28,7 +28,6 @@ Client::Client(Controller *c, QWidget *parent)
 
   setWindowTitle(QString("Cliente"));
 
-  resize(300, 300);
   setStyle();
 
   connect(nuovoUtente, SIGNAL(clicked()), controller, SLOT(openUtente()));
@@ -45,3 +44,5 @@ void Client::setStyle() {
 
   setStyleSheet(styleSheet);
 }
+
+void Client::resizeMe() { adjustSize(); }

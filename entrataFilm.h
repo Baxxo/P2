@@ -16,7 +16,7 @@ class EntrataFilm {
               double p = 7.5);
   EntrataFilm(const EntrataFilm &o);
 
-  virtual ~EntrataFilm() = default;
+  virtual ~EntrataFilm() = 0;
 
   virtual double getPrezzo() const;
 

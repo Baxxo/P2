@@ -23,7 +23,7 @@ class Biglietto : public EntrataFilm {
 
   double getPrezzo() const;
 
-  Biglietto *clone() const;
+  Biglietto *clone() const override;
 };
 
 #endif

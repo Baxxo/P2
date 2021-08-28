@@ -3,7 +3,12 @@
 Model::Model() {}
 
 void Model::addEntrata(EntrataFilm *e) {
-  listEntrate.push_back(DeepPtr<EntrataFilm>(e));
+    listEntrate.push_back(DeepPtr<EntrataFilm>(e));
+}
+
+void Model::addAbbonamento(Abbonamento *a)
+{
+    listAbbonamenti.push_back(DeepPtr<Abbonamento>(a));
 }
 
 void Model::addUtente(Utente *u) { listUtenti.push_back(DeepPtr<Utente>(u)); }
@@ -18,29 +23,34 @@ void Model::addAcquisto(Utente *u) {
 
 void Model::addSala(Sala *s) { listSale.push_back(DeepPtr<Sala>(s)); }
 
-bool Model::removeEntrata(const EntrataFilm &a) {
-  DeepPtr<EntrataFilm> tmp(new EntrataFilm(a));
-  return listEntrate.remove(tmp);
+bool Model::removeEntrata(MyVector<DeepPtr<EntrataFilm>>::Const_iterator a) {
+  return listEntrate.erase(a);
 }
 
 bool Model::removeUtente(const Utente &u) {
   DeepPtr<Utente> tmp(new Utente(u));
-  return listUtenti.remove(tmp);
+  return listUtenti.erase(tmp);
+}
+
+bool Model::removeAbbonamento(const Abbonamento &a)
+{
+    DeepPtr<Abbonamento> tmp(new Abbonamento(a));
+    return listAbbonamenti.erase(tmp);
 }
 
 bool Model::removeFamiglia(const Famiglia &f) {
   DeepPtr<Famiglia> tmp(new Famiglia(f));
-  return listFamiglie.remove(tmp);
+  return listFamiglie.erase(tmp);
 }
 
 bool Model::removeAcquisto(const Utente &u) {
   DeepPtr<Utente> tmp(new Utente(u));
-  return listStorico.remove(tmp);
+  return listStorico.erase(tmp);
 }
 
 bool Model::removeSala(const Sala &s) {
   DeepPtr<Sala> tmp(new Sala(s));
-  return listSale.remove(tmp);
+  return listSale.erase(tmp);
 }
 
 void Model::clearVectorUtenti() { listUtenti.clear(); }
@@ -48,6 +58,8 @@ void Model::clearVectorUtenti() { listUtenti.clear(); }
 void Model::clearVectorFamiglie() { listFamiglie.clear(); }
 
 void Model::clearVectorEntrate() { listEntrate.clear(); }
+
+void Model::clearVectorAbbonamenti(){ listAbbonamenti.clear(); }
 
 void Model::cleaVectorSale() { listSale.clear(); }
 
@@ -102,6 +114,16 @@ Sala *Model::getSala(string nome) const {
   return nullptr;
 }
 
+Abbonamento *Model::getAbbonamento(std::string cod) const
+{
+    for (auto it = listAbbonamenti.cbegin(); it != listAbbonamenti.cend(); ++it) {
+      if ((*it)->getCodice() == cod) {
+        return new Abbonamento(**it);
+      }
+    }
+    return nullptr;
+}
+
 const MyVector<DeepPtr<EntrataFilm>> &Model::getListEntrate() const {
   return listEntrate;
 }
@@ -115,6 +137,11 @@ const MyVector<DeepPtr<Famiglia>> &Model::getListFamiglie() const {
 }
 
 const MyVector<DeepPtr<Sala>> &Model::getListSale() const { return listSale; }
+
+const MyVector<DeepPtr<Abbonamento> > &Model::getListAbbonamenti() const
+{
+    return listAbbonamenti;
+}
 
 void Model::addUserToFamily(Famiglia &f, Utente *u) { f.addMembro(u); }
 

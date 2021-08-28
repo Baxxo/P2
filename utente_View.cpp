@@ -16,8 +16,13 @@ Utente_View::Utente_View(Controller *c, QWidget *parent)
       numtel(new QLineEditClickable()),
       conferma(new QLabel),
       desktop(new QDesktopWidget),
-      controller(c) {
+      controller(c),
+      validatorCf(new QRegularExpressionValidator(
+          QRegularExpression("[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}["
+                             "0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}"))) {
   setWindowTitle(QString("Creazione Utente"));
+
+  CF->setValidator(validatorCf);
 
   // layout bottoni
   btnLayout->addWidget(confermaBtn, Qt::AlignCenter);

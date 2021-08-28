@@ -30,6 +30,9 @@ class Client : public QMainWindow {
   QWidget* widget;
   QLabel* label;
   Controller* controller;
+
+ public slots:
+  void resizeMe();
 };
 
 #endif  // CLIENT_H
