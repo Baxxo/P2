@@ -48,10 +48,11 @@ QString Controller::getPathJsonFilm() const { return pathJsonFilm; }
 QString Controller::getPathJsonAbbonamenti() const{ return pathJsonAbbonamenti; }
 
 bool Controller::removeAbbonamento(const QString &cod) {
-  if (model->searchEntrata(cod.toStdString())) {
-    return model->removeEntrata(cod.toStdString());
-  }
-  return false;
+
+    if (model->searchEntrata(cod.toStdString())) {
+        return model->removeEntrata(cod);
+      }
+      return false;
 }
 
 void Controller::setView(MainWindow *v) { view = v; }
@@ -1263,6 +1264,7 @@ void Controller::popolaVectorEntrate(const QVariantMap &map) {
                 mapA["Famiglia"].toString().toStdString(), 7.5,
                 mapA["Codice"].toString().toStdString(),
                 mapA["Entrate_rimaste"].toInt()));
+
           }
         }
     }
@@ -1274,13 +1276,16 @@ void Controller::popolaVectorEntrate(const QVariantMap &map) {
             if (mapB["Codice"].toUInt() > cod)
               cod = mapB["Codice"].toUInt();
 
+
             model->addEntrata(new Biglietto(
                 mapB["Codice"].toString().toStdString(),
                 new Data(mapB["Data"].toString().toStdString()),
                 mapB["CF"].toString().toStdString(), 7.5,
                 mapB["Riduzione"].toBool(), mapB["Film"].toString().toStdString()));
+
           }
         }
+
 }
 
 void Controller::popolaVectorSale(const QVariantList &list) {

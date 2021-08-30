@@ -23,6 +23,6 @@ class Abbonamento : public EntrataFilm {
 
   Abbonamento &operator=(const Abbonamento &o);
 
-  Abbonamento *clone() const;
+  Abbonamento *clone() const override;
 };
 #endif

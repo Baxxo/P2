@@ -23,35 +23,44 @@ void Model::addAcquisto(Utente *u) {
 
 void Model::addSala(Sala *s) { listSale.push_back(DeepPtr<Sala>(s)); }
 
-bool Model::removeEntrata(const EntrataFilm &a) {
-  DeepPtr<EntrataFilm> tmp(new EntrataFilm(a));
-  return listEntrate.erase(tmp);
+bool Model::removeEntrata(const QString &e) {
+  int i=0;
+  for(auto it = listEntrate.cbegin(); it!= listEntrate.cend(); ++it){
+    i++;
+    if((**it).getCodice()== e.toStdString()){
+        return listEntrate.erase(listEntrate.begin()+i);
+    }
+  }
 }
 
 bool Model::removeUtente(const Utente &u) {
-  DeepPtr<Utente> tmp(new Utente(u));
-  return listUtenti.erase(tmp);
-}
-
-bool Model::removeAbbonamento(const Abbonamento &a)
-{
-    DeepPtr<Abbonamento> tmp(new Abbonamento(a));
-    return listAbbonamenti.erase(tmp);
+  int i=0;
+  for(auto it = listUtenti.cbegin(); it!= listUtenti.cend(); ++it){
+    i++;
+    if((**it).getCodFisc()== u.getCodFisc()){
+        return listUtenti.erase(listUtenti.begin()+i);
+    }
+  }
 }
 
 bool Model::removeFamiglia(const Famiglia &f) {
-  DeepPtr<Famiglia> tmp(new Famiglia(f));
-  return listFamiglie.erase(tmp);
-}
-
-bool Model::removeAcquisto(const Utente &u) {
-  DeepPtr<Utente> tmp(new Utente(u));
-  return listStorico.erase(tmp);
+    int i=0;
+    for(auto it = listFamiglie.cbegin(); it!= listFamiglie.cend(); ++it){
+      i++;
+      if((**it).getName()== f.getName()){
+          return listFamiglie.erase(listFamiglie.begin()+i);
+      }
+    }
 }
 
 bool Model::removeSala(const Sala &s) {
-  DeepPtr<Sala> tmp(new Sala(s));
-  return listSale.erase(tmp);
+    int i=0;
+    for(auto it = listSale.cbegin(); it!= listSale.cend(); ++it){
+      i++;
+      if((**it).getNomesala()== s.getNomesala()){
+          return listSale.erase(listSale.begin()+i);
+      }
+    }
 }
 
 void Model::clearVectorUtenti() { listUtenti.clear(); }
@@ -163,9 +172,12 @@ bool Model::searchNameFamiglia(const string &name) const {
 }
 
 bool Model::searchEntrata(const string &cod) const {
-  if (!listEntrate.isEmpty()) {
-    auto it = listEntrate.csearch(new EntrataFilm(cod));
-    return (*it)->getCodice() == cod;
+    bool trovato=false;
+    if (!listEntrate.isEmpty()) {
+        for(auto it = listEntrate.cbegin(); it!= listEntrate.cend(); ++it){
+            if ((*it)->getCodice() == cod)
+                trovato= true;
+    }
   }
-  return false;
+  return trovato;
 }

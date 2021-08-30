@@ -22,11 +22,9 @@ class Model {
 
   ~Model() = default;
 
-  bool removeEntrata(const EntrataFilm &a);
+  bool removeEntrata(const QString &e);
   bool removeUtente(const Utente &u);
-  bool removeAbbonamento(const Abbonamento&a);
   bool removeFamiglia(const Famiglia &f);
-  bool removeAcquisto(const Utente &u);
   bool removeSala(const Sala &s);
 
   void clearVectorUtenti();
