@@ -84,7 +84,7 @@ QString Famiglia_View::getCF_SearchText() const {
 
 void Famiglia_View::clearList() { listaUtenti->clear(); }
 
-void Famiglia_View::selectIndexbyCF(QString cf) { qDebug() << cf; }
+void Famiglia_View::selectIndexbyCF(QString cf) {}
 
 void Famiglia_View::findUser(QString search) {
   bool find = false;
@@ -108,9 +108,6 @@ void Famiglia_View::setUtilityText(QString txt) {
   utility->setText(txt);
   QTimer::singleShot(2000, this, SLOT(cleanUtilityText()));
 }
-
-void Famiglia_View::signaltest() { qDebug() << "signal"; }
-
 void Famiglia_View::resizeMe() { adjustSize(); }
 
 void Famiglia_View::cleanUtilityText() { utility->setText(""); }

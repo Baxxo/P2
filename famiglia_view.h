@@ -14,7 +14,7 @@ using std::string;
 
 class Famiglia_View : public QWidget {
   Q_OBJECT
-private:
+ private:
   QLineEditClickable *familyName;
   QListWidget *listaUtenti;
   QLineEditClickable *searchEditText;
@@ -32,9 +32,8 @@ private:
 
   Controller *controller;
 
-private slots:
+ private slots:
 
-  void signaltest();
   void resizeMe();
   void cleanUtilityText();
 
@@ -43,7 +42,7 @@ private slots:
 
   void addUtenteToFamiglia(QListWidgetItem *item);
 
-public:
+ public:
   Famiglia_View(Controller *c, QWidget *parent = nullptr);
 
   void addUtenteToLista(const QString &text, const QString &cf);
@@ -64,4 +63,4 @@ public:
   void setUtilityText(QString txt);
 };
 
-#endif // FAMIGLIA_VIEW_H
+#endif  // FAMIGLIA_VIEW_H

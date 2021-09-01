@@ -1,6 +1,4 @@
 #include "data.h"
-#include <QDebug>
-
 Data::Data(unsigned int a, unsigned int m, unsigned int g)
 
     : giorno(a),

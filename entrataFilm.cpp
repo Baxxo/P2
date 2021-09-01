@@ -1,17 +1,13 @@
 #include "entrataFilm.h"
-#include <QDebug>
-
 EntrataFilm::EntrataFilm(string cod, Data *d, string u, double p)
     : codice(cod), utente(u), data(d), prezzo(p) {}
 
 EntrataFilm::EntrataFilm(const EntrataFilm &o)
     : codice(o.codice), utente(o.utente), data(o.data), prezzo(o.prezzo) {}
 
-EntrataFilm::~EntrataFilm(){}
+EntrataFilm::~EntrataFilm() {}
 
-double EntrataFilm::getPrezzo() const { qDebug() << "entrata film";
-    return prezzo;
-                                      }
+double EntrataFilm::getPrezzo() const { return prezzo; }
 
 Data *EntrataFilm::getData() const { return data; }
 
@@ -35,10 +31,7 @@ EntrataFilm &EntrataFilm::operator=(const EntrataFilm &o) {
   return *this;
 }
 
-EntrataFilm *EntrataFilm::clone() const
-{
-
-}
+EntrataFilm *EntrataFilm::clone() const {}
 
 string EntrataFilm::toString() const { return utente + " " + data->ToString(); }
 

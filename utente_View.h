@@ -1,6 +1,5 @@
 #ifndef UTENTE_VIEW_H
 #define UTENTE_VIEW_H
-#include <QDebug>
 #include <QDesktopWidget>
 #include <QDir>
 #include <QFile>

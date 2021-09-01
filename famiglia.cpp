@@ -1,10 +1,7 @@
 #include "famiglia.h"
-#include <QDebug>
 
 Famiglia::Famiglia(string _name, unsigned int c)
-    : membri(new Utente *[c]), capacity(c), size(0), name(_name) {
-  //  qDebug() << "costrut famiglia";
-}
+    : membri(new Utente *[c]), capacity(c), size(0), name(_name) {}
 
 Famiglia::Famiglia(const Famiglia &o)
     : membri(new Utente *[o.capacity]),

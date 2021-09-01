@@ -4,10 +4,10 @@
 #include <QComboBox>
 #include <QFile>
 #include <QJsonArray>
+#include <QMessageBox>
 #include <QObject>
 #include <QString>
 #include <QWidget>
-#include <QMessageBox>
 
 #include "abbonamento_view.h"
 #include "admin.h"
@@ -69,14 +69,12 @@ class Controller : public QObject {
   void loadSale(bool canUpdate = false);
   void loadFilm(bool canUpdate = false);
 
-
   QVariantList *readUtenti(QFile &file, bool canUpdate);
   QVariantList *readFamiglie(QFile &file, bool canUpdate);
   QVariantMap *readEntrata(QFile &file, bool canUpdate);
   QJsonObject *readPosti(QFile &file, bool canUpdate);
   QVariantList *readSale(QFile &file, bool canUpdate);
   QJsonObject *readFilm(QFile &file, bool canUpdate);
-
 
   void popolaVectorUtenti(const QVariantList &list);
   void popolaVectorFamiglie(const QVariantList &list);
@@ -104,9 +102,7 @@ class Controller : public QObject {
   void loadSaleSlot();
   void loadFilmSlot();
 
-
   // slot per Utente_View
-  void annullaUtente();
   void salvaUtente();
   void salvaFamiglia();
   // gestione film
@@ -162,7 +158,6 @@ class Controller : public QObject {
   void loadFilmInBigliettoview();
 
   void popolaEntrateBiglietto(int index);
-
 };
 
 #endif  // CONTROLLER_H

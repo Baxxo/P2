@@ -4,7 +4,6 @@
 #include <QApplication>
 #include <QCloseEvent>
 #include <QComboBox>
-#include <QDebug>
 #include <QDesktopWidget>
 #include <QDir>
 #include <QFile>
@@ -79,9 +78,6 @@ class Admin : public QMainWindow {
 
  private slots:
   void getClickAbb();
-  void getClickUt();
-  void getClickFam();
-  void getClickFilm();
   void addFilmLayout();
   void addSalaLayout();
 

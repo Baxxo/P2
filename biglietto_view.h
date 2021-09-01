@@ -6,8 +6,6 @@
 #include <QTableWidget>
 #include <QWidget>
 
-#include <QDebug>
-
 #include <qlineeditclickable.h>
 #include "mainwindow.h"
 

@@ -1,5 +1,4 @@
 #include "abbonamento_view.h"
-#include <QDebug>
 #include "controller.h"
 
 Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)

@@ -1,5 +1,4 @@
 #include "abbonamentoFamigliare.h"
-#include <QDebug>
 
 AbbonamentoFamigliare::AbbonamentoFamigliare(Data *d, string u, string f,
                                              double p, string c, int e)

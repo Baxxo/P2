@@ -1,6 +1,8 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include <QString>
+
 #include "abbonamentoFamigliare.h"
 #include "biglietto.h"
 #include "deepPtr.h"

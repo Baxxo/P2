@@ -1,5 +1,4 @@
 #include "abbonamento.h"
-#include <QDebug>
 
 Abbonamento::Abbonamento(Data *d, string u, double p, string cod, int entr)
     : EntrataFilm(cod, d, u, p), entrate(entr) {}

@@ -142,7 +142,7 @@ void Admin::clearListUtenti() { listUt->clear(); }
 
 void Admin::clearListFamiglie() { listFam->clear(); }
 
-void Admin::clearListAbbonamenti() { listAbb->clear();}
+void Admin::clearListAbbonamenti() { listAbb->clear(); }
 
 void Admin::clearListFilm() { listFilm->clear(); }
 
@@ -160,14 +160,6 @@ QString Admin::getColonneSala() { return colonneSala->text(); }
 
 QString Admin::getRigheSala() { return righeSala->text(); }
 
-void Admin::getClickFam() {
-  qDebug() << "Famiglia " << listFam->currentItem()->text();
-}
-
-void Admin::getClickFilm() {
-  qDebug() << "film " << listFilm->currentItem()->text();
-}
-
 void Admin::addEntrata(const QString &s, const QString &cod) {
   QLabelCF *lbl = new QLabelCF(new QLabel(s), cod);
   QListWidgetItem *item = new QListWidgetItem();
@@ -177,11 +169,11 @@ void Admin::addEntrata(const QString &s, const QString &cod) {
 }
 
 void Admin::addAbbonamento(const QString &s, const QString &cod) {
-    QLabelCF *lbl = new QLabelCF(new QLabel(s), cod);
-    QListWidgetItem *item = new QListWidgetItem();
-    listAbb->addItem(item);
-    item->setSelected(false);
-    listAbb->setItemWidget(item, lbl);
+  QLabelCF *lbl = new QLabelCF(new QLabel(s), cod);
+  QListWidgetItem *item = new QListWidgetItem();
+  listAbb->addItem(item);
+  item->setSelected(false);
+  listAbb->setItemWidget(item, lbl);
 }
 
 void Admin::addFilmLayout() {
@@ -224,10 +216,6 @@ void Admin::addSalaLayout() {
   widgetSala->show();
 
   connect(saveSala, SIGNAL(clicked()), controller, SLOT(newSala()));
-}
-
-void Admin::getClickUt() {
-  qDebug() << "Utente " << listUt->currentItem()->text();
 }
 
 void Admin::getClickAbb() {

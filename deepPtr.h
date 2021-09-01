@@ -1,8 +1,6 @@
 #ifndef DEEPPTR_H
 #define DEEPPTR_H
 
-#include <QDebug>
-
 template <class T>
 class DeepPtr {
  private:

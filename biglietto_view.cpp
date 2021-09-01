@@ -317,6 +317,5 @@ void Biglietto_View::showSearch() {
 void Biglietto_View::resizeMe() { adjustSize(); }
 
 void Biglietto_View::resizeSala() {
-  qDebug() << "ciao";
   if (salaWidget) salaWidget->adjustSize();
 }
