@@ -267,7 +267,7 @@ void MainWindow::createLayoutSetup() {
     chooseAbbonamenti = new QPushButton("Scegli json per abbonamenti");
     chooseAbbonamenti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-    connect(chooseAbbonamenti, SIGNAL(clicked()), controller, SLOT(loadAbbonamentiSlot()));
+
   }
   buttonLayout->addWidget(chooseAbbonamenti, 6, 0, Qt::AlignCenter);
 

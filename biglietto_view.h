@@ -71,7 +71,6 @@ class Biglietto_View : public QWidget {
  public:
   explicit Biglietto_View(Controller *c, QWidget *parent = nullptr);
   void setStyle();
-  QString getSearch();
   QString getTipologia();
   void getSalaView();
 

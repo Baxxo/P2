@@ -1,64 +1,41 @@
 {
     "Entrate": {
-        "Entrate Abbonamento": [
-            {
+        "Entrate Abbonamento": {
+            "3": {
                 "Codice": "3",
-                "Data": "gio ago 26 2021",
-                "Entrate_rimaste": 7,
-                "Tipo": "Abbonamento",
-                "Utente": "Codice Fiscale5"
+                "Data": "2021/8/28",
+                "Entrate_rimaste": 10,
+                "Famiglia": "test1",
+                "Tipo": "Abbonamento_Famigliare",
+                "Utente": "test1"
             },
-            {
-                "Codice": "3",
-                "Data": "gio ago 26 2021",
-                "Entrate_rimaste": 6,
+            "4": {
+                "Codice": "4",
+                "Data": "sab ago 28 2021",
+                "Entrate_rimaste": 10,
                 "Tipo": "Abbonamento",
-                "Utente": "Codice Fiscale5"
-            },
-            {
-                "Codice": "3",
-                "Data": "gio ago 26 2021",
-                "Entrate_rimaste": 5,
-                "Tipo": "Abbonamento",
-                "Utente": "Codice Fiscale5"
+                "Utente": "test2"
             }
-        ],
-        "Entrate Singole": [
-            {
+        },
+        "Entrate Singole": {
+            "1": {
+                "CF": "test2",
+                "Codice": "1",
+                "Data": "2021/8/28",
+                "Film": "dfghgf",
+                "Prezzo": "7.5",
+                "Riduzione": "0",
+                "Tipo": "Biglietto"
+            },
+            "2": {
                 "CF": "test1",
-                "age": "12",
-                "name": "Belli",
-                "surname": "Carlo",
-                "tel.Num": "Numero di telefono"
-            },
-            {
-                "CF": "test2",
-                "age": "44",
-                "name": "Ciao",
-                "surname": "Piero",
-                "tel.Num": "Numero di telefono"
-            },
-            {
-                "CF": "Codice Fiscale5",
-                "age": "56",
-                "name": "Paolo",
-                "surname": "Bonolis",
-                "tel.Num": "Numero di telefono"
-            },
-            {
-                "CF": "Codice Fiscale5",
-                "age": "56",
-                "name": "Paolo",
-                "surname": "Bonolis",
-                "tel.Num": "Numero di telefono"
-            },
-            {
-                "CF": "test2",
-                "age": "44",
-                "name": "Ciao",
-                "surname": "Piero",
-                "tel.Num": "Numero di telefono"
+                "Codice": "2",
+                "Data": "2021/8/28",
+                "Film": "dfghgf",
+                "Prezzo": "6.65",
+                "Riduzione": "1",
+                "Tipo": "Biglietto"
             }
-        ]
+        }
     }
 }

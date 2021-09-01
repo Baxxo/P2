@@ -4,10 +4,10 @@
 #include <QComboBox>
 #include <QFile>
 #include <QJsonArray>
-#include <QMessageBox>
 #include <QObject>
 #include <QString>
 #include <QWidget>
+#include <QMessageBox>
 
 #include "abbonamento_view.h"
 #include "admin.h"
@@ -50,10 +50,9 @@ class Controller : public QObject {
   Famiglia *fam;
 
   Abbonamento *abb;
-  int codAbb;
+  int cod;
 
   AbbonamentoFamigliare *abbFam;
-  unsigned int codUt;
 
   unsigned int codBigl;
 
@@ -69,22 +68,20 @@ class Controller : public QObject {
   void loadPostiOccupati(bool canUpdate = false);
   void loadSale(bool canUpdate = false);
   void loadFilm(bool canUpdate = false);
-  void loadAbbonamenti(bool canUpdate = false);
+
 
   QVariantList *readUtenti(QFile &file, bool canUpdate);
   QVariantList *readFamiglie(QFile &file, bool canUpdate);
-  QVariantList *readEntrataAbb(QFile &file, bool canUpdate);
-  QVariantList *readEntrataBigl(QFile &file, bool canUpdate);
+  QVariantMap *readEntrata(QFile &file, bool canUpdate);
   QJsonObject *readPosti(QFile &file, bool canUpdate);
   QVariantList *readSale(QFile &file, bool canUpdate);
   QJsonObject *readFilm(QFile &file, bool canUpdate);
-  QVariantMap *readAbbonamenti(QFile &file, bool canUpdate);
+
 
   void popolaVectorUtenti(const QVariantList &list);
   void popolaVectorFamiglie(const QVariantList &list);
-  void popolaVectorEntrate(const QVariantList &listAbb,
-                           const QVariantList &listBigl);
-  void popolaVectorAbbonamenti(const QVariantMap &map);
+  void popolaVectorEntrate(const QVariantMap &map);
+
   void popolaVectorSale(const QVariantList &list);
 
  public slots:
@@ -106,7 +103,7 @@ class Controller : public QObject {
   void loadPostiSlot();
   void loadSaleSlot();
   void loadFilmSlot();
-  void loadAbbonamentiSlot();
+
 
   // slot per Utente_View
   void annullaUtente();
@@ -165,6 +162,7 @@ class Controller : public QObject {
   void loadFilmInBigliettoview();
 
   void popolaEntrateBiglietto(int index);
+
 };
 
 #endif  // CONTROLLER_H
