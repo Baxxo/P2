@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
       prevAdmin("Admin"),
       prevChooseUtenti("Scegli file json per utenti"),
       prevChooseFamiglie("Scegli file json per famiglie"),
-      prevChooseAbbonamenti("scegli file json per abbonamenti"){
+      prevChooseAbbonamenti("scegli file json per abbonamenti") {
   changeBtn->setMinimumWidth(50);
   changeBtn->setProperty("class", "changeBtn");
 
@@ -119,7 +119,9 @@ void MainWindow::setLabelPathSale(const QString &s) { pathSala->setText(s); }
 
 void MainWindow::setLabelPathFilm(const QString &s) { pathFilm->setText(s); }
 
-void MainWindow::setLabelPathAbbonamenti(const QString &s){ pathAbbonamenti->setText(s); }
+void MainWindow::setLabelPathAbbonamenti(const QString &s) {
+  pathAbbonamenti->setText(s);
+}
 
 void MainWindow::changeTitleAdmin(const QString &s) {
   prevAdmin = s;
@@ -127,12 +129,11 @@ void MainWindow::changeTitleAdmin(const QString &s) {
 }
 
 void MainWindow::changeTitleChooseSala(const QString &s) {
-    pathFilm->setText(s);
+  pathFilm->setText(s);
 }
 
-void MainWindow::changeTitleChooseAbbonamenti(const QString &s)
-{
-    pathAbbonamenti->setText(s);
+void MainWindow::changeTitleChooseAbbonamenti(const QString &s) {
+  pathAbbonamenti->setText(s);
 }
 
 void MainWindow::changeTitleChooseUtenti(const QString &s) {
@@ -265,9 +266,8 @@ void MainWindow::createLayoutSetup() {
 
   if (!chooseAbbonamenti) {
     chooseAbbonamenti = new QPushButton("Scegli json per abbonamenti");
-    chooseAbbonamenti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
-
+    chooseAbbonamenti->setSizePolicy(QSizePolicy::Expanding,
+                                     QSizePolicy::Fixed);
   }
   buttonLayout->addWidget(chooseAbbonamenti, 6, 0, Qt::AlignCenter);
 
@@ -339,6 +339,15 @@ void MainWindow::showPath() {
   }
   if (controller->getPathJsonAbbonamenti() == "") {
     pathAbbonamenti->hide();
+  }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+  event->ignore();
+  if (QMessageBox::Yes ==
+      QMessageBox::question(this, "Attenzione", "Confermi di voler uscire?",
+                            QMessageBox::Yes | QMessageBox::No)) {
+    event->accept();
   }
 }
 

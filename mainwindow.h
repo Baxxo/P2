@@ -73,6 +73,8 @@ class MainWindow : public QMainWindow {
 
   void showPath();
 
+  void closeEvent(QCloseEvent *event);
+
  private slots:
 
   void changeMenuSlot();
