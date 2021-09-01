@@ -23,6 +23,8 @@ class Sala {
 
   bool operator==(const Sala &o) const;
   bool operator!=(const Sala &o) const;
+
+  string toString() const;
 };
 
 #endif

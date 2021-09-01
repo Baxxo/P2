@@ -79,7 +79,6 @@ class Controller : public QObject {
   void popolaVectorUtenti(const QVariantList &list);
   void popolaVectorFamiglie(const QVariantList &list);
   void popolaVectorEntrate(const QVariantMap &map);
-
   void popolaVectorSale(const QVariantList &list);
 
  public slots:
@@ -154,7 +153,7 @@ class Controller : public QObject {
   void loadEntrateInAdmin();
   void loadSaleInAdmin();
   void loadFilmInAdmin();
-  void loadAbbonamentiInAdmin();
+  //  void loadAbbonamentiInAdmin();
   void loadFilmInBigliettoview();
 
   void popolaEntrateBiglietto(int index);

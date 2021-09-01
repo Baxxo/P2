@@ -51,7 +51,7 @@ QString Controller::getPathJsonAbbonamenti() const {
 
 bool Controller::removeAbbonamento(const QString &cod) {
   if (model->searchEntrata(cod.toStdString())) {
-    return model->removeEntrata(cod);
+    return model->removeEntrata(cod.toStdString());
   }
   return false;
 }
@@ -124,8 +124,6 @@ bool Controller::createAbbonamento(const QString &cf) {
 
     QJsonObject objectA = a.toObject();
 
-    qDebug() << QString::fromStdString(abb->getData()->toString());
-
     QJsonObject newAbbonamento;
     newAbbonamento.insert("Tipo", "Abbonamento");
     newAbbonamento.insert("Data",
@@ -191,8 +189,6 @@ bool Controller::createAbbonamentoFamigliare(const QString &name,
 
       QJsonObject objectA = a.toObject();
 
-      qDebug() << QString::fromStdString(abbFam->getData()->toString());
-
       QJsonObject newAbbonamento;
       newAbbonamento.insert("Tipo", "Abbonamento_Famigliare");
       newAbbonamento.insert(
@@ -248,6 +244,7 @@ void Controller::loadFamiglieInAdmin() {
 }
 
 void Controller::loadEntrateInAdmin() {
+  qDebug() << "--- INIZIO STAMPA ---";
   admin->clearListEntrate();
 
   for (auto it = model->getListEntrate().cbegin();
@@ -255,20 +252,26 @@ void Controller::loadEntrateInAdmin() {
     Abbonamento *ab = dynamic_cast<Abbonamento *>(&(**it));
 
     AbbonamentoFamigliare *abf = dynamic_cast<AbbonamentoFamigliare *>(ab);
-
-    Biglietto *b = dynamic_cast<Biglietto *>(b);
     if (abf) {
-      admin->addEntrata("Abbonamento Famigliare " +
-                            QString::fromStdString(abf->getFamiglia()),
-                        QString::fromStdString(abf->getCodice()));
-    }
-    if (ab) {
+      qDebug() << "Abbonamento Famigliare"
+               << QString::fromStdString(abf->toString());
+      admin->addAbbonamento("Abbonamento Famigliare -> " +
+                                QString::fromStdString(abf->toString()),
+                            QString::fromStdString(abf->getCodice()));
+
+    } else if (ab) {
+      qDebug() << "Abbonamento " << QString::fromStdString(ab->toString());
       Utente *u_tmp = model->getUtente(ab->getUtente());
-      string s1 = "Abbonamento " + u_tmp->toString();
+      string s1 = "Abbonamento -> " + u_tmp->toString();
       string s2 = ab->getCodice();
-      admin->addEntrata(QString::fromStdString(s1), QString::fromStdString(s2));
+      admin->addAbbonamento(QString::fromStdString(s1),
+                            QString::fromStdString(s2));
     }
   }
+  qDebug() << "--- FINE STAMPA ---";
+  qDebug() << "";
+  qDebug() << "________________";
+  qDebug() << "";
 }
 
 void Controller::loadSaleInAdmin() {
@@ -283,27 +286,6 @@ void Controller::loadFilmInAdmin() {
   admin->clearListFilm();
   for (auto it = filmObj.begin(); it != filmObj.end(); ++it) {
     admin->addFilminList((it).key());
-  }
-}
-
-void Controller::loadAbbonamentiInAdmin() {
-  for (auto it = model->getListEntrate().cbegin();
-       it != model->getListEntrate().cend(); ++it) {
-    Abbonamento *ab = dynamic_cast<Abbonamento *>(&(**it));
-
-    AbbonamentoFamigliare *abf = dynamic_cast<AbbonamentoFamigliare *>(ab);
-    if (abf) {
-      admin->addAbbonamento("Abbonamento Famigliare " +
-                                QString::fromStdString(abf->getFamiglia()),
-                            QString::fromStdString(abf->getCodice()));
-
-    } else {
-      Utente *u_tmp = model->getUtente(ab->getUtente());
-      string s1 = "Abbonamento " + u_tmp->toString();
-      string s2 = ab->getCodice();
-      admin->addAbbonamento(QString::fromStdString(s1),
-                            QString::fromStdString(s2));
-    }
   }
 }
 
@@ -1227,12 +1209,9 @@ void Controller::popolaVectorFamiglie(const QVariantList &list) {
 void Controller::popolaVectorEntrate(const QVariantMap &map) {
   QVariantMap listAbb;
   listAbb = map["Entrate"].toMap().value("Entrate Abbonamento").toMap();
-  QVariantMap listSing;
-  listSing = map["Entrate"].toMap().value("Entrate Singole").toMap();
 
   for (auto i = listAbb.cbegin(); i != listAbb.cend(); ++i) {
     QVariantMap mapA = (*i).toMap();
-
     QString tipo = mapA["Tipo"].toString();
 
     if (tipo == "Abbonamento") {
@@ -1262,6 +1241,9 @@ void Controller::popolaVectorEntrate(const QVariantMap &map) {
       }
     }
   }
+
+  QVariantMap listSing;
+  listSing = map["Entrate"].toMap().value("Entrate Singole").toMap();
 
   for (auto i = listSing.cbegin(); i != listSing.cend(); ++i) {
     QVariantMap mapB = (*i).toMap();

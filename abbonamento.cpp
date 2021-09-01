@@ -22,3 +22,7 @@ Abbonamento &Abbonamento::operator=(const Abbonamento &o) {
 }
 
 Abbonamento *Abbonamento::clone() const { return new Abbonamento(*this); }
+
+std::string Abbonamento::toString() const {
+  return "Codice: " + getCodice() + " utente: " + getUtente();
+}

@@ -1,14 +1,10 @@
 #include "model.h"
+//#include <QDebug>
 
 Model::Model() {}
 
 void Model::addEntrata(EntrataFilm *e) {
-    listEntrate.push_back(DeepPtr<EntrataFilm>(e));
-}
-
-void Model::addAbbonamento(Abbonamento *a)
-{
-    listAbbonamenti.push_back(DeepPtr<Abbonamento>(a));
+  listEntrate.push_back(DeepPtr<EntrataFilm>(e));
 }
 
 void Model::addUtente(Utente *u) { listUtenti.push_back(DeepPtr<Utente>(u)); }
@@ -17,50 +13,56 @@ void Model::addFamiglia(Famiglia *f) {
   listFamiglie.push_back(DeepPtr<Famiglia>(f));
 }
 
-void Model::addAcquisto(Utente *u) {
-  listStorico.push_back(DeepPtr<Utente>(u));
-}
-
 void Model::addSala(Sala *s) { listSale.push_back(DeepPtr<Sala>(s)); }
 
-bool Model::removeEntrata(const QString &e) {
-  int i=0;
-  for(auto it = listEntrate.cbegin(); it!= listEntrate.cend(); ++it){
-    i++;
-    if((**it).getCodice()== e.toStdString()){
-        return listEntrate.erase(listEntrate.begin()+i);
+bool Model::removeEntrata(const string &e) {
+  bool chk = false;
+  //  int i = 0;
+  //  for (auto it = listEntrate.cbegin(); it != listEntrate.cend(); ++it) {
+  //    if ((**it).getCodice() == e.toStdString()) {
+  //      chk = listEntrate.erase(listEntrate.begin() + i);
+  //    }
+  //    i++;
+  //  }
+  for (int i = 0; i < listEntrate.getSize(); ++i) {
+    if (listEntrate[i]->getCodice() == e) {
+      chk = listEntrate.erase(listEntrate.begin() + i);
     }
   }
+  return chk;
 }
 
 bool Model::removeUtente(const Utente &u) {
-  int i=0;
-  for(auto it = listUtenti.cbegin(); it!= listUtenti.cend(); ++it){
+  int i = 0;
+  for (auto it = listUtenti.cbegin(); it != listUtenti.cend(); ++it) {
     i++;
-    if((**it).getCodFisc()== u.getCodFisc()){
-        return listUtenti.erase(listUtenti.begin()+i);
+    if ((**it).getCodFisc() == u.getCodFisc()) {
+      return listUtenti.erase(listUtenti.begin() + i);
     }
   }
+  return false;
 }
 
 bool Model::removeFamiglia(const Famiglia &f) {
-    int i=0;
-    for(auto it = listFamiglie.cbegin(); it!= listFamiglie.cend(); ++it){
-      i++;
-      if((**it).getName()== f.getName()){
-          return listFamiglie.erase(listFamiglie.begin()+i);
-      }
+  int i = 0;
+  for (auto it = listFamiglie.cbegin(); it != listFamiglie.cend(); ++it) {
+    i++;
+    if ((**it).getName() == f.getName()) {
+      return listFamiglie.erase(listFamiglie.begin() + i);
     }
+  }
+  return false;
 }
 
 bool Model::removeSala(const Sala &s) {
-    int i=0;
-    for(auto it = listSale.cbegin(); it!= listSale.cend(); ++it){
-      i++;
-      if((**it).getNomesala()== s.getNomesala()){
-          return listSale.erase(listSale.begin()+i);
-      }
+  int i = 0;
+  for (auto it = listSale.cbegin(); it != listSale.cend(); ++it) {
+    i++;
+    if ((**it).getNomesala() == s.getNomesala()) {
+      return listSale.erase(listSale.begin() + i);
     }
+  }
+  return false;
 }
 
 void Model::clearVectorUtenti() { listUtenti.clear(); }
@@ -68,8 +70,6 @@ void Model::clearVectorUtenti() { listUtenti.clear(); }
 void Model::clearVectorFamiglie() { listFamiglie.clear(); }
 
 void Model::clearVectorEntrate() { listEntrate.clear(); }
-
-void Model::clearVectorAbbonamenti(){ listAbbonamenti.clear(); }
 
 void Model::cleaVectorSale() { listSale.clear(); }
 
@@ -124,16 +124,6 @@ Sala *Model::getSala(string nome) const {
   return nullptr;
 }
 
-Abbonamento *Model::getAbbonamento(std::string cod) const
-{
-    for (auto it = listAbbonamenti.cbegin(); it != listAbbonamenti.cend(); ++it) {
-      if ((*it)->getCodice() == cod) {
-        return new Abbonamento(**it);
-      }
-    }
-    return nullptr;
-}
-
 const MyVector<DeepPtr<EntrataFilm>> &Model::getListEntrate() const {
   return listEntrate;
 }
@@ -147,11 +137,6 @@ const MyVector<DeepPtr<Famiglia>> &Model::getListFamiglie() const {
 }
 
 const MyVector<DeepPtr<Sala>> &Model::getListSale() const { return listSale; }
-
-const MyVector<DeepPtr<Abbonamento> > &Model::getListAbbonamenti() const
-{
-    return listAbbonamenti;
-}
 
 void Model::addUserToFamily(Famiglia &f, Utente *u) { f.addMembro(u); }
 
@@ -172,11 +157,10 @@ bool Model::searchNameFamiglia(const string &name) const {
 }
 
 bool Model::searchEntrata(const string &cod) const {
-    bool trovato=false;
-    if (!listEntrate.isEmpty()) {
-        for(auto it = listEntrate.cbegin(); it!= listEntrate.cend(); ++it){
-            if ((*it)->getCodice() == cod)
-                trovato= true;
+  bool trovato = false;
+  if (!listEntrate.isEmpty()) {
+    for (auto it = listEntrate.cbegin(); it != listEntrate.cend(); ++it) {
+      if ((*it)->getCodice() == cod) trovato = true;
     }
   }
   return trovato;

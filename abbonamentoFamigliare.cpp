@@ -13,6 +13,10 @@ AbbonamentoFamigliare *AbbonamentoFamigliare::clone() const {
   return new AbbonamentoFamigliare(*this);
 }
 
+std::string AbbonamentoFamigliare::toString() const {
+  return "Codice: " + getCodice() + " famiglia: " + getFamiglia();
+}
+
 double AbbonamentoFamigliare::getPrezzo() const {
   return EntrataFilm::getPrezzo() * getEntrate();
 }

@@ -8,14 +8,6 @@
                 "Tipo": "Abbonamento",
                 "Utente": "provaCodFIsc"
             },
-            "3": {
-                "Codice": "3",
-                "Data": "2021/8/28",
-                "Entrate_rimaste": 10,
-                "Famiglia": "test1",
-                "Tipo": "Abbonamento_Famigliare",
-                "Utente": "test1"
-            },
             "4": {
                 "Codice": "4",
                 "Data": "2021/8/28",
@@ -38,13 +30,6 @@
                 "Famiglia": "provaFamgilia",
                 "Tipo": "Abbonamento_Famigliare",
                 "Utente": "Codice Fiscale7"
-            },
-            "9": {
-                "Codice": "9",
-                "Data": "2021/9/1",
-                "Entrate_rimaste": 10,
-                "Tipo": "Abbonamento",
-                "Utente": "Codice Fiscale4"
             }
         },
         "Entrate Singole": {

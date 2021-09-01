@@ -19,10 +19,12 @@ class Abbonamento : public EntrataFilm {
 
   int removeOneEntrata();
 
-  double getPrezzo() const;
+  double getPrezzo() const override;
 
   Abbonamento &operator=(const Abbonamento &o);
 
   Abbonamento *clone() const override;
+
+  string toString() const override;
 };
 #endif

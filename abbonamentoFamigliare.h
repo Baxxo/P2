@@ -24,6 +24,8 @@ class AbbonamentoFamigliare : public Abbonamento {
   string getFamiglia() const;
 
   AbbonamentoFamigliare *clone() const override;
+
+  string toString() const override;
 };
 
 #endif

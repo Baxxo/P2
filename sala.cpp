@@ -21,3 +21,7 @@ bool Sala::operator==(const Sala &o) const {
 bool Sala::operator!=(const Sala &o) const {
   return colonne != o.colonne && righe != o.righe && nome_sala != o.nome_sala;
 }
+
+std::string Sala::toString() const {
+  return "da togliere";  // da togliere
+}
