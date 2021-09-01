@@ -345,7 +345,7 @@ void MainWindow::showPath() {
 void MainWindow::closeEvent(QCloseEvent *event) {
   event->ignore();
   if (QMessageBox::Yes ==
-      QMessageBox::question(this, "Attenzione", "Confermi di voler uscire?",
+      QMessageBox::question(this, "Attenzione!", "Confermi di voler uscire?",
                             QMessageBox::Yes | QMessageBox::No)) {
     event->accept();
   }
