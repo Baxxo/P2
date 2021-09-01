@@ -31,7 +31,7 @@ unsigned int Data::getMese() const { return mese; }
 
 unsigned int Data::getAnno() const { return anno; }
 
-string Data::ToString() const {
+string Data::toString() const {
   return std::to_string(giorno) + "/" + std::to_string(mese) + "/" +
          std::to_string(anno);
 }

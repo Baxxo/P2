@@ -4,6 +4,8 @@
 #include <QFileDialog>
 #include <QTimer>
 
+#include <QDebug>
+
 using std::string;
 
 Controller::Controller(QObject *parent, Model *m)
@@ -122,10 +124,12 @@ bool Controller::createAbbonamento(const QString &cf) {
 
     QJsonObject objectA = a.toObject();
 
+    qDebug() << QString::fromStdString(abb->getData()->toString());
+
     QJsonObject newAbbonamento;
     newAbbonamento.insert("Tipo", "Abbonamento");
     newAbbonamento.insert("Data",
-                          QString::fromStdString(abb->getData()->ToString()));
+                          QString::fromStdString(abb->getData()->toString()));
     newAbbonamento.insert("Utente", QString::fromStdString(abb->getUtente()));
     newAbbonamento.insert("Codice", QString::fromStdString(abb->getCodice()));
     newAbbonamento.insert("Entrate_rimaste", abb->getEntrate());
@@ -187,10 +191,12 @@ bool Controller::createAbbonamentoFamigliare(const QString &name,
 
       QJsonObject objectA = a.toObject();
 
+      qDebug() << QString::fromStdString(abbFam->getData()->toString());
+
       QJsonObject newAbbonamento;
       newAbbonamento.insert("Tipo", "Abbonamento_Famigliare");
       newAbbonamento.insert(
-          "Data", QString::fromStdString(abbFam->getData()->ToString()));
+          "Data", QString::fromStdString(abbFam->getData()->toString()));
       newAbbonamento.insert("Utente",
                             QString::fromStdString(abbFam->getUtente()));
       newAbbonamento.insert("Famiglia",
@@ -199,7 +205,8 @@ bool Controller::createAbbonamentoFamigliare(const QString &name,
                             QString::fromStdString(abbFam->getCodice()));
       newAbbonamento.insert("Entrate_rimaste", abbFam->getEntrate());
 
-      objectV.insert(QString::fromStdString(abb->getCodice()), newAbbonamento);
+      objectV.insert(QString::fromStdString(abbFam->getCodice()),
+                     newAbbonamento);
 
       objectA.insert("Entrate Abbonamento", objectV);
 
@@ -803,7 +810,7 @@ void Controller::buyBiglietto() {
 
         QJsonObject newUser;
         newUser.insert("Codice", QString::number(cod));
-        newUser.insert("Data", QString::fromStdString(date->ToString()));
+        newUser.insert("Data", QString::fromStdString(date->toString()));
         newUser.insert("CF", QString::fromStdString((**it).getCodFisc()));
         newUser.insert("Film", bigliettoView->getSelectedFilm());
         newUser.insert("Prezzo", QString::number(b->getPrezzo()));

@@ -23,6 +23,6 @@ class Data {
 
   unsigned int getAnno() const;
 
-  string ToString() const;
+  string toString() const;
 };
 #endif
