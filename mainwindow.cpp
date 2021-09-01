@@ -170,7 +170,6 @@ void MainWindow::resizeMe() { adjustSize(); }
 
 void MainWindow::changeMenu() {
   if (isVisReadBtn) {
-    title->setText("QTheater");
     hideLayoutSetup();
 
     showLayoutAdCLl();
@@ -178,7 +177,6 @@ void MainWindow::changeMenu() {
     isVisReadBtn = false;
 
   } else {
-    title->setText("Setup");
     hideLayoutAdCLl();
 
     showLayoutSetup();
@@ -262,16 +260,12 @@ void MainWindow::createLayoutSetup() {
   }
   buttonLayout->addWidget(chooseFilm, 5, 0, Qt::AlignCenter);
 
-  isVisReadBtn = true;
-
   if (!chooseAbbonamenti) {
     chooseAbbonamenti = new QPushButton("Scegli json per abbonamenti");
     chooseAbbonamenti->setSizePolicy(QSizePolicy::Expanding,
                                      QSizePolicy::Fixed);
   }
   buttonLayout->addWidget(chooseAbbonamenti, 6, 0, Qt::AlignCenter);
-
-  isVisReadBtn = true;
 }
 
 void MainWindow::hideLayoutAdCLl() {
@@ -284,6 +278,9 @@ void MainWindow::showLayoutAdCLl() {
 
   adminBtn->show();
   clientBtn->show();
+
+  isVisReadBtn = false;
+  title->setText("QTheater");
 }
 
 void MainWindow::setPrevAdmin(const QString &value) { prevAdmin = value; }
@@ -296,6 +293,8 @@ void MainWindow::hideLayoutSetup() {
   chooseFilm->hide();
   chooseSala->hide();
   chooseAbbonamenti->hide();
+
+  isVisReadBtn = false;
 }
 
 void MainWindow::showLayoutSetup() {
@@ -316,6 +315,9 @@ void MainWindow::showLayoutSetup() {
   }
   chooseFilm->show();
   chooseSala->show();
+
+  isVisReadBtn = true;
+  title->setText("Setup");
 }
 
 void MainWindow::showPath() {
