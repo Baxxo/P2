@@ -1,8 +1,6 @@
 #ifndef MYVECTOR_H
 #define MYVECTOR_H
 
-#include <QDebug>
-
 template <class T>
 class MyVector {
  private:
@@ -346,41 +344,33 @@ template <class T>
 bool MyVector<T>::erase(Iterator i) {
   MyVector::Iterator it = erase(i, i + 1);
   if (it != nullptr) {
-    // serve la delete?
     return true;
   }
   return false;
 }
 
 template <class T>
-typename MyVector<T>::Iterator MyVector<T>::erase(MyVector::Iterator it1,
-                                                  MyVector::Iterator it2) {
-  qDebug() << "erase vector it1: "
-           << QString::fromStdString((*it1)->toString());
-  qDebug() << "erase vector it2: "
-           << QString::fromStdString((*it2)->toString());
+typename MyVector<T>::Iterator MyVector<T>::erase(Iterator it1, Iterator it2) {
   if (!size) return nullptr;
-  Iterator tmp = it1 + 1;
-
   if (it1 < begin()) return erase(begin(), it2);
-  if (it2 > end() || tmp > end()) return erase(it1, end());
-  copy(tmp, it2, it1);
+  if (it2 > end()) return erase(it1, end());
+
+  copy(it2, end(), it1);
+
   int offset = static_cast<int>(it2.ptr - it1.ptr);
   size = size - offset;
   return it1;
 }
 
 template <class T>
-typename MyVector<T>::Iterator MyVector<T>::copy(MyVector::Iterator first,
-                                                 MyVector::Iterator last,
+typename MyVector<T>::Iterator MyVector<T>::copy(Iterator first, Iterator last,
                                                  Iterator destination) {
   while (first != last) {
-    qDebug() << "copy vector first: "
-             << QString::fromStdString((*first)->toString());
     *destination = *first;
-    ++destination;
     ++first;
+    ++destination;
   }
+
   return destination;
 }
 

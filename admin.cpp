@@ -1,6 +1,8 @@
 #include "admin.h"
 #include "controller.h"
 
+#include <QTimer>
+
 Admin::Admin(Controller *c, MainWindow *parent)
     : desktop(QApplication::desktop()),
       baseLayout(new QGridLayout()),
@@ -218,6 +220,10 @@ void Admin::addSalaLayout() {
   connect(saveSala, SIGNAL(clicked()), controller, SLOT(newSala()));
 }
 
+void Admin::clearUtility() {
+  utility->setText("Premi due volte per eliminare un abbonamento");
+}
+
 void Admin::getClickAbb() {
   QLabelCF *lbl =
       dynamic_cast<QLabelCF *>(listAbb->itemWidget(listAbb->currentItem()));
@@ -229,6 +235,7 @@ void Admin::getClickAbb() {
     utility->setText(utility->text() +
                      "\nErrore nella rimozione dell' abbonamento " + prev);
   }
+  QTimer::singleShot(3000, this, SLOT(clearUtility()));
 }
 
 void Admin::closeEvent(QCloseEvent *event) {

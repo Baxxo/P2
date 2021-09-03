@@ -81,6 +81,8 @@ class Admin : public QMainWindow {
   void addFilmLayout();
   void addSalaLayout();
 
+  void clearUtility();
+
  public:
   Admin(Controller *c, MainWindow *parent = nullptr);
   ~Admin() = default;
