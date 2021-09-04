@@ -34,7 +34,9 @@ class Utente_View : public QWidget {
   QLabel *conferma;
   QDesktopWidget *desktop;
   Controller *controller;
-  QValidator *validatorCf;
+
+ private slots:
+  void annullaUtente();
 
  public:
   Utente_View(Controller *c, QWidget *parent = nullptr);

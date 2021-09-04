@@ -16,20 +16,27 @@ Utente_View::Utente_View(Controller *c, QWidget *parent)
       numtel(new QLineEditClickable()),
       conferma(new QLabel),
       desktop(new QDesktopWidget),
-      controller(c),
-      validatorCf(new QRegularExpressionValidator(
-          QRegularExpression("[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}["
-                             "0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}"))) {
+      controller(c) {
   setWindowTitle(QString("Creazione Utente"));
 
-  CF->setValidator(validatorCf);
+  CF->setValidator(new QRegularExpressionValidator(
+      QRegularExpression("[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}["
+                         "0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}")));
+  name->setValidator(
+      new QRegularExpressionValidator(QRegularExpression("[a-zA-Z]{12}")));
+  surname->setValidator(
+      new QRegularExpressionValidator(QRegularExpression("[a-zA-Z]{12}")));
+  age->setValidator(
+      new QRegularExpressionValidator(QRegularExpression("[0-9]{3}")));
+  numtel->setValidator(
+      new QRegularExpressionValidator(QRegularExpression("[0-9]{10}")));
 
   // layout bottoni
   btnLayout->addWidget(confermaBtn, Qt::AlignCenter);
   btnLayout->addWidget(annullaBtn, Qt::AlignCenter);
   mainlayout->addLayout(btnLayout, 1, 0, Qt::AlignCenter);
 
-  // layout linee di testo
+  // layout linee di testor
   lineLayout->addWidget(name, Qt::AlignCenter);
   lineLayout->addWidget(surname, Qt::AlignCenter);
   lineLayout->addWidget(CF, Qt::AlignCenter);
@@ -55,8 +62,10 @@ Utente_View::Utente_View(Controller *c, QWidget *parent)
 
   // connessioni al controller
   connect(confermaBtn, SIGNAL(clicked()), controller, SLOT(salvaUtente()));
-  connect(annullaBtn, SIGNAL(clicked()), controller, SLOT(annullaUtente()));
+  connect(annullaBtn, SIGNAL(clicked()), this, SLOT(annullaUtente()));
 }
+
+void Utente_View::annullaUtente() { close(); }
 
 void Utente_View::setStyle() {
   QFile file(":/qss/style.css");

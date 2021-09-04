@@ -242,7 +242,6 @@ void Controller::loadFamiglieInAdmin() {
 }
 
 void Controller::loadEntrateInAdmin() {
-  qDebug() << "--- INIZIO STAMPA ---";
   admin->clearListEntrate();
 
   for (auto it = model->getListEntrate().cbegin();
@@ -251,14 +250,11 @@ void Controller::loadEntrateInAdmin() {
 
     AbbonamentoFamigliare *abf = dynamic_cast<AbbonamentoFamigliare *>(ab);
     if (abf) {
-      qDebug() << "Abbonamento Famigliare"
-               << QString::fromStdString(abf->toString());
       admin->addAbbonamento("Abbonamento Famigliare -> " +
                                 QString::fromStdString(abf->toString()),
                             QString::fromStdString(abf->getCodice()));
 
     } else if (ab) {
-      qDebug() << "Abbonamento " << QString::fromStdString(ab->toString());
       Utente *u_tmp = model->getUtente(ab->getUtente());
       string s1 = "Abbonamento -> " + u_tmp->toString();
       string s2 = ab->getCodice();
@@ -266,10 +262,6 @@ void Controller::loadEntrateInAdmin() {
                             QString::fromStdString(s2));
     }
   }
-  qDebug() << "--- FINE STAMPA ---";
-  qDebug() << "";
-  qDebug() << "________________";
-  qDebug() << "";
 }
 
 void Controller::loadSaleInAdmin() {
