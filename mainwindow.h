@@ -34,7 +34,6 @@ class MainWindow : public QMainWindow {
   QPushButton *chooseSala;
   QPushButton *choosePosti;
   QPushButton *chooseFilm;
-  QPushButton *chooseAbbonamenti;
 
   QPushButton *adminBtn;
   QPushButton *clientBtn;
@@ -45,7 +44,6 @@ class MainWindow : public QMainWindow {
   QLabel *pathPosti;
   QLabel *pathSala;
   QLabel *pathFilm;
-  QLabel *pathAbbonamenti;
 
   Controller *controller;
 
@@ -54,9 +52,10 @@ class MainWindow : public QMainWindow {
   QString prevAdmin;
   QString prevChooseUtenti;
   QString prevChooseFamiglie;
-  QString prevChooseFilm;
   QString prevChooseEntrata;
-  QString prevChooseAbbonamenti;
+  QString prevChooseSale;
+  QString prevChoosePosti;
+  QString prevChooseFilm;
 
   void setStyle();
   void changeMenu();
@@ -71,7 +70,7 @@ class MainWindow : public QMainWindow {
   void hideLayoutSetup();
   //  void destroyLayoutSetup();
 
-  void showPath();
+  void showPath(bool hide = false);
 
   void closeEvent(QCloseEvent *event);
 
@@ -91,10 +90,9 @@ class MainWindow : public QMainWindow {
   void changeTitleChooseUtenti(const QString &s);
   void changeTitleChooseFamiglie(const QString &s);
   void changeTitleChooseEntrata(const QString &s);
+  void changeTitleChoosePosti(const QString &s);
   void changeTitleChooseFilm(const QString &s);
   void changeTitleChooseSala(const QString &s);
-  void changeTitleChooseAbbonamenti(const QString &s);
-
   void changeTitleAdmin(const QString &s);
 
   void setLabelPathUser(const QString &s);
@@ -103,7 +101,6 @@ class MainWindow : public QMainWindow {
   void setLabelPathPosti(const QString &s);
   void setLabelPathSale(const QString &s);
   void setLabelPathFilm(const QString &s);
-  void setLabelPathAbbonamenti(const QString &s);
 
   void setPrevAdmin(const QString &value);
 

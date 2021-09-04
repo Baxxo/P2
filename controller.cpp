@@ -931,233 +931,247 @@ void Controller::loadFilm(bool canUpdate) {
   }
 }
 
+#include <QDebug>
+
 QVariantList *Controller::readUtenti(QFile &file, bool canUpdate) {
-  bool t = false;
-  while (!t) {
+  do {
     if (pathJsonUsers == "" || canUpdate) {
       pathJsonUsers = QFileDialog::getOpenFileName(
           view, tr("Carica json Utenti"), "/home/student/QTheater/json",
           tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
     }
-    if (pathJsonUsers.contains("users")) {
-      t = true;
-    }
-  }
-  if (pathJsonUsers != "") {
-    file.setFileName(pathJsonUsers);
 
-    if (!file.open(QIODevice::ReadOnly)) {
-      openError(QString("File open error: Read"));
-    } else {
-      model->clearVectorUtenti();
+    if (pathJsonUsers != "") {
+      file.setFileName(pathJsonUsers);
 
-      QString json = file.readAll();
-
-      QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
-      if (!doc.isEmpty()) {
-        QJsonObject jObj = doc.object();
-
-        QVariantMap mainMap = jObj.toVariantMap();
-        QVariantList *localList = new QVariantList();
-        *localList = mainMap["Utenti"].toList();
-        view->changeTitleChooseUtenti("Cambia file json per utenti");
-
-        return localList;
+      if (!file.open(QIODevice::ReadOnly)) {
+        openError(QString("File open error: Read"));
       } else {
-        openError(QString("File vuoto"));
+        model->clearVectorUtenti();
+
+        QString json = file.readAll();
+
+        QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
+        if (!doc.isEmpty()) {
+          QJsonObject jObj = doc.object();
+
+          QVariantMap mainMap = jObj.toVariantMap();
+          QVariantList *localList = new QVariantList();
+          *localList = mainMap["Utenti"].toList();
+
+          if (localList->size() > 0) {
+            view->changeTitleChooseUtenti("Cambia file json per utenti");
+            return localList;
+          }
+
+        } else {
+          openError(QString("File vuoto"));
+        }
       }
     }
-  }
+  } while (pathJsonUsers != "");
 
   return nullptr;
 }
 
 QVariantList *Controller::readFamiglie(QFile &file, bool canUpdate) {
-  // bool t=false;
-  // while(!t){
-  if (pathJsonFamiglie == "" || canUpdate) {
-    pathJsonFamiglie = QFileDialog::getOpenFileName(
-        view, tr("Carica json Famiglie"), "/home/student/QTheater/json",
-        tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
-  }
-  //        if(pathJsonUsers.contains("families")) {
-  //            t=true;
-  //        }
-  //}
+  do {
+    if (pathJsonFamiglie == "" || canUpdate) {
+      pathJsonFamiglie = QFileDialog::getOpenFileName(
+          view, tr("Carica json Famiglie"), "/home/student/QTheater/json",
+          tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+    }
 
-  if (pathJsonFamiglie != "") {
-    file.setFileName(pathJsonFamiglie);
+    if (pathJsonFamiglie != "") {
+      file.setFileName(pathJsonFamiglie);
 
-    if (!file.open(QIODevice::ReadOnly)) {
-      openError(QString("File open error: Read"));
-    } else {
-      model->clearVectorFamiglie();
-
-      QString json = file.readAll();
-
-      QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
-      if (!doc.isEmpty()) {
-        QJsonObject jObj = doc.object();
-
-        QVariantMap mainMap = jObj.toVariantMap();
-        QVariantList *localList = new QVariantList();
-        *localList = mainMap["Famiglie"].toList();
-        view->changeTitleChooseFamiglie("Cambia file json per Famiglie");
-
-        return localList;
+      if (!file.open(QIODevice::ReadOnly)) {
+        openError(QString("File open error: Read"));
       } else {
-        openError(QString("File vuoto"));
+        model->clearVectorFamiglie();
+
+        QString json = file.readAll();
+
+        QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
+        if (!doc.isEmpty()) {
+          QJsonObject jObj = doc.object();
+
+          QVariantMap mainMap = jObj.toVariantMap();
+          QVariantList *localList = new QVariantList();
+          *localList = mainMap["Famiglie"].toList();
+
+          if (localList->size() > 0) {
+            view->changeTitleChooseFamiglie("Cambia file json per Famiglie");
+            return localList;
+          }
+        } else {
+          openError(QString("File vuoto"));
+        }
       }
     }
-  }
+  } while (pathJsonFamiglie != "");
 
   return nullptr;
 }
 
 QVariantMap *Controller::readEntrata(QFile &file, bool canUpdate) {
-  // bool t=false;
-  // while(!t){
-  if (pathJsonEntrata == "" || canUpdate) {
-    pathJsonEntrata = QFileDialog::getOpenFileName(
-        view, tr("Carica json Entrate"), "/home/student/QTheater/json",
-        tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
-  }
+  do {
+    if (pathJsonEntrata == "" || canUpdate) {
+      pathJsonEntrata = QFileDialog::getOpenFileName(
+          view, tr("Carica json Entrate"), "/home/student/QTheater/json",
+          tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+    }
 
-  if (pathJsonEntrata != "") {
-    file.setFileName(pathJsonEntrata);
+    if (pathJsonEntrata != "") {
+      file.setFileName(pathJsonEntrata);
 
-    if (!file.open(QIODevice::ReadOnly)) {
-      openError(QString("File open error: Read"));
-    } else {
-      model->clearVectorEntrate();
-
-      QString json = file.readAll();
-
-      QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
-      if (!doc.isEmpty()) {
-        QJsonObject jObj = doc.object();
-
-        QVariantMap mainMap = jObj.toVariantMap();
-        QVariantMap *localMap = new QVariantMap();
-        *localMap = mainMap;
-        view->changeTitleChooseFamiglie("Cambia file json per Entrate");
-        return localMap;
+      if (!file.open(QIODevice::ReadOnly)) {
+        openError(QString("File open error: Read"));
       } else {
-        openError(QString("File vuoto"));
+        model->clearVectorEntrate();
+
+        QString json = file.readAll();
+
+        QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
+        if (!doc.isEmpty()) {
+          QJsonObject jObj = doc.object();
+
+          QVariantMap mainMap = jObj.toVariantMap();
+          QVariantMap *localMap = new QVariantMap();
+          *localMap = mainMap;
+
+          if (localMap->size() > 0) {
+            view->changeTitleChooseEntrata("Cambia file json per Entrate Film");
+            return localMap;
+          }
+        } else {
+          openError(QString("File vuoto"));
+        }
       }
     }
-  }
+  } while (pathJsonEntrata != "");
 
   return nullptr;
 }
 
 QJsonObject *Controller::readPosti(QFile &file, bool canUpdate) {
-  bool t = false;
-  //  while(!t){
-  if (pathJsonPosti == "" || canUpdate) {
-    pathJsonPosti = QFileDialog::getOpenFileName(
-        view, tr("Carica json Posti"), "/home/student/QTheater/json",
-        tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
-  }
-  //        if(pathJsonUsers.contains("posti")) {
-  //            t=true;
-  //        }
-  //  }
-  if (pathJsonPosti != "") {
-    file.setFileName(pathJsonPosti);
+  do {
+    if (pathJsonPosti == "" || canUpdate) {
+      pathJsonPosti = QFileDialog::getOpenFileName(
+          view, tr("Carica json Posti"), "/home/student/QTheater/json",
+          tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+    }
 
-    if (!file.open(QIODevice::ReadOnly)) {
-      openError(QString("File open error: Read"));
-    } else {
-      QString json = file.readAll();
+    if (pathJsonPosti != "") {
+      file.setFileName(pathJsonPosti);
 
-      QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
-      if (!doc.isEmpty()) {
-        QJsonObject *jObj = new QJsonObject;
-
-        *jObj = doc.object();
-
-        return jObj;
-
+      if (!file.open(QIODevice::ReadOnly)) {
+        openError(QString("File open error: Read"));
       } else {
-        openError(QString("Empty file"));
+        QString json = file.readAll();
+
+        QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
+        if (!doc.isEmpty()) {
+          QJsonObject *jObj = new QJsonObject;
+
+          *jObj = doc.object();
+
+          if (jObj->size() > 0) {
+            view->changeTitleChoosePosti("Cambia file json per Posti");
+
+            return jObj;
+          }
+
+        } else {
+          openError(QString("Empty file"));
+        }
       }
     }
-  }
+  } while (pathJsonPosti != "");
   return nullptr;
 }
 
 QVariantList *Controller::readSale(QFile &file, bool canUpdate) {
-  bool t = false;
-  //  while(!t){
-  if (pathJsonSale == "" || canUpdate) {
-    pathJsonSale = QFileDialog::getOpenFileName(
-        view, tr("Carica json Sale"), "/home/student/QTheater/json",
-        tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
-  }
-  //        if(pathJsonUsers.contains("sale")) {
-  //            t=true;
-  //        }
-  //  }
-  if (pathJsonSale != "") {
-    file.setFileName(pathJsonSale);
+  do {
+    if (pathJsonSale == "" || canUpdate) {
+      pathJsonSale = QFileDialog::getOpenFileName(
+          view, tr("Carica json Sale"), "/home/student/QTheater/json",
+          tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+    }
+    if (pathJsonSale != "") {
+      file.setFileName(pathJsonSale);
 
-    if (!file.open(QIODevice::ReadOnly)) {
-      openError(QString("File open error: Read"));
-    } else {
-      model->cleaVectorSale();
-
-      QString json = file.readAll();
-
-      QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
-
-      if (!doc.isEmpty()) {
-        QJsonObject jObj = doc.object();
-
-        QVariantMap mainMap = jObj.toVariantMap();
-        QVariantList *localList = new QVariantList();
-
-        *localList = mainMap["Sale"].toList();
-
-        return localList;
+      if (!file.open(QIODevice::ReadOnly)) {
+        openError(QString("File open error: Read"));
       } else {
-        openError(QString("File vuoto"));
+        model->cleaVectorSale();
+
+        QString json = file.readAll();
+
+        QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
+
+        if (!doc.isEmpty()) {
+          QJsonObject jObj = doc.object();
+
+          QVariantMap mainMap = jObj.toVariantMap();
+          QVariantList *localList = new QVariantList();
+
+          *localList = mainMap["Sale"].toList();
+
+          if (localList->size() > 0) {
+            view->changeTitleChooseSala("Cambia file json per sale");
+
+            return localList;
+          }
+        } else {
+          openError(QString("File vuoto"));
+        }
       }
     }
-  }
+  } while (pathJsonSale != "");
 
   return nullptr;
 }
 
 QJsonObject *Controller::readFilm(QFile &file, bool canUpdate) {
-  if (pathJsonFilm == "" || canUpdate) {
-    pathJsonFilm = QFileDialog::getOpenFileName(
-        view, tr("Carica json Film"), "/home/student/QTheater/json",
-        tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
-  }
+  do {
+    if (pathJsonFilm == "" || canUpdate) {
+      pathJsonFilm = QFileDialog::getOpenFileName(
+          view, tr("Carica json Film"), "/home/student/QTheater/json",
+          tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+    }
 
-  if (pathJsonFilm != "") {
-    file.setFileName(pathJsonFilm);
+    if (pathJsonFilm != "") {
+      file.setFileName(pathJsonFilm);
 
-    if (!file.open(QIODevice::ReadOnly)) {
-      openError(QString("File open error: Read"));
-    } else {
-      QString json = file.readAll();
-
-      QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
-      if (!doc.isEmpty()) {
-        QJsonObject *jObj = new QJsonObject;
-
-        *jObj = doc.object();
-        view->changeTitleChooseSala("Cambia file json per sale");
-
-        return jObj;
-
+      if (!file.open(QIODevice::ReadOnly)) {
+        openError(QString("File open error: Read"));
       } else {
-        openError(QString("File vuoto"));
+        QString json = file.readAll();
+
+        QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
+        if (!doc.isEmpty()) {
+          QJsonObject *jObj = new QJsonObject;
+
+          *jObj = doc.object();
+
+          QVariantMap mainMap = jObj->toVariantMap();
+          QVariantList *localList = new QVariantList();
+
+          *localList = mainMap["Sale"].toList();
+
+          if (localList->size() > 0) {
+            view->changeTitleChooseFilm("Cambia file json per film");
+
+            return jObj;
+          }
+
+        } else {
+          openError(QString("File vuoto"));
+        }
       }
     }
-  }
+  } while (pathJsonFilm != "");
 
   return nullptr;
 }

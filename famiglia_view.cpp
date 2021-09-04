@@ -4,12 +4,13 @@
 
 Famiglia_View::Famiglia_View(Controller *c, QWidget *parent)
     : QWidget(parent),
-      familyName(new QLineEditClickable("Type in a family name")),
+      familyName(new QLineEditClickable("Inserisci nome famiglia")),
       listaUtenti(new QListWidget),
-      searchEditText(new QLineEditClickable("Type in a CF and press search")),
+      searchEditText(
+          new QLineEditClickable("Inserisci codice fiscale e premi cerca")),
       menuLayout(new QVBoxLayout),
       btnLayout(new QVBoxLayout),
-      searchBtn(new QPushButton("Search")),
+      searchBtn(new QPushButton("Cerca")),
       saveFamily(new QPushButton("Salva Famiglia")),
       mainlayout(new QGridLayout),
       widget(new QWidget(this)),
@@ -19,6 +20,10 @@ Famiglia_View::Famiglia_View(Controller *c, QWidget *parent)
           "aggiungere un utente\n\n clicca di nuovo per rimuoverlo")),
       utility(new QLabel()),
       controller(c) {
+  searchEditText->setValidator(new QRegularExpressionValidator(
+      QRegularExpression("[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}["
+                         "0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}")));
+
   widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
   labelListaUtenti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);

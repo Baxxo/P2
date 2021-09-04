@@ -11,29 +11,31 @@ MainWindow::MainWindow(QWidget *parent)
       v_layout(new QVBoxLayout()),
       buttonLayout(new QGridLayout()),
       title(new QLabel("Setup")),
+
       changeBtn(new QPushButton(QIcon(":/images/reverse.png"), "")),
+
       chooseUtenti(nullptr),
       chooseFamiglie(nullptr),
       chooseEntrata(nullptr),
       chooseSala(nullptr),
       choosePosti(nullptr),
       chooseFilm(nullptr),
-      chooseAbbonamenti(nullptr),
+
       adminBtn(nullptr),
       clientBtn(nullptr),
+
       pathUser(new QLabel("name json utenti")),
       pathFamilies(new QLabel("name json famiglie")),
       pathEntrata(new QLabel("name json archivio entrate/abbonamenti")),
       pathPosti(new QLabel("name json postiOccupati")),
       pathSala(new QLabel("name json Sale")),
       pathFilm(new QLabel("name json film")),
-      pathAbbonamenti(new QLabel("name json ABbonamenti")),
+
       controller(nullptr),
       isVisReadBtn(true),
       prevAdmin("Admin"),
       prevChooseUtenti("Scegli file json per utenti"),
-      prevChooseFamiglie("Scegli file json per famiglie"),
-      prevChooseAbbonamenti("scegli file json per abbonamenti") {
+      prevChooseFamiglie("Scegli file json per famiglie") {
   changeBtn->setMinimumWidth(50);
   changeBtn->setProperty("class", "changeBtn");
 
@@ -63,16 +65,12 @@ MainWindow::MainWindow(QWidget *parent)
   pathEntrata->setProperty("class", "path");
   pathEntrata->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-  pathAbbonamenti->setProperty("class", "path");
-  pathAbbonamenti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
   buttonLayout->addWidget(pathUser, 0, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathFamilies, 1, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathEntrata, 2, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathPosti, 3, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathSala, 4, 1, Qt::AlignCenter);
   buttonLayout->addWidget(pathFilm, 5, 1, Qt::AlignCenter);
-  buttonLayout->addWidget(pathAbbonamenti, 6, 1, Qt::AlignCenter);
 
   widget->setLayout(mainLayout);
 
@@ -93,7 +91,6 @@ void MainWindow::setController(Controller *c) {
   pathPosti->setText(controller->getPathJsonPosti());
   pathFilm->setText(controller->getPathJsonFilm());
   pathSala->setText(controller->getPathJsonSale());
-  pathAbbonamenti->setText(controller->getPathJsonAbbonamenti());
 
   createLayoutAdCl();
   createLayoutSetup();
@@ -103,24 +100,34 @@ void MainWindow::setController(Controller *c) {
   showPath();
 }
 
-void MainWindow::setLabelPathUser(const QString &s) { pathUser->setText(s); }
+void MainWindow::setLabelPathUser(const QString &s) {
+  pathUser->setText(s);
+  showPath();
+}
 
 void MainWindow::setLabelPathFamiglie(const QString &s) {
   pathFamilies->setText(s);
+  showPath();
 }
 
 void MainWindow::setLabelPathEntrata(const QString &s) {
   pathEntrata->setText(s);
+  showPath();
 }
 
-void MainWindow::setLabelPathPosti(const QString &s) { pathPosti->setText(s); }
+void MainWindow::setLabelPathPosti(const QString &s) {
+  pathPosti->setText(s);
+  showPath();
+}
 
-void MainWindow::setLabelPathSale(const QString &s) { pathSala->setText(s); }
+void MainWindow::setLabelPathSale(const QString &s) {
+  pathSala->setText(s);
+  showPath();
+}
 
-void MainWindow::setLabelPathFilm(const QString &s) { pathFilm->setText(s); }
-
-void MainWindow::setLabelPathAbbonamenti(const QString &s) {
-  pathAbbonamenti->setText(s);
+void MainWindow::setLabelPathFilm(const QString &s) {
+  pathFilm->setText(s);
+  showPath();
 }
 
 void MainWindow::changeTitleAdmin(const QString &s) {
@@ -129,11 +136,10 @@ void MainWindow::changeTitleAdmin(const QString &s) {
 }
 
 void MainWindow::changeTitleChooseSala(const QString &s) {
-  pathFilm->setText(s);
-}
-
-void MainWindow::changeTitleChooseAbbonamenti(const QString &s) {
-  pathAbbonamenti->setText(s);
+  prevChooseSale = s;
+  if (chooseSala) {
+    chooseSala->setText(s);
+  }
 }
 
 void MainWindow::changeTitleChooseUtenti(const QString &s) {
@@ -157,6 +163,13 @@ void MainWindow::changeTitleChooseEntrata(const QString &s) {
   }
 }
 
+void MainWindow::changeTitleChoosePosti(const QString &s) {
+  prevChoosePosti = s;
+  if (choosePosti) {
+    choosePosti->setText(s);
+  }
+}
+
 void MainWindow::changeTitleChooseFilm(const QString &s) {
   prevChooseFilm = s;
   if (chooseFilm) {
@@ -176,14 +189,17 @@ void MainWindow::changeMenu() {
 
     isVisReadBtn = false;
 
+    showPath(true);
+
   } else {
     hideLayoutAdCLl();
 
     showLayoutSetup();
 
+    showPath();
+
     isVisReadBtn = true;
   }
-  showPath();
   QTimer::singleShot(0, this, SLOT(resizeMe()));
 }
 
@@ -259,13 +275,6 @@ void MainWindow::createLayoutSetup() {
     connect(chooseFilm, SIGNAL(clicked()), controller, SLOT(loadFilmSlot()));
   }
   buttonLayout->addWidget(chooseFilm, 5, 0, Qt::AlignCenter);
-
-  if (!chooseAbbonamenti) {
-    chooseAbbonamenti = new QPushButton("Scegli json per abbonamenti");
-    chooseAbbonamenti->setSizePolicy(QSizePolicy::Expanding,
-                                     QSizePolicy::Fixed);
-  }
-  buttonLayout->addWidget(chooseAbbonamenti, 6, 0, Qt::AlignCenter);
 }
 
 void MainWindow::hideLayoutAdCLl() {
@@ -292,7 +301,6 @@ void MainWindow::hideLayoutSetup() {
   choosePosti->hide();
   chooseFilm->hide();
   chooseSala->hide();
-  chooseAbbonamenti->hide();
 
   isVisReadBtn = false;
 }
@@ -301,17 +309,16 @@ void MainWindow::showLayoutSetup() {
   hideLayoutAdCLl();
 
   chooseUtenti->show();
-
   if (controller->getPathJsonUsers() != "") {
     chooseFamiglie->show();
-    chooseEntrata->show();
-    choosePosti->show();
-    chooseAbbonamenti->show();
+    if (controller->getPathJsonFamiglie() != "") {
+      chooseEntrata->show();
+      choosePosti->show();
+    }
   } else {
     chooseFamiglie->hide();
     chooseEntrata->hide();
     choosePosti->hide();
-    chooseAbbonamenti->hide();
   }
   chooseFilm->show();
   chooseSala->show();
@@ -320,27 +327,36 @@ void MainWindow::showLayoutSetup() {
   title->setText("Setup");
 }
 
-void MainWindow::showPath() {
-  if (controller->getPathJsonUsers() == "") {
+void MainWindow::showPath(bool hide) {
+  if (controller->getPathJsonUsers() == "" || hide) {
     pathUser->hide();
+  } else {
+    pathUser->show();
   }
-  if (controller->getPathJsonFamiglie() == "") {
+  if (controller->getPathJsonFamiglie() == "" || hide) {
     pathFamilies->hide();
+  } else {
+    pathFamilies->show();
   }
-  if (controller->getPathJsonEntrata() == "") {
+  if (controller->getPathJsonEntrata() == "" || hide) {
     pathEntrata->hide();
+  } else {
+    pathEntrata->show();
   }
-  if (controller->getPathJsonFilm() == "") {
+  if (controller->getPathJsonFilm() == "" || hide) {
     pathFilm->hide();
+  } else {
+    pathFilm->show();
   }
-  if (controller->getPathJsonPosti() == "") {
+  if (controller->getPathJsonPosti() == "" || hide) {
     pathPosti->hide();
+  } else {
+    pathPosti->show();
   }
-  if (controller->getPathJsonSale() == "") {
+  if (controller->getPathJsonSale() == "" || hide) {
     pathSala->hide();
-  }
-  if (controller->getPathJsonAbbonamenti() == "") {
-    pathAbbonamenti->hide();
+  } else {
+    pathSala->show();
   }
 }
 
