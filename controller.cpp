@@ -3,6 +3,7 @@
 #include <QDate>
 #include <QFileDialog>
 #include <QTimer>
+#include <QDebug>
 
 using std::string;
 
@@ -274,14 +275,16 @@ void Controller::loadSaleInAdmin() {
 
 void Controller::loadFilmInAdmin() {
   admin->clearListFilm();
-  for (auto it = filmObj.begin(); it != filmObj.end(); ++it) {
+  QJsonObject obj = filmObj.begin().value().toObject();
+  for (auto it = obj.begin(); it != obj.end(); ++it) {
     admin->addFilminList((it).key());
   }
 }
 
 void Controller::loadFilmInBigliettoview() {
   bigliettoView->clearListFilm();
-  for (auto it = filmObj.begin(); it != filmObj.end(); ++it) {
+  QJsonObject obj = filmObj.begin().value().toObject();
+  for (auto it = obj.begin(); it != obj.end(); ++it) {
     bigliettoView->addFilminList((it).key());
   }
 }
@@ -584,14 +587,27 @@ void Controller::salvaFamiglia() {
 }
 
 void Controller::newFilm() {
+  if (pathJsonFilm == "") {
+    pathJsonFilm = QFileDialog::getOpenFileName(
+        view, tr("Carica json Film"), "/home/student/QTheater/json",
+        tr("json(*.json)"), nullptr, QFileDialog::DontUseNativeDialog);
+  }
   QFile file(pathJsonFilm);
   if (!file.open(QIODevice::ReadWrite)) {
     openError(QString("File open error: Read"));
   }
 
-  QJsonDocument doc;
+  QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+  file.close();
+  QJsonObject obj = doc.object();
 
-  filmObj.insert(admin->getNomeFilm(), admin->getSalaFilm());
+  obj.insert(admin->getNomeFilm(), admin->getSalaFilm());
+
+  filmObj.insert("Film", obj);
+
+  if (!file.open(QIODevice::WriteOnly)) {
+    openError(QString("File open error: Write"));
+  }
 
   doc.setObject(filmObj);
   file.write(doc.toJson());
@@ -735,7 +751,8 @@ void Controller::stpBigl() {
 
 void Controller::showSala() {
   QString s = bigliettoView->getSelectedFilm();
-  QString f = filmObj.find(s).value().toString();
+  QJsonObject obj = filmObj.begin().value().toObject();
+  QString f = obj.find(s).value().toString();
   unsigned int rows = 0, columns = 0;
   for (auto it = model->getListSale().cbegin();
        it != model->getListSale().cend(); ++it) {
@@ -931,7 +948,7 @@ void Controller::loadFilm(bool canUpdate) {
   }
 }
 
-#include <QDebug>
+
 
 QVariantList *Controller::readUtenti(QFile &file, bool canUpdate) {
   do {
@@ -1154,17 +1171,7 @@ QJsonObject *Controller::readFilm(QFile &file, bool canUpdate) {
           QJsonObject *jObj = new QJsonObject;
 
           *jObj = doc.object();
-
-          QVariantMap mainMap = jObj->toVariantMap();
-          QVariantList *localList = new QVariantList();
-
-          *localList = mainMap["Sale"].toList();
-
-          if (localList->size() > 0) {
-            view->changeTitleChooseFilm("Cambia file json per film");
-
-            return jObj;
-          }
+          return jObj;
 
         } else {
           openError(QString("File vuoto"));
