@@ -3,7 +3,6 @@
 #include <QDate>
 #include <QFileDialog>
 #include <QTimer>
-#include <QDebug>
 
 using std::string;
 
@@ -23,7 +22,6 @@ Controller::Controller(QObject *parent, Model *m)
       pathJsonPosti(""),
       pathJsonFilm(""),
       pathJsonSale(""),
-      pathJsonAbbonamenti(""),
       objUtenti(nullptr),
       fam(nullptr),
       abb(nullptr),
@@ -44,15 +42,54 @@ QString Controller::getPathJsonSale() const { return pathJsonSale; }
 
 QString Controller::getPathJsonFilm() const { return pathJsonFilm; }
 
-QString Controller::getPathJsonAbbonamenti() const {
-  return pathJsonAbbonamenti;
-}
-
 bool Controller::removeAbbonamento(const QString &cod) {
   if (model->searchEntrata(cod.toStdString())) {
-    return model->removeEntrata(cod.toStdString());
+    if (model->removeEntrata(cod.toStdString())) {
+      removeAbbonamentoFromJson(cod);
+    }
+    return true;
   }
   return false;
+}
+
+#include <QDebug>
+
+void Controller::removeAbbonamentoFromJson(const QString &cod) {
+  QFile file(pathJsonEntrata);
+  file.open(QIODevice::ReadOnly);
+
+  QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
+  file.close();
+
+  QJsonValue v = jsonOrg.object().value(QString("Entrate"));
+
+  QJsonValue a = v.toObject().value("Entrate Abbonamento");
+
+  QJsonObject objectV = v.toObject();
+
+  QJsonObject objectA = a.toObject();
+
+  //  qDebug() << cod;
+
+  //  for (auto it = objectA.begin(); it != objectA.end(); ++it) {
+  //    qDebug() << it.key() << " " << (it.key() == cod);
+  //  }
+
+  objectA.remove(cod);
+
+  objectV.insert("Entrate Abbonamento", objectA);
+
+  QJsonObject obj;
+  obj.insert("Entrate", objectV);
+
+  QJsonDocument doc(obj);
+
+  if (!file.open(QIODevice::WriteOnly)) {
+    openError(QString("File open error: Write"));
+  }
+
+  file.write(doc.toJson());
+  file.close();
 }
 
 void Controller::setView(MainWindow *v) { view = v; }
@@ -787,7 +824,7 @@ void Controller::buyBiglietto() {
     for (auto it = model->getListUtenti().cbegin();
          it != model->getListUtenti().cend(); ++it) {
       if (cf == QString::fromStdString((**it).getCodFisc())) {
-        cod = cod + 1;
+        cod++;
         QDate *d = new QDate;
         Data *date = new Data(d->currentDate().year(), d->currentDate().month(),
                               d->currentDate().day());
@@ -948,8 +985,6 @@ void Controller::loadFilm(bool canUpdate) {
   }
 }
 
-
-
 QVariantList *Controller::readUtenti(QFile &file, bool canUpdate) {
   do {
     if (pathJsonUsers == "" || canUpdate) {
@@ -970,9 +1005,9 @@ QVariantList *Controller::readUtenti(QFile &file, bool canUpdate) {
 
         QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
         if (!doc.isEmpty()) {
-          QJsonObject jObj = doc.object();
+          QJsonObject jObj_temp = doc.object();
 
-          QVariantMap mainMap = jObj.toVariantMap();
+          QVariantMap mainMap = jObj_temp.toVariantMap();
           QVariantList *localList = new QVariantList();
           *localList = mainMap["Utenti"].toList();
 
@@ -1011,9 +1046,9 @@ QVariantList *Controller::readFamiglie(QFile &file, bool canUpdate) {
 
         QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
         if (!doc.isEmpty()) {
-          QJsonObject jObj = doc.object();
+          QJsonObject jObj_temp = doc.object();
 
-          QVariantMap mainMap = jObj.toVariantMap();
+          QVariantMap mainMap = jObj_temp.toVariantMap();
           QVariantList *localList = new QVariantList();
           *localList = mainMap["Famiglie"].toList();
 
@@ -1051,9 +1086,9 @@ QVariantMap *Controller::readEntrata(QFile &file, bool canUpdate) {
 
         QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
         if (!doc.isEmpty()) {
-          QJsonObject jObj = doc.object();
+          QJsonObject jObj_temp = doc.object();
 
-          QVariantMap mainMap = jObj.toVariantMap();
+          QVariantMap mainMap = jObj_temp.toVariantMap();
           QVariantMap *localMap = new QVariantMap();
           *localMap = mainMap;
 
@@ -1128,15 +1163,15 @@ QVariantList *Controller::readSale(QFile &file, bool canUpdate) {
         QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
 
         if (!doc.isEmpty()) {
-          QJsonObject jObj = doc.object();
+          QJsonObject jObj_temp = doc.object();
 
-          QVariantMap mainMap = jObj.toVariantMap();
+          QVariantMap mainMap = jObj_temp.toVariantMap();
           QVariantList *localList = new QVariantList();
 
           *localList = mainMap["Sale"].toList();
 
           if (localList->size() > 0) {
-            view->changeTitleChooseSala("Cambia file json per sale");
+            view->changeTitleChooseSala("Cambia file json per Sale");
 
             return localList;
           }
@@ -1169,10 +1204,15 @@ QJsonObject *Controller::readFilm(QFile &file, bool canUpdate) {
         QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
         if (!doc.isEmpty()) {
           QJsonObject *jObj = new QJsonObject;
-
           *jObj = doc.object();
-          return jObj;
 
+          QString tmpKey = jObj->begin().key();
+
+          if (tmpKey == "Film") {
+            view->changeTitleChooseFilm("Cambia file json per Film");
+
+            return jObj;
+          }
         } else {
           openError(QString("File vuoto"));
         }

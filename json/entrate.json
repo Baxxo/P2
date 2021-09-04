@@ -8,28 +8,26 @@
                 "Tipo": "Abbonamento",
                 "Utente": "provaCodFIsc"
             },
+            "11": {
+                "Codice": "11",
+                "Data": "2021/9/4",
+                "Entrate_rimaste": 10,
+                "Tipo": "Abbonamento",
+                "Utente": "Codice Fiscale1"
+            },
+            "12": {
+                "Codice": "12",
+                "Data": "2021/9/4",
+                "Entrate_rimaste": 10,
+                "Tipo": "Abbonamento",
+                "Utente": "provaCodFIsc"
+            },
             "4": {
                 "Codice": "4",
                 "Data": "2021/8/28",
                 "Entrate_rimaste": 10,
                 "Tipo": "Abbonamento",
                 "Utente": "test2"
-            },
-            "5": {
-                "Codice": "7",
-                "Data": "2021/9/1",
-                "Entrate_rimaste": 10,
-                "Famiglia": "testFam123",
-                "Tipo": "Abbonamento_Famigliare",
-                "Utente": "qwerty"
-            },
-            "8": {
-                "Codice": "8",
-                "Data": "2021/9/1",
-                "Entrate_rimaste": 10,
-                "Famiglia": "provaFamgilia",
-                "Tipo": "Abbonamento_Famigliare",
-                "Utente": "Codice Fiscale7"
             }
         },
         "Entrate Singole": {

@@ -39,7 +39,6 @@ class Controller : public QObject {
   QString pathJsonPosti;
   QString pathJsonFilm;
   QString pathJsonSale;
-  QString pathJsonAbbonamenti;
 
   QJsonObject *objUtenti;
 
@@ -80,6 +79,8 @@ class Controller : public QObject {
   void popolaVectorFamiglie(const QVariantList &list);
   void popolaVectorEntrate(const QVariantMap &map);
   void popolaVectorSale(const QVariantList &list);
+
+  void removeAbbonamentoFromJson(const QString &cod);
 
  public slots:
 
@@ -132,7 +133,6 @@ class Controller : public QObject {
   QString getPathJsonPosti() const;
   QString getPathJsonSale() const;
   QString getPathJsonFilm() const;
-  QString getPathJsonAbbonamenti() const;
 
   bool removeAbbonamento(const QString &cod);
 
@@ -153,7 +153,6 @@ class Controller : public QObject {
   void loadEntrateInAdmin();
   void loadSaleInAdmin();
   void loadFilmInAdmin();
-  //  void loadAbbonamentiInAdmin();
   void loadFilmInBigliettoview();
 
   void popolaEntrateBiglietto(int index);
