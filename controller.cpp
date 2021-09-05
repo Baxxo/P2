@@ -261,30 +261,64 @@ bool Controller::createAbbonamentoFamigliare(const QString &name,
 
 void Controller::loadUtentiInAdmin() {
   admin->clearListUtenti();
-  for (auto it = model->getListUtenti().cbegin();
-       it != model->getListUtenti().cend(); ++it) {
-    string s = (**it).getSurname() + " " + (**it).getName() + " ( " +
-               (**it).getCodFisc() + " )";
-    admin->addUtenteinList(QString(s.c_str()));
+  //  for (auto it = model->getListUtenti().cbegin();
+  //       it != model->getListUtenti().cend(); ++it) {
+  //    string s = (**it).getSurname() + " " + (**it).getName() + " ( " +
+  //               (**it).getCodFisc() + " )";
+  //    admin->addUtenteinList(QString(s.c_str()));
+  //  }
+
+  for (unsigned int i = 0; i < model->sizeUtenti(); ++i) {
+    Utente *tmp = model->getUser(i);
+    string s = (*tmp).getSurname() + " " + (*tmp).getName() + " ( " +
+               (*tmp).getCodFisc() + " )";
+    admin->addUtenteinList(QString::fromStdString(s));
   }
 }
 
+void Controller::addUteneAdmin(const QString &s) { admin->addUtenteinList(s); }
+
 void Controller::loadFamiglieInAdmin() {
   admin->clearListFamiglie();
-  for (auto it = model->getListFamiglie().cbegin();
-       it != model->getListFamiglie().cend(); ++it) {
-    admin->addFamigliainList(QString::fromStdString(
-        (*it)->getName() + " (membri: " + std::to_string((*it)->getSize()) +
-        " )"));
+  //  for (auto it = model->getListFamiglie().cbegin();
+  //       it != model->getListFamiglie().cend(); ++it) {
+  //    admin->addFamigliainList(QString::fromStdString(
+  //        (*it)->getName() + " (membri: " + std::to_string((*it)->getSize()) +
+  //        " )"));
+  //  }
+
+  for (unsigned int i = 0; i < model->sizeFamilies(); ++i) {
+    Famiglia *tmp = model->getFamily(i);
+    string s =
+        tmp->getName() + " (membri: " + std::to_string(tmp->getSize()) + " )";
+    admin->addFamigliainList(QString::fromStdString(s));
   }
 }
 
 void Controller::loadEntrateInAdmin() {
   admin->clearListEntrate();
 
-  for (auto it = model->getListEntrate().cbegin();
-       it != model->getListEntrate().cend(); ++it) {
-    Abbonamento *ab = dynamic_cast<Abbonamento *>(&(**it));
+  //  for (auto it = model->getListEntrate().cbegin();
+  //       it != model->getListEntrate().cend(); ++it) {
+  //    Abbonamento *ab = dynamic_cast<Abbonamento *>(&(**it));
+
+  //    AbbonamentoFamigliare *abf = dynamic_cast<AbbonamentoFamigliare *>(ab);
+  //    if (abf) {
+  //      admin->addAbbonamento("Abbonamento Famigliare -> " +
+  //                                QString::fromStdString(abf->toString()),
+  //                            QString::fromStdString(abf->getCodice()));
+
+  //    } else if (ab) {
+  //      Utente *u_tmp = model->getUtente(ab->getUtente());
+  //      string s1 = "Abbonamento -> " + u_tmp->toString();
+  //      string s2 = ab->getCodice();
+  //      admin->addAbbonamento(QString::fromStdString(s1),
+  //                            QString::fromStdString(s2));
+  //    }
+  //  }
+
+  for (unsigned int i = 0; i < model->sizeEntrate(); ++i) {
+    Abbonamento *ab = dynamic_cast<Abbonamento *>(model->getEntrata(i));
 
     AbbonamentoFamigliare *abf = dynamic_cast<AbbonamentoFamigliare *>(ab);
     if (abf) {
@@ -304,9 +338,14 @@ void Controller::loadEntrateInAdmin() {
 
 void Controller::loadSaleInAdmin() {
   admin->clearListSale();
-  for (auto it = model->getListSale().cbegin();
-       it != model->getListSale().cend(); ++it) {
-    admin->addSaleinList(QString::fromStdString((**it).getNomesala()));
+  //  for (auto it = model->getListSale().cbegin();
+  //       it != model->getListSale().cend(); ++it) {
+  //    admin->addSaleinList(QString::fromStdString((**it).getNomesala()));
+  //  }
+
+  for (unsigned int i = 0; i < model->sizeSale(); ++i) {
+    Sala *tmp = model->getSala_byPos(i);
+    admin->addSaleinList(QString::fromStdString(tmp->getNomesala()));
   }
 }
 
@@ -330,19 +369,37 @@ void Controller::popolaEntrateBiglietto(int index) {
   switch (index) {
     case 0:
       bigliettoView->setTitleSearch("Utente");
-      for (auto it = model->getListUtenti().cbegin();
-           it != model->getListUtenti().cend(); ++it) {
+      //      for (auto it = model->getListUtenti().cbegin();
+      //           it != model->getListUtenti().cend(); ++it) {
+      //        bigliettoView->addEntrataToLista(
+      //            QString::fromStdString((*it)->toString()),
+      //            QString::fromStdString((*it)->getCodFisc()));
+      //      }
+
+      for (unsigned int i = 0; i < model->sizeUtenti(); ++i) {
+        Utente *tmp = model->getUser(i);
         bigliettoView->addEntrataToLista(
-            QString::fromStdString((*it)->toString()),
-            QString::fromStdString((*it)->getCodFisc()));
+            QString::fromStdString(tmp->toString()),
+            QString::fromStdString(tmp->getCodFisc()));
       }
       break;
     case 1:
       bigliettoView->setTitleSearch("Abbonamento");
-      for (auto it = model->getListEntrate().cbegin();
-           it != model->getListEntrate().cend(); ++it) {
+      //      for (auto it = model->getListEntrate().cbegin();
+      //           it != model->getListEntrate().cend(); ++it) {
+      //        try {
+      //          Abbonamento &dumb = dynamic_cast<Abbonamento &>(**it);
+      //          bigliettoView->addEntrataToLista(
+      //              QString::fromStdString(dumb.toString()),
+      //              QString::fromStdString(dumb.getCodice()));
+      //        } catch (std::bad_cast e) {
+      //        }
+      //      }
+
+      for (unsigned int i = 0; i < model->sizeEntrate(); ++i) {
         try {
-          Abbonamento &dumb = dynamic_cast<Abbonamento &>(**it);
+          Abbonamento &dumb =
+              dynamic_cast<Abbonamento &>(*model->getEntrata(i));
           bigliettoView->addEntrataToLista(
               QString::fromStdString(dumb.toString()),
               QString::fromStdString(dumb.getCodice()));
@@ -408,13 +465,24 @@ void Controller::openFamiglia() {
   if (pathJsonFamiglie == "") loadFamilies();
 
   famigliaView->clearList();
-  for (auto it = model->getListUtenti().cbegin();
-       it != model->getListUtenti().cend(); ++it) {
+  //  for (auto it = model->getListUtenti().cbegin();
+  //       it != model->getListUtenti().cend(); ++it) {
+  //    QString text =
+  //        QString::fromStdString(((*it)->getSurname() + " " + (*it)->getName()
+  //        +
+  //                                " ( " + (*it)->getCodFisc() + " )")
+  //                                   .c_str());
+  //    QString cf = QString::fromStdString(((*it)->getCodFisc()).c_str());
+  //    famigliaView->addUtenteToLista(text, cf);
+  //  }
+
+  for (unsigned int i = 0; i < model->sizeUtenti(); ++i) {
+    Utente *tmp = model->getUser(i);
     QString text =
-        QString::fromStdString(((*it)->getSurname() + " " + (*it)->getName() +
-                                " ( " + (*it)->getCodFisc() + " )")
+        QString::fromStdString((tmp->getSurname() + " " + tmp->getName() +
+                                " ( " + tmp->getCodFisc() + " )")
                                    .c_str());
-    QString cf = QString::fromStdString(((*it)->getCodFisc()).c_str());
+    QString cf = QString::fromStdString((tmp->getCodFisc()).c_str());
     famigliaView->addUtenteToLista(text, cf);
   }
 
@@ -432,23 +500,39 @@ void Controller::openAbbonamento() {
   if (pathJsonEntrata == "") loadEntrate();
 
   abbonamentoView->clearListUtenti();
-  for (auto it = model->getListUtenti().cbegin();
-       it != model->getListUtenti().cend(); ++it) {
+  //  for (auto it = model->getListUtenti().cbegin();
+  //       it != model->getListUtenti().cend(); ++it) {
+  //    abbonamentoView->addUtente(
+  //        QString::fromStdString((*it)->getSurname() + " " + (*it)->getName()
+  //        +
+  //                               " ( " + (*it)->getCodFisc() + " )"),
+  //        QString::fromStdString((*it)->getCodFisc()));
+  //  }
+  for (unsigned int i = 0; i < model->sizeUtenti(); ++i) {
+    Utente *tmp = model->getUser(i);
     abbonamentoView->addUtente(
-        QString::fromStdString((*it)->getSurname() + " " + (*it)->getName() +
-                               " ( " + (*it)->getCodFisc() + " )"),
-        QString::fromStdString((*it)->getCodFisc()));
+        QString::fromStdString(tmp->getSurname() + " " + tmp->getName() +
+                               " ( " + tmp->getCodFisc() + " )"),
+        QString::fromStdString(tmp->getCodFisc()));
   }
 
   if (pathJsonFamiglie == "") loadFamilies();
 
   abbonamentoView->clearListFamiglie();
-  for (auto it = model->getListFamiglie().cbegin();
-       it != model->getListFamiglie().cend(); ++it) {
+  //  for (auto it = model->getListFamiglie().cbegin();
+  //       it != model->getListFamiglie().cend(); ++it) {
+  //    abbonamentoView->addFamiglia(
+  //        QString::fromStdString((*it)->getName() + " (membri: " +
+  //                               std::to_string((*it)->getSize()) + " )"),
+  //        QString::fromStdString((*it)->getName()));
+  //  }
+
+  for (unsigned int i = 0; i < model->sizeFamilies(); ++i) {
+    Famiglia *tmp = model->getFamily(i);
     abbonamentoView->addFamiglia(
-        QString::fromStdString((*it)->getName() + " (membri: " +
-                               std::to_string((*it)->getSize()) + " )"),
-        QString::fromStdString((*it)->getName()));
+        QString::fromStdString(tmp->getName() + " (membri: " +
+                               std::to_string(tmp->getSize()) + " )"),
+        QString::fromStdString(tmp->getName()));
   }
 
   QTimer::singleShot(0, abbonamentoView, SLOT(resizeMe()));
@@ -791,11 +875,20 @@ void Controller::showSala() {
   QJsonObject obj = filmObj.begin().value().toObject();
   QString f = obj.find(s).value().toString();
   unsigned int rows = 0, columns = 0;
-  for (auto it = model->getListSale().cbegin();
-       it != model->getListSale().cend(); ++it) {
-    if (QString::fromStdString((**it).getNomesala()) == f) {
-      rows = (**it).getRighe();
-      columns = (**it).getColonne();
+  //  for (auto it = model->getListSale().cbegin();
+  //       it != model->getListSale().cend(); ++it) {
+  //    if (QString::fromStdString((**it).getNomesala()) == f) {
+  //      rows = (**it).getRighe();
+  //      columns = (**it).getColonne();
+  //    }
+  //  }
+
+  for (unsigned int i = 0; i < model->sizeSale(); ++i) {
+    Sala *tmp = model->getSala_byPos(i);
+
+    if (QString::fromStdString(tmp->getNomesala()) == f) {
+      rows = tmp->getRighe();
+      columns = tmp->getColonne();
     }
   }
   bigliettoView->createSalaView(rows, columns, f);
@@ -821,23 +914,51 @@ void Controller::buyBiglietto() {
 
   if (bigliettoView->getTipologia() == "Biglietto") {
     QString cf = bigliettoView->getSelectName();
-    for (auto it = model->getListUtenti().cbegin();
-         it != model->getListUtenti().cend(); ++it) {
-      if (cf == QString::fromStdString((**it).getCodFisc())) {
+    //    for (auto it = model->getListUtenti().cbegin();
+    //         it != model->getListUtenti().cend(); ++it) {
+    //      if (cf == QString::fromStdString((**it).getCodFisc())) {
+    //        cod++;
+    //        QDate *d = new QDate;
+    //        Data *date = new Data(d->currentDate().year(),
+    //        d->currentDate().month(),
+    //                              d->currentDate().day());
+    //        bool riduzione = false;
+    //        if ((**it).getAge() < 14) riduzione = true;
+    //        Biglietto *b = new Biglietto(
+    //            std::to_string(cod), date, (**it).getCodFisc(), 7.5,
+    //            riduzione, bigliettoView->getSelectedFilm().toStdString());
+
+    //        QJsonObject newUser;
+    //        newUser.insert("Codice", QString::number(cod));
+    //        newUser.insert("Data", QString::fromStdString(date->toString()));
+    //        newUser.insert("CF", QString::fromStdString((**it).getCodFisc()));
+    //        newUser.insert("Film", bigliettoView->getSelectedFilm());
+    //        newUser.insert("Prezzo", QString::number(b->getPrezzo()));
+    //        newUser.insert("Riduzione", QString::number(riduzione));
+    //        newUser.insert("Tipo", "Biglietto");
+
+    //        oB.insert(QString::number(cod), newUser);
+
+    //        model->addEntrata(b);
+    //      }
+
+    for (unsigned int i = 0; i < model->sizeUtenti(); ++i) {
+      Utente *tmp = model->getUser(i);
+      if (cf == QString::fromStdString(tmp->getCodFisc())) {
         cod++;
         QDate *d = new QDate;
         Data *date = new Data(d->currentDate().year(), d->currentDate().month(),
                               d->currentDate().day());
         bool riduzione = false;
-        if ((**it).getAge() < 14) riduzione = true;
+        if (tmp->getAge() < 14) riduzione = true;
         Biglietto *b = new Biglietto(
-            std::to_string(cod), date, (**it).getCodFisc(), 7.5, riduzione,
+            std::to_string(cod), date, tmp->getCodFisc(), 7.5, riduzione,
             bigliettoView->getSelectedFilm().toStdString());
 
         QJsonObject newUser;
         newUser.insert("Codice", QString::number(cod));
         newUser.insert("Data", QString::fromStdString(date->toString()));
-        newUser.insert("CF", QString::fromStdString((**it).getCodFisc()));
+        newUser.insert("CF", QString::fromStdString(tmp->getCodFisc()));
         newUser.insert("Film", bigliettoView->getSelectedFilm());
         newUser.insert("Prezzo", QString::number(b->getPrezzo()));
         newUser.insert("Riduzione", QString::number(riduzione));
@@ -852,10 +973,15 @@ void Controller::buyBiglietto() {
 
   if (bigliettoView->getTipologia() == "Abbonamento") {
     QString cod = bigliettoView->getSelectName();
-    for (auto it = model->getListEntrate().cbegin();
-         it != model->getListEntrate().cend(); ++it) {
-      if (cod == QString::fromStdString((**it).getCodice())) {
-        Abbonamento *ab = dynamic_cast<Abbonamento *>(&(**it));
+
+    for (unsigned int i = 0; i < model->sizeEntrate(); ++i) {
+      //      }
+      //    for (auto it = model->getListEntrate().cbegin();
+      //         it != model->getListEntrate().cend(); ++it) {
+      //      if (cod == QString::fromStdString((**it).getCodice())) {
+      //        Abbonamento *ab = dynamic_cast<Abbonamento *>(&(**it));
+      if (cod == QString::fromStdString(model->getEntrata(i)->getCodice())) {
+        Abbonamento *ab = dynamic_cast<Abbonamento *>(model->getEntrata(i));
 
         AbbonamentoFamigliare *abf = dynamic_cast<AbbonamentoFamigliare *>(ab);
         if (abf) {

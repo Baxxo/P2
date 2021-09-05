@@ -123,19 +123,42 @@ Sala *Model::getSala(string nome) const {
   return nullptr;
 }
 
-const MyVector<DeepPtr<EntrataFilm>> &Model::getListEntrate() const {
-  return listEntrate;
+// const MyVector<DeepPtr<EntrataFilm>> &Model::getListEntrate() const {
+//  return listEntrate;
+//}
+
+// const MyVector<DeepPtr<Utente>> &Model::getListUtenti() const {
+//  return listUtenti;
+//}
+
+// const MyVector<DeepPtr<Famiglia>> &Model::getListFamiglie() const {
+//  return listFamiglie;
+//}
+
+// const MyVector<DeepPtr<Sala>> &Model::getListSale() const { return listSale;
+// }
+
+unsigned int Model::sizeUtenti() const { return listUtenti.getSize(); }
+
+Utente *Model::getUser(unsigned int pos) const { return (&(*listUtenti[pos])); }
+
+unsigned int Model::sizeFamilies() const { return listFamiglie.getSize(); }
+
+Famiglia *Model::getFamily(unsigned int pos) const {
+  return (&(*listFamiglie[pos]));
 }
 
-const MyVector<DeepPtr<Utente>> &Model::getListUtenti() const {
-  return listUtenti;
+unsigned int Model::sizeEntrate() const { return listEntrate.getSize(); }
+
+EntrataFilm *Model::getEntrata(unsigned int pos) const {
+  return (&(*listEntrate[pos]));
 }
 
-const MyVector<DeepPtr<Famiglia>> &Model::getListFamiglie() const {
-  return listFamiglie;
-}
+unsigned int Model::sizeSale() const { return listSale.getSize(); }
 
-const MyVector<DeepPtr<Sala>> &Model::getListSale() const { return listSale; }
+Sala *Model::getSala_byPos(unsigned int pos) const {
+  return (&(*listSale[pos]));
+}
 
 void Model::addUserToFamily(Famiglia &f, Utente *u) { f.addMembro(u); }
 

@@ -35,6 +35,8 @@ class Utente_View : public QWidget {
   QDesktopWidget *desktop;
   Controller *controller;
 
+  void initEditText();
+
  private slots:
   void annullaUtente();
 

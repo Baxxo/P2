@@ -149,6 +149,8 @@ class Controller : public QObject {
   bool createAbbonamentoFamigliare(const QString &name, const QString &cf);
 
   void loadUtentiInAdmin();
+  void addUteneAdmin(const QString &s);
+
   void loadFamiglieInAdmin();
   void loadEntrateInAdmin();
   void loadSaleInAdmin();

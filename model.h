@@ -35,10 +35,22 @@ class Model {
   EntrataFilm *getEntrataFilm(string cod) const;
   Sala *getSala(string nome) const;
 
-  const MyVector<DeepPtr<EntrataFilm>> &getListEntrate() const;
-  const MyVector<DeepPtr<Utente>> &getListUtenti() const;
-  const MyVector<DeepPtr<Famiglia>> &getListFamiglie() const;
-  const MyVector<DeepPtr<Sala>> &getListSale() const;
+  //  const MyVector<DeepPtr<EntrataFilm>> &getListEntrate() const;
+  //  const MyVector<DeepPtr<Utente>> &getListUtenti() const;
+  //  const MyVector<DeepPtr<Famiglia>> &getListFamiglie() const;
+  //  const MyVector<DeepPtr<Sala>> &getListSale() const;
+
+  unsigned int sizeUtenti() const;
+  Utente *getUser(unsigned int pos) const;
+
+  unsigned int sizeFamilies() const;
+  Famiglia *getFamily(unsigned int pos) const;
+
+  unsigned int sizeEntrate() const;
+  EntrataFilm *getEntrata(unsigned int pos) const;
+
+  unsigned int sizeSale() const;
+  Sala *getSala_byPos(unsigned int pos) const;
 
   void addUserToFamily(Famiglia &f, Utente *u);
 

@@ -52,17 +52,21 @@ Utente_View::Utente_View(Controller *c, QWidget *parent)
   move((desktop->width() - 300) / 2, (desktop->height() - 300) / 2);
 
   // inizializzazione default delle linee di testo
-  name->setText("Name");
-  surname->setText("Surname");
-  CF->setText("Codice Fiscale");
-  age->setText("Età");
-  numtel->setText("Numero di telefono");
+  initEditText();
 
   setStyle();
 
   // connessioni al controller
   connect(confermaBtn, SIGNAL(clicked()), controller, SLOT(salvaUtente()));
   connect(annullaBtn, SIGNAL(clicked()), this, SLOT(annullaUtente()));
+}
+
+void Utente_View::initEditText() {
+  name->setText("Name");
+  surname->setText("Surname");
+  CF->setText("Codice Fiscale");
+  age->setText("Età");
+  numtel->setText("Numero di telefono");
 }
 
 void Utente_View::annullaUtente() { close(); }
@@ -85,4 +89,7 @@ QString Utente_View::getAge() const { return age->text(); }
 
 QString Utente_View::getNumTel() const { return numtel->text(); }
 
-void Utente_View::setConferma(const QString &c) { conferma->setText(c); }
+void Utente_View::setConferma(const QString &c) {
+  conferma->setText(c);
+  initEditText();
+}
