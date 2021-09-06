@@ -28,7 +28,9 @@ Admin::Admin(Controller *c, MainWindow *parent)
 
       widget(new QWidget()),
 
+      titoloFilm(new QLabel),
       addFilm(new QPushButton("aggiungi Film")),
+      nomeSalaLabel(new QLabel),
       addSala(new QPushButton("aggiungi Sala")),
       utilityFilm(nullptr),
 
@@ -187,16 +189,16 @@ void Admin::addAbbonamento(const QString &s, const QString &cod) {
 void Admin::addFilmLayout() {
   widgetFilm = new QWidget();
   filmLayout = new QGridLayout;
-  QLabel titoloFilm("Inserisci titolo del film");
-  QLabel nomeSala("Inserisci nome della sala");
+  titoloFilm->setText("Inserisci titolo del film");
+  nomeSalaLabel->setText("Inserisci nome della sala");
   utilityFilm = new QLabel();
   nomeFilm = new QLineEditClickable;
   salaFilm = new QLineEditClickable;
   saveFilm = new QPushButton("Salva");
 
-  filmLayout->addWidget(&titoloFilm, 0, 0);
+  filmLayout->addWidget(titoloFilm, 0, 0);
   filmLayout->addWidget(nomeFilm, 1, 0);
-  filmLayout->addWidget(&nomeSala, 2, 0);
+  filmLayout->addWidget(nomeSalaLabel, 2, 0);
   filmLayout->addWidget(salaFilm, 3, 0);
   filmLayout->addWidget(saveFilm, 4, 0);
   filmLayout->addWidget(utilityFilm, 5, 0);

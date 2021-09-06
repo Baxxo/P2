@@ -707,6 +707,8 @@ void Controller::salvaFamiglia() {
   }
 }
 
+#include <QDebug>
+
 void Controller::newFilm() {
   if (pathJsonFilm == "") {
     pathJsonFilm = QFileDialog::getOpenFileName(
@@ -722,17 +724,25 @@ void Controller::newFilm() {
   file.close();
   QJsonObject obj = doc.object();
 
-  obj.insert(admin->getNomeFilm(), admin->getSalaFilm());
+  QJsonValue film = obj.value("Film");
 
-  filmObj.insert("Film", obj);
+  QJsonObject mstObj = film.toObject();
 
-  if (!file.open(QIODevice::WriteOnly)) {
-    openError(QString("File open error: Write"));
+  for (auto it = mstObj.begin(); it != mstObj.end(); ++it) {
+    qDebug() << it.key();
   }
 
-  doc.setObject(filmObj);
-  file.write(doc.toJson());
-  file.close();
+  mstObj.insert(admin->getNomeFilm(), admin->getSalaFilm());
+
+  obj.insert("Film", mstObj);
+
+  if (file.open(QIODevice::WriteOnly)) {
+    doc.setObject(obj);
+    file.write(doc.toJson());
+    file.close();
+  } else {
+    openError(QString("File open error: Write"));
+  }
 }
 
 void Controller::newSala() {
