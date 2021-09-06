@@ -28,8 +28,9 @@ Admin::Admin(Controller *c, MainWindow *parent)
 
       widget(new QWidget()),
 
-      addFilm(new QPushButton("add Film")),
-      addSala(new QPushButton("add Sala")),
+      addFilm(new QPushButton("aggiungi Film")),
+      addSala(new QPushButton("aggiungi Sala")),
+      utilityFilm(nullptr),
 
       widgetFilm(nullptr),
       filmLayout(nullptr),
@@ -87,10 +88,10 @@ Admin::Admin(Controller *c, MainWindow *parent)
 
   connect(listAbb, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this,
           SLOT(getClickAbb()));
-  connect(listFam, SIGNAL(itemClicked(QListWidgetItem *)), this,
-          SLOT(getClickFam()));
-  connect(listUt, SIGNAL(itemClicked(QListWidgetItem *)), this,
-          SLOT(getClickUt()));
+  //  connect(listFam, SIGNAL(itemClicked(QListWidgetItem *)), this,
+  //          SLOT(getClickFam()));
+  //  connect(listUt, SIGNAL(itemClicked(QListWidgetItem *)), this,
+  //          SLOT(getClickUt()));
   connect(addFilm, SIGNAL(clicked()), this, SLOT(addFilmLayout()));
   connect(addSala, SIGNAL(clicked()), this, SLOT(addSalaLayout()));
 
@@ -158,6 +159,11 @@ QString Admin::getSalaFilm() { return salaFilm->text(); }
 
 QString Admin::getRegola() { return regola->currentText(); }
 
+void Admin::setUtilityFilm(const QString &s) {
+  utilityFilm->setText(s);
+  QTimer::singleShot(3000, this, SLOT(clearUtilityFilm()));
+}
+
 QString Admin::getColonneSala() { return colonneSala->text(); }
 
 QString Admin::getRigheSala() { return righeSala->text(); }
@@ -181,13 +187,19 @@ void Admin::addAbbonamento(const QString &s, const QString &cod) {
 void Admin::addFilmLayout() {
   widgetFilm = new QWidget();
   filmLayout = new QGridLayout;
+  QLabel titoloFilm("Inserisci titolo del film");
+  QLabel nomeSala("Inserisci nome della sala");
+  utilityFilm = new QLabel();
   nomeFilm = new QLineEditClickable;
   salaFilm = new QLineEditClickable;
   saveFilm = new QPushButton("Salva");
 
-  filmLayout->addWidget(nomeFilm, 0, 0);
-  filmLayout->addWidget(salaFilm, 1, 0);
-  filmLayout->addWidget(saveFilm, 2, 0);
+  filmLayout->addWidget(&titoloFilm, 0, 0);
+  filmLayout->addWidget(nomeFilm, 1, 0);
+  filmLayout->addWidget(&nomeSala, 2, 0);
+  filmLayout->addWidget(salaFilm, 3, 0);
+  filmLayout->addWidget(saveFilm, 4, 0);
+  filmLayout->addWidget(utilityFilm, 5, 0);
 
   widgetFilm->setLayout(filmLayout);
   widgetFilm->show();
@@ -222,6 +234,10 @@ void Admin::addSalaLayout() {
 
 void Admin::clearUtility() {
   utility->setText("Premi due volte per eliminare un abbonamento");
+}
+
+void Admin::clearUtilityFilm() {
+  if (utilityFilm) utilityFilm->setText("");
 }
 
 void Admin::getClickAbb() {

@@ -57,6 +57,7 @@ class Admin : public QMainWindow {
 
   QPushButton *addFilm;
   QPushButton *addSala;
+  QLabel *utilityFilm;
 
   QWidget *widgetFilm;
   QGridLayout *filmLayout;

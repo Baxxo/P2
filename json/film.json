@@ -1,5 +1,9 @@
 {
     "Film": {
-        "Test1": "Rossa"
+        "Film": {
+            "Fast and beautiful": "Blu",
+            "L'alba dei sushi": "Rossa"
+        },
+        "titoloFillm": "Sala"
     }
 }
