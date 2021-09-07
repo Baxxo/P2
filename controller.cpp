@@ -983,7 +983,7 @@ void Controller::buyBiglietto() {
           oA.insert(QString::fromStdString(ab->getCodice()), newAbbonamento);
 
         } else {
-          //          qDebug() << "nessun abbonamento con quell'utente";
+          openError("nessun abbonamento acquistato dall'utente selezionato");
         }
       }
     }
