@@ -2,6 +2,7 @@
 #include "controller.h"
 
 #include <QTimer>
+#include <QDebug>
 
 Admin::Admin(Controller *c, MainWindow *parent)
     : desktop(QApplication::desktop()),

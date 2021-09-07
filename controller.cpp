@@ -762,7 +762,7 @@ void Controller::newSala() {
   newSala.insert("righe", admin->getRigheSala());
   newSala.insert("colonne", admin->getColonneSala());
   newSala.insert("nome_sala", admin->getNomeSala());
-
+  model->addSala(new Sala(admin->getRigheSala().toInt(), admin->getColonneSala().toInt(), admin->getNomeSala().toStdString()));
   array.push_back(newSala);
 
   QJsonObject obj;
@@ -785,13 +785,20 @@ void Controller::newSala() {
 
   QJsonDocument docPosti;
   QJsonArray *arrayVuoto = new QJsonArray;
-  postiObj.insert(admin->getNomeSala(), *arrayVuoto);
+  QJsonObject objP;
+  objP=postiObj.value("Posti").toObject();
+  objP.insert(admin->getNomeSala(), *arrayVuoto);
+  postiObj.insert("Posti", objP);
+
   if (arrayVuoto) {
     delete arrayVuoto;
   }
   docPosti.setObject(postiObj);
   filePosti.write(docPosti.toJson());
   filePosti.close();
+
+  loadSaleInAdmin();
+
 }
 
 void Controller::newPostoOccupato() {
@@ -801,13 +808,17 @@ void Controller::newPostoOccupato() {
   }
   QJsonDocument doc;
   QJsonArray *array = new QJsonArray;
-  auto it = postiObj.find(bigliettoView->getNomeSala());
-  *array = it.value().toArray();
+  QJsonObject obj;
+  obj=postiObj.value("Posti").toObject();
+  auto it = postiObj.value("Posti").toObject().value(bigliettoView->getNomeSala()).toArray();
+  *array = it;
   array->append(
       bigliettoView->getCurrentColumn() +
       (bigliettoView->getCurrentRow() * bigliettoView->getColonneMax()));
 
-  postiObj.insert(bigliettoView->getNomeSala(), *array);
+  obj.insert(bigliettoView->getNomeSala(), *array);
+  //postiObj.insert(bigliettoView->getNomeSala(), *array);
+  postiObj.insert("Posti", obj);
 
   doc.setObject(postiObj);
   file.write(doc.toJson());
@@ -815,10 +826,10 @@ void Controller::newPostoOccupato() {
 }
 
 void Controller::setPostiOccupati() {
-  QString s = bigliettoView->getNomeSala();
-  auto it = postiObj.find(s);
+  QString s = bigliettoView->getNomeSala();  
+  auto it = postiObj.value("Posti").toObject().value(s).toArray();
   QJsonArray *array = new QJsonArray;
-  *array = it.value().toArray();
+  *array = it;
   QString regola = admin->getRegola();
   int row, column;
   for (int i = 0; i < array->size(); ++i) {
