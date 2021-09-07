@@ -50,8 +50,6 @@ class Famiglia_View : public QWidget {
   int getListSize();
   void clearList();
 
-  void selectIndexbyCF(QString cf);
-
   QString getItem(int i);
   QString getSearch();
   QString getFamilyName();

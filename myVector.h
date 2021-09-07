@@ -27,6 +27,7 @@ class MyVector {
     T &operator*() const;
 
     Iterator operator+(int i) const;
+    Iterator operator+(unsigned int i) const;
 
     Iterator &operator++();
     Iterator operator++(int i);
@@ -123,6 +124,12 @@ T &MyVector<T>::Iterator::operator*() const {
 
 template <class T>
 typename MyVector<T>::Iterator MyVector<T>::Iterator::operator+(int i) const {
+  return (ptr + i);
+}
+
+template <class T>
+typename MyVector<T>::Iterator MyVector<T>::Iterator::operator+(
+    unsigned int i) const {
   return (ptr + i);
 }
 
@@ -260,7 +267,7 @@ template <class T>
 T *MyVector<T>::copy(unsigned int s, unsigned int c) {
   if (s <= c && size <= s) {
     T *tmp = new T[c];
-    for (int i = 0; i < size; i++) {
+    for (unsigned int i = 0; i < size; i++) {
       tmp[i] = v[i];
     }
     return tmp;
@@ -387,8 +394,6 @@ void MyVector<T>::clear() {
   v = new T[capacity];
 }
 
-#endif  // MYVECTOR_H
-
 template <class T>
 bool MyVector<T>::Iterator::operator<(const MyVector::Iterator &o) const {
   return ptr < o.ptr;
@@ -398,3 +403,5 @@ template <class T>
 bool MyVector<T>::Iterator::operator>(const MyVector::Iterator &o) const {
   return ptr > o.ptr;
 }
+
+#endif  // MYVECTOR_H

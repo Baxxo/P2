@@ -89,8 +89,6 @@ QString Famiglia_View::getCF_SearchText() const {
 
 void Famiglia_View::clearList() { listaUtenti->clear(); }
 
-void Famiglia_View::selectIndexbyCF(QString cf) {}
-
 void Famiglia_View::findUser(QString search) {
   bool find = false;
   for (int i = 0; i < listaUtenti->count() && !find; ++i) {

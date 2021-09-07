@@ -52,8 +52,6 @@ bool Controller::removeAbbonamento(const QString &cod) {
   return false;
 }
 
-#include <QDebug>
-
 void Controller::removeAbbonamentoFromJson(const QString &cod) {
   QFile file(pathJsonEntrata);
   file.open(QIODevice::ReadOnly);
@@ -68,12 +66,6 @@ void Controller::removeAbbonamentoFromJson(const QString &cod) {
   QJsonObject objectV = v.toObject();
 
   QJsonObject objectA = a.toObject();
-
-  //  qDebug() << cod;
-
-  //  for (auto it = objectA.begin(); it != objectA.end(); ++it) {
-  //    qDebug() << it.key() << " " << (it.key() == cod);
-  //  }
 
   objectA.remove(cod);
 
@@ -466,16 +458,6 @@ void Controller::openFamiglia() {
   if (pathJsonFamiglie == "") loadFamilies();
 
   famigliaView->clearList();
-  //  for (auto it = model->getListUtenti().cbegin();
-  //       it != model->getListUtenti().cend(); ++it) {
-  //    QString text =
-  //        QString::fromStdString(((*it)->getSurname() + " " + (*it)->getName()
-  //        +
-  //                                " ( " + (*it)->getCodFisc() + " )")
-  //                                   .c_str());
-  //    QString cf = QString::fromStdString(((*it)->getCodFisc()).c_str());
-  //    famigliaView->addUtenteToLista(text, cf);
-  //  }
 
   for (unsigned int i = 0; i < model->sizeUtenti(); ++i) {
     Utente *tmp = model->getUser(i);
@@ -501,14 +483,6 @@ void Controller::openAbbonamento() {
   if (pathJsonEntrata == "") loadEntrate();
 
   abbonamentoView->clearListUtenti();
-  //  for (auto it = model->getListUtenti().cbegin();
-  //       it != model->getListUtenti().cend(); ++it) {
-  //    abbonamentoView->addUtente(
-  //        QString::fromStdString((*it)->getSurname() + " " + (*it)->getName()
-  //        +
-  //                               " ( " + (*it)->getCodFisc() + " )"),
-  //        QString::fromStdString((*it)->getCodFisc()));
-  //  }
   for (unsigned int i = 0; i < model->sizeUtenti(); ++i) {
     Utente *tmp = model->getUser(i);
     abbonamentoView->addUtente(
@@ -520,13 +494,6 @@ void Controller::openAbbonamento() {
   if (pathJsonFamiglie == "") loadFamilies();
 
   abbonamentoView->clearListFamiglie();
-  //  for (auto it = model->getListFamiglie().cbegin();
-  //       it != model->getListFamiglie().cend(); ++it) {
-  //    abbonamentoView->addFamiglia(
-  //        QString::fromStdString((*it)->getName() + " (membri: " +
-  //                               std::to_string((*it)->getSize()) + " )"),
-  //        QString::fromStdString((*it)->getName()));
-  //  }
 
   for (unsigned int i = 0; i < model->sizeFamilies(); ++i) {
     Famiglia *tmp = model->getFamily(i);
@@ -584,7 +551,6 @@ void Controller::loadUsersSlot() { loadUsers(true); }
 
 void Controller::loadFamiliesSlot() { loadFamilies(true); }
 
-// void Controller::loadEntrateSlot() { loadEntrateinView(true); }
 void Controller::loadEntrateSlot() { loadEntrate(true); }
 
 void Controller::loadPostiSlot() { loadPostiOccupati(true); }
@@ -734,7 +700,9 @@ void Controller::newFilm() {
     doc.setObject(obj);
     file.write(doc.toJson());
     file.close();
+
     admin->setUtilityFilm("Film inserito correttamente");
+    admin->addFilminList(admin->getNomeFilm());
   } else {
     openError(QString("File open error: Write"));
   }
@@ -762,7 +730,6 @@ void Controller::newSala() {
   newSala.insert("righe", admin->getRigheSala());
   newSala.insert("colonne", admin->getColonneSala());
   newSala.insert("nome_sala", admin->getNomeSala());
-  model->addSala(new Sala(admin->getRigheSala().toInt(), admin->getColonneSala().toInt(), admin->getNomeSala().toStdString()));
   array.push_back(newSala);
 
   QJsonObject obj;
@@ -786,7 +753,7 @@ void Controller::newSala() {
   QJsonDocument docPosti;
   QJsonArray *arrayVuoto = new QJsonArray;
   QJsonObject objP;
-  objP=postiObj.value("Posti").toObject();
+  objP = postiObj.value("Posti").toObject();
   objP.insert(admin->getNomeSala(), *arrayVuoto);
   postiObj.insert("Posti", objP);
 
@@ -797,8 +764,11 @@ void Controller::newSala() {
   filePosti.write(docPosti.toJson());
   filePosti.close();
 
-  loadSaleInAdmin();
+  model->addSala(new Sala(admin->getRigheSala().toUInt(),
+                          admin->getColonneSala().toUInt(),
+                          admin->getNomeSala().toStdString()));
 
+  loadSaleInAdmin();
 }
 
 void Controller::newPostoOccupato() {
@@ -809,15 +779,17 @@ void Controller::newPostoOccupato() {
   QJsonDocument doc;
   QJsonArray *array = new QJsonArray;
   QJsonObject obj;
-  obj=postiObj.value("Posti").toObject();
-  auto it = postiObj.value("Posti").toObject().value(bigliettoView->getNomeSala()).toArray();
+  obj = postiObj.value("Posti").toObject();
+  auto it = postiObj.value("Posti")
+                .toObject()
+                .value(bigliettoView->getNomeSala())
+                .toArray();
   *array = it;
   array->append(
       bigliettoView->getCurrentColumn() +
       (bigliettoView->getCurrentRow() * bigliettoView->getColonneMax()));
 
   obj.insert(bigliettoView->getNomeSala(), *array);
-  //postiObj.insert(bigliettoView->getNomeSala(), *array);
   postiObj.insert("Posti", obj);
 
   doc.setObject(postiObj);
@@ -826,7 +798,7 @@ void Controller::newPostoOccupato() {
 }
 
 void Controller::setPostiOccupati() {
-  QString s = bigliettoView->getNomeSala();  
+  QString s = bigliettoView->getNomeSala();
   auto it = postiObj.value("Posti").toObject().value(s).toArray();
   QJsonArray *array = new QJsonArray;
   *array = it;
@@ -835,7 +807,8 @@ void Controller::setPostiOccupati() {
   for (int i = 0; i < array->size(); ++i) {
     row = array->at(i).toInt() / bigliettoView->getColonneMax();
     column = (array->at(i).toInt()) % bigliettoView->getColonneMax();
-    bigliettoView->setPostoOccupato(row, column, regola);
+    bigliettoView->setPostoOccupato(static_cast<unsigned int>(row),
+                                    static_cast<unsigned int>(column), regola);
   }
 }
 
@@ -891,13 +864,6 @@ void Controller::showSala() {
   QJsonObject obj = filmObj.begin().value().toObject();
   QString f = obj.find(s).value().toString();
   unsigned int rows = 0, columns = 0;
-  //  for (auto it = model->getListSale().cbegin();
-  //       it != model->getListSale().cend(); ++it) {
-  //    if (QString::fromStdString((**it).getNomesala()) == f) {
-  //      rows = (**it).getRighe();
-  //      columns = (**it).getColonne();
-  //    }
-  //  }
 
   for (unsigned int i = 0; i < model->sizeSale(); ++i) {
     Sala *tmp = model->getSala_byPos(i);
@@ -930,41 +896,16 @@ void Controller::buyBiglietto() {
 
   if (bigliettoView->getTipologia() == "Biglietto") {
     QString cf = bigliettoView->getSelectName();
-    //    for (auto it = model->getListUtenti().cbegin();
-    //         it != model->getListUtenti().cend(); ++it) {
-    //      if (cf == QString::fromStdString((**it).getCodFisc())) {
-    //        cod++;
-    //        QDate *d = new QDate;
-    //        Data *date = new Data(d->currentDate().year(),
-    //        d->currentDate().month(),
-    //                              d->currentDate().day());
-    //        bool riduzione = false;
-    //        if ((**it).getAge() < 14) riduzione = true;
-    //        Biglietto *b = new Biglietto(
-    //            std::to_string(cod), date, (**it).getCodFisc(), 7.5,
-    //            riduzione, bigliettoView->getSelectedFilm().toStdString());
-
-    //        QJsonObject newUser;
-    //        newUser.insert("Codice", QString::number(cod));
-    //        newUser.insert("Data", QString::fromStdString(date->toString()));
-    //        newUser.insert("CF", QString::fromStdString((**it).getCodFisc()));
-    //        newUser.insert("Film", bigliettoView->getSelectedFilm());
-    //        newUser.insert("Prezzo", QString::number(b->getPrezzo()));
-    //        newUser.insert("Riduzione", QString::number(riduzione));
-    //        newUser.insert("Tipo", "Biglietto");
-
-    //        oB.insert(QString::number(cod), newUser);
-
-    //        model->addEntrata(b);
-    //      }
 
     for (unsigned int i = 0; i < model->sizeUtenti(); ++i) {
       Utente *tmp = model->getUser(i);
       if (cf == QString::fromStdString(tmp->getCodFisc())) {
         cod++;
         QDate *d = new QDate;
-        Data *date = new Data(d->currentDate().year(), d->currentDate().month(),
-                              d->currentDate().day());
+        Data *date =
+            new Data(static_cast<unsigned int>(d->currentDate().year()),
+                     static_cast<unsigned int>(d->currentDate().month()),
+                     static_cast<unsigned int>(d->currentDate().day()));
         bool riduzione = false;
         if (tmp->getAge() < 14) riduzione = true;
         Biglietto *b = new Biglietto(
@@ -991,11 +932,6 @@ void Controller::buyBiglietto() {
     QString cod = bigliettoView->getSelectName();
 
     for (unsigned int i = 0; i < model->sizeEntrate(); ++i) {
-      //      }
-      //    for (auto it = model->getListEntrate().cbegin();
-      //         it != model->getListEntrate().cend(); ++it) {
-      //      if (cod == QString::fromStdString((**it).getCodice())) {
-      //        Abbonamento *ab = dynamic_cast<Abbonamento *>(&(**it));
       if (cod == QString::fromStdString(model->getEntrata(i)->getCodice())) {
         Abbonamento *ab = dynamic_cast<Abbonamento *>(model->getEntrata(i));
 
@@ -1032,7 +968,6 @@ void Controller::buyBiglietto() {
 
           oA.insert(QString::fromStdString(ab->getCodice()), newAbbonamento);
 
-          // ab->removeOneEntrata();
         } else {
           //          qDebug() << "nessun abbonamento con quell'utente";
         }
@@ -1054,12 +989,6 @@ void Controller::buyBiglietto() {
 
   file.write(doc1.toJson());
   file.close();
-
-  //    for(auto i= model->getListEntrate().cbegin();
-  //    i!=model->getListEntrate().cend(); ++i){
-  //        if((**i).getUtente()== bigliettoView->getSearch().toStdString()){
-  //        }
-  //    }
 }
 
 void Controller::loadUsers(bool canUpdate) {
@@ -1410,7 +1339,7 @@ void Controller::popolaVectorEntrate(const QVariantMap &map) {
 
     if (tipo == "Abbonamento") {
       if (model->searchCf(mapA["Utente"].toString().toStdString())) {
-        if (mapA["Codice"].toUInt() > cod) cod = mapA["Codice"].toUInt();
+        if (mapA["Codice"].toInt() > cod) cod = mapA["Codice"].toInt();
 
         model->addEntrata(
             new Abbonamento(new Data(mapA["Data"].toString().toStdString()),
@@ -1424,7 +1353,7 @@ void Controller::popolaVectorEntrate(const QVariantMap &map) {
       if (model->searchCf(mapA["Utente"].toString().toStdString()) &&
           model->searchNameFamiglia(
               mapA["Famiglia"].toString().toStdString())) {
-        if (mapA["Codice"].toUInt() > cod) cod = mapA["Codice"].toUInt();
+        if (mapA["Codice"].toInt() > cod) cod = mapA["Codice"].toInt();
 
         model->addEntrata(new AbbonamentoFamigliare(
             new Data(mapA["Data"].toString().toStdString()),
@@ -1445,7 +1374,7 @@ void Controller::popolaVectorEntrate(const QVariantMap &map) {
     QVariantMap mapB = (*i).toMap();
 
     if (model->searchCf(mapB["CF"].toString().toStdString())) {
-      if (mapB["Codice"].toUInt() > cod) cod = mapB["Codice"].toUInt();
+      if (mapB["Codice"].toInt() > cod) cod = mapB["Codice"].toInt();
 
       model->addEntrata(new Biglietto(
           mapB["Codice"].toString().toStdString(),

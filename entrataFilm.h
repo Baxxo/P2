@@ -16,7 +16,7 @@ class EntrataFilm {
               double p = 7.5);
   EntrataFilm(const EntrataFilm &o);
 
-  virtual ~EntrataFilm() = 0 ;
+  virtual ~EntrataFilm() = default;
 
   virtual double getPrezzo() const;
 
@@ -30,7 +30,7 @@ class EntrataFilm {
 
   virtual EntrataFilm &operator=(const EntrataFilm &o);
 
-  virtual EntrataFilm *clone() const;
+  virtual EntrataFilm *clone() const = 0;
 
   virtual string toString() const;
 

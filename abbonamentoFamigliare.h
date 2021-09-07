@@ -17,19 +17,19 @@ class AbbonamentoFamigliare : public Abbonamento {
 
   AbbonamentoFamigliare(const AbbonamentoFamigliare &o);
 
+  ~AbbonamentoFamigliare() = default;
+
   double getPrezzo() const;
 
   AbbonamentoFamigliare &operator=(const AbbonamentoFamigliare &o);
-
-  ~AbbonamentoFamigliare() = default;
-
-  string getFamiglia() const;
 
   AbbonamentoFamigliare *clone() const override;
 
   string toString() const override;
 
   unsigned int getNumeroMembri() const;
+
+  string getFamiglia() const;
 };
 
 #endif

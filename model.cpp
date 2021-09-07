@@ -23,7 +23,7 @@ bool Model::removeEntrata(const string &e) {
   //    }
   //    i++;
   //  }
-  for (int i = 0; i < listEntrate.getSize(); ++i) {
+  for (unsigned int i = 0; i < listEntrate.getSize(); ++i) {
     if (listEntrate[i]->getCodice() == e) {
       chk = listEntrate.erase(listEntrate.begin() + i);
     }
@@ -83,16 +83,12 @@ Utente *Model::getUtente(string cf) const {
   return nullptr;
 }
 
-#include <QDebug>
-#include <QString>
 Famiglia *Model::getFamiglia(string name) const {
   for (auto it = listFamiglie.cbegin(); it != listFamiglie.cend(); ++it) {
-    qDebug() << QString::fromStdString((*it)->getName());
     if ((*it)->getName() == name) {
       return &**it;
     }
   }
-  qDebug() << "Fine " << QString::fromStdString(name);
   return nullptr;
 }
 

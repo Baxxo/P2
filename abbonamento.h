@@ -15,10 +15,6 @@ class Abbonamento : public EntrataFilm {
 
   ~Abbonamento() = default;
 
-  int getEntrate() const;
-
-  int removeOneEntrata();
-
   double getPrezzo() const override;
 
   Abbonamento &operator=(const Abbonamento &o);
@@ -26,5 +22,9 @@ class Abbonamento : public EntrataFilm {
   Abbonamento *clone() const override;
 
   string toString() const override;
+
+  int getEntrate() const;
+
+  void removeOneEntrata();
 };
 #endif
