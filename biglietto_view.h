@@ -2,6 +2,7 @@
 #define BIGLIETTO_VIEW_H
 
 #include <QComboBox>
+#include <QHeaderView>
 #include <QListWidget>
 #include <QTableWidget>
 #include <QWidget>
@@ -37,8 +38,8 @@ class Biglietto_View : public QWidget {
   QWidget *salaWidget;
 
   QTableWidget *posti;
-  QLabel *nomeSala;
-  QLabel *colonneMax;
+  //  QLabel *nomeSala;
+  //  QLabel *colonneMax;
 
   QPushButton *compraBiglietto;
 
@@ -76,11 +77,11 @@ class Biglietto_View : public QWidget {
 
   int getCurrentColumn();
   int getCurrentRow();
-  QString getNomeSala();
+  //  QString getNomeSala();
   QString getSelectedFilm();
-  int getColonneMax();
+  //  int getColonneMax();
   void setPostoOccupato(unsigned int r, unsigned int c, QString regola);
-  void createSalaView(unsigned int r, unsigned int c, const QString &f);
+  void createSalaView(unsigned int r, unsigned int c);
 
   void clearListFilm();
 

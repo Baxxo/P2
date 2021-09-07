@@ -115,7 +115,6 @@ class Admin : public QMainWindow {
   QString getRigheSala();
   QString getNomeSala();
   QString getSalaFilm();
-  QString getRegola();
 
   void setUtilityFilm(const QString &s);
 };

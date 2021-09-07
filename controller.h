@@ -55,7 +55,9 @@ class Controller : public QObject {
 
   AbbonamentoFamigliare *abbFam;
 
-  unsigned int codBigl;
+  unsigned int codBigl, rows, columns, colonneMax;
+
+  QString nameSala;
 
   ErrorDisplay *err;
 
@@ -124,6 +126,8 @@ class Controller : public QObject {
 
   void buyBiglietto();
 
+  void setRegola(const QString &s);
+
  public:
   explicit Controller(QObject *parent = nullptr, Model *m = nullptr);
   void setView(MainWindow *v);
@@ -163,6 +167,8 @@ class Controller : public QObject {
   void loadFilmInBigliettoview();
 
   void popolaEntrateBiglietto(int index);
+  unsigned int getColonneMax() const;
+  QString getNameSala() const;
 };
 
 #endif  // CONTROLLER_H

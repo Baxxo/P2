@@ -30,11 +30,6 @@ SOURCES += \
     controller.cpp \
     famiglia_view.cpp \
     main.cpp \
-    regola.cpp \
-    regolaarancione.cpp \
-    regolabianca.cpp \
-    regolagialla.cpp \
-    regolarossa.cpp \
     mainwindow.cpp \
     admin.cpp \
     abbonamento.cpp \
@@ -56,10 +51,6 @@ HEADERS += \
     biglietto_view.h \
     controller.h \
     famiglia_view.h \
-    regola.h \
-    regolaarancione.h \
-    regolabianca.h \
-    regolagialla.h \
     mainwindow.h \
     admin.h \
     client.h \
@@ -70,7 +61,6 @@ HEADERS += \
     entrataFilm.h \
     famiglia.h \
     myVector.h \
-    regolarossa.h \
     sala.h \
     utente.h \
     utente_View.h \

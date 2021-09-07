@@ -1,7 +1,6 @@
 #include "controller.h"
 
 #include <QDate>
-#include <QDebug>
 #include <QFileDialog>
 #include <QTimer>
 
@@ -30,6 +29,10 @@ Controller::Controller(QObject *parent, Model *m)
       cod(0),
       abbFam(nullptr),
       codBigl(0),
+      rows(0),
+      columns(0),
+      colonneMax(0),
+      nameSala(""),
       err(nullptr) {}
 
 QString Controller::getPathJsonUsers() const { return pathJsonUsers; }
@@ -285,14 +288,6 @@ void Controller::loadUtentiInAdmin() {
 void Controller::addUteneAdmin(const QString &s) { admin->addUtenteinList(s); }
 
 void Controller::loadFamiglieInAdmin() {
-  admin->clearListFamiglie();
-  //  for (auto it = model->getListFamiglie().cbegin();
-  //       it != model->getListFamiglie().cend(); ++it) {
-  //    admin->addFamigliainList(QString::fromStdString(
-  //        (*it)->getName() + " (membri: " + std::to_string((*it)->getSize()) +
-  //        " )"));
-  //  }
-
   for (unsigned int i = 0; i < model->sizeFamilies(); ++i) {
     Famiglia *tmp = model->getFamily(i);
     string s =
@@ -303,25 +298,6 @@ void Controller::loadFamiglieInAdmin() {
 
 void Controller::loadEntrateInAdmin() {
   admin->clearListEntrate();
-
-  //  for (auto it = model->getListEntrate().cbegin();
-  //       it != model->getListEntrate().cend(); ++it) {
-  //    Abbonamento *ab = dynamic_cast<Abbonamento *>(&(**it));
-
-  //    AbbonamentoFamigliare *abf = dynamic_cast<AbbonamentoFamigliare *>(ab);
-  //    if (abf) {
-  //      admin->addAbbonamento("Abbonamento Famigliare -> " +
-  //                                QString::fromStdString(abf->toString()),
-  //                            QString::fromStdString(abf->getCodice()));
-
-  //    } else if (ab) {
-  //      Utente *u_tmp = model->getUtente(ab->getUtente());
-  //      string s1 = "Abbonamento -> " + u_tmp->toString();
-  //      string s2 = ab->getCodice();
-  //      admin->addAbbonamento(QString::fromStdString(s1),
-  //                            QString::fromStdString(s2));
-  //    }
-  //  }
 
   for (unsigned int i = 0; i < model->sizeEntrate(); ++i) {
     Abbonamento *ab = dynamic_cast<Abbonamento *>(model->getEntrata(i));
@@ -344,10 +320,6 @@ void Controller::loadEntrateInAdmin() {
 
 void Controller::loadSaleInAdmin() {
   admin->clearListSale();
-  //  for (auto it = model->getListSale().cbegin();
-  //       it != model->getListSale().cend(); ++it) {
-  //    admin->addSaleinList(QString::fromStdString((**it).getNomesala()));
-  //  }
 
   for (unsigned int i = 0; i < model->sizeSale(); ++i) {
     Sala *tmp = model->getSala_byPos(i);
@@ -375,13 +347,6 @@ void Controller::popolaEntrateBiglietto(int index) {
   switch (index) {
     case 0:
       bigliettoView->setTitleSearch("Utente");
-      //      for (auto it = model->getListUtenti().cbegin();
-      //           it != model->getListUtenti().cend(); ++it) {
-      //        bigliettoView->addEntrataToLista(
-      //            QString::fromStdString((*it)->toString()),
-      //            QString::fromStdString((*it)->getCodFisc()));
-      //      }
-
       for (unsigned int i = 0; i < model->sizeUtenti(); ++i) {
         Utente *tmp = model->getUser(i);
         bigliettoView->addEntrataToLista(
@@ -391,17 +356,6 @@ void Controller::popolaEntrateBiglietto(int index) {
       break;
     case 1:
       bigliettoView->setTitleSearch("Abbonamento");
-      //      for (auto it = model->getListEntrate().cbegin();
-      //           it != model->getListEntrate().cend(); ++it) {
-      //        try {
-      //          Abbonamento &dumb = dynamic_cast<Abbonamento &>(**it);
-      //          bigliettoView->addEntrataToLista(
-      //              QString::fromStdString(dumb.toString()),
-      //              QString::fromStdString(dumb.getCodice()));
-      //        } catch (std::bad_cast e) {
-      //        }
-      //      }
-
       for (unsigned int i = 0; i < model->sizeEntrate(); ++i) {
         try {
           Abbonamento &dumb =
@@ -415,6 +369,12 @@ void Controller::popolaEntrateBiglietto(int index) {
       break;
   }
 }
+
+unsigned int Controller::getColonneMax() const { return colonneMax; }
+
+QString Controller::getNameSala() const { return nameSala; }
+
+void Controller::setRegola(const QString &s) { regola = s; }
 
 void Controller::openAdmin() {
   if (admin == nullptr) {
@@ -438,8 +398,6 @@ void Controller::openAdmin() {
 
   if (pathJsonFilm == "") loadFilm();
   loadFilmInAdmin();
-
-  regola = admin->getRegola();
 
   admin->show();
 }
@@ -797,16 +755,14 @@ void Controller::newPostoOccupato() {
   QJsonArray *array = new QJsonArray;
   QJsonObject obj;
   obj = postiObj.value("Posti").toObject();
-  auto it = postiObj.value("Posti")
-                .toObject()
-                .value(bigliettoView->getNomeSala())
-                .toArray();
+  auto it = postiObj.value("Posti").toObject().value(nameSala).toArray();
   *array = it;
   array->append(
-      bigliettoView->getCurrentColumn() +
-      (bigliettoView->getCurrentRow() * bigliettoView->getColonneMax()));
+      static_cast<int>(static_cast<int>(bigliettoView->getCurrentColumn()) +
+                       static_cast<int>(bigliettoView->getCurrentRow() *
+                                        static_cast<int>(colonneMax))));
 
-  obj.insert(bigliettoView->getNomeSala(), *array);
+  obj.insert(nameSala, *array);
   postiObj.insert("Posti", obj);
 
   doc.setObject(postiObj);
@@ -815,23 +771,16 @@ void Controller::newPostoOccupato() {
 }
 
 void Controller::setPostiOccupati() {
-  openAdmin();
-  hideAdmin();
-  //<<<<<<< HEAD
-  //  QString s = bigliettoView->getNomeSala();
-  //=======
-  QString s = bigliettoView->getNomeSala();
-  //>>>>>>> 6e6d811863ed682fbc848390ba4c31f65315a510
-  auto it = postiObj.value("Posti").toObject().value(s).toArray();
+  auto it = postiObj.value("Posti").toObject().value(nameSala).toArray();
   QJsonArray *array = new QJsonArray;
   *array = it;
-  regola = admin->getRegola();
-  int row, column;
+  int _row, _column;
   for (int i = 0; i < array->size(); ++i) {
-    row = array->at(i).toInt() / bigliettoView->getColonneMax();
-    column = (array->at(i).toInt()) % bigliettoView->getColonneMax();
-    bigliettoView->setPostoOccupato(static_cast<unsigned int>(row),
-                                    static_cast<unsigned int>(column), regola);
+    _row = array->at(i).toInt() / static_cast<int>(columns);
+
+    _column = (array->at(i).toInt()) % static_cast<int>(columns);
+    bigliettoView->setPostoOccupato(static_cast<unsigned int>(_row),
+                                    static_cast<unsigned int>(_column), regola);
   }
 }
 
@@ -878,7 +827,6 @@ void Controller::stpBigl() {
           QString("Codice fiscale non trovato"));
       openError(QString("Codice fiscale non trovato"));
     }
-  } else if (bigliettoView->getTipologia() == "Abbonamento") {
   }
 }
 
@@ -886,7 +834,6 @@ void Controller::showSala() {
   QString s = bigliettoView->getSelectedFilm();
   QJsonObject obj = filmObj.begin().value().toObject();
   QString f = obj.find(s).value().toString();
-  unsigned int rows = 0, columns = 0;
 
   for (unsigned int i = 0; i < model->sizeSale(); ++i) {
     Sala *tmp = model->getSala_byPos(i);
@@ -894,9 +841,11 @@ void Controller::showSala() {
     if (QString::fromStdString(tmp->getNomesala()) == f) {
       rows = tmp->getRighe();
       columns = tmp->getColonne();
+      colonneMax = columns;
+      nameSala = f;
     }
   }
-  bigliettoView->createSalaView(rows, columns, f);
+  bigliettoView->createSalaView(rows, columns);
 }
 
 void Controller::buyBiglietto() {
@@ -950,9 +899,7 @@ void Controller::buyBiglietto() {
         showPrezzo(b);
       }
     }
-  }
-
-  if (bigliettoView->getTipologia() == "Abbonamento") {
+  } else if (bigliettoView->getTipologia() == "Abbonamento") {
     QString cod = bigliettoView->getSelectName();
 
     for (unsigned int i = 0; i < model->sizeEntrate(); ++i) {
@@ -1358,7 +1305,6 @@ void Controller::popolaVectorUtenti(const QVariantList &list) {
   }
 }
 
-#include <QDebug>
 void Controller::popolaVectorFamiglie(const QVariantList &list) {
   Famiglia *fam = nullptr;
 

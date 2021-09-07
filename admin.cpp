@@ -88,15 +88,6 @@ Admin::Admin(Controller *c, MainWindow *parent)
 
   listUt->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-  connect(listAbb, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this,
-          SLOT(getClickAbb()));
-  //  connect(listFam, SIGNAL(itemClicked(QListWidgetItem *)), this,
-  //          SLOT(getClickFam()));
-  //  connect(listUt, SIGNAL(itemClicked(QListWidgetItem *)), this,
-  //          SLOT(getClickUt()));
-  connect(addFilm, SIGNAL(clicked()), this, SLOT(addFilmLayout()));
-  connect(addSala, SIGNAL(clicked()), this, SLOT(addSalaLayout()));
-
   baseLayout->addWidget(labelAbb, 0, 0, Qt::AlignCenter);
   baseLayout->addWidget(listAbb, 1, 0);
 
@@ -117,6 +108,17 @@ Admin::Admin(Controller *c, MainWindow *parent)
   baseLayout->addWidget(addSala, 5, 1);
 
   baseLayout->addWidget(regola, 2, 2, Qt::AlignCenter);
+
+  connect(listAbb, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this,
+          SLOT(getClickAbb()));
+  //  connect(listFam, SIGNAL(itemClicked(QListWidgetItem *)), this,
+  //          SLOT(getClickFam()));
+  //  connect(listUt, SIGNAL(itemClicked(QListWidgetItem *)), this,
+  //          SLOT(getClickUt()));
+  connect(addFilm, SIGNAL(clicked()), this, SLOT(addFilmLayout()));
+  connect(addSala, SIGNAL(clicked()), this, SLOT(addSalaLayout()));
+  connect(regola, SIGNAL(currentTextChanged(const QString &)), controller,
+          SLOT(setRegola(const QString &)));
 
   resize(1000, 400);
 
@@ -158,8 +160,6 @@ void Admin::clearListEntrate() { listAbb->clear(); }
 QString Admin::getNomeFilm() { return nomeFilm->text(); }
 
 QString Admin::getSalaFilm() { return salaFilm->text(); }
-
-QString Admin::getRegola() { return regola->currentText(); }
 
 void Admin::setUtilityFilm(const QString &s) {
   utilityFilm->setText(s);

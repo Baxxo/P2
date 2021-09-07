@@ -28,8 +28,8 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
       salaWidget(new QWidget),
 
       posti(nullptr),
-      nomeSala(nullptr),
-      colonneMax(nullptr),
+      //      nomeSala(nullptr),
+      //      colonneMax(nullptr),
 
       compraBiglietto(new QPushButton("Compra")),
 
@@ -68,10 +68,6 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
   utenteBigl->addWidget(searchUtility, Qt::AlignCenter);
 
   utenteBigl->addWidget(listaSearch, Qt::AlignCenter);
-
-  connect(listaSearch, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this,
-          SLOT(getNameSelect(QListWidgetItem *)));
-
   widgetSearchCf->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
   widgetSearchCf->setLayout(utenteBigl);
 
@@ -100,11 +96,17 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
 
   setLayout(mainLayout);
 
+  connect(listaSearch, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this,
+          SLOT(getNameSelect(QListWidgetItem *)));
+
   connect(listaFilm, SIGNAL(itemClicked(QListWidgetItem *)), controller,
           SLOT(showSala()));
+
   connect(listaFilm, SIGNAL(itemClicked(QListWidgetItem *)), controller,
           SLOT(setPostiOccupati()));
+
   connect(compraBiglietto, SIGNAL(clicked()), controller, SLOT(buyBiglietto()));
+
   connect(listaSearch, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this,
           SLOT(selectFromListSearch(QListWidgetItem *)));
 
@@ -145,7 +147,7 @@ int Biglietto_View::getCurrentColumn() { return posti->currentColumn(); }
 
 int Biglietto_View::getCurrentRow() { return posti->currentRow(); }
 
-QString Biglietto_View::getNomeSala() { return nomeSala->text(); }
+// QString Biglietto_View::getNomeSala() { return nomeSala->text(); }
 
 QString Biglietto_View::getSelectedFilm() {
   QListWidgetItem *current = listaFilm->currentItem();
@@ -157,23 +159,25 @@ QString Biglietto_View::getSelectedFilm() {
   }
 }
 
-int Biglietto_View::getColonneMax() { return colonneMax->text().toInt(); }
+// int Biglietto_View::getColonneMax() { return colonneMax->text().toInt(); }
 
 void Biglietto_View::setPostoOccupato(unsigned int r, unsigned int c,
                                       QString regola) {
   QTableWidgetItem *item = new QTableWidgetItem("occupato");
   item->setBackgroundColor("red");
+  item->setFlags(item->flags() & ~Qt::ItemIsEditable);
   posti->setItem(static_cast<int>(r), static_cast<int>(c), item);
-  int x = (r * getColonneMax()) + c;
+  int x =
+      (static_cast<int>(r) * controller->getColonneMax()) + static_cast<int>(c);
   if (regola == "gialla") {
     QTableWidgetItem *itemdist1 = new QTableWidgetItem("distanziamento");
     QTableWidgetItem *itemdist2 = new QTableWidgetItem("distanziamento");
     itemdist1->setBackgroundColor("yellow");
     itemdist2->setBackgroundColor("yellow");
-    if (x % getColonneMax() == getColonneMax() - 1) {
+    if (x % controller->getColonneMax() == controller->getColonneMax() - 1) {
       posti->setItem(static_cast<int>(r), static_cast<int>(c - 1), itemdist1);
     }
-    if (x % getColonneMax() == 0) {
+    if (x % controller->getColonneMax() == 0) {
       posti->setItem(static_cast<int>(r), static_cast<int>(c + 1), itemdist1);
     } else {
       posti->setItem(static_cast<int>(r), static_cast<int>(c - 1), itemdist1);
@@ -189,20 +193,22 @@ void Biglietto_View::setPostoOccupato(unsigned int r, unsigned int c,
     itemdist2->setBackgroundColor("yellow");
     itemdist3->setBackgroundColor("yellow");
     itemdist4->setBackgroundColor("yellow");
-    if (x % getColonneMax() == getColonneMax() - 1) {
+    if (x % static_cast<int>(controller->getColonneMax()) ==
+        static_cast<int>(controller->getColonneMax()) - 1) {
       posti->setItem(static_cast<int>(r), static_cast<int>(c - 1), itemdist1);
       posti->setItem(static_cast<int>(r), static_cast<int>(c - 2), itemdist2);
     }
-    if (x % getColonneMax() == 0) {
+    if (x % static_cast<int>(controller->getColonneMax()) == 0) {
       posti->setItem(static_cast<int>(r), static_cast<int>(c + 1), itemdist1);
       posti->setItem(static_cast<int>(r), static_cast<int>(c + 2), itemdist2);
     }
-    if (x % getColonneMax() == getColonneMax() - 2) {
+    if (x % static_cast<int>(controller->getColonneMax()) ==
+        static_cast<int>(controller->getColonneMax()) - 2) {
       posti->setItem(static_cast<int>(r), static_cast<int>(c - 1), itemdist1);
       posti->setItem(static_cast<int>(r), static_cast<int>(c - 2), itemdist2);
       posti->setItem(static_cast<int>(r), static_cast<int>(c + 1), itemdist3);
     }
-    if (x % getColonneMax() == 1) {
+    if (x % static_cast<int>(controller->getColonneMax()) == 1) {
       posti->setItem(static_cast<int>(r), static_cast<int>(c + 1), itemdist1);
       posti->setItem(static_cast<int>(r), static_cast<int>(c + 2), itemdist2);
       posti->setItem(static_cast<int>(r), static_cast<int>(c - 1), itemdist3);
@@ -213,36 +219,21 @@ void Biglietto_View::setPostoOccupato(unsigned int r, unsigned int c,
       posti->setItem(static_cast<int>(r), static_cast<int>(c + 2), itemdist4);
     }
   }
-    connect(posti, SIGNAL(cellClicked(int,int)), this, SLOT(hideSalaView));
-    labelListaFilm->setText("Posto scelto correttamente");
+  connect(posti, SIGNAL(cellClicked(int, int)), this, SLOT(hideSalaView()));
+  labelListaFilm->setText("Posto scelto correttamente");
 }
 
-void Biglietto_View::createSalaView(unsigned int r, unsigned int c,
-                                    const QString &f) {
+void Biglietto_View::createSalaView(unsigned int r, unsigned int c) {
   if (posti) {
     delete posti;
   }
-  if (nomeSala) {
-    delete nomeSala;
-  }
-  if(colonneMax){
-      delete colonneMax;
-  }
 
-  salaWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+  salaWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
   posti = new QTableWidget(static_cast<int>(r), static_cast<int>(c));
-  // posti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  posti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-  nomeSala = new QLabel;
-  colonneMax = new QLabel;
-  nomeSala->setText(f);
-  colonneMax->setText(QString::number(c));
-  posti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  nomeSala->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  colonneMax->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  salaLayout->addWidget(nomeSala);
-  salaLayout->addWidget(colonneMax);
-  salaLayout->addWidget(posti);  
+  salaLayout->addWidget(posti);
   salaWidget->setLayout(salaLayout);
 
   salaWidget->hide();
@@ -273,19 +264,15 @@ void Biglietto_View::popolaLista(int index) {
 void Biglietto_View::selectFromListSearch(QListWidgetItem *item) {
   QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaSearch->itemWidget(item));
 
-  if (!lbl->isSelected() && !isAlreadySelectdSearch) {
-    lbl->setStyleSheet("QLabel { background-color : LightGreen;}");
-    lbl->setSelect(true);
-    isAlreadySelectdSearch = true;
-    selectFromSearch = lbl->text();
-  } else if (lbl->isSelected() && isAlreadySelectdSearch) {
-    lbl->setStyleSheet("QLabel { background-color : #00A2E8;}");
-    lbl->setSelect(false);
-    isAlreadySelectdSearch = false;
-    selectFromSearch = "";
-  }
+  lbl->setStyleSheet("QLabel { background-color : LightGreen;}");
+  lbl->setSelect(true);
+  isAlreadySelectdSearch = true;
+  selectFromSearch = lbl->text();
+
   selectedItemSearch->setText("Selezionato: " + selectFromSearch);
   listaSearch->setItemWidget(item, lbl);
+
+  widgetSearchCf->close();
 }
 
 void Biglietto_View::setUtilitySearchText(const QString &s) {
@@ -309,10 +296,7 @@ void Biglietto_View::showSearch() {
 
 void Biglietto_View::resizeMe() { adjustSize(); }
 
-void Biglietto_View::hideSalaView()
-{
-    salaWidget->hide();
-}
+void Biglietto_View::hideSalaView() { salaWidget->hide(); }
 
 void Biglietto_View::resizeSala() {
   if (salaWidget) salaWidget->adjustSize();

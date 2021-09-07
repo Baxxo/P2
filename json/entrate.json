@@ -25,9 +25,8 @@
             "16": {
                 "Codice": "16",
                 "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
-                "Famiglia": "bella family",
-                "Tipo": "Abbonamento_Famigliare",
+                "Entrate_rimaste": 8,
+                "Tipo": "Abbonamento",
                 "Utente": "Codice Fiscale2"
             },
             "17": {
@@ -201,6 +200,24 @@
                 "Film": "Fast and beautiful",
                 "Prezzo": "6.65",
                 "Riduzione": "1",
+                "Tipo": "Biglietto"
+            },
+            "37": {
+                "CF": "Codice Fiscale",
+                "Codice": "37",
+                "Data": "2021/9/7",
+                "Film": "Fast and beautiful",
+                "Prezzo": "7.5",
+                "Riduzione": "0",
+                "Tipo": "Biglietto"
+            },
+            "38": {
+                "CF": "Codice Fiscale",
+                "Codice": "38",
+                "Data": "2021/9/7",
+                "Film": "Fast and beautiful",
+                "Prezzo": "7.5",
+                "Riduzione": "0",
                 "Tipo": "Biglietto"
             }
         }
