@@ -33,6 +33,7 @@ Admin::Admin(Controller *c, MainWindow *parent)
       nomeSalaLabel(new QLabel),
       addSala(new QPushButton("aggiungi Sala")),
       utilityFilm(nullptr),
+      utilitySale(nullptr),
 
       widgetFilm(nullptr),
       filmLayout(nullptr),
@@ -166,6 +167,11 @@ void Admin::setUtilityFilm(const QString &s) {
   QTimer::singleShot(3000, this, SLOT(clearUtilityFilm()));
 }
 
+void Admin::setUtilitySale(const QString &s) {
+  utilitySale->setText(s);
+  QTimer::singleShot(3000, this, SLOT(clearUtilitySale()));
+}
+
 QString Admin::getColonneSala() { return colonneSala->text(); }
 
 QString Admin::getRigheSala() { return righeSala->text(); }
@@ -191,7 +197,7 @@ void Admin::addFilmLayout() {
   filmLayout = new QGridLayout;
   titoloFilm->setText("Inserisci titolo del film");
   nomeSalaLabel->setText("Inserisci nome della sala");
-  utilityFilm = new QLabel();
+  utilityFilm = new QLabel;
   nomeFilm = new QLineEditClickable;
   salaFilm = new QLineEditClickable;
   saveFilm = new QPushButton("Salva");
@@ -217,12 +223,15 @@ void Admin::addSalaLayout() {
   nomeSala = new QLineEditClickable;
   righeSala = new QLineEditClickable;
   colonneSala = new QLineEditClickable;
+
+  utilitySale = new QLabel;
   saveSala = new QPushButton("Salva");
 
   salaLayout->addWidget(nomeSala, 0, 0);
   salaLayout->addWidget(righeSala, 1, 0);
   salaLayout->addWidget(colonneSala, 2, 0);
-  salaLayout->addWidget(saveSala, 3, 0);
+  salaLayout->addWidget(utilitySale, 3, 0);
+  salaLayout->addWidget(saveSala, 4, 0);
 
   nomeSala->setText("nome Sala");
   righeSala->setText("numero righe");
@@ -240,6 +249,10 @@ void Admin::clearUtility() {
 
 void Admin::clearUtilityFilm() {
   if (utilityFilm) utilityFilm->setText("");
+}
+
+void Admin::clearUtilitySale() {
+  if (utilitySale) utilitySale->setText("");
 }
 
 void Admin::getClickAbb() {

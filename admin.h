@@ -60,6 +60,7 @@ class Admin : public QMainWindow {
   QLabel *nomeSalaLabel;
   QPushButton *addSala;
   QLabel *utilityFilm;
+  QLabel *utilitySale;
 
   QWidget *widgetFilm;
   QGridLayout *filmLayout;
@@ -86,6 +87,7 @@ class Admin : public QMainWindow {
 
   void clearUtility();
   void clearUtilityFilm();
+  void clearUtilitySale();
 
  public:
   Admin(Controller *c, MainWindow *parent = nullptr);
@@ -118,6 +120,7 @@ class Admin : public QMainWindow {
   QString getRegola();
 
   void setUtilityFilm(const QString &s);
+  void setUtilitySale(const QString &s);
 };
 
 #endif  // ADMIN_H
