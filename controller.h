@@ -40,6 +40,8 @@ class Controller : public QObject {
   QString pathJsonFilm;
   QString pathJsonSale;
 
+  QString regola;
+
   QJsonObject *objUtenti;
 
   QJsonObject filmObj;
@@ -91,6 +93,8 @@ class Controller : public QObject {
   void openFamiglia();
   void openAbbonamento();
   void openBiglietto();
+
+  void hideAdmin();
 
   void searchCF();
 

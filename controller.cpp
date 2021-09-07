@@ -22,6 +22,7 @@ Controller::Controller(QObject *parent, Model *m)
       pathJsonPosti(""),
       pathJsonFilm(""),
       pathJsonSale(""),
+      regola(""),
       objUtenti(nullptr),
       fam(nullptr),
       abb(nullptr),
@@ -434,7 +435,11 @@ void Controller::openAdmin() {
   if (pathJsonFilm == "") loadFilm();
   loadFilmInAdmin();
 
+  regola=admin->getRegola();
+
   admin->show();
+
+
 }
 
 void Controller::openClient() {
@@ -559,6 +564,11 @@ void Controller::openBiglietto() {
   loadFilmInBigliettoview();
 
   bigliettoView->show();
+}
+
+void Controller::hideAdmin()
+{
+    admin->hide();
 }
 
 void Controller::searchCF() {
@@ -826,11 +836,16 @@ void Controller::newPostoOccupato() {
 }
 
 void Controller::setPostiOccupati() {
+  if(regola==""){
+      //openError(QString("Regola non ancora settata"));
+      openAdmin();
+      hideAdmin();
+  }
   QString s = bigliettoView->getNomeSala();  
   auto it = postiObj.value("Posti").toObject().value(s).toArray();
   QJsonArray *array = new QJsonArray;
   *array = it;
-  QString regola = admin->getRegola();
+  regola = admin->getRegola();
   int row, column;
   for (int i = 0; i < array->size(); ++i) {
     row = array->at(i).toInt() / bigliettoView->getColonneMax();
