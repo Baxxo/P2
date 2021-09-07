@@ -183,16 +183,19 @@ bool Controller::createAbbonamento(const QString &cf) {
   return chk;
 }
 
-void Controller::showPrezzo(const EntrataFilm *e) const {
+void Controller::showPrezzo(const EntrataFilm *e) {
   QMessageBox *biglietto = new QMessageBox;
   if (regola == "Rossa" || regola == "Arancione") {
     biglietto->setText("il prezzo è " + QString::number(e->getPrezzo()) +
                        "\n e' OBBLIGATORIO avere la mascherina");
-  } else if (regola == "Gialla" || regola == "Bianca") {
+    biglietto->show();
+  }
+
+  if (regola == "Gialla" || regola == "Bianca") {
     biglietto->setText("il prezzo è " + QString::number(e->getPrezzo()) +
                        "\nnon serve la mascherina");
+    biglietto->show();
   }
-  biglietto->show();
 }
 
 bool Controller::createAbbonamentoFamigliare(const QString &name,

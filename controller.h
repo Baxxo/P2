@@ -84,8 +84,6 @@ class Controller : public QObject {
 
   void removeAbbonamentoFromJson(const QString &cod);
 
-  void showPrezzo(const EntrataFilm *e) const;
-
  public slots:
 
   // apertura finestre
@@ -145,6 +143,7 @@ class Controller : public QObject {
   void openError(const QString &message);
 
   void createFamiglia(Famiglia &f, Utente *u);
+  void showPrezzo(const EntrataFilm *e);
 
   Famiglia *getFam() const;
 

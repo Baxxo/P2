@@ -33,7 +33,6 @@ class Biglietto_View : public QWidget {
   QListWidget *listaFilm;
   QVBoxLayout *compraLayout;
 
-  QPushButton *selectSeat;
   QVBoxLayout *salaLayout;
   QWidget *salaWidget;
 
@@ -93,6 +92,7 @@ class Biglietto_View : public QWidget {
  public slots:
   void resizeSala();
   void resizeMe();
+  void hideSalaView();
 
   void setUtilitySearchText(const QString &s);
 };

@@ -20,11 +20,10 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
       utenteBigl(new QVBoxLayout),
       widgetSearchCf(new QWidget),
 
-      labelListaFilm(new QLabel("Lista film disponibli")),
+      labelListaFilm(new QLabel("Cliccare una volta sul film desiderato")),
       listaFilm(new QListWidget),
       compraLayout(new QVBoxLayout),
 
-      selectSeat(new QPushButton("scegli un posto")),
       salaLayout(new QVBoxLayout),
       salaWidget(new QWidget),
 
@@ -85,17 +84,6 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
 
   listaFilm->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
   compraLayout->addWidget(listaFilm, Qt::AlignTop);
-
-  //-------------------------------------------------------------------------
-
-  // selezione del posto desiderato
-
-  selectSeat->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-  compraLayout->addWidget(selectSeat, Qt::AlignRight);
-
-  connect(selectSeat, SIGNAL(clicked()), controller, SLOT(showSala()));
-
-  //-------------------------------------------------------------------------
 
   compraBiglietto->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
   compraLayout->addWidget(compraBiglietto, Qt::AlignBottom);
@@ -225,6 +213,8 @@ void Biglietto_View::setPostoOccupato(unsigned int r, unsigned int c,
       posti->setItem(static_cast<int>(r), static_cast<int>(c + 2), itemdist4);
     }
   }
+    connect(posti, SIGNAL(cellClicked(int,int)), this, SLOT(hideSalaView));
+    labelListaFilm->setText("Posto scelto correttamente");
 }
 
 void Biglietto_View::createSalaView(unsigned int r, unsigned int c,
@@ -234,6 +224,9 @@ void Biglietto_View::createSalaView(unsigned int r, unsigned int c,
   }
   if (nomeSala) {
     delete nomeSala;
+  }
+  if(colonneMax){
+      delete colonneMax;
   }
 
   salaWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -248,8 +241,8 @@ void Biglietto_View::createSalaView(unsigned int r, unsigned int c,
   nomeSala->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
   colonneMax->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
   salaLayout->addWidget(nomeSala);
-  salaLayout->addWidget(posti);
   salaLayout->addWidget(colonneMax);
+  salaLayout->addWidget(posti);  
   salaWidget->setLayout(salaLayout);
 
   salaWidget->hide();
@@ -315,6 +308,11 @@ void Biglietto_View::showSearch() {
 }
 
 void Biglietto_View::resizeMe() { adjustSize(); }
+
+void Biglietto_View::hideSalaView()
+{
+    salaWidget->hide();
+}
 
 void Biglietto_View::resizeSala() {
   if (salaWidget) salaWidget->adjustSize();
