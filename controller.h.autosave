@@ -84,7 +84,7 @@ class Controller : public QObject {
 
   void removeAbbonamentoFromJson(const QString &cod);
 
-  void showPrezzoAbb(const EntrataFilm *e);
+  void showPrezzo(const EntrataFilm *e);
 
  public slots:
 

@@ -1,9 +1,9 @@
 #include "controller.h"
 
 #include <QDate>
+#include <QDebug>
 #include <QFileDialog>
 #include <QTimer>
-#include <QDebug>
 
 using std::string;
 
@@ -177,20 +177,25 @@ bool Controller::createAbbonamento(const QString &cf) {
 
     file.write(doc.toJson());
     file.close();
-
-    QMessageBox* biglietto = new QMessageBox;
-    if(regola=="Rossa" || "Arancione"){
-        biglietto->setText("il prezzo è "+QString::number(abb->getPrezzo()) + " bisogna avere la mascherina");
-        biglietto->show();
-    }
-
-    if(regola=="Gialla" || "Bianca"){
-        biglietto->setText("il prezzo è "+QString::number(abb->getPrezzo()) + " non serve la mascherina");
-        biglietto->show();
-    }
+    showPrezzo(abb);
   }
 
   return chk;
+}
+
+void Controller::showPrezzo(const EntrataFilm *e) {
+  QMessageBox *biglietto = new QMessageBox;
+  if (regola == "Rossa" || regola == "Arancione") {
+    biglietto->setText("il prezzo è " + QString::number(e->getPrezzo()) +
+                       "\n e' OBBLIGATORIO avere la mascherina");
+    biglietto->show();
+  }
+
+  if (regola == "Gialla" || regola == "Bianca") {
+    biglietto->setText("il prezzo è " + QString::number(e->getPrezzo()) +
+                       "\nnon serve la mascherina");
+    biglietto->show();
+  }
 }
 
 bool Controller::createAbbonamentoFamigliare(const QString &name,
@@ -259,17 +264,7 @@ bool Controller::createAbbonamentoFamigliare(const QString &name,
 
       file.write(doc.toJson());
       file.close();
-
-      QMessageBox* biglietto = new QMessageBox;
-      if(regola=="Rossa" || "Arancione"){
-          biglietto->setText("il prezzo è "+QString::number(abbFam->getPrezzo()) + " bisogna avere la mascherina");
-          biglietto->show();
-      }
-
-      if(regola=="Gialla" || "Bianca"){
-          biglietto->setText("il prezzo è "+QString::number(abbFam->getPrezzo()) + " non serve la mascherina");
-          biglietto->show();
-      }
+      showPrezzo(abbFam);
     }
   }
 
@@ -278,12 +273,6 @@ bool Controller::createAbbonamentoFamigliare(const QString &name,
 
 void Controller::loadUtentiInAdmin() {
   admin->clearListUtenti();
-  //  for (auto it = model->getListUtenti().cbegin();
-  //       it != model->getListUtenti().cend(); ++it) {
-  //    string s = (**it).getSurname() + " " + (**it).getName() + " ( " +
-  //               (**it).getCodFisc() + " )";
-  //    admin->addUtenteinList(QString(s.c_str()));
-  //  }
 
   for (unsigned int i = 0; i < model->sizeUtenti(); ++i) {
     Utente *tmp = model->getUser(i);
@@ -958,16 +947,7 @@ void Controller::buyBiglietto() {
         oB.insert(QString::number(cod), newUser);
 
         model->addEntrata(b);
-        QMessageBox* biglietto = new QMessageBox;
-        if(regola=="Rossa" || "Arancione"){
-            biglietto->setText("il prezzo è "+QString::number(b->getPrezzo()) + " bisogna avere la mascherina");
-            biglietto->show();
-        }
-
-        if(regola=="Gialla" || "Bianca"){
-            biglietto->setText("il prezzo è "+QString::number(b->getPrezzo()) + " non serve la mascherina");
-            biglietto->show();
-        }
+        showPrezzo(b);
       }
     }
   }
@@ -985,10 +965,8 @@ void Controller::buyBiglietto() {
         QString day = QString::number(d->currentDate().day());
         QString year = QString::number(d->currentDate().year());
         QString month = QString::number(d->currentDate().month());
-        QString date = year+"/"+month+"/"+day;
+        QString date = year + "/" + month + "/" + day;
         if (abf) {
-
-
           QJsonObject newAbbonamento;
           newAbbonamento.insert("Tipo", "Abbonamento Famigliare");
           newAbbonamento.insert("Data", date);
@@ -1004,19 +982,20 @@ void Controller::buyBiglietto() {
 
           abf->removeOneEntrata();
 
-          QMessageBox* biglietto = new QMessageBox;
-          if(regola=="Rossa" || "Arancione"){
-              biglietto->setText("il prezzo è "+QString::number(0) + " bisogna avere la mascherina");
-              biglietto->show();
+          QMessageBox *biglietto = new QMessageBox;
+          if (regola == "Rossa" || "Arancione") {
+            biglietto->setText("il prezzo è " + QString::number(0) +
+                               " bisogna avere la mascherina");
+            biglietto->show();
           }
 
-          if(regola=="Gialla" || "Bianca"){
-              biglietto->setText("il prezzo è "+QString::number(0) + " non serve la mascherina");
-              biglietto->show();
+          if (regola == "Gialla" || "Bianca") {
+            biglietto->setText("il prezzo è " + QString::number(0) +
+                               " non serve la mascherina");
+            biglietto->show();
           }
         }
         if (ab) {
-
           QJsonObject newAbbonamento;
           newAbbonamento.insert("Tipo", "Abbonamento");
           newAbbonamento.insert("Data", date);
@@ -1030,17 +1009,18 @@ void Controller::buyBiglietto() {
 
           ab->removeOneEntrata();
 
-          QMessageBox* biglietto = new QMessageBox;
-          if(regola=="Rossa" || "Arancione"){
-              biglietto->setText("il prezzo è "+QString::number(0) + " bisogna avere la mascherina");
-              biglietto->show();
+          QMessageBox *biglietto = new QMessageBox;
+          if (regola == "Rossa" || "Arancione") {
+            biglietto->setText("il prezzo è " + QString::number(0) +
+                               " bisogna avere la mascherina");
+            biglietto->show();
           }
 
-          if(regola=="Gialla" || "Bianca"){
-              biglietto->setText("il prezzo è "+QString::number(0) + " non serve la mascherina");
-              biglietto->show();
+          if (regola == "Gialla" || "Bianca") {
+            biglietto->setText("il prezzo è " + QString::number(0) +
+                               " non serve la mascherina");
+            biglietto->show();
           }
-
         }
       }
     }
