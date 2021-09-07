@@ -80,6 +80,24 @@
                 "Prezzo": "6.65",
                 "Riduzione": "1",
                 "Tipo": "Biglietto"
+            },
+            "22": {
+                "CF": "Codice Fiscale2",
+                "Codice": "22",
+                "Data": "2021/9/7",
+                "Film": "Fast and beautiful",
+                "Prezzo": "7.5",
+                "Riduzione": "0",
+                "Tipo": "Biglietto"
+            },
+            "23": {
+                "CF": "Codice Fiscale2",
+                "Codice": "23",
+                "Data": "2021/9/7",
+                "Film": "Fast and beautiful",
+                "Prezzo": "7.5",
+                "Riduzione": "0",
+                "Tipo": "Biglietto"
             }
         }
     }
