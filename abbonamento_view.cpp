@@ -1,6 +1,8 @@
 #include "abbonamento_view.h"
 #include "controller.h"
 
+#include <QTimer>
+
 Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)
     : QWidget(parent),
       controller(c),
@@ -137,15 +139,26 @@ void Abbonamento_view::clickListUtenti(QListWidgetItem *item) {
     if (!alreadySelectedUt) {
       lbl->setStyleSheet("QLabel { background-color : LightGreen;}");
       lbl->setSelect(true);
-      aggiungi->show();
       alreadySelectedUt = true;
     }
   } else {
     lbl->setStyleSheet("QLabel { background-color : #00A2E8;}");
     lbl->setSelect(false);
     alreadySelectedUt = false;
+    currentUser = nullptr;
+  }
+
+  if (!isUtente) {
+    if (alreadySelectedUt && alreadySelectedFm)
+      aggiungi->show();
+    else
+      aggiungi->hide();
+  } else if (alreadySelectedUt) {
+    aggiungi->show();
+  } else {
     aggiungi->hide();
   }
+
   listaUtenti->setItemWidget(item, lbl);
   resizeMe();
 }
@@ -171,6 +184,8 @@ void Abbonamento_view::clickListFamiglie(QListWidgetItem *item) {
   resizeMe();
 }
 
+void Abbonamento_view::clearUtilityText() { labelUtility->setText(""); }
+
 void Abbonamento_view::createAbbonamento() {
   QListWidgetItem *item = listaUtenti->currentItem();
   QLabelCF *lbl = dynamic_cast<QLabelCF *>(listaUtenti->itemWidget(item));
@@ -181,6 +196,7 @@ void Abbonamento_view::createAbbonamento() {
     if (addAbbonamentoToController(lbl->getCf())) {
       labelUtility->setStyleSheet("QLabel { color : LightGreen;}");
       labelUtility->setText("Abbonamento creato correttamente");
+      QTimer::singleShot(3000, this, SLOT(clearUtilityText()));
     } else {
       labelUtility->setStyleSheet("QLabel { color : Red;}");
       labelUtility->setText("Errore nella crezione dell' abbonamento");
@@ -191,11 +207,13 @@ void Abbonamento_view::createAbbonamento() {
     if (addAbbonamentoFamToController(lblFam->getCf(), lbl->getCf())) {
       labelUtility->setStyleSheet("QLabel { color : LightGreen;}");
       labelUtility->setText("Abbonamento famigliare creato correttamente");
+      QTimer::singleShot(3000, this, SLOT(clearUtilityText()));
     } else {
       labelUtility->setStyleSheet("QLabel { color : Red;}");
       labelUtility->setText(
           "Errore nella crezione dell' abbonamento famigliare");
     }
+
     alreadySelectedFm = false;
   }
   alreadySelectedUt = false;

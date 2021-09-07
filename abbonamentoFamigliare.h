@@ -8,10 +8,12 @@ using std::string;
 class AbbonamentoFamigliare : public Abbonamento {
  private:
   string famiglia;
+  unsigned int membriFamiglia;
 
  public:
   AbbonamentoFamigliare(Data *d = nullptr, string u = "", string f = "",
-                        double p = 7.5, string c = "00000", int e = 0);
+                        double p = 7.5, string c = "00000", int e = 0,
+                        unsigned int mF = 0);
 
   AbbonamentoFamigliare(const AbbonamentoFamigliare &o);
 
@@ -26,6 +28,8 @@ class AbbonamentoFamigliare : public Abbonamento {
   AbbonamentoFamigliare *clone() const override;
 
   string toString() const override;
+
+  unsigned int getNumeroMembri() const;
 };
 
 #endif

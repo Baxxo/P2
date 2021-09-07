@@ -55,6 +55,8 @@ class Abbonamento_view : public QWidget {
   void clickListUtenti(QListWidgetItem* item);
   void clickListFamiglie(QListWidgetItem* item);
 
+  void clearUtilityText();
+
  public:
   explicit Abbonamento_view(Controller* c, QWidget* parent = nullptr);
 

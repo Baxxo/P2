@@ -1,13 +1,6 @@
 {
     "Entrate": {
         "Entrate Abbonamento": {
-            "10": {
-                "Codice": "10",
-                "Data": "2021/9/1",
-                "Entrate_rimaste": 10,
-                "Tipo": "Abbonamento",
-                "Utente": "provaCodFIsc"
-            },
             "11": {
                 "Codice": "11",
                 "Data": "2021/9/4",
@@ -15,12 +8,58 @@
                 "Tipo": "Abbonamento",
                 "Utente": "Codice Fiscale1"
             },
-            "4": {
-                "Codice": "4",
-                "Data": "2021/8/28",
+            "13": {
+                "Codice": "13",
+                "Data": "2021/9/7",
+                "Entrate_rimaste": 10,
+                "Famiglia": "testFam123",
+                "Tipo": "Abbonamento_Famigliare",
+                "Utente": "Codice Fiscale"
+            },
+            "14": {
+                "Codice": "14",
+                "Data": "2021/9/7",
                 "Entrate_rimaste": 10,
                 "Tipo": "Abbonamento",
-                "Utente": "test2"
+                "Utente": "Codice Fiscale2"
+            },
+            "16": {
+                "Codice": "16",
+                "Data": "2021/9/7",
+                "Entrate_rimaste": 10,
+                "Famiglia": "bella family",
+                "Tipo": "Abbonamento_Famigliare",
+                "Utente": "Codice Fiscale2"
+            },
+            "17": {
+                "Codice": "17",
+                "Data": "2021/9/7",
+                "Entrate_rimaste": 10,
+                "Tipo": "Abbonamento",
+                "Utente": "Codice Fiscale"
+            },
+            "19": {
+                "Codice": "19",
+                "Data": "2021/9/7",
+                "Entrate_rimaste": 10,
+                "Famiglia": "bella family",
+                "Tipo": "Abbonamento_Famigliare",
+                "Utente": "Codice Fiscale4"
+            },
+            "20": {
+                "Codice": "20",
+                "Data": "2021/9/7",
+                "Entrate_rimaste": 10,
+                "Tipo": "Abbonamento",
+                "Utente": "test1"
+            },
+            "21": {
+                "Codice": "21",
+                "Data": "2021/9/7",
+                "Entrate_rimaste": 10,
+                "Famiglia": "bella family",
+                "Tipo": "Abbonamento_Famigliare",
+                "Utente": "Codice Fiscale2"
             }
         },
         "Entrate Singole": {

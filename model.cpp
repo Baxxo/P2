@@ -83,14 +83,16 @@ Utente *Model::getUtente(string cf) const {
   return nullptr;
 }
 
+#include <QDebug>
+#include <QString>
 Famiglia *Model::getFamiglia(string name) const {
-  auto it = listFamiglie.cbegin();
-
-  for (; it != listFamiglie.cend(); ++it) {
+  for (auto it = listFamiglie.cbegin(); it != listFamiglie.cend(); ++it) {
+    qDebug() << QString::fromStdString((*it)->getName());
     if ((*it)->getName() == name) {
-      return new Famiglia(**it);
+      return &**it;
     }
   }
+  qDebug() << "Fine " << QString::fromStdString(name);
   return nullptr;
 }
 

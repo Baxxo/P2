@@ -205,7 +205,8 @@ bool Controller::createAbbonamentoFamigliare(const QString &name,
     if (model->searchNameFamiglia(name.toStdString())) {
       abbFam = new AbbonamentoFamigliare(
           new Data(year.toUInt(), month.toUInt(), day.toUInt()),
-          cf.toStdString(), name.toStdString(), 7.5, std::to_string(++cod), 10);
+          cf.toStdString(), name.toStdString(), 7.5, std::to_string(++cod), 10,
+          model->getFamiglia(name.toStdString())->getSize());
 
       model->addEntrata(abbFam);
 
@@ -706,9 +707,6 @@ void Controller::salvaFamiglia() {
     }
   }
 }
-
-#include <QDebug>
-
 void Controller::newFilm() {
   if (pathJsonFilm == "") {
     pathJsonFilm = QFileDialog::getOpenFileName(
@@ -728,10 +726,6 @@ void Controller::newFilm() {
 
   QJsonObject mstObj = film.toObject();
 
-  for (auto it = mstObj.begin(); it != mstObj.end(); ++it) {
-    qDebug() << it.key();
-  }
-
   mstObj.insert(admin->getNomeFilm(), admin->getSalaFilm());
 
   obj.insert("Film", mstObj);
@@ -740,6 +734,7 @@ void Controller::newFilm() {
     doc.setObject(obj);
     file.write(doc.toJson());
     file.close();
+    admin->setUtilityFilm("Film inserito correttamente");
   } else {
     openError(QString("File open error: Write"));
   }
@@ -1372,6 +1367,7 @@ void Controller::popolaVectorUtenti(const QVariantList &list) {
   }
 }
 
+#include <QDebug>
 void Controller::popolaVectorFamiglie(const QVariantList &list) {
   Famiglia *fam = nullptr;
 
@@ -1424,7 +1420,9 @@ void Controller::popolaVectorEntrate(const QVariantMap &map) {
             mapA["Utente"].toString().toStdString(),
             mapA["Famiglia"].toString().toStdString(), 7.5,
             mapA["Codice"].toString().toStdString(),
-            mapA["Entrate_rimaste"].toInt()));
+            mapA["Entrate_rimaste"].toInt(),
+            model->getFamiglia(mapA["Famiglia"].toString().toStdString())
+                ->getSize()));
       }
     }
   }

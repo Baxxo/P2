@@ -14,6 +14,11 @@
             "colonne": "12",
             "nome_sala": "Verde",
             "righe": "12"
+        },
+        {
+            "colonne": "4",
+            "nome_sala": "Gialla",
+            "righe": "4"
         }
     ]
 }

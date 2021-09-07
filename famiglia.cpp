@@ -1,5 +1,9 @@
 #include "famiglia.h"
 
+#include <QDebug>
+
+#include <QString>
+
 Famiglia::Famiglia(string _name, unsigned int c)
     : membri(new Utente *[c]), capacity(c), size(0), name(_name) {}
 
@@ -64,8 +68,11 @@ bool Famiglia::hasMembro(Utente *u) {
   }
   return false;
 }
-
-unsigned int Famiglia::getSize() const { return size; }
+unsigned int Famiglia::getSize() const {
+  qDebug() << "name: " << QString::fromStdString(name);
+  return size;
+  //  return 10;
+}
 
 Utente *&Famiglia::operator[](unsigned int i) const {
   if (i >= size) {

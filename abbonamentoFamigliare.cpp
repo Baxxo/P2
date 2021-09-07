@@ -1,8 +1,9 @@
 #include "abbonamentoFamigliare.h"
 
 AbbonamentoFamigliare::AbbonamentoFamigliare(Data *d, string u, string f,
-                                             double p, string c, int e)
-    : Abbonamento(d, u, p, c, e), famiglia(f) {}
+                                             double p, string c, int e,
+                                             unsigned int mF)
+    : Abbonamento(d, u, p, c, e), famiglia(f), membriFamiglia(mF) {}
 
 AbbonamentoFamigliare::AbbonamentoFamigliare(const AbbonamentoFamigliare &o)
     : Abbonamento(o), famiglia(o.famiglia) {}
@@ -17,8 +18,12 @@ std::string AbbonamentoFamigliare::toString() const {
   return "Codice: " + getCodice() + " famiglia: " + getFamiglia();
 }
 
+unsigned int AbbonamentoFamigliare::getNumeroMembri() const {
+  return membriFamiglia;
+}
+
 double AbbonamentoFamigliare::getPrezzo() const {
-  return EntrataFilm::getPrezzo() * getEntrate();
+  return Abbonamento::getPrezzo() * getEntrate() * membriFamiglia;
 }
 
 AbbonamentoFamigliare &AbbonamentoFamigliare::operator=(
