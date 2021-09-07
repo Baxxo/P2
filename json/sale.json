@@ -11,13 +11,18 @@
             "righe": "8"
         },
         {
-            "colonne": "12",
+            "colonne": "8",
             "nome_sala": "Verde",
-            "righe": "12"
+            "righe": "3"
         },
         {
-            "colonne": "4",
-            "nome_sala": "Gialla",
+            "colonne": "5",
+            "nome_sala": "Viola",
+            "righe": "3"
+        },
+        {
+            "colonne": "5",
+            "nome_sala": "Rosa",
             "righe": "4"
         }
     ]
