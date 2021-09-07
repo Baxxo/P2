@@ -29,11 +29,6 @@
             "colonne": "6",
             "nome_sala": "Gialla",
             "righe": "6"
-        },
-        {
-            "colonne": "4",
-            "nome_sala": "Azzurra",
-            "righe": "5"
         }
     ]
 }

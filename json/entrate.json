@@ -3,23 +3,22 @@
         "Entrate Abbonamento": {
             "11": {
                 "Codice": "11",
-                "Data": "2021/9/4",
-                "Entrate_rimaste": 10,
+                "Data": "2021/9/7",
+                "Entrate_rimaste": 8,
                 "Tipo": "Abbonamento",
                 "Utente": "Codice Fiscale1"
             },
             "13": {
                 "Codice": "13",
                 "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
-                "Famiglia": "testFam123",
-                "Tipo": "Abbonamento_Famigliare",
+                "Entrate_rimaste": 8,
+                "Tipo": "Abbonamento",
                 "Utente": "Codice Fiscale"
             },
             "14": {
                 "Codice": "14",
                 "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
+                "Entrate_rimaste": 9,
                 "Tipo": "Abbonamento",
                 "Utente": "Codice Fiscale2"
             },
@@ -60,6 +59,21 @@
                 "Famiglia": "bella family",
                 "Tipo": "Abbonamento_Famigliare",
                 "Utente": "Codice Fiscale2"
+            },
+            "26": {
+                "Codice": "26",
+                "Data": "2021/9/7",
+                "Entrate_rimaste": 10,
+                "Tipo": "Abbonamento",
+                "Utente": "Codice Fiscale123"
+            },
+            "27": {
+                "Codice": "27",
+                "Data": "2021/9/7",
+                "Entrate_rimaste": 10,
+                "Famiglia": "test2",
+                "Tipo": "Abbonamento_Famigliare",
+                "Utente": "test2"
             }
         },
         "Entrate Singole": {
@@ -97,6 +111,24 @@
                 "Film": "Fast and beautiful",
                 "Prezzo": "7.5",
                 "Riduzione": "0",
+                "Tipo": "Biglietto"
+            },
+            "24": {
+                "CF": "Codice Fiscale",
+                "Codice": "24",
+                "Data": "2021/9/7",
+                "Film": "Fast and beautiful",
+                "Prezzo": "7.5",
+                "Riduzione": "0",
+                "Tipo": "Biglietto"
+            },
+            "25": {
+                "CF": "test",
+                "Codice": "25",
+                "Data": "2021/9/7",
+                "Film": "Fast and beautiful",
+                "Prezzo": "6.65",
+                "Riduzione": "1",
                 "Tipo": "Biglietto"
             }
         }
