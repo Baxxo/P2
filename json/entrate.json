@@ -4,7 +4,7 @@
             "11": {
                 "Codice": "11",
                 "Data": "2021/9/7",
-                "Entrate_rimaste": 8,
+                "Entrate_rimaste": 7,
                 "Tipo": "Abbonamento",
                 "Utente": "Codice Fiscale1"
             },
@@ -119,21 +119,6 @@
                 "Famiglia": "test1",
                 "Tipo": "Abbonamento_Famigliare",
                 "Utente": "Codice Fiscale5"
-            },
-            "34": {
-                "Codice": "34",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
-                "Tipo": "Abbonamento",
-                "Utente": "Codice Fiscale5"
-            },
-            "35": {
-                "Codice": "35",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
-                "Famiglia": "eccoloqua",
-                "Tipo": "Abbonamento_Famigliare",
-                "Utente": "Codice Fiscale4"
             }
         },
         "Entrate Singole": {
@@ -185,6 +170,33 @@
             "25": {
                 "CF": "test",
                 "Codice": "25",
+                "Data": "2021/9/7",
+                "Film": "Fast and beautiful",
+                "Prezzo": "6.65",
+                "Riduzione": "1",
+                "Tipo": "Biglietto"
+            },
+            "34": {
+                "CF": "test1",
+                "Codice": "34",
+                "Data": "2021/9/7",
+                "Film": "Fast and beautiful",
+                "Prezzo": "6.65",
+                "Riduzione": "1",
+                "Tipo": "Biglietto"
+            },
+            "35": {
+                "CF": "test",
+                "Codice": "35",
+                "Data": "2021/9/7",
+                "Film": "Fast and beautiful",
+                "Prezzo": "6.65",
+                "Riduzione": "1",
+                "Tipo": "Biglietto"
+            },
+            "36": {
+                "CF": "test",
+                "Codice": "36",
                 "Data": "2021/9/7",
                 "Film": "Fast and beautiful",
                 "Prezzo": "6.65",
