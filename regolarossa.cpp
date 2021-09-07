@@ -1,9 +1,8 @@
 #include "regolarossa.h"
 
-RegolaRossa::RegolaRossa(unsigned int dP, bool m, bool c) : Regola(dP, m, c) {}
+RegolaRossa::RegolaRossa(unsigned int dP, bool m) : Regola(dP, m) {}
 
-void RegolaRossa::getRegole(unsigned int &distP, bool &m, bool &c) {
+void RegolaRossa::getRegole(unsigned int &distP, bool &m) {
   distP = getDistanzaPosti();
   m = getMustMascherina();
-  c = getCongiuntiVicini();
 }

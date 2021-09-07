@@ -70,6 +70,7 @@ HEADERS += \
     entrataFilm.h \
     famiglia.h \
     myVector.h \
+    regolarossa.h \
     sala.h \
     utente.h \
     utente_View.h \

@@ -1,10 +1,9 @@
 #include "regolaarancione.h"
 
-RegolaArancione::RegolaArancione(unsigned int dP, bool m, bool c)
-    : Regola(dP, m, c) {}
+RegolaArancione::RegolaArancione(unsigned int dP, bool m)
+    : Regola(dP, m) {}
 
-void RegolaArancione::getRegole(unsigned int &distP, bool &m, bool &c) {
+void RegolaArancione::getRegole(unsigned int &distP, bool &m) {
   distP = getDistanzaPosti();
   m = getMustMascherina();
-  c = getCongiuntiVicini();
 }

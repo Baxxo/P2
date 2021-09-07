@@ -1,10 +1,9 @@
 #include "regolagialla.h"
 
-RegolaGialla::RegolaGialla(unsigned int dP, bool m, bool c)
-    : Regola(dP, m, c) {}
+RegolaGialla::RegolaGialla(unsigned int dP, bool m)
+    : Regola(dP, m) {}
 
-void RegolaGialla::getRegole(unsigned int &distP, bool &m, bool &c) {
+void RegolaGialla::getRegole(unsigned int &distP, bool &m) {
   distP = getDistanzaPosti();
   m = getMustMascherina();
-  c = getCongiuntiVicini();
 }

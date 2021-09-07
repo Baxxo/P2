@@ -3,6 +3,7 @@
 #include <QDate>
 #include <QFileDialog>
 #include <QTimer>
+#include <QDebug>
 
 using std::string;
 
@@ -22,7 +23,7 @@ Controller::Controller(QObject *parent, Model *m)
       pathJsonPosti(""),
       pathJsonFilm(""),
       pathJsonSale(""),
-      regola(""),
+      regola("Bianca"),
       objUtenti(nullptr),
       fam(nullptr),
       abb(nullptr),
@@ -176,6 +177,17 @@ bool Controller::createAbbonamento(const QString &cf) {
 
     file.write(doc.toJson());
     file.close();
+
+    QMessageBox* biglietto = new QMessageBox;
+    if(regola=="Rossa" || "Arancione"){
+        biglietto->setText("il prezzo è "+QString::number(abb->getPrezzo()) + " bisogna avere la mascherina");
+        biglietto->show();
+    }
+
+    if(regola=="Gialla" || "Bianca"){
+        biglietto->setText("il prezzo è "+QString::number(abb->getPrezzo()) + " non serve la mascherina");
+        biglietto->show();
+    }
   }
 
   return chk;
@@ -247,6 +259,17 @@ bool Controller::createAbbonamentoFamigliare(const QString &name,
 
       file.write(doc.toJson());
       file.close();
+
+      QMessageBox* biglietto = new QMessageBox;
+      if(regola=="Rossa" || "Arancione"){
+          biglietto->setText("il prezzo è "+QString::number(abbFam->getPrezzo()) + " bisogna avere la mascherina");
+          biglietto->show();
+      }
+
+      if(regola=="Gialla" || "Bianca"){
+          biglietto->setText("il prezzo è "+QString::number(abbFam->getPrezzo()) + " non serve la mascherina");
+          biglietto->show();
+      }
     }
   }
 
@@ -752,7 +775,7 @@ void Controller::newSala() {
   // aggiunta di array vuoto in json posti
   QFile filePosti(pathJsonPosti);
   if (!filePosti.open(QIODevice::ReadWrite)) {
-    openError(QString("File open error: ReadWrite"));
+    openError(QString("File open error: Read"));
   }
 
   QJsonDocument docPosti;
@@ -773,14 +796,13 @@ void Controller::newSala() {
                           admin->getColonneSala().toUInt(),
                           admin->getNomeSala().toStdString()));
 
-  admin->setUtilitySale("Sala inserita correttamente");
   loadSaleInAdmin();
 }
 
 void Controller::newPostoOccupato() {
   QFile file(pathJsonPosti);
   if (!file.open(QIODevice::ReadWrite)) {
-    openError(QString("File open error: ReadWrite"));
+    openError(QString("File open error: Read"));
   }
   QJsonDocument doc;
   QJsonArray *array = new QJsonArray;
@@ -804,11 +826,13 @@ void Controller::newPostoOccupato() {
 }
 
 void Controller::setPostiOccupati() {
-  if (regola == "") {
-    openAdmin();
-    hideAdmin();
-  }
+  openAdmin();
+  hideAdmin();
+  //<<<<<<< HEAD
+  //  QString s = bigliettoView->getNomeSala();
+  //=======
   QString s = bigliettoView->getNomeSala();
+  //>>>>>>> 6e6d811863ed682fbc848390ba4c31f65315a510
   auto it = postiObj.value("Posti").toObject().value(s).toArray();
   QJsonArray *array = new QJsonArray;
   *array = it;
@@ -830,7 +854,7 @@ void Controller::stpBigl() {
 
       // save acquirente per tracciamento
       QFile storico("path");
-      if (storico.open(QIODevice::ReadWrite)) {
+      if (!storico.open(QIODevice::ReadWrite)) {
         openError(QString("File open error: Read"));
       } else {
         // read from existing file and load existing users on local obj
@@ -888,119 +912,154 @@ void Controller::showSala() {
 
 void Controller::buyBiglietto() {
   QFile file(pathJsonEntrata);
-  if (file.open(QIODevice::ReadOnly)) {
-    QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
-    file.close();
-
-    QJsonValue v = jsonOrg.object().value(QString("Entrate"));
-
-    QJsonValue vb = v.toObject().value(QString("Entrate Singole"));
-
-    QJsonValue va = v.toObject().value(QString("Entrate Abbonamento"));
-
-    QJsonObject oB = vb.toObject();
-
-    QJsonObject oA = va.toObject();
-
-    if (bigliettoView->getTipologia() == "Biglietto") {
-      QString cf = bigliettoView->getSelectName();
-
-      for (unsigned int i = 0; i < model->sizeUtenti(); ++i) {
-        Utente *tmp = model->getUser(i);
-        if (cf == QString::fromStdString(tmp->getCodFisc())) {
-          cod++;
-          QDate *d = new QDate;
-          Data *date =
-              new Data(static_cast<unsigned int>(d->currentDate().year()),
-                       static_cast<unsigned int>(d->currentDate().month()),
-                       static_cast<unsigned int>(d->currentDate().day()));
-          bool riduzione = false;
-          if (tmp->getAge() < 14) riduzione = true;
-          Biglietto *b = new Biglietto(
-              std::to_string(cod), date, tmp->getCodFisc(), 7.5, riduzione,
-              bigliettoView->getSelectedFilm().toStdString());
-
-          QJsonObject newUser;
-          newUser.insert("Codice", QString::number(cod));
-          newUser.insert("Data", QString::fromStdString(date->toString()));
-          newUser.insert("CF", QString::fromStdString(tmp->getCodFisc()));
-          newUser.insert("Film", bigliettoView->getSelectedFilm());
-          newUser.insert("Prezzo", QString::number(b->getPrezzo()));
-          newUser.insert("Riduzione", QString::number(riduzione));
-          newUser.insert("Tipo", "Biglietto");
-
-          oB.insert(QString::number(cod), newUser);
-
-          model->addEntrata(b);
-        }
-      }
-    }
-
-    if (bigliettoView->getTipologia() == "Abbonamento") {
-      QString cod = bigliettoView->getSelectName();
-
-      for (unsigned int i = 0; i < model->sizeEntrate(); ++i) {
-        if (cod == QString::fromStdString(model->getEntrata(i)->getCodice())) {
-          Abbonamento *ab = dynamic_cast<Abbonamento *>(model->getEntrata(i));
-
-          AbbonamentoFamigliare *abf =
-              dynamic_cast<AbbonamentoFamigliare *>(ab);
-          if (abf) {
-            QDate *d = new QDate;
-            QString date = d->currentDate().toString();
-
-            QJsonObject newAbbonamento;
-            newAbbonamento.insert("Tipo", "Abbonamento Famigliare");
-            newAbbonamento.insert("Data", date);
-            newAbbonamento.insert("Utente",
-                                  QString::fromStdString(abf->getUtente()));
-            newAbbonamento.insert("Codice",
-                                  QString::fromStdString(abf->getCodice()));
-            newAbbonamento.insert("Famiglia",
-                                  QString::fromStdString(abf->getFamiglia()));
-            newAbbonamento.insert("Entrate_rimaste", abf->getEntrate() - 1);
-
-            oA.insert(QString::fromStdString(abf->getCodice()), newAbbonamento);
-          }
-          if (ab) {
-            QDate *d = new QDate;
-            QString date = d->currentDate().toString();
-
-            QJsonObject newAbbonamento;
-            newAbbonamento.insert("Tipo", "Abbonamento");
-            newAbbonamento.insert("Data", date);
-            newAbbonamento.insert("Utente",
-                                  QString::fromStdString(ab->getUtente()));
-            newAbbonamento.insert("Codice",
-                                  QString::fromStdString(ab->getCodice()));
-            newAbbonamento.insert("Entrate_rimaste", ab->getEntrate() - 1);
-
-            oA.insert(QString::fromStdString(ab->getCodice()), newAbbonamento);
-
-          } else {
-            openError("nessun abbonamento acquistato dall'utente selezionato");
-          }
-        }
-      }
-    }
-
-    QJsonObject o;
-    o.insert("Entrate Singole", oB);
-    o.insert("Entrate Abbonamento", oA);
-    QJsonObject obj;
-    obj.insert("Entrate", o);
-
-    QJsonDocument doc1(obj);
-
-    if (file.open(QIODevice::WriteOnly)) {
-      file.write(doc1.toJson());
-      file.close();
-    } else {
-      openError(QString("File open error: Write"));
-    }
-  } else {
+  if (!file.open(QIODevice::ReadOnly)) {
     openError(QString("File open error: Read"));
   }
+  QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
+  file.close();
+
+  QJsonValue v = jsonOrg.object().value(QString("Entrate"));
+
+  QJsonValue vb = v.toObject().value(QString("Entrate Singole"));
+
+  QJsonValue va = v.toObject().value(QString("Entrate Abbonamento"));
+
+  QJsonObject oB = vb.toObject();
+
+  QJsonObject oA = va.toObject();
+
+  if (bigliettoView->getTipologia() == "Biglietto") {
+    QString cf = bigliettoView->getSelectName();
+
+    for (unsigned int i = 0; i < model->sizeUtenti(); ++i) {
+      Utente *tmp = model->getUser(i);
+      if (cf == QString::fromStdString(tmp->getCodFisc())) {
+        cod++;
+        QDate *d = new QDate;
+        Data *date =
+            new Data(static_cast<unsigned int>(d->currentDate().year()),
+                     static_cast<unsigned int>(d->currentDate().month()),
+                     static_cast<unsigned int>(d->currentDate().day()));
+        bool riduzione = false;
+        if (tmp->getAge() < 14) riduzione = true;
+        Biglietto *b = new Biglietto(
+            std::to_string(cod), date, tmp->getCodFisc(), 7.5, riduzione,
+            bigliettoView->getSelectedFilm().toStdString());
+
+        QJsonObject newUser;
+        newUser.insert("Codice", QString::number(cod));
+        newUser.insert("Data", QString::fromStdString(date->toString()));
+        newUser.insert("CF", QString::fromStdString(tmp->getCodFisc()));
+        newUser.insert("Film", bigliettoView->getSelectedFilm());
+        newUser.insert("Prezzo", QString::number(b->getPrezzo()));
+        newUser.insert("Riduzione", QString::number(riduzione));
+        newUser.insert("Tipo", "Biglietto");
+
+        oB.insert(QString::number(cod), newUser);
+
+        model->addEntrata(b);
+        QMessageBox* biglietto = new QMessageBox;
+        if(regola=="Rossa" || "Arancione"){
+            biglietto->setText("il prezzo è "+QString::number(b->getPrezzo()) + " bisogna avere la mascherina");
+            biglietto->show();
+        }
+
+        if(regola=="Gialla" || "Bianca"){
+            biglietto->setText("il prezzo è "+QString::number(b->getPrezzo()) + " non serve la mascherina");
+            biglietto->show();
+        }
+      }
+    }
+  }
+
+  if (bigliettoView->getTipologia() == "Abbonamento") {
+    QString cod = bigliettoView->getSelectName();
+
+    for (unsigned int i = 0; i < model->sizeEntrate(); ++i) {
+      if (cod == QString::fromStdString(model->getEntrata(i)->getCodice())) {
+        Abbonamento *ab = dynamic_cast<Abbonamento *>(model->getEntrata(i));
+
+        AbbonamentoFamigliare *abf = dynamic_cast<AbbonamentoFamigliare *>(ab);
+
+        QDate *d = new QDate;
+        QString day = QString::number(d->currentDate().day());
+        QString year = QString::number(d->currentDate().year());
+        QString month = QString::number(d->currentDate().month());
+        QString date = year+"/"+month+"/"+day;
+        if (abf) {
+
+
+          QJsonObject newAbbonamento;
+          newAbbonamento.insert("Tipo", "Abbonamento Famigliare");
+          newAbbonamento.insert("Data", date);
+          newAbbonamento.insert("Utente",
+                                QString::fromStdString(abf->getUtente()));
+          newAbbonamento.insert("Codice",
+                                QString::fromStdString(abf->getCodice()));
+          newAbbonamento.insert("Famiglia",
+                                QString::fromStdString(abf->getFamiglia()));
+          newAbbonamento.insert("Entrate_rimaste", abf->getEntrate() - 1);
+
+          oA.insert(QString::fromStdString(abf->getCodice()), newAbbonamento);
+
+          abf->removeOneEntrata();
+
+          QMessageBox* biglietto = new QMessageBox;
+          if(regola=="Rossa" || "Arancione"){
+              biglietto->setText("il prezzo è "+QString::number(0) + " bisogna avere la mascherina");
+              biglietto->show();
+          }
+
+          if(regola=="Gialla" || "Bianca"){
+              biglietto->setText("il prezzo è "+QString::number(0) + " non serve la mascherina");
+              biglietto->show();
+          }
+        }
+        if (ab) {
+
+          QJsonObject newAbbonamento;
+          newAbbonamento.insert("Tipo", "Abbonamento");
+          newAbbonamento.insert("Data", date);
+          newAbbonamento.insert("Utente",
+                                QString::fromStdString(ab->getUtente()));
+          newAbbonamento.insert("Codice",
+                                QString::fromStdString(ab->getCodice()));
+          newAbbonamento.insert("Entrate_rimaste", ab->getEntrate() - 1);
+
+          oA.insert(QString::fromStdString(ab->getCodice()), newAbbonamento);
+
+          ab->removeOneEntrata();
+
+          QMessageBox* biglietto = new QMessageBox;
+          if(regola=="Rossa" || "Arancione"){
+              biglietto->setText("il prezzo è "+QString::number(0) + " bisogna avere la mascherina");
+              biglietto->show();
+          }
+
+          if(regola=="Gialla" || "Bianca"){
+              biglietto->setText("il prezzo è "+QString::number(0) + " non serve la mascherina");
+              biglietto->show();
+          }
+
+        }
+      }
+    }
+  }
+
+  QJsonObject o;
+  o.insert("Entrate Singole", oB);
+  o.insert("Entrate Abbonamento", oA);
+  QJsonObject obj;
+  obj.insert("Entrate", o);
+
+  QJsonDocument doc1(obj);
+
+  if (!file.open(QIODevice::WriteOnly)) {
+    openError(QString("File open error: Write"));
+  }
+
+  file.write(doc1.toJson());
+  file.close();
 }
 
 void Controller::loadUsers(bool canUpdate) {
