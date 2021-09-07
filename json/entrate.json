@@ -119,6 +119,21 @@
                 "Famiglia": "test1",
                 "Tipo": "Abbonamento_Famigliare",
                 "Utente": "Codice Fiscale5"
+            },
+            "34": {
+                "Codice": "34",
+                "Data": "2021/9/7",
+                "Entrate_rimaste": 10,
+                "Tipo": "Abbonamento",
+                "Utente": "Codice Fiscale5"
+            },
+            "35": {
+                "Codice": "35",
+                "Data": "2021/9/7",
+                "Entrate_rimaste": 10,
+                "Famiglia": "eccoloqua",
+                "Tipo": "Abbonamento_Famigliare",
+                "Utente": "Codice Fiscale4"
             }
         },
         "Entrate Singole": {
