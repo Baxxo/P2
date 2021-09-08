@@ -1,21 +1,6 @@
 {
     "Entrate": {
         "Entrate Abbonamento": {
-            "11": {
-                "Codice": "11",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 7,
-                "Tipo": "Abbonamento",
-                "Utente": "Codice Fiscale1"
-            },
-            "27": {
-                "Codice": "27",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
-                "Famiglia": "test2",
-                "Tipo": "Abbonamento_Famigliare",
-                "Utente": "test2"
-            }
         },
         "Entrate Singole": {
             "1": {

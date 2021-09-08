@@ -59,7 +59,10 @@ bool Controller::removeAbbonamento(const QString &cod) {
 
 void Controller::removeAbbonamentoFromJson(const QString &cod) {
   QFile file(pathJsonEntrata);
-  file.open(QIODevice::ReadOnly);
+
+  if (!file.open(QIODevice::ReadOnly)) {
+    openError(QString("File open error: Read"));
+  }
 
   QJsonDocument jsonOrg = QJsonDocument::fromJson(file.readAll());
   file.close();
@@ -967,18 +970,14 @@ void Controller::buyBiglietto() {
 
           abf->removeOneEntrata();
 
-          if (abf->getEntrate() == 0) {
-            removeAbbonamentoFromJson(QString::fromStdString(abf->getCodice()));
-            model->removeEntrata(abf->getCodice());
-          }
           QMessageBox *biglietto = new QMessageBox;
-          if (regola == "Rossa" || "Arancione") {
+          if (regola == "Rossa" || regola == "Arancione") {
             biglietto->setText("il prezzo è " + QString::number(0) +
                                " bisogna avere la mascherina");
             biglietto->show();
           }
 
-          if (regola == "Gialla" || "Bianca") {
+          if (regola == "Gialla" || regola == "Bianca") {
             biglietto->setText("il prezzo è " + QString::number(0) +
                                " non serve la mascherina");
             biglietto->show();
@@ -997,42 +996,40 @@ void Controller::buyBiglietto() {
 
           ab->removeOneEntrata();
 
-          if (ab->getEntrate() == 0) {
-            removeAbbonamentoFromJson(QString::fromStdString(ab->getCodice()));
-            model->removeEntrata(ab->getCodice());
-          }
-
           QMessageBox *biglietto = new QMessageBox;
-          if (regola == "Rossa" || "Arancione") {
+          if (regola == "Rossa" || regola == "Arancione") {
             biglietto->setText("il prezzo è " + QString::number(0) +
                                " bisogna avere la mascherina");
             biglietto->show();
           }
 
-          if (regola == "Gialla" || "Bianca") {
+          if (regola == "Gialla" || regola == "Bianca") {
             biglietto->setText("il prezzo è " + QString::number(0) +
                                " non serve la mascherina");
             biglietto->show();
           }
         }
+        if (ab && ab->getEntrate() <= 0) {
+          removeAbbonamento(QString::fromStdString(ab->getCodice()));
+        } else {
+          QJsonObject o;
+          o.insert("Entrate Singole", oB);
+          o.insert("Entrate Abbonamento", oA);
+          QJsonObject obj;
+          obj.insert("Entrate", o);
+
+          QJsonDocument doc1(obj);
+
+          if (!file.open(QIODevice::WriteOnly)) {
+            openError(QString("File open error: Write"));
+          }
+
+          file.write(doc1.toJson());
+          file.close();
+        }
       }
     }
   }
-
-  QJsonObject o;
-  o.insert("Entrate Singole", oB);
-  o.insert("Entrate Abbonamento", oA);
-  QJsonObject obj;
-  obj.insert("Entrate", o);
-
-  QJsonDocument doc1(obj);
-
-  if (!file.open(QIODevice::WriteOnly)) {
-    openError(QString("File open error: Write"));
-  }
-
-  file.write(doc1.toJson());
-  file.close();
 }
 
 void Controller::loadUsers(bool canUpdate) {
