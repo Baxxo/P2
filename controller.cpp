@@ -324,10 +324,12 @@ void Controller::loadEntrateInAdmin() {
 
 void Controller::loadSaleInAdmin() {
   admin->clearListSale();
+  admin->clearListSalePerFilm();
 
   for (unsigned int i = 0; i < model->sizeSale(); ++i) {
     Sala *tmp = model->getSala_byPos(i);
     admin->addSaleinList(QString::fromStdString(tmp->getNomesala()));
+    admin->addSaleinFilm(QString::fromStdString(tmp->getNomesala()));
   }
 }
 
@@ -711,6 +713,7 @@ void Controller::newFilm() {
   mstObj.insert(admin->getNomeFilm(), admin->getSalaFilm());
 
   obj.insert("Film", mstObj);
+  filmObj=obj;
 
   if (file.open(QIODevice::WriteOnly)) {
     doc.setObject(obj);
