@@ -1071,6 +1071,7 @@ QVariantList *Controller::readUtenti(QFile &file, bool canUpdate) {
         model->clearVectorUtenti();
 
         QString json = file.readAll();
+        file.close();
 
         QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
         if (!doc.isEmpty()) {
@@ -1112,6 +1113,7 @@ QVariantList *Controller::readFamiglie(QFile &file, bool canUpdate) {
         model->clearVectorFamiglie();
 
         QString json = file.readAll();
+        file.close();
 
         QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
         if (!doc.isEmpty()) {
@@ -1152,6 +1154,7 @@ QVariantMap *Controller::readEntrata(QFile &file, bool canUpdate) {
         model->clearVectorEntrate();
 
         QString json = file.readAll();
+        file.close();
 
         QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
         if (!doc.isEmpty()) {
@@ -1190,6 +1193,7 @@ QJsonObject *Controller::readPosti(QFile &file, bool canUpdate) {
         openError(QString("File open error: Read"));
       } else {
         QString json = file.readAll();
+        file.close();
 
         QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
         if (!doc.isEmpty()) {
@@ -1228,6 +1232,7 @@ QVariantList *Controller::readSale(QFile &file, bool canUpdate) {
         model->cleaVectorSale();
 
         QString json = file.readAll();
+        file.close();
 
         QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
 
@@ -1265,10 +1270,9 @@ QJsonObject *Controller::readFilm(QFile &file, bool canUpdate) {
     if (pathJsonFilm != "") {
       file.setFileName(pathJsonFilm);
 
-      if (!file.open(QIODevice::ReadOnly)) {
-        openError(QString("File open error: Read"));
-      } else {
+      if (file.open(QIODevice::ReadOnly)) {
         QString json = file.readAll();
+        file.close();
 
         QJsonDocument doc(QJsonDocument::fromJson(json.toUtf8()));
         if (!doc.isEmpty()) {
@@ -1285,6 +1289,8 @@ QJsonObject *Controller::readFilm(QFile &file, bool canUpdate) {
         } else {
           openError(QString("File vuoto"));
         }
+      } else {
+        openError(QString("File open error: Read"));
       }
     }
   } while (pathJsonFilm != "");
