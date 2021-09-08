@@ -1,7 +1,7 @@
 #include "client.h"
 #include "controller.h"
 
-Client::Client(Controller *c, QWidget *parent)
+Client::Client(Controller *c, MainWindow *parent)
     : QMainWindow(parent),
       mainLayout(new QGridLayout),
       nuovaFamiglia(new QPushButton("Crea nuova Famiglia")),
@@ -10,7 +10,8 @@ Client::Client(Controller *c, QWidget *parent)
       btnLayout(new QVBoxLayout),
       widget(new QWidget(this)),
       label(new QLabel("Cliente")),
-      controller(c) {
+      controller(c),
+      p(parent) {
   label->setProperty("class", "title");
   nuovoUtente = new QPushButton("Crea Nuovo Utente");
 
@@ -43,6 +44,11 @@ void Client::setStyle() {
   QString styleSheet = QLatin1String(file.readAll());
 
   setStyleSheet(styleSheet);
+}
+
+void Client::closeEvent(QCloseEvent *event) {
+  p->changeTitleClient("Cliente");
+  event->accept();
 }
 
 void Client::resizeMe() { adjustSize(); }

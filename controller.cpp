@@ -439,7 +439,7 @@ void Controller::openAdmin() {
 
 void Controller::openClient() {
   if (!client) {
-    client = new Client(this);
+    client = new Client(this, view);
     client->setWindowIcon(QIcon(":/images/logo_small_icon.png"));
   }
   view->changeTitleClient("Aggiorna Client");
@@ -713,7 +713,7 @@ void Controller::newFilm() {
   mstObj.insert(admin->getNomeFilm(), admin->getSalaFilm());
 
   obj.insert("Film", mstObj);
-  filmObj=obj;
+  filmObj = obj;
 
   if (file.open(QIODevice::WriteOnly)) {
     doc.setObject(obj);

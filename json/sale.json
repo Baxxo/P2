@@ -14,21 +14,6 @@
             "colonne": "8",
             "nome_sala": "Verde",
             "righe": "3"
-        },
-        {
-            "colonne": "5",
-            "nome_sala": "Viola",
-            "righe": "3"
-        },
-        {
-            "colonne": "5",
-            "nome_sala": "Rosa",
-            "righe": "4"
-        },
-        {
-            "colonne": "6",
-            "nome_sala": "Gialla",
-            "righe": "6"
         }
     ]
 }

@@ -1,62 +1,9 @@
 {
     "Famiglie": [
         {
-            "Name": "test",
-            "Utente1": "Codice Fiscale1",
-            "Utente2": "Codice Fiscale5"
-        },
-        {
-            "Name": "testF",
-            "Utente1": "test",
-            "Utente2": "test1",
-            "Utente3": "test2"
-        },
-        {
-            "Name": "testFam",
-            "Utente1": "test2",
-            "Utente2": "test",
-            "Utente3": "test1"
-        },
-        {
-            "Name": "testFam123",
-            "Utente1": "test2",
-            "Utente2": "test",
-            "Utente3": "test1",
-            "Utente4": "Codice Fiscale6",
-            "Utente5": "Codice Fiscale5",
-            "Utente6": "Codice Fiscale4"
-        },
-        {
-            "Name": "test1",
-            "Utente1": "test2",
-            "Utente2": "Codice Fiscale2"
-        },
-        {
-            "Name": "test2",
-            "Utente1": "Codice Fiscale7",
-            "Utente2": "Codice Fiscale3"
-        },
-        {
-            "Name": "a",
-            "Utente1": "Codice Fiscale2"
-        },
-        {
-            "Name": "bella family",
-            "Utente1": "Codice Fiscale9",
-            "Utente2": "Codice Fiscale7",
-            "Utente3": "Codice Fiscale5"
-        },
-        {
-            "Name": "provaFamgilia",
-            "Utente1": "provaCodFIsc",
-            "Utente2": "ciaone",
-            "Utente3": "Codice Fiscale123"
-        },
-        {
-            "Name": "eccoloqua",
-            "Utente1": "qwerty",
-            "Utente2": "ciaone",
-            "Utente3": "provaCodFIsc"
+            "Name": "Famiglia Rossi",
+            "Utente1": "mrarss76l12r552r",
+            "Utente2": "srtlca98l02g445r"
         }
     ]
 }

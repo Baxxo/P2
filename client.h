@@ -16,7 +16,7 @@
 class Client : public QMainWindow {
   Q_OBJECT
  public:
-  Client(Controller* c, QWidget* parent = nullptr);
+  Client(Controller* c, MainWindow* parent = nullptr);
   ~Client() = default;
   void setStyle();
 
@@ -30,6 +30,9 @@ class Client : public QMainWindow {
   QWidget* widget;
   QLabel* label;
   Controller* controller;
+  MainWindow* p;
+
+  void closeEvent(QCloseEvent* event);
 
  public slots:
   void resizeMe();
