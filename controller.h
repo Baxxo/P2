@@ -165,6 +165,9 @@ class Controller : public QObject {
   void popolaEntrateBiglietto(int index);
   unsigned int getColonneMax() const;
   QString getNameSala() const;
+
+  void closeClientWindows();
+  void closeAll();
 };
 
 #endif  // CONTROLLER_H

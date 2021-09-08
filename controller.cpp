@@ -375,6 +375,34 @@ unsigned int Controller::getColonneMax() const { return colonneMax; }
 
 QString Controller::getNameSala() const { return nameSala; }
 
+void Controller::closeClientWindows() {
+  if (client && !client->isHidden()) {
+    client->close();
+  }
+
+  if (utente && !utente->isHidden()) {
+    utente->close();
+  }
+
+  if (famigliaView && !famigliaView->isHidden()) {
+    famigliaView->close();
+  }
+
+  if (abbonamentoView && !abbonamentoView->isHidden()) {
+    abbonamentoView->close();
+  }
+  if (bigliettoView && !bigliettoView->isHidden()) {
+    bigliettoView->close();
+  }
+}
+
+void Controller::closeAll() {
+  if (admin && !admin->isHidden()) {
+    admin->close();
+  }
+  closeClientWindows();
+}
+
 void Controller::setRegola(const QString &s) { regola = s; }
 
 void Controller::openAdmin() {
@@ -405,16 +433,14 @@ void Controller::openAdmin() {
 }
 
 void Controller::openClient() {
-
-  view->changeTitleClient("Aggiorna Client");
   if (!client) {
     client = new Client(this);
     client->setWindowIcon(QIcon(":/images/logo_small_icon.png"));
   }
-  if(utente) utente->hide();
-  if(famigliaView) famigliaView->hide();
-  if(bigliettoView) bigliettoView->hide();
-  if(abbonamentoView) abbonamentoView->hide();
+  view->changeTitleClient("Aggiorna Client");
+
+  closeClientWindows();
+
   QTimer::singleShot(0, client, SLOT(resizeMe()));
   client->show();
 }
@@ -941,11 +967,9 @@ void Controller::buyBiglietto() {
 
           abf->removeOneEntrata();
 
-          if(abf->getEntrate()==0){
-
-              removeAbbonamentoFromJson(QString::fromStdString(abf->getCodice()));
-              model->removeEntrata(abf->getCodice());
-
+          if (abf->getEntrate() == 0) {
+            removeAbbonamentoFromJson(QString::fromStdString(abf->getCodice()));
+            model->removeEntrata(abf->getCodice());
           }
           QMessageBox *biglietto = new QMessageBox;
           if (regola == "Rossa" || "Arancione") {
@@ -959,8 +983,7 @@ void Controller::buyBiglietto() {
                                " non serve la mascherina");
             biglietto->show();
           }
-        }
-        else if (ab) {
+        } else if (ab) {
           QJsonObject newAbbonamento;
           newAbbonamento.insert("Tipo", "Abbonamento");
           newAbbonamento.insert("Data", date);
@@ -974,11 +997,9 @@ void Controller::buyBiglietto() {
 
           ab->removeOneEntrata();
 
-          if(ab->getEntrate()==0){
-
-              removeAbbonamentoFromJson(QString::fromStdString(ab->getCodice()));
-              model->removeEntrata(ab->getCodice());
-
+          if (ab->getEntrate() == 0) {
+            removeAbbonamentoFromJson(QString::fromStdString(ab->getCodice()));
+            model->removeEntrata(ab->getCodice());
           }
 
           QMessageBox *biglietto = new QMessageBox;

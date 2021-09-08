@@ -32,8 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
       pathFilm(new QLabel("name json film")),
 
       controller(nullptr),
-      isVisReadBtn(true)
-      {
+      isVisReadBtn(true) {
   setWindowIcon(QIcon(":/images/logo_small_icon.png"));
 
   changeBtn->setMinimumWidth(50);
@@ -134,9 +133,8 @@ void MainWindow::changeTitleAdmin(const QString &s) {
   if (adminBtn) adminBtn->setText(s);
 }
 
-void MainWindow::changeTitleClient(const QString &s)
-{
-   if(clientBtn) clientBtn->setText(s);
+void MainWindow::changeTitleClient(const QString &s) {
+  if (clientBtn) clientBtn->setText(s);
 }
 
 void MainWindow::changeTitleChooseSala(const QString &s) {
@@ -157,12 +155,10 @@ void MainWindow::changeTitleChooseEntrata(const QString &s) {
 
 void MainWindow::changeTitleChoosePosti(const QString &s) {
   if (choosePosti) choosePosti->setText(s);
-
 }
 
 void MainWindow::changeTitleChooseFilm(const QString &s) {
-    if (chooseFilm) chooseFilm->setText(s);
-
+  if (chooseFilm) chooseFilm->setText(s);
 }
 
 void MainWindow::changeMenuSlot() { changeMenu(); }
@@ -353,6 +349,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
   if (QMessageBox::Yes ==
       QMessageBox::question(this, "Attenzione!", "Confermi di voler uscire?",
                             QMessageBox::Yes | QMessageBox::No)) {
+    controller->closeAll();
     event->accept();
   }
 }
