@@ -307,17 +307,17 @@ void Controller::loadEntrateInAdmin() {
     Abbonamento *ab = dynamic_cast<Abbonamento *>(model->getEntrata(i));
 
     AbbonamentoFamigliare *abf = dynamic_cast<AbbonamentoFamigliare *>(ab);
-    if (abf) {
-      admin->addAbbonamento("Abbonamento Famigliare -> " +
-                                QString::fromStdString(abf->toString()),
-                            QString::fromStdString(abf->getCodice()));
 
-    } else if (ab) {
-      Utente *u_tmp = model->getUtente(ab->getUtente());
-      string s1 = "Abbonamento -> " + u_tmp->toString();
-      string s2 = ab->getCodice();
-      admin->addAbbonamento(QString::fromStdString(s1),
-                            QString::fromStdString(s2));
+    if (ab) {
+      QString tmp = QString::fromStdString(ab->toString());
+
+      if (abf) {
+        admin->addAbbonamento(QString("Abbonamento Famigliare -> " + tmp),
+                              QString::fromStdString(ab->getCodice()));
+      } else {
+        admin->addAbbonamento(QString("Abbonamento -> " + tmp),
+                              QString::fromStdString(ab->getCodice()));
+      }
     }
   }
 }
@@ -968,20 +968,6 @@ void Controller::buyBiglietto() {
 
           oA.insert(QString::fromStdString(abf->getCodice()), newAbbonamento);
 
-          abf->removeOneEntrata();
-
-          QMessageBox *biglietto = new QMessageBox;
-          if (regola == "Rossa" || regola == "Arancione") {
-            biglietto->setText("il prezzo è " + QString::number(0) +
-                               " bisogna avere la mascherina");
-            biglietto->show();
-          }
-
-          if (regola == "Gialla" || regola == "Bianca") {
-            biglietto->setText("il prezzo è " + QString::number(0) +
-                               " non serve la mascherina");
-            biglietto->show();
-          }
         } else if (ab) {
           QJsonObject newAbbonamento;
           newAbbonamento.insert("Tipo", "Abbonamento");
@@ -993,9 +979,12 @@ void Controller::buyBiglietto() {
           newAbbonamento.insert("Entrate_rimaste", ab->getEntrate() - 1);
 
           oA.insert(QString::fromStdString(ab->getCodice()), newAbbonamento);
+        }
 
+        if (ab && ab->getEntrate() <= 0) {
+          removeAbbonamento(QString::fromStdString(ab->getCodice()));
+        } else if (ab) {
           ab->removeOneEntrata();
-
           QMessageBox *biglietto = new QMessageBox;
           if (regola == "Rossa" || regola == "Arancione") {
             biglietto->setText("il prezzo è " + QString::number(0) +
@@ -1008,10 +997,7 @@ void Controller::buyBiglietto() {
                                " non serve la mascherina");
             biglietto->show();
           }
-        }
-        if (ab && ab->getEntrate() <= 0) {
-          removeAbbonamento(QString::fromStdString(ab->getCodice()));
-        } else {
+
           QJsonObject o;
           o.insert("Entrate Singole", oB);
           o.insert("Entrate Abbonamento", oA);
