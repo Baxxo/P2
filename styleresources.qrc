@@ -5,5 +5,7 @@
         <file>qss/error.css</file>
         <file>json/users.json</file>
         <file>images/reverse.png</file>
+        <file>images/logo_white_large.png</file>
+        <file>images/logo_small_icon.png</file>
     </qresource>
 </RCC>

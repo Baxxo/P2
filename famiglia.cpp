@@ -1,7 +1,5 @@
 #include "famiglia.h"
 
-#include <QString>
-
 Famiglia::Famiglia(string _name, unsigned int c)
     : membri(new Utente *[c]), capacity(c), size(0), name(_name) {}
 

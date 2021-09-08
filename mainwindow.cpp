@@ -36,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent)
       prevAdmin("Admin"),
       prevChooseUtenti("Scegli file json per utenti"),
       prevChooseFamiglie("Scegli file json per famiglie") {
+  setWindowIcon(QIcon(":/images/logo_small_icon.png"));
+
   changeBtn->setMinimumWidth(50);
   changeBtn->setProperty("class", "changeBtn");
 
@@ -289,7 +291,9 @@ void MainWindow::showLayoutAdCLl() {
   clientBtn->show();
 
   isVisReadBtn = false;
-  title->setText("QTheater");
+  QImage *image = new QImage(":/images/logo_white_large.png");
+  QImage img = image->scaled(300, 300, Qt::KeepAspectRatio);
+  title->setPixmap(QPixmap::fromImage(img));
 }
 
 void MainWindow::setPrevAdmin(const QString &value) { prevAdmin = value; }

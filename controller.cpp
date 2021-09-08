@@ -379,6 +379,7 @@ void Controller::setRegola(const QString &s) { regola = s; }
 void Controller::openAdmin() {
   if (admin == nullptr) {
     admin = new Admin(this, view);
+    admin->setWindowIcon(QIcon(":/images/logo_small_icon.png"));
   }
   view->changeTitleAdmin(QString("Aggiorna admin"));
 
@@ -405,6 +406,7 @@ void Controller::openAdmin() {
 void Controller::openClient() {
   if (!client) {
     client = new Client(this);
+    client->setWindowIcon(QIcon(":/images/logo_small_icon.png"));
   }
 
   QTimer::singleShot(0, client, SLOT(resizeMe()));
@@ -414,6 +416,7 @@ void Controller::openClient() {
 void Controller::openUtente() {
   if (!utente) {
     utente = new Utente_View(this);
+    utente->setWindowIcon(QIcon(":/images/logo_small_icon.png"));
   }
 
   if (pathJsonUsers == "") loadUsers();
@@ -425,6 +428,7 @@ void Controller::openFamiglia() {
   if (!famigliaView) {
     fam = new Famiglia();
     famigliaView = new Famiglia_View(this);
+    famigliaView->setWindowIcon(QIcon(":/images/logo_small_icon.png"));
   }
 
   if (pathJsonUsers == "") loadUsers();
@@ -449,6 +453,7 @@ void Controller::openFamiglia() {
 void Controller::openAbbonamento() {
   if (!abbonamentoView) {
     abbonamentoView = new Abbonamento_view(this);
+    abbonamentoView->setWindowIcon(QIcon(":/images/logo_small_icon.png"));
   }
 
   if (pathJsonUsers == "") loadUsers();
@@ -484,6 +489,7 @@ void Controller::openAbbonamento() {
 void Controller::openBiglietto() {
   if (!bigliettoView) {
     bigliettoView = new Biglietto_View(this);
+    bigliettoView->setWindowIcon(QIcon(":/images/logo_small_icon.png"));
   }
 
   if (pathJsonUsers == "") loadUsers();

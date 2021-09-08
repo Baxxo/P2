@@ -1,5 +1,6 @@
 #ifndef FAMIGLIA_H
 #define FAMIGLIA_H
+#include <iostream>
 #include "utente.h"
 
 using std::ostream;

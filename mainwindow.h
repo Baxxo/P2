@@ -79,7 +79,6 @@ class MainWindow : public QMainWindow {
 
  public:
   MainWindow(QWidget *parent = nullptr);
-  ~MainWindow() = default;
 
   MainWindow *getMainwindow();
 
