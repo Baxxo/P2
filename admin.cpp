@@ -17,6 +17,7 @@ Admin::Admin(Controller *c, MainWindow *parent)
       listFam(new QListWidget()),
       listFilm(new QListWidget()),
       listSala(new QListWidget()),
+      listSalaPerFilm(new QListWidget()),
 
       labelAbb(new QLabel("Abbonamenti")),
       labelUt(new QLabel("Utenti")),
@@ -136,8 +137,13 @@ void Admin::addFilminList(const QString &s) {
 }
 
 void Admin::addSaleinList(const QString &s) {
-  QListWidgetItem *item = new QListWidgetItem(s);
+  QListWidgetItem *item = new QListWidgetItem(s);  
   listSala->addItem(item);
+}
+
+void Admin::addSaleinFilm(const QString &s) {
+  QListWidgetItem *item = new QListWidgetItem(s);
+  listSalaPerFilm->addItem(item);
 }
 
 void Admin::clearListUtenti() { listUt->clear(); }
@@ -150,11 +156,13 @@ void Admin::clearListFilm() { listFilm->clear(); }
 
 void Admin::clearListSale() { listSala->clear(); }
 
+void Admin::clearListSalePerFilm(){ listSalaPerFilm->clear(); }
+
 void Admin::clearListEntrate() { listAbb->clear(); }
 
 QString Admin::getNomeFilm() { return nomeFilm->text(); }
 
-QString Admin::getSalaFilm() { return listSala->currentItem()->text(); }
+QString Admin::getSalaFilm() { return listSalaPerFilm->currentItem()->text(); }
 
 void Admin::setUtilityFilm(const QString &s) {
   utilityFilm->setText(s);
@@ -193,7 +201,7 @@ void Admin::addFilmLayout() {
   filmLayout->addWidget(titoloFilm, 0, 0);
   filmLayout->addWidget(nomeFilm, 1, 0);
   filmLayout->addWidget(nomeSalaLabel, 2, 0);
-  filmLayout->addWidget(listSala, 3, 0);
+  filmLayout->addWidget(listSalaPerFilm, 3, 0);
   filmLayout->addWidget(saveFilm, 4, 0);
   filmLayout->addWidget(utilityFilm, 5, 0);
 

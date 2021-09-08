@@ -41,6 +41,7 @@ class Admin : public QMainWindow {
   QListWidget *listFam;
   QListWidget *listFilm;
   QListWidget *listSala;
+  QListWidget *listSalaPerFilm;
 
   QLabel *labelAbb;
   QLabel *labelUt;
@@ -95,6 +96,7 @@ class Admin : public QMainWindow {
   void setFamiglie();
   void addFilminList(const QString &s);
   void addSaleinList(const QString &s);
+  void addSaleinFilm(const QString &s);
 
   void clearListEntrate();
   void clearListUtenti();
@@ -103,6 +105,7 @@ class Admin : public QMainWindow {
 
   void clearListFilm();
   void clearListSale();
+  void clearListSalePerFilm();
 
   void setIsAdmin(bool b);
 
