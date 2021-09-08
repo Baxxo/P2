@@ -61,7 +61,6 @@ class Admin : public QMainWindow {
   QWidget *widgetFilm;
   QGridLayout *filmLayout;
   QLineEditClickable *nomeFilm;
-  QLineEditClickable *salaFilm;
   QPushButton *saveFilm;
 
   QWidget *widgetSala;
