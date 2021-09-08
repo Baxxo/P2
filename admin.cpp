@@ -116,6 +116,9 @@ Admin::Admin(Controller *c, MainWindow *parent)
   connect(regola, SIGNAL(currentTextChanged(const QString &)), controller,
           SLOT(setRegola(const QString &)));
 
+  connect(listSalaPerFilm, SIGNAL(itemClicked(QListWidgetItem *)), this,
+          SLOT(showAddFilm()));
+
   resize(1000, 400);
 
   setCentralWidget(widget);
@@ -137,7 +140,7 @@ void Admin::addFilminList(const QString &s) {
 }
 
 void Admin::addSaleinList(const QString &s) {
-  QListWidgetItem *item = new QListWidgetItem(s);  
+  QListWidgetItem *item = new QListWidgetItem(s);
   listSala->addItem(item);
 }
 
@@ -156,7 +159,7 @@ void Admin::clearListFilm() { listFilm->clear(); }
 
 void Admin::clearListSale() { listSala->clear(); }
 
-void Admin::clearListSalePerFilm(){ listSalaPerFilm->clear(); }
+void Admin::clearListSalePerFilm() { listSalaPerFilm->clear(); }
 
 void Admin::clearListEntrate() { listAbb->clear(); }
 
@@ -168,6 +171,8 @@ void Admin::setUtilityFilm(const QString &s) {
   utilityFilm->setText(s);
   QTimer::singleShot(3000, this, SLOT(clearUtilityFilm()));
 }
+
+void Admin::showAddFilm() const { saveFilm->show(); }
 
 QString Admin::getColonneSala() { return colonneSala->text(); }
 
@@ -204,6 +209,8 @@ void Admin::addFilmLayout() {
   filmLayout->addWidget(listSalaPerFilm, 3, 0);
   filmLayout->addWidget(saveFilm, 4, 0);
   filmLayout->addWidget(utilityFilm, 5, 0);
+
+  saveFilm->hide();
 
   widgetFilm->setLayout(filmLayout);
   widgetFilm->show();

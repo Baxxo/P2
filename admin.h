@@ -83,6 +83,7 @@ class Admin : public QMainWindow {
 
   void clearUtility();
   void clearUtilityFilm();
+  void showAddFilm() const;
 
  public:
   Admin(Controller *c, MainWindow *parent = nullptr);
