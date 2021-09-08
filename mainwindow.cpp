@@ -32,10 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
       pathFilm(new QLabel("name json film")),
 
       controller(nullptr),
-      isVisReadBtn(true),
-      prevAdmin("Admin"),
-      prevChooseUtenti("Scegli file json per utenti"),
-      prevChooseFamiglie("Scegli file json per famiglie") {
+      isVisReadBtn(true)
+      {
   setWindowIcon(QIcon(":/images/logo_small_icon.png"));
 
   changeBtn->setMinimumWidth(50);
@@ -133,50 +131,38 @@ void MainWindow::setLabelPathFilm(const QString &s) {
 }
 
 void MainWindow::changeTitleAdmin(const QString &s) {
-  prevAdmin = s;
   if (adminBtn) adminBtn->setText(s);
 }
 
+void MainWindow::changeTitleClient(const QString &s)
+{
+   if(clientBtn) clientBtn->setText(s);
+}
+
 void MainWindow::changeTitleChooseSala(const QString &s) {
-  prevChooseSale = s;
-  if (chooseSala) {
-    chooseSala->setText(s);
-  }
+  if (chooseSala) chooseSala->setText(s);
 }
 
 void MainWindow::changeTitleChooseUtenti(const QString &s) {
-  prevChooseUtenti = s;
-  if (chooseUtenti) {
-    chooseUtenti->setText(s);
-  }
+  if (chooseUtenti) chooseUtenti->setText(s);
 }
 
 void MainWindow::changeTitleChooseFamiglie(const QString &s) {
-  prevChooseFamiglie = s;
-  if (chooseFamiglie) {
-    chooseFamiglie->setText(s);
-  }
+  if (chooseFamiglie) chooseFamiglie->setText(s);
 }
 
 void MainWindow::changeTitleChooseEntrata(const QString &s) {
-  prevChooseEntrata = s;
-  if (chooseEntrata) {
-    chooseEntrata->setText(s);
-  }
+  if (chooseEntrata) chooseEntrata->setText(s);
 }
 
 void MainWindow::changeTitleChoosePosti(const QString &s) {
-  prevChoosePosti = s;
-  if (choosePosti) {
-    choosePosti->setText(s);
-  }
+  if (choosePosti) choosePosti->setText(s);
+
 }
 
 void MainWindow::changeTitleChooseFilm(const QString &s) {
-  prevChooseFilm = s;
-  if (chooseFilm) {
-    chooseFilm->setText(s);
-  }
+    if (chooseFilm) chooseFilm->setText(s);
+
 }
 
 void MainWindow::changeMenuSlot() { changeMenu(); }
@@ -209,7 +195,7 @@ void MainWindow::createLayoutAdCl() {
   title->setText("QTheater");
 
   if (!adminBtn) {
-    adminBtn = new QPushButton(prevAdmin);
+    adminBtn = new QPushButton("Admin");
     adminBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     buttonLayout->addWidget(adminBtn, 0, 0, Qt::AlignCenter);
 
@@ -229,7 +215,7 @@ void MainWindow::createLayoutAdCl() {
 void MainWindow::createLayoutSetup() {
   title->setText("Setup");
   if (!chooseUtenti) {
-    chooseUtenti = new QPushButton(prevChooseUtenti);
+    chooseUtenti = new QPushButton("Scegli file Json per Utenti");
     chooseUtenti->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     connect(chooseUtenti, SIGNAL(clicked()), controller, SLOT(loadUsersSlot()));
@@ -237,7 +223,7 @@ void MainWindow::createLayoutSetup() {
   buttonLayout->addWidget(chooseUtenti, 0, 0, Qt::AlignCenter);
 
   if (!chooseFamiglie) {
-    chooseFamiglie = new QPushButton(prevChooseFamiglie);
+    chooseFamiglie = new QPushButton("Scegli file Json per Famiglie");
     chooseFamiglie->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     connect(chooseFamiglie, SIGNAL(clicked()), controller,
@@ -295,8 +281,6 @@ void MainWindow::showLayoutAdCLl() {
   QImage img = image->scaled(300, 300, Qt::KeepAspectRatio);
   title->setPixmap(QPixmap::fromImage(img));
 }
-
-void MainWindow::setPrevAdmin(const QString &value) { prevAdmin = value; }
 
 void MainWindow::hideLayoutSetup() {
   chooseUtenti->hide();

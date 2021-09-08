@@ -288,6 +288,7 @@ void Controller::loadUtentiInAdmin() {
 void Controller::addUteneAdmin(const QString &s) { admin->addUtenteinList(s); }
 
 void Controller::loadFamiglieInAdmin() {
+  admin->clearListFamiglie();
   for (unsigned int i = 0; i < model->sizeFamilies(); ++i) {
     Famiglia *tmp = model->getFamily(i);
     string s =
@@ -404,11 +405,16 @@ void Controller::openAdmin() {
 }
 
 void Controller::openClient() {
+
+  view->changeTitleClient("Aggiorna Client");
   if (!client) {
     client = new Client(this);
     client->setWindowIcon(QIcon(":/images/logo_small_icon.png"));
   }
-
+  if(utente) utente->hide();
+  if(famigliaView) famigliaView->hide();
+  if(bigliettoView) bigliettoView->hide();
+  if(abbonamentoView) abbonamentoView->hide();
   QTimer::singleShot(0, client, SLOT(resizeMe()));
   client->show();
 }
@@ -935,6 +941,12 @@ void Controller::buyBiglietto() {
 
           abf->removeOneEntrata();
 
+          if(abf->getEntrate()==0){
+
+              removeAbbonamentoFromJson(QString::fromStdString(abf->getCodice()));
+              model->removeEntrata(abf->getCodice());
+
+          }
           QMessageBox *biglietto = new QMessageBox;
           if (regola == "Rossa" || "Arancione") {
             biglietto->setText("il prezzo è " + QString::number(0) +
@@ -948,7 +960,7 @@ void Controller::buyBiglietto() {
             biglietto->show();
           }
         }
-        if (ab) {
+        else if (ab) {
           QJsonObject newAbbonamento;
           newAbbonamento.insert("Tipo", "Abbonamento");
           newAbbonamento.insert("Data", date);
@@ -961,6 +973,13 @@ void Controller::buyBiglietto() {
           oA.insert(QString::fromStdString(ab->getCodice()), newAbbonamento);
 
           ab->removeOneEntrata();
+
+          if(ab->getEntrate()==0){
+
+              removeAbbonamentoFromJson(QString::fromStdString(ab->getCodice()));
+              model->removeEntrata(ab->getCodice());
+
+          }
 
           QMessageBox *biglietto = new QMessageBox;
           if (regola == "Rossa" || "Arancione") {

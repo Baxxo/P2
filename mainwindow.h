@@ -49,14 +49,6 @@ class MainWindow : public QMainWindow {
 
   bool isVisReadBtn;
 
-  QString prevAdmin;
-  QString prevChooseUtenti;
-  QString prevChooseFamiglie;
-  QString prevChooseEntrata;
-  QString prevChooseSale;
-  QString prevChoosePosti;
-  QString prevChooseFilm;
-
   void setStyle();
   void changeMenu();
   void setSlot();
@@ -91,6 +83,7 @@ class MainWindow : public QMainWindow {
   void changeTitleChooseFilm(const QString &s);
   void changeTitleChooseSala(const QString &s);
   void changeTitleAdmin(const QString &s);
+  void changeTitleClient(const QString &s);
 
   void setLabelPathUser(const QString &s);
   void setLabelPathFamiglie(const QString &s);
@@ -98,8 +91,6 @@ class MainWindow : public QMainWindow {
   void setLabelPathPosti(const QString &s);
   void setLabelPathSale(const QString &s);
   void setLabelPathFilm(const QString &s);
-
-  void setPrevAdmin(const QString &value);
 
   void showLayoutSetup();
 };
