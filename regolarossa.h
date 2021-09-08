@@ -1,0 +1,12 @@
+#ifndef REGOLAROSSA_H
+#define REGOLAROSSA_H
+#include "regola.h"
+
+class RegolaRossa : public Regola
+{
+public:
+    RegolaRossa(unsigned int dP=5, bool m=true);
+    void getRegole(unsigned int& distP, bool& m);
+};
+
+#endif // REGOLAROSSA_H

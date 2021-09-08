@@ -37,7 +37,6 @@ Admin::Admin(Controller *c, MainWindow *parent)
       widgetFilm(nullptr),
       filmLayout(nullptr),
       nomeFilm(nullptr),
-      salaFilm(nullptr),
       saveFilm(nullptr),
 
       widgetSala(nullptr),
@@ -155,7 +154,7 @@ void Admin::clearListEntrate() { listAbb->clear(); }
 
 QString Admin::getNomeFilm() { return nomeFilm->text(); }
 
-QString Admin::getSalaFilm() { return salaFilm->text(); }
+QString Admin::getSalaFilm() { return listSala->currentItem()->text(); }
 
 void Admin::setUtilityFilm(const QString &s) {
   utilityFilm->setText(s);
@@ -189,13 +188,12 @@ void Admin::addFilmLayout() {
   nomeSalaLabel->setText("Inserisci nome della sala");
   utilityFilm = new QLabel();
   nomeFilm = new QLineEditClickable;
-  salaFilm = new QLineEditClickable;
   saveFilm = new QPushButton("Salva");
 
   filmLayout->addWidget(titoloFilm, 0, 0);
   filmLayout->addWidget(nomeFilm, 1, 0);
   filmLayout->addWidget(nomeSalaLabel, 2, 0);
-  filmLayout->addWidget(salaFilm, 3, 0);
+  filmLayout->addWidget(listSala, 3, 0);
   filmLayout->addWidget(saveFilm, 4, 0);
   filmLayout->addWidget(utilityFilm, 5, 0);
 
