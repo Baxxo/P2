@@ -82,20 +82,18 @@ class MyVector {
 
   Iterator begin();
   Iterator end();
-  Iterator search(const T &o);  // forse da mettere const
+  Iterator search(const T &o);
 
   Const_iterator cbegin() const;
   Const_iterator cend() const;
-  Const_iterator csearch(const T &o) const;  // forse da mettere const
+  Const_iterator csearch(const T &o) const;
 
   T &operator[](unsigned int i) const;
 
   void push_back(const T &o);
-  void pop_back();  // deve andare void
+  void pop_back();
 
   bool erase(Iterator i);
-
-  // bool erase(Const_iterator it);
 
   Iterator erase(Iterator it1, Iterator it2);
 

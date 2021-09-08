@@ -35,11 +35,6 @@ class Model {
   EntrataFilm *getEntrataFilm(string cod) const;
   Sala *getSala(string nome) const;
 
-  //  const MyVector<DeepPtr<EntrataFilm>> &getListEntrate() const;
-  //  const MyVector<DeepPtr<Utente>> &getListUtenti() const;
-  //  const MyVector<DeepPtr<Famiglia>> &getListFamiglie() const;
-  //  const MyVector<DeepPtr<Sala>> &getListSale() const;
-
   unsigned int sizeUtenti() const;
   Utente *getUser(unsigned int pos) const;
 

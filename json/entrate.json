@@ -8,34 +8,6 @@
                 "Tipo": "Abbonamento",
                 "Utente": "Codice Fiscale1"
             },
-            "13": {
-                "Codice": "13",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 8,
-                "Tipo": "Abbonamento",
-                "Utente": "Codice Fiscale"
-            },
-            "14": {
-                "Codice": "14",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 9,
-                "Tipo": "Abbonamento",
-                "Utente": "Codice Fiscale2"
-            },
-            "16": {
-                "Codice": "16",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 8,
-                "Tipo": "Abbonamento",
-                "Utente": "Codice Fiscale2"
-            },
-            "17": {
-                "Codice": "17",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
-                "Tipo": "Abbonamento",
-                "Utente": "Codice Fiscale"
-            },
             "19": {
                 "Codice": "19",
                 "Data": "2021/9/7",
@@ -43,21 +15,6 @@
                 "Famiglia": "bella family",
                 "Tipo": "Abbonamento_Famigliare",
                 "Utente": "Codice Fiscale4"
-            },
-            "20": {
-                "Codice": "20",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
-                "Tipo": "Abbonamento",
-                "Utente": "test1"
-            },
-            "21": {
-                "Codice": "21",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
-                "Famiglia": "bella family",
-                "Tipo": "Abbonamento_Famigliare",
-                "Utente": "Codice Fiscale2"
             },
             "26": {
                 "Codice": "26",
@@ -73,51 +30,6 @@
                 "Famiglia": "test2",
                 "Tipo": "Abbonamento_Famigliare",
                 "Utente": "test2"
-            },
-            "28": {
-                "Codice": "28",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
-                "Tipo": "Abbonamento",
-                "Utente": "Codice Fiscale1"
-            },
-            "29": {
-                "Codice": "29",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
-                "Tipo": "Abbonamento",
-                "Utente": "Codice Fiscale1"
-            },
-            "30": {
-                "Codice": "30",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
-                "Famiglia": "eccoloqua",
-                "Tipo": "Abbonamento_Famigliare",
-                "Utente": "Codice Fiscale"
-            },
-            "31": {
-                "Codice": "31",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
-                "Tipo": "Abbonamento",
-                "Utente": "Codice Fiscale4"
-            },
-            "32": {
-                "Codice": "32",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
-                "Famiglia": "eccoloqua",
-                "Tipo": "Abbonamento_Famigliare",
-                "Utente": "Codice Fiscale10"
-            },
-            "33": {
-                "Codice": "33",
-                "Data": "2021/9/7",
-                "Entrate_rimaste": 10,
-                "Famiglia": "test1",
-                "Tipo": "Abbonamento_Famigliare",
-                "Utente": "Codice Fiscale5"
             }
         },
         "Entrate Singole": {

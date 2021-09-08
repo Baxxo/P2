@@ -16,13 +16,6 @@ void Model::addSala(Sala *s) { listSale.push_back(DeepPtr<Sala>(s)); }
 
 bool Model::removeEntrata(const string &e) {
   bool chk = false;
-  //  int i = 0;
-  //  for (auto it = listEntrate.cbegin(); it != listEntrate.cend(); ++it) {
-  //    if ((**it).getCodice() == e.toStdString()) {
-  //      chk = listEntrate.erase(listEntrate.begin() + i);
-  //    }
-  //    i++;
-  //  }
   for (unsigned int i = 0; i < listEntrate.getSize(); ++i) {
     if (listEntrate[i]->getCodice() == e) {
       chk = listEntrate.erase(listEntrate.begin() + i);
@@ -120,21 +113,6 @@ Sala *Model::getSala(string nome) const {
   }
   return nullptr;
 }
-
-// const MyVector<DeepPtr<EntrataFilm>> &Model::getListEntrate() const {
-//  return listEntrate;
-//}
-
-// const MyVector<DeepPtr<Utente>> &Model::getListUtenti() const {
-//  return listUtenti;
-//}
-
-// const MyVector<DeepPtr<Famiglia>> &Model::getListFamiglie() const {
-//  return listFamiglie;
-//}
-
-// const MyVector<DeepPtr<Sala>> &Model::getListSale() const { return listSale;
-// }
 
 unsigned int Model::sizeUtenti() const { return listUtenti.getSize(); }
 

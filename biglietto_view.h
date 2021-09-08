@@ -38,8 +38,6 @@ class Biglietto_View : public QWidget {
   QWidget *salaWidget;
 
   QTableWidget *posti;
-  //  QLabel *nomeSala;
-  //  QLabel *colonneMax;
 
   QPushButton *compraBiglietto;
 
@@ -77,9 +75,7 @@ class Biglietto_View : public QWidget {
 
   int getCurrentColumn();
   int getCurrentRow();
-  //  QString getNomeSala();
   QString getSelectedFilm();
-  //  int getColonneMax();
   void setPostoOccupato(unsigned int r, unsigned int c, QString regola);
   void createSalaView(unsigned int r, unsigned int c);
 

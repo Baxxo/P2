@@ -24,9 +24,6 @@
 #include "qlabelcf.h"
 #include "qlineeditclickable.h"
 
-// using std::cout;
-// using std::endl;
-
 class Admin : public QMainWindow {
   Q_OBJECT
 

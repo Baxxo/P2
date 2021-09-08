@@ -64,11 +64,9 @@ class MainWindow : public QMainWindow {
   void createLayoutAdCl();
   void hideLayoutAdCLl();
   void showLayoutAdCLl();
-  //  void destroyLayoutAdCl();
 
   void createLayoutSetup();
   void hideLayoutSetup();
-  //  void destroyLayoutSetup();
 
   void showPath(bool hide = false);
 

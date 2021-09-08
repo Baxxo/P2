@@ -116,7 +116,6 @@ class Controller : public QObject {
 
   void newSala();
 
-  // void setSala();
   void newPostoOccupato();
   void setPostiOccupati();
 
@@ -131,9 +130,6 @@ class Controller : public QObject {
  public:
   explicit Controller(QObject *parent = nullptr, Model *m = nullptr);
   void setView(MainWindow *v);
-
-  //  bool getIsAdmin() const;
-  //  void setIsAdmin(bool value);
 
   QString getPathJsonUsers() const;
   QString getPathJsonFamiglie() const;

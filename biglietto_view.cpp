@@ -28,9 +28,6 @@ Biglietto_View::Biglietto_View(Controller *c, QWidget *parent)
       salaWidget(new QWidget),
 
       posti(nullptr),
-      //      nomeSala(nullptr),
-      //      colonneMax(nullptr),
-
       compraBiglietto(new QPushButton("Compra")),
 
       postiOccupati(nullptr),
@@ -147,8 +144,6 @@ int Biglietto_View::getCurrentColumn() { return posti->currentColumn(); }
 
 int Biglietto_View::getCurrentRow() { return posti->currentRow(); }
 
-// QString Biglietto_View::getNomeSala() { return nomeSala->text(); }
-
 QString Biglietto_View::getSelectedFilm() {
   QListWidgetItem *current = listaFilm->currentItem();
   if (current) {
@@ -158,8 +153,6 @@ QString Biglietto_View::getSelectedFilm() {
     return nullptr;
   }
 }
-
-// int Biglietto_View::getColonneMax() { return colonneMax->text().toInt(); }
 
 void Biglietto_View::setPostoOccupato(unsigned int r, unsigned int c,
                                       QString regola) {

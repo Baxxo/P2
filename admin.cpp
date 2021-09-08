@@ -111,10 +111,6 @@ Admin::Admin(Controller *c, MainWindow *parent)
 
   connect(listAbb, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this,
           SLOT(getClickAbb()));
-  //  connect(listFam, SIGNAL(itemClicked(QListWidgetItem *)), this,
-  //          SLOT(getClickFam()));
-  //  connect(listUt, SIGNAL(itemClicked(QListWidgetItem *)), this,
-  //          SLOT(getClickUt()));
   connect(addFilm, SIGNAL(clicked()), this, SLOT(addFilmLayout()));
   connect(addSala, SIGNAL(clicked()), this, SLOT(addSalaLayout()));
   connect(regola, SIGNAL(currentTextChanged(const QString &)), controller,

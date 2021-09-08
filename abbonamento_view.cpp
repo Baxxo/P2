@@ -31,8 +31,6 @@ Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)
   labelUtility->setAlignment(Qt::AlignHCenter);
   labelUtility->setProperty("class", "succes");
 
-  // listaFamiglie->setProperty("class", "colorSelect");
-
   abbonamento->setChecked(true);
   layoutRadio->addWidget(abbonamento);
   layoutRadio->addWidget(abbonamentoFamigliare);
@@ -63,9 +61,6 @@ Abbonamento_view::Abbonamento_view(Controller *c, QWidget *parent)
           SLOT(clickListFamiglie(QListWidgetItem *)));
 
   connect(aggiungi, SIGNAL(clicked()), this, SLOT(createAbbonamento()));
-  // connect(aggiungi, SIGNAL(clicked()), listaUtenti, SLOT(clearSelection()));
-  // connect(aggiungi, SIGNAL(clicked()), listaFamiglie,
-  // SLOT(clearSelection()));
 
   setStyle();
 
